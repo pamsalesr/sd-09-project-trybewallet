@@ -1,15 +1,15 @@
 // Coloque aqui suas actions
-export const userAction = (userEmail) => ({
+export const registerEmailAction = (email) => ({
   type: 'REGISTER_EMAIL',
-  userEmail,
+  email,
 });
 
-export const addExpense = (expense) => ({
+export const addExpenseAction = (expense) => ({
   type: 'REGISTER_EXPENSES',
   expense,
 });
 
-export const registerCurrencies = (currencies) => ({
+export const registerCurrenciesAction = (currencies) => ({
   type: 'REGISTER_CURRENCIES',
   currencies,
 });
