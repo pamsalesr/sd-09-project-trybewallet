@@ -77,17 +77,13 @@ class Wallet extends Component {
       <div>
         <header className="header">
           <h1>Trybe</h1>
-          <div>
             <span>Email:</span>
             <span data-testid="email-field">{ email }</span>
-          </div>
-          <div>
             <span>Despesa Total: R$</span>
             <span data-testid="total-field">
               {sum}
             </span>
             <span data-testid="header-currency-field"> BRL </span>
-          </div>
         </header>
         <div className="form">
           <form>
