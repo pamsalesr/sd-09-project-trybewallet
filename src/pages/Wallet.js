@@ -77,13 +77,13 @@ class Wallet extends Component {
       <div>
         <header className="header">
           <h1>Trybe</h1>
-            <span>Email:</span>
-            <span data-testid="email-field">{ email }</span>
-            <span>Despesa Total: R$</span>
-            <span data-testid="total-field">
-              {sum}
-            </span>
-            <span data-testid="header-currency-field"> BRL </span>
+          <span>Email:</span>
+          <span data-testid="email-field">{ email }</span>
+          <span>Despesa Total: R$</span>
+          <span data-testid="total-field">
+            {sum}
+          </span>
+          <span data-testid="header-currency-field"> BRL </span>
         </header>
         <div className="form">
           <form>
@@ -107,6 +107,7 @@ class Wallet extends Component {
                 defaultValue="default"
                 onChange={ (e) => this.handleInputChange(e.target) }
               >
+                {/*  */}
                 <option disabled value="default"> Selecione </option>
                 {cSelect}
               </select>
@@ -135,11 +136,12 @@ class Wallet extends Component {
                 defaultValue="default"
                 onChange={ (e) => this.handleInputChange(e.target) }
               >
-                <option disabled value="default"> Selecione </option>
+                {/* <option disabled value="default"> Selecione </option>
                 <option value="Alimentação"> Alimentação </option>
                 <option value="Lazer"> Lazer </option>
                 <option value="Trabalho"> Trabalho </option>
-                <option value="Transporte"> Transporte </option>
+                <option value="Transporte"> Transporte </option> */}
+                {/*  */}
                 <option value="Saúde"> Saúde </option>
               </select>
             </label>
