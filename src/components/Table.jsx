@@ -10,62 +10,28 @@ class TableHeader extends Component {
       <table className="table table-dark">
         <thead>
           <tr>
-            <th>
-              Descrição
-            </th>
-            <th>
-              Tag
-            </th>
-            <th>
-              Método de pagamento
-            </th>
-            <th>
-              Valor
-            </th>
-            <th>
-              Moeda
-            </th>
-            <th>
-              Câmbio utilizado
-            </th>
-            <th>
-              Valor convertido
-            </th>
-            <th>
-              Moeda de conversão
-            </th>
-            <th>
-              Editar/Excluir
-            </th>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
           </tr>
         </thead>
         <tbody>
           {expenses.map((expense) => (
             <tr key={ expense.id }>
-              <td>
-                {expense.description}
-              </td>
-              <td>
-                {expense.tag}
-              </td>
-              <td>
-                {expense.method}
-              </td>
-              <td>
-                {expense.value}
-              </td>
-              <td>
-                {expense.eRates[expense.curr].name}
-              </td>
-              <td>
-                {roundValue(expense.eRates[expense.curr].ask)}
-              </td>
-              <td>
-                {roundValue(expense.value * expense.eRates[expense.curr].ask)}
-              </td>
-              <td>
-                Real
-              </td>
+              <td>{expense.description}</td>
+              <td>{expense.tag}</td>
+              <td>{expense.method}</td>
+              <td>{expense.value}</td>
+              <td>{expense.eRates[expense.curr].name}</td>
+              <td>{roundValue(expense.eRates[expense.curr].ask)}</td>
+              <td>{roundValue(expense.value * expense.eRates[expense.curr].ask)}</td>
+              <td>Real</td>
               <td>
                 <button type="button">Editar</button>
                 <button type="button">Excluir</button>
