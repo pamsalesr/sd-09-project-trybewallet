@@ -1,17 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Inputs from './Inputs';
 
 class expenseForm extends React.Component {
   render() {
     return (
       <div>
         <form>
-          <div>
-            <p>
-              Valor R$
-              <span data-testid="value-input"> 0</span>
-            </p>
-          </div>
+          <Inputs
+            name="Valor"
+            dataTestid="value-input"
+          />
+          <Inputs
+            name="Descrição:"
+            dataTestid="description-input"
+          />
           <div>
             <p>
               Descrição:
