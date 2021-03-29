@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
+import { handleUserLogin as loginAction } from '../../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,6 +36,9 @@ class Login extends React.Component {
 
   handleLoginSubmit(e) {
     e.preventDefault();
+    const { handleUserLogin } = this.props;
+    const { email } = this.state;
+    handleUserLogin(email);
   }
 
   render() {
@@ -66,4 +72,10 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  handleUserLogin: (email) => dispatch(loginAction(email)),
+});
+
+Login.propTypes = { handleUserLogin: func.isRequired };
+
+export default connect(null, mapDispatchToProps)(Login);
