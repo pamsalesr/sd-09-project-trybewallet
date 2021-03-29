@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addUser } from '../actions';
+import { addUser as addUsers } from '../actions';
 
 const passwordLength = 5;
 
@@ -104,12 +104,12 @@ class Login extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  addUser: (email, password) => dispatch(addUsers(email, password)),
+});
+
 Login.propTypes = {
   addUser: PropTypes.func.isRequired,
 };
-
-const mapDispatchToProps = (dispatch) => ({
-  addUser: (email, password) => dispatch(addUser(email, password)),
-});
 
 export default connect(null, mapDispatchToProps)(Login);
