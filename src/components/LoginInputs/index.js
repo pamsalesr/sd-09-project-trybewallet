@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import { saveUserEmail } from '../../actions';
 
 class LoginInput extends React.Component {
   constructor(props) {
@@ -20,13 +23,37 @@ class LoginInput extends React.Component {
     });
   }
 
-  handleClick() {
-    return '';
+  handleClick(event) {
+    const { email } = this.state;
+    const { saveUserPropEmail } = this.props;
+    saveUserPropEmail(email);
+    this.setState({
+      loginWallet: true,
+    });
+    event.preventDefault();
+  }
+
+  handleValidateEmail(value) {
+    // return (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value));
+    return (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(value));
+  }
+
+  handleValidatePassword(value, number) {
+    return (value.length >= number);
+  }
+
+  handleValidateBtn(number, pattern) {
+    const { email, password } = this.state;
+    return (this.handleValidateEmail(email, pattern)
+    && this.handleValidatePassword(password, number));
   }
 
   render() {
-    const { email, password } = this.state;
-
+    const { email, password, loginWallet } = this.state;
+    const minLengthPassword = 6;
+    if (loginWallet) {
+      return <Redirect to="/carteira" />;
+    }
     return (
       <div>
         <div>
@@ -54,8 +81,9 @@ class LoginInput extends React.Component {
           type="submit"
           // Prop "pattern" abaixo tirado do site:
           // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_email_pattern
-          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+          // pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
           onClick={ this.handleClick }
+          disabled={ !this.handleValidateBtn(minLengthPassword, this.pattern) }
         >
           Entrar
         </button>
@@ -64,4 +92,13 @@ class LoginInput extends React.Component {
   }
 }
 
-export default connect(null, null)(LoginInput);
+LoginInput.propTypes = {
+  saveUserPropEmail: PropTypes.func.isRequired,
+  loginWallet: PropTypes.bool.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveUserPropEmail: (email) => dispatch(saveUserEmail(email)),
+});
+
+export default connect(null, mapDispatchToProps)(LoginInput);
