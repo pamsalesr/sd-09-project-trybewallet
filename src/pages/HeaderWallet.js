@@ -1,0 +1,22 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+class HeaderWallet extends React.Component {
+  render() {
+    const { userEmail } = this.props;
+    const total = 0;
+    return (
+      <div>
+        <h1 data-testid="email-field">{`Bem-vindo ${userEmail}`}</h1>
+        <p data-testid="total-field">{` Despesa Total: R$ ${total}`}</p>
+        <p data-testid="header-currency-field">BRL</p>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  userEmail: state.user.email,
+});
+
+export default connect(mapStateToProps, null)(HeaderWallet);
