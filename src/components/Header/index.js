@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './header.css';
 
 class Header extends React.Component {
   render() {
     const { email } = this.props;
     return (
-      <header>
-        <div>
+      <header className="header">
+        <div className="header-title">
           <h2>TrybeWallet</h2>
         </div>
-        <div>
+        <div className="container-head">
           <div>
             <p data-testid="email-field">{email}</p>
           </div>
