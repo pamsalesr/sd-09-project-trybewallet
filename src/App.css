@@ -39,3 +39,16 @@
     transform: rotate(360deg);
   }
 }
+
+.login-forms {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.login-forms button {
+  /* background-color: green; */
+  width: 177px;
+
+}
