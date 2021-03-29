@@ -3,12 +3,14 @@
   display: flex;
   width: 100%;
 }
+
 .header-title {
   padding-left: 15px;
 }
+
 .container-head {
-  width: 70%;
+  align-items: center;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  width: 70%;
 }
