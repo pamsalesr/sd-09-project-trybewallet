@@ -1,0 +1,20 @@
+.header-wallet-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.header-info-container {
+  display: flex;
+}
+
+.header-email-user {
+  align-items: center;
+  display: flex;
+  margin-right: 5rem;
+}
+
+.header-info-container p {
+  margin-right: 0.5rem;
+}

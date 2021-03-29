@@ -1,0 +1,22 @@
+.table-container {
+  width: 99vw;
+}
+
+.table-container th, td {
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.btn-icon {
+  background-color: white;
+}
+
+.btn-delete {
+  color: white;
+  background-color: brown;
+}
+
+.btn-edit {
+  color: white;
+  background-color: goldenrod;
+}
