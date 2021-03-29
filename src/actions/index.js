@@ -1,1 +1,4 @@
-// Coloque aqui suas actions
+export const LOGIN = 'LOGIN';
+export const GET_PICTURE = 'GET_PICTURE';
+
+export const loginAction = (email) => ({ type: LOGIN, email });
