@@ -34,7 +34,7 @@ class Wallet extends Component {
     let sum = 0;
     expenses.forEach((expense) => {
       const valueFloat = parseFloat(expense.value);
-      const float = parseFloat(expense.exchangeRates[expense.currency].ask);
+      const float = parseFloat(expense.eRates[expense.currency].ask);
       sum += valueFloat * float;
     });
     return sum.toFixed(2);

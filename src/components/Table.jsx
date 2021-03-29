@@ -55,13 +55,13 @@ class TableHeader extends Component {
                 {expense.value}
               </td>
               <td>
-                {expense.exchangeRates[expense.currency].name}
+                {expense.eRates[expense.curr].name}
               </td>
               <td>
-                {roundValue(expense.exchangeRates[expense.currency].ask)}
+                {roundValue(expense.eRates[expense.curr].ask)}
               </td>
               <td>
-                {roundValue(expense.value * expense.exchangeRates[expense.currency].ask)}
+                {roundValue(expense.value * expense.eRates[expense.curr].ask)}
               </td>
               <td>
                 Real
