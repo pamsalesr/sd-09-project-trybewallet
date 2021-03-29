@@ -27,6 +27,10 @@ class Login extends React.Component {
 
   handleClick(registerEmail, email) {
     registerEmail(email);
+
+    this.setState({
+      shouldRedirect: true,
+    });
   }
 
   isEmailValid() {
