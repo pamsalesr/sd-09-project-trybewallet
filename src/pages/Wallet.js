@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from '../components/formDespesa';
+import Table from '../components/tabelaGatos';
 
 class Wallet extends React.Component {
   render() {
@@ -19,6 +20,9 @@ class Wallet extends React.Component {
         <section>
           <Form />
           <button type="button">Adicionar despesa</button>
+        </section>
+        <section>
+          <Table />
         </section>
       </div>
     );
