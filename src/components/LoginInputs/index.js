@@ -94,7 +94,6 @@ class LoginInput extends React.Component {
 
 LoginInput.propTypes = {
   saveUserPropEmail: PropTypes.func.isRequired,
-  loginWallet: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
