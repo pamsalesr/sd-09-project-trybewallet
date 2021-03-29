@@ -72,7 +72,6 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     userEvent.type(email, 'alguem@email.com');
     userEvent.type(senha, '123456');
     fireEvent.click(button);
-
     expect(store.getState().user.email).toBe('alguem@email.com');
   });
 
