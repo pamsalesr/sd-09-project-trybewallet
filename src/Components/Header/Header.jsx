@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { string } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyledHeader, CurrencySpan } from './style';
+// import { StyledHeader, CurrencySpan } from './style';
 
 class Header extends Component {
   render() {
@@ -10,16 +10,16 @@ class Header extends Component {
     const currency = 'BRL';
 
     return (
-      <StyledHeader>
+      <header>
         <div>TrybeWallet</div>
         <div>
           <p data-testid="email-field">{ `E-mail: ${email}` }</p>
           <p data-testid="total-field">
             { `Total expenses: ${total} ` }
-            <CurrencySpan data-testid="header-currency-field">{ currency }</CurrencySpan>
+            <span data-testid="header-currency-field">{ currency }</span>
           </p>
         </div>
-      </StyledHeader>
+      </header>
     );
   }
 }
