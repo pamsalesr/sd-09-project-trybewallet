@@ -2,7 +2,7 @@
   width: 99vw;
 }
 
-.table-container th, td {
+.table-container th , td {
   margin: 0.5rem;
   text-align: center;
 }

@@ -23,7 +23,7 @@
   width: 80%;
 }
 
-.login-container button{
+.login-container button {
   background-color: rgb(43, 170, 18);
   border: 0.1px solid black;
   border-radius: 5px;
@@ -50,11 +50,11 @@
 }
 
 .login-container button:disabled {
-  cursor:not-allowed;
+  cursor: not-allowed;
 }
 
-@media (max-width: 720px) {
+/* @media (max-width : 720px) {
   .login-container {
     margin: 1rem;
   }
-}
+} */
