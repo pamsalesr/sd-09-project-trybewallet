@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
+import { Link } from 'react-router-dom';
 import { handleUserLogin as loginAction } from '../../actions';
 
 class Login extends React.Component {
@@ -45,7 +46,7 @@ class Login extends React.Component {
     const { email, password, disableLoginBtn } = this.state;
 
     return (
-      <form onSubmit={ this.handleLoginSubmit }>
+      <form>
         <label htmlFor="email-input">
           Email
           <input
@@ -66,7 +67,13 @@ class Login extends React.Component {
             value={ password }
           />
         </label>
-        <button type="submit" disabled={ disableLoginBtn }>Entrar</button>
+        <button
+          type="submit"
+          disabled={ disableLoginBtn }
+          onClick={ this.handleLoginSubmit }
+        >
+          <Link to="/carteira">Entrar</Link>
+        </button>
       </form>
     );
   }
