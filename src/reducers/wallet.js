@@ -4,11 +4,14 @@ import {
   FETCH_FAIL,
   ADD_EXPENSE,
   DELETE_EXPENSE,
+  SEND_TO_EDIT,
+  FINISH_EDIT,
 } from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  isEditing: false,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -19,7 +22,6 @@ const wallet = (state = INITIAL_STATE, action) => {
       loading: true,
     });
   case FETCH_SUCCESS:
-    // console.log(action.data);
     return ({
       ...state,
       loading: false,
@@ -39,8 +41,24 @@ const wallet = (state = INITIAL_STATE, action) => {
   case DELETE_EXPENSE:
     return ({
       ...state,
-      expenses: state.expenses
-        .filter((expense) => expense.id !== action.id),
+      expenses: state.expenses.filter((expense) => expense.id !== action.id),
+    });
+  case SEND_TO_EDIT:
+    return ({
+      ...state,
+      expenseToEdit: action.expense,
+      isEditing: true,
+    });
+  case FINISH_EDIT:
+    return ({
+      ...state,
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === action.expense.id) {
+          return ({ ...expense, ...action.expense });
+        }
+        return expense;
+      }),
+      isEditing: false,
     });
   default:
     return state;

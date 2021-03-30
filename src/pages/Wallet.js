@@ -5,6 +5,7 @@ import { apiCurrencies } from '../actions';
 import Header from '../components/Header';
 import NewExpense from '../components/NewExpense';
 import Table from '../components/Table';
+import EditExpense from '../components/EditExpense';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -13,10 +14,12 @@ class Wallet extends React.Component {
   }
 
   render() {
+    const { isEditing } = this.props;
     return (
       <div>
         <Header />
-        <NewExpense />
+        {!isEditing && <NewExpense />}
+        {isEditing && <EditExpense />}
         <Table />
       </div>
     );
@@ -24,7 +27,7 @@ class Wallet extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  userEmail: state.user.email,
+  isEditing: state.wallet.isEditing,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -33,6 +36,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Wallet.propTypes = {
   fetchCurrencies: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

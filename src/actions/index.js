@@ -6,6 +6,8 @@ import {
   LOGIN,
   ADD_EXPENSE,
   DELETE_EXPENSE,
+  SEND_TO_EDIT,
+  FINISH_EDIT,
 } from './actionsTypes';
 
 const startFetch = () => ({
@@ -44,4 +46,14 @@ export const addExpense = (expense) => ({
 export const deleteExpense = (id) => ({
   type: DELETE_EXPENSE,
   id,
+});
+
+export const sendToEdit = (expense) => ({
+  type: SEND_TO_EDIT,
+  expense,
+});
+
+export const finishEdit = (expense) => ({
+  type: FINISH_EDIT,
+  expense,
 });
