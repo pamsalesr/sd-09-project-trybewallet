@@ -22,8 +22,7 @@ class Login extends React.Component {
     const { name, value } = target;
     this.setState({
       [name]: value,
-    });
-    this.validInput();
+    }, () => this.validInput());
   }
 
   validInput() {
