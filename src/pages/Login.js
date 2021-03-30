@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userLogin, userAdd } from '../actions';
+import { userLogin } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -76,12 +76,8 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   userLoginSubmit: (email) => dispatch(userLogin(email)),
-  handleSubmitNewUser: (newData) => dispatch(userAdd(newData)),
 });
 
-Login.propTypes = {
-  baseDataEmails: PropTypes.arrayOf(PropTypes.string),
-  userLoginSubmit: PropTypes.func,
-}.isRequired;
+Login.propTypes = { userLoginSubmit: PropTypes.func }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
