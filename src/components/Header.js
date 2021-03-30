@@ -14,9 +14,8 @@ class Header extends React.Component {
     let total = 0;
     expenses.forEach((expense) => {
       const { value, currency, exchangeRates } = expense;
-      const currencyFiltred = Object.entries(exchangeRates)
-        .filter((element) => element.includes(currency))[0][1];
-      total += value * Number(currencyFiltred.ask);
+      const exchangeValue = exchangeRates[currency].ask;
+      total += value * Number(exchangeValue);
     });
     return total;
   }
@@ -28,7 +27,7 @@ class Header extends React.Component {
         <div>
           <p data-testid="email-field">{ email }</p>
           <p data-testid="total-field">
-            {`Dispesa Total R$ ${this.calcConvertion()}`}
+            {`Despesa Total R$ ${this.calcConvertion()}`}
             <span data-testid="header-currency-field">BRL</span>
           </p>
         </div>

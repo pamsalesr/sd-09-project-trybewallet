@@ -23,6 +23,8 @@ const expensesAction = (dispenseData) => async (dispatch) => {
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
     const currency = await response.json();
     dispenseData.exchangeRates = currency;
+    // Solução do `delete` encontrada em
+    // https://qastack.com.br/programming/208105/how-do-i-remove-a-property-from-a-javascript-object#:~:text=Objetos%20em%20JavaScript%20podem%20ser,objeto%2C%20uma%20de%20cada%20vez.
     delete dispenseData.currencyList;
     dispatch(getCurrencyAndDispense(dispenseData));
   } catch (error) {

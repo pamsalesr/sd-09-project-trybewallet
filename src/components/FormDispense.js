@@ -70,7 +70,6 @@ class FormDispense extends React.Component {
     return (
       <div>
         <InputGeneric
-          title="Valor"
           type="number"
           dataTestId="value-input"
           name="value"
@@ -78,7 +77,6 @@ class FormDispense extends React.Component {
           functionChange={ this.handleChange }
         />
         <InputGeneric
-          title="Descrição"
           type="text"
           dataTestId="description-input"
           name="description"
@@ -90,7 +88,7 @@ class FormDispense extends React.Component {
           name="currency"
           onChange={ this.handleChange }
         >
-          <option value="">Moeda</option>
+          <option value="">Selecione a moeda</option>
           {currencyList.map((currency) => (
             <option key={ currency } data-testid={ currency } value={ currency }>
               {currency}
