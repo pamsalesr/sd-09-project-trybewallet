@@ -35,7 +35,7 @@ class LoginInput extends React.Component {
 
   handleValidateEmail(value) {
     return (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(value));
-    //validação retirada do w3school
+    // validação retirada do w3school
   }
 
   handleValidatePassword(value, number) {
