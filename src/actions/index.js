@@ -1,4 +1,10 @@
-import { ADD_USER, ADD_EXPANSE, DELETE_EXPENSE, EDIT_EXPENSE, EDIT_EXPENSE_FOR_ID } from './actionTypes';
+import {
+  ADD_USER,
+  ADD_EXPANSE,
+  DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  EDIT_EXPENSE_FOR_ID,
+} from './actionTypes';
 
 export const addUser = (email) => ({
   type: ADD_USER,
