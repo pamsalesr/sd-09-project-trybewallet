@@ -1,7 +1,6 @@
 export const LOGIN = 'LOGIN';
 export const REQ_CURRENCIES = 'REQ_CURRENCIES';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
-export const NEW_EXPENSE = 'NEW_EXPENSE';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 
 export const loginAction = (email) => ({
@@ -29,10 +28,6 @@ export const fetchCurrencies = () => (
   }
 );
 
-const newExpense = () => ({
-  type: NEW_EXPENSE,
-});
-
 const addExpense = (expense) => ({
   type: ADD_EXPENSE,
   expense,
@@ -40,7 +35,6 @@ const addExpense = (expense) => ({
 
 export const addNewExpense = (expense) => (
   async (dispatch) => {
-    dispatch(newExpense());
     const exchangeRatesFetch = await fetch('https://economia.awesomeapi.com.br/json/all');
     const exchangeRates = await exchangeRatesFetch.json();
     const newExpenseToAdd = {
