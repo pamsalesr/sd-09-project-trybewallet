@@ -1,12 +1,21 @@
 import React from 'react';
-import { shape, arrayOf, string } from 'prop-types';
+import { shape, arrayOf, string, func } from 'prop-types';
 import { connect } from 'react-redux';
+import deleteExpenseAction from '../actions/deleteExpenseAction';
 
 class TableDispense extends React.Component {
   constructor(props) {
     super(props);
 
     this.rowExpense = this.rowExpense.bind(this);
+    this.deleteExpense = this.deleteExpense.bind(this);
+  }
+
+  deleteExpense(id) {
+    const { wallet: { expenses }, deleteExpenseAction: updateStateGlobal } = this.props;
+    const withoutExpenseDelete = expenses
+      .filter((expense) => expense.id !== id);
+    updateStateGlobal(withoutExpenseDelete);
   }
 
   rowExpense() {
@@ -26,6 +35,17 @@ class TableDispense extends React.Component {
             * Number(expense.exchangeRates[expense.currency].ask)}
         </td>
         <td>Real</td>
+        <td>{ expense.id }</td>
+        <td>
+          <button
+            type="button"
+            data-testid="delete-btn"
+            onClick={ () => this.deleteExpense(expense.id) }
+          >
+            Deletar
+          </button>
+          <button type="button" data-testid="edite-btn">Editar</button>
+        </td>
       </tr>
     ));
   }
@@ -54,10 +74,7 @@ class TableDispense extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  wallet: state.wallet,
-});
-
+// https://stackoverflow.com/questions/32325912/react-proptype-array-with-shape
 TableDispense.propTypes = {
   wallet: shape({
     expenses: arrayOf(shape({
@@ -72,10 +89,20 @@ TableDispense.propTypes = {
       }),
     })),
   }),
+  deleteExpenseAction: func,
 };
 
 TableDispense.defaultProps = {
   wallet: {},
+  deleteExpenseAction: () => {},
 };
 
-export default connect(mapStateToProps)(TableDispense);
+const mapStateToProps = (state) => ({
+  wallet: state.wallet,
+});
+
+const mapDispatchToProps = {
+  deleteExpenseAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableDispense);
