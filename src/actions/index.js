@@ -7,22 +7,12 @@ import {
   RETRIEVE_EXPENSE,
 } from '../reducers/wallet';
 
-export const getExpense = (id) => {
-  return { type: RETRIEVE_EXPENSE, id };
-};
+export const getExpense = (id) => ({ type: RETRIEVE_EXPENSE, id });
 
-export const createExpense = (expense) => {
-  return { type: CREATE_EXPENSE, expense };
-};
+export const createExpense = (expense) => ({ type: CREATE_EXPENSE, expense });
 
-export const updateExpense = (expense) => {
-  return { type: UPDATE_EXPENSE, expense };
-};
+export const updateExpense = (expense) => ({ type: UPDATE_EXPENSE, expense });
 
-export const deleteExpense = (id) => {
-  return { type: DELETE_EXPENSE, id };
-};
+export const deleteExpense = (id) => ({ type: DELETE_EXPENSE, id });
 
-export const authLogin = (user) => {
-  return { type: LOGIN, user };
-};
+export const authLogin = (user) => ({ type: LOGIN, user });
