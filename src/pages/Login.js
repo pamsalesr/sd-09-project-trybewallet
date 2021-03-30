@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { MdAccountCircle } from 'react-icons/md';
 
 import './Login.css';
@@ -26,8 +26,8 @@ class Login extends React.Component {
             data-testid="password-input"
             required
           />
-          <Link to="/carteira" >
-            <button className="btn-login" type="submit" >Entrar</button>
+          <Link to="/carteira">
+            <button className="btn-login" type="submit">Entrar</button>
           </Link>
         </form>
       </div>

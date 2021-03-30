@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './ExpenseTable.css';
+import TableContent from './TableContent';
 
 class ExpenseTable extends React.Component {
   render() {
@@ -20,17 +21,7 @@ class ExpenseTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Xablau</td>
-            <td>Lazer</td>
-            <td>Dinheiro</td>
-            <td>5.00</td>
-            <td>USD</td>
-            <td>Dolar</td>
-            <td>32.00</td>
-            <td>Reais</td>
-            <td>Editar/Excluir</td>
-          </tr>
+          <TableContent />
         </tbody>
       </table>
     );

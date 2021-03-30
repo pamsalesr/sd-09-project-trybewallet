@@ -1,8 +1,8 @@
 .container-form {
-  display: flex;
-  justify-content: space-around;
   align-items: center;
+  display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   margin-top: 30px;
   padding: 0 20px;
 }
@@ -12,8 +12,8 @@
 }
 
 .container-form button {
-  height: 30px;
   cursor: pointer;
+  height: 30px;
 }
 
 .input-value {
