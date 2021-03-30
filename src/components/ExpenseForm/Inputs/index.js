@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { currentPrice } from '../../../actions';
 
 class Inputs extends React.Component {
   constructor(props) {
@@ -12,13 +11,7 @@ class Inputs extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    const { propGetCurrentFetch } = this.props;
-    propGetCurrentFetch();
-  }
-
   handleChange({ target: { value } }) {
-    console.log(value);
     this.setState({
       value,
     });
@@ -47,11 +40,6 @@ class Inputs extends React.Component {
 Inputs.propTypes = {
   name: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
-  propGetCurrentFetch: PropTypes.func.isRequired,
 };
-// Implementar fetch e chamar a action em dispatch
-const mapDispatchToProps = (dispatch) => ({
-  propGetCurrentFetch: () => dispatch(currentPrice()),
-});
 
-export default connect(null, mapDispatchToProps)(Inputs);
+export default connect()(Inputs);
