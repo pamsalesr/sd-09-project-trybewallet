@@ -7,6 +7,7 @@ class WalletHeader extends Component {
   render() {
     const { email, expenses } = this.props;
     let despesa = 0;
+    let despesaTotal = 0;
     if (expenses) {
       despesa = expenses.map((expense) => {
         const exchangeArray = Object.values(expense.exchangeRates);
@@ -14,8 +15,8 @@ class WalletHeader extends Component {
         const totalExpense = parseFloat(expense.value * coin.ask);
         return totalExpense;
       });
+      despesaTotal = despesa.reduce((acc, value) => (acc + value), 0);
     }
-    const despesaTotal = despesa.reduce((acc, value) => (acc + value), 0);
     return (
       <div>
         <header className="header-wallet-container">

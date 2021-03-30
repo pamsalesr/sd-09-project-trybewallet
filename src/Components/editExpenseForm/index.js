@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { func, arrayOf, number } from 'prop-types';
+import { arrayOf, number } from 'prop-types';
 import { connect } from 'react-redux';
-import { expenseThunk } from '../../actions';
+import { editExpense, editExpenseForID, expenseThunk } from '../../actions';
 import './editExpenseForm.css';
 
 class EditExpenseForm extends Component {
@@ -9,21 +9,37 @@ class EditExpenseForm extends Component {
     super(props);
 
     this.fetchCurrency = this.fetchCurrency.bind(this);
-    this.addExpense = this.addExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
     this.handleyForm = this.handleyForm.bind(this);
+    this.initialState = this.initialState.bind(this);
 
     this.state = {
       currencys: [],
-      value: '0',
-      currency: 'USD',
-      payment: 'Dinheiro',
-      tag: 'Alimentação',
-      description: '',
+      value: undefined,
+      currency: undefined,
+      method: undefined,
+      tag: undefined,
+      description: undefined,
+      exchangeRates: undefined,
     };
   }
 
   componentDidMount() {
     this.fetchCurrency();
+    this.initialState();
+  }
+
+  initialState() {
+    const { editID, expenses } = this.props;
+    const expense = expenses[editID];
+    this.setState({
+      value: expense.value,
+      currency: expense.currency,
+      method: expense.method,
+      tag: expense.tag,
+      description: expense.description,
+      exchangeRates: expense.exchangeRates,
+    });
   }
 
   async fetchCurrency() {
@@ -50,29 +66,23 @@ class EditExpenseForm extends Component {
     this.setState({ [name]: value });
   }
 
-  async addExpense() {
-    const { value, currency, payment, tag, description } = this.state;
-    const expanses = {
-      value,
-      currency,
-      payment,
-      tag,
-      description,
+  async editExpense() {
+    const { editID } = this.props;
+    const { value, currency, method, tag, description, exchangeRates } = this.state;
+    const expanse = {
+      value, currency, method, tag, description, exchangeRates,
     };
-    this.setState({ value: '0' });
-    const { thunk } = this.props;
-    thunk(expanses);
+    const { editExpenseID } = this.props;
+    editExpenseID(expanse, editID);
   }
 
   renderSelectCurrency() {
-    const { editID, expenses } = this.props;
-    const expense = expenses[editID];
-    const { currencys } = this.state;
+    const { currencys, currency } = this.state;
     return (
       <label htmlFor="currency-input">
         Moeda:&nbsp;
         <select
-          defaultValue={ expense.currency }
+          value={ currency }
           name="currency"
           data-testid="currency-input"
           id="currency-input"
@@ -89,13 +99,12 @@ class EditExpenseForm extends Component {
   }
 
   renderSelectPayment() {
-    const { editID, expenses } = this.props;
-    const expense = expenses[editID];
+    const { method } = this.state;
     return (
       <label htmlFor="method-input">
         Método de pagamento:&nbsp;
         <select
-          defaultValue={ expense.method }
+          value={ method }
           name="payment"
           data-testid="method-input"
           id="method-input"
@@ -110,9 +119,9 @@ class EditExpenseForm extends Component {
   }
 
   render() {
-    const { editID, expenses } = this.props;
+    const { value, tag, description } = this.state;
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-    const expense = expenses[editID];
+    // const expense = expenses[editID];
     return (
       <form className="edit-form-container">
         <label htmlFor="value-input">
@@ -120,7 +129,7 @@ class EditExpenseForm extends Component {
           <input
             name="value"
             type="number"
-            defaultValue={ expense.value }
+            value={ value }
             data-testid="value-input"
             id="value-input"
             onChange={ this.handleyForm }
@@ -131,7 +140,7 @@ class EditExpenseForm extends Component {
         <label htmlFor="tag-input">
           Categoria:&nbsp;
           <select
-            defaultValue={ expense.tag }
+            value={ tag }
             name="tag"
             data-testid="tag-input"
             id="tag-input"
@@ -143,7 +152,7 @@ class EditExpenseForm extends Component {
         <label htmlFor="description-input">
           Descrição da despesa:&nbsp;
           <input
-            defaultValue={ expense.description }
+            value={ description }
             name="description"
             type="text"
             data-testid="description-input"
@@ -151,7 +160,7 @@ class EditExpenseForm extends Component {
             onChange={ this.handleyForm }
           />
         </label>
-        <button type="reset" onClick={ this.addExpense }>
+        <button className="btn btn-primary" type="reset" onClick={ this.editExpense }>
           Editar Despesa
         </button>
       </form>
@@ -165,10 +174,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   thunk: (expanse) => dispatch(expenseThunk(expanse)),
+  editExpenseID: (expanses, editID) => dispatch(editExpenseForID(expanses, editID)),
 });
 
 EditExpenseForm.propTypes = {
-  thunk: func.isRequired,
   expenses: arrayOf().isRequired,
   editID: number.isRequired,
 };

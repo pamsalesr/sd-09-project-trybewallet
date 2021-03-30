@@ -1,4 +1,4 @@
-import { ADD_USER, ADD_EXPANSE, DELETE_EXPENSE, EDIT_EXPENSE } from './actionTypes';
+import { ADD_USER, ADD_EXPANSE, DELETE_EXPENSE, EDIT_EXPENSE, EDIT_EXPENSE_FOR_ID } from './actionTypes';
 
 export const addUser = (email) => ({
   type: ADD_USER,
@@ -29,7 +29,7 @@ export const newExpanseAndCurrency = (expense, exchangeRates) => {
     currency,
     payment,
     exchangeRates,
-    totalExpense: parseFloat(value) * parseFloat(coin.ask),
+    // totalExpense: parseFloat(value) * parseFloat(coin.ask),
     coin,
   };
 };
@@ -43,6 +43,13 @@ export const deleteExpense = (index, expense) => ({
 export const editExpense = (editID) => ({
   type: EDIT_EXPENSE,
   editActivated: true,
+  editID,
+});
+
+export const editExpenseForID = (expense, editID) => ({
+  type: EDIT_EXPENSE_FOR_ID,
+  editActivated: false,
+  expense,
   editID,
 });
 

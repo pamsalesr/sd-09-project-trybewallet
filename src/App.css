@@ -16,3 +16,7 @@ a {
 button {
   cursor: pointer;
 }
+
+input {
+  padding: 10px;
+}

@@ -1,9 +1,14 @@
-import { ADD_EXPANSE, DELETE_EXPENSE, EDIT_EXPENSE } from '../actions/actionTypes';
+import {
+  ADD_EXPANSE,
+  DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  EDIT_EXPENSE_FOR_ID,
+} from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   expenses: [],
   numberExpense: 0,
-  totalExpense: 0,
+  // totalExpense: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -24,20 +29,27 @@ const wallet = (state = INITIAL_STATE, action) => {
         },
       ],
       numberExpense: state.numberExpense + 1,
-      totalExpense: state.totalExpense + action.totalExpense,
+      // totalExpense: state.totalExpense + action.totalExpense,
     };
   case DELETE_EXPENSE:
     return {
       ...state,
       expenses: state.expenses
         .filter((expanse) => expanse !== state.expenses[action.index]),
-      totalExpense: parseFloat(state.totalExpense) - parseFloat(action.expense),
+      // totalExpense: parseFloat(state.totalExpense) - parseFloat(action.expense),
     };
   case EDIT_EXPENSE:
     return {
       ...state,
       editActivated: action.editActivated,
       editID: action.editID,
+    };
+  case EDIT_EXPENSE_FOR_ID:
+    return {
+      ...state,
+      editActivated: action.editActivated,
+      expenses: state.expenses
+        .map((obj) => (obj.id === action.editID ? action.expense : obj)),
     };
   default:
     return state;

@@ -142,7 +142,7 @@ class WalletForm extends Component {
             onChange={ this.handleyForm }
           />
         </label>
-        <button type="reset" onClick={ this.addExpense }>
+        <button className="btn btn-dark" type="reset" onClick={ this.addExpense }>
           Adicionar despesa
         </button>
       </form>
