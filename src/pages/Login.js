@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { authLogin } from '../actions';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      auth: true,
+      auth: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
@@ -45,33 +46,46 @@ class Login extends React.Component {
 
   render() {
     const { loginDispatch } = this.props;
+    console.log(loginDispatch);
     const { auth } = this.state;
-    const errorMessage = <p className="error-message">Email ou senha incorretos</p>;
+    const errorMessage = <p className="error-message">Insira Email e Senha corretamente</p>;
     return (
       <section id="Login">
         <header className="main-header">
-          <h2>Hello, TrybeWallet!</h2>
+          <h1>Hello, TrybeWallet!</h1>
         </header>
-        <h2 className="secondary-heading">Login</h2>
-        <div className="login-box">
-          <form>
+        <div className="box-login">
+          <h2 className="secondary-heading">Login</h2>
+          <div className="textbox">
+            <i className="fas fa-user" aria-hidden="true" />
             <input
               type="text"
               name="email"
+              className="input"
               onChange={ this.validateFields }
               placeholder="Email"
               data-testid="email-input"
             />
+          </div>
+          <div className="textbox">
+            <i className="fas fa-lock" aria-hidden="true" />
             <input
               type="password"
               name="password"
+              className="input"
               onChange={ this.validateFields }
               placeholder="Password"
               data-testid="password-input"
             />
-            <button type="submit" onClick={ loginDispatch(this.state) }>Entrar</button>
-            { auth ? '' : errorMessage}
-          </form>
+          </div>
+          <input
+            type="button"
+            disabled={ !auth || '' }
+            value="Entrar"
+            className="input input-text"
+            onClick={ () => loginDispatch(this.state) }
+          />
+          { auth ? '' : errorMessage}
         </div>
       </section>
     );
