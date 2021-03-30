@@ -1,0 +1,45 @@
+.login-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.header-div {
+  align-items: center;
+  border-bottom: 1px #4dffc3 ridge;
+  color: #4dffc3;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+}
+
+.login-page {
+  background-color: #0A0E12;
+  border: #4dffc3 1px solid;
+  color: aqua;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 13em;  
+}
+
+.forms-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 20%;
+  margin-bottom: 20%;
+}
+
+.foot-div footer {
+  align-items: center;
+  border-top: 1px #4dffc3 ridge;
+  color: #4dffc3;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  /*margin-left: 30em;
+  margin-right: 30em;
+  min-height: 14em; */
+}
