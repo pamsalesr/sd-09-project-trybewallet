@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../pageStyle/headerWallet.css';
 
 class Wallet extends React.Component {
   render() {
     const { email } = this.props;
     return (
       <header className="header-wallet">
-        <h1 data-testid="email-field">{`Email: ${email}`}</h1>
-        <div>
-          <h1 data-testid="total-field">Total de despesas: R$0 </h1>
-          <h1 data-testid="header-currency-field">BRL</h1>
+        <p className="email-field" data-testid="email-field">{`Email: ${email}`}</p>
+        <div className="total-price">
+          <p data-testid="total-field">Total de despesas: R$0 </p>
+          <p data-testid="header-currency-field">BRL</p>
         </div>
       </header>
     );
