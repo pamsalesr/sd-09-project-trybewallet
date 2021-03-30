@@ -34,7 +34,7 @@ class Header extends React.Component {
               data-testid="header-currency-field"
               name="currency"
             >
-              { 'BRL' }
+              'BRL'
             </p>
           </label>
 
