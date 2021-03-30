@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveEmailAction } from '../actions';
+import { WALLET_PATH } from '../paths';
 
 class Login extends Component {
   constructor() {
@@ -10,7 +11,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      redirect: false,
+      loggedIn: false,
     };
 
     this.updateEmail = this.updateEmail.bind(this);
@@ -40,14 +41,17 @@ class Login extends Component {
     const { email } = this.state;
     const { dispatchEmail } = this.props;
     dispatchEmail(email);
-    this.setState({ redirect: true });
+    this.setState({ loggedIn: true });
   }
 
   render() {
-    const { email, password, redirect } = this.state;
-    if (redirect) return <Redirect to="/carteira" />;
+    const { email, password, loggedIn } = this.state;
+    if (loggedIn) return <Redirect to={ WALLET_PATH } />;
 
-    const isDataInvalid = !(this.validateEmail(email) && this.validatePassword(password));
+    const isLogInDisabled = !(
+      this.validateEmail(email) && this.validatePassword(password)
+    );
+
     return (
       <>
         <div>Login</div>
@@ -66,7 +70,7 @@ class Login extends Component {
           />
           <button
             type="button"
-            disabled={ isDataInvalid }
+            disabled={ isLogInDisabled }
             onClick={ this.login }
           >
             Entrar
