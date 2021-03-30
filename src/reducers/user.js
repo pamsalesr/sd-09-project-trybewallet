@@ -15,4 +15,3 @@ function userReducer(state = INITIAL_STATE, action) {
 }
 
 export default userReducer;
-// Esse reducer será responsável por tratar as informações da pessoa usuária
