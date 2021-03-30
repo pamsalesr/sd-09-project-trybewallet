@@ -38,26 +38,28 @@ class Login extends React.Component {
       <div>
         <h1>TRYBEWALLET</h1>
         <h2>Login</h2>
-        <label htmlFor="email">
-          User:
-          <input
-            id="email"
-            name="email"
-            type="email"
-            data-testid="email-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="pass">
-          Password:
-          <input
-            id="pass"
-            name="pass"
-            type="password"
-            data-testid="password-input"
-            onChange={ this.handleChange }
-          />
-        </label>
+        <fieldset>
+          <label htmlFor="email">
+            User:
+            <input
+              id="email"
+              name="email"
+              type="email"
+              data-testid="email-input"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="pass">
+            Password:
+            <input
+              id="pass"
+              name="pass"
+              type="password"
+              data-testid="password-input"
+              onChange={ this.handleChange }
+            />
+          </label>
+        </fieldset>
         <div>
           <Link to="/carteira">
             <button
