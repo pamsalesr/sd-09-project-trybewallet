@@ -28,6 +28,6 @@ const walletReducer = (state = initialState.wallet, action) => {
   }
 };
 
-const rootReducer = combineReducers({ user: userReducer, walletReducer });
+const rootReducer = combineReducers({ user: userReducer, wallet: walletReducer });
 
 export default rootReducer;
