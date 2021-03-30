@@ -1,21 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf, object } from 'prop-types';
-import { deleteExpense, setTotalPrice } from '../actions';
+import { updateExpenses, setTotalPrice, setEditExpense } from '../actions';
 
 class WalletExpenses extends React.Component {
   constructor(props) {
     super(props);
 
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
+    this.renderExpensesTable = this.renderExpensesTable.bind(this);
   }
 
   deleteExpense(deleteId) {
-    const { expenses, dispatchDeleteExpense, dispatchSetTotalPrice } = this.props;
+    const { expenses, dispatchUpdateExpenses, dispatchSetTotalPrice } = this.props;
     const filteredExpenses = expenses.filter(
       (expense) => expense.id !== deleteId,
     );
-    dispatchDeleteExpense(filteredExpenses);
+    dispatchUpdateExpenses(filteredExpenses);
     const totalPrice = filteredExpenses.reduce((total, expense) => {
       const rates = expense.exchangeRates[expense.currency].ask;
       return total + (rates * expense.value);
@@ -23,8 +25,47 @@ class WalletExpenses extends React.Component {
     dispatchSetTotalPrice(totalPrice.toFixed(2));
   }
 
-  render() {
+  editExpense(id) {
+    const { dispatchSetEditExpense } = this.props;
+    dispatchSetEditExpense({ editable: true, id });
+  }
+
+  renderExpensesTable() {
     const { expenses } = this.props;
+    return expenses.map((expense) => {
+      const rates = expense.exchangeRates[expense.currency];
+      return (
+        <tr key={ expense.id }>
+          <td>{expense.description}</td>
+          <td>{expense.tag}</td>
+          <td>{expense.method}</td>
+          <td>{expense.value}</td>
+          <td>{rates.name}</td>
+          <td>{parseFloat(rates.ask).toFixed(2)}</td>
+          <td>{(rates.ask * expense.value).toFixed(2)}</td>
+          <td>Real</td>
+          <td>
+            <button
+              data-testid="edit-btn"
+              type="button"
+              onClick={ () => this.editExpense(expense.id) }
+            >
+              Editar
+            </button>
+            <button
+              data-testid="delete-btn"
+              type="button"
+              onClick={ () => this.deleteExpense(expense.id) }
+            >
+              Deletar
+            </button>
+          </td>
+        </tr>
+      );
+    });
+  }
+
+  render() {
     return (
       <table>
         <thead>
@@ -41,30 +82,7 @@ class WalletExpenses extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => {
-            const rates = expense.exchangeRates[expense.currency];
-            return (
-              <tr key={ expense.id }>
-                <td>{expense.description}</td>
-                <td>{expense.tag}</td>
-                <td>{expense.method}</td>
-                <td>{expense.value}</td>
-                <td>{rates.name}</td>
-                <td>{parseFloat(rates.ask).toFixed(2)}</td>
-                <td>{(rates.ask * expense.value).toFixed(2)}</td>
-                <td>Real</td>
-                <td>
-                  <button
-                    data-testid="delete-btn"
-                    type="button"
-                    onClick={ () => this.deleteExpense(expense.id) }
-                  >
-                    Deletar
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+          {this.renderExpensesTable()}
         </tbody>
       </table>
     );
@@ -76,8 +94,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchDeleteExpense: (expenses) => dispatch(deleteExpense(expenses)),
+  dispatchUpdateExpenses: (expenses) => dispatch(updateExpenses(expenses)),
   dispatchSetTotalPrice: (totalPrice) => dispatch(setTotalPrice(totalPrice)),
+  dispatchSetEditExpense: (edit) => dispatch(setEditExpense(edit)),
 });
 
 WalletExpenses.propTypes = {

@@ -1,9 +1,18 @@
-import { SET_CURRENCIES, SET_EXPENSE, SET_TOTAL_PRICE, DELETE_EXPENSE } from '../actions';
+import { SET_CURRENCIES,
+  SET_EXPENSE,
+  SET_TOTAL_PRICE,
+  UPDATE_EXPENSES,
+  SET_EDIT_MODE,
+} from '../actions';
 
 const INITIAL_WALLET_STATE = {
   currencies: [],
   expenses: [],
   totalPrice: 0,
+  edit: {
+    editable: false,
+    id: 0,
+  },
 };
 
 const wallet = (state = INITIAL_WALLET_STATE, action) => {
@@ -23,10 +32,15 @@ const wallet = (state = INITIAL_WALLET_STATE, action) => {
       ...state,
       totalPrice: action.totalPrice,
     };
-  case DELETE_EXPENSE:
+  case UPDATE_EXPENSES:
     return {
       ...state,
       expenses: action.expenses,
+    };
+  case SET_EDIT_MODE:
+    return {
+      ...state,
+      edit: action.edit,
     };
   default:
     return state;
