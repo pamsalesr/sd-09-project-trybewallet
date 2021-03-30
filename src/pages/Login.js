@@ -11,9 +11,12 @@ class Login extends React.Component {
       email: '',
       password: '',
       auth: false,
+      isEmailValid: true,
+      isPasswordValid: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.checkAuth = this.checkAuth.bind(this);
   }
 
   handleChange(name, value) {
@@ -22,33 +25,41 @@ class Login extends React.Component {
     });
   }
 
+  checkAuth(isEmailValid, isPasswordValid) {
+    const auth = isEmailValid && isPasswordValid;
+    this.setState({ auth });
+  }
+
   validateFields({ target }) {
     const { name, value } = target;
+    let { isEmailValid, isPasswordValid } = this.state;
     const emailRegularEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let authorize = false;
     const passwordLength = 6;
-    console.log(target);
     switch (name) {
     case 'email':
-      authorize = emailRegularEx.test(value);
-      this.setState({ auth: authorize });
+      isEmailValid = emailRegularEx.test(value);
+      this.checkAuth(isEmailValid, isPasswordValid);
+      this.setState({ isEmailValid });
       this.handleChange(name, value);
-      return authorize;
+      return isEmailValid;
     case 'password':
-      authorize = value.length >= passwordLength;
-      this.setState({ auth: authorize });
+      isPasswordValid = value.length >= passwordLength;
+      this.checkAuth(isEmailValid, isPasswordValid);
+      this.setState({ isPasswordValid });
       this.handleChange(name, value);
-      return authorize;
+      return isPasswordValid;
     default:
-      return authorize;
+      return 'Error';
     }
   }
 
   render() {
     const { loginDispatch } = this.props;
     console.log(loginDispatch);
-    const { auth } = this.state;
-    const errorMessage = <p className="error-message">Insira Email e Senha corretamente</p>;
+    const { auth, isEmailValid, isPasswordValid } = this.state;
+    const isFieldsValid = isEmailValid && isPasswordValid;
+    const errorMessage = isFieldsValid ? ''
+      : <p className="error-message">Email ou Senha incorretos</p>;
     return (
       <section id="Login">
         <header className="main-header">
@@ -83,6 +94,7 @@ class Login extends React.Component {
             disabled={ !auth || '' }
             value="Entrar"
             className="input input-text"
+            onMouseDown={ this.auth }
             onClick={ () => loginDispatch(this.state) }
           />
           { auth ? '' : errorMessage}
