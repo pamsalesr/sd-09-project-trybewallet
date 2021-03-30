@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import action from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -37,7 +40,8 @@ class Login extends React.Component {
   }
 
   render() {
-    const { button } = this.state;
+    const { button, email } = this.state;
+    const { emailDispath } = this.props;
     return (
       <div>
         <form>
@@ -60,10 +64,23 @@ class Login extends React.Component {
             />
           </label>
         </form>
-        <button type="button" name="button" disabled={ button }>Entrar</button>
+        <Link to="/carteira">
+          <button
+            onClick={ () => emailDispath(email) }
+            type="button"
+            name="button"
+            disabled={ button }
+          >
+            Entrar
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  emailDispath: (state) => dispatch(action(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
