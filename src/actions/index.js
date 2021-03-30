@@ -2,6 +2,7 @@ export const SET_EMAIL = 'SET_EMAIL';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_EXPENSE = 'SET_EXPENSE';
 export const SET_TOTAL_PRICE = 'SET_TOTAL_PRICE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const setEmail = (email) => ({
   type: SET_EMAIL,
@@ -23,6 +24,11 @@ export const setTotalPrice = (totalPrice) => ({
   totalPrice,
 });
 
+export const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  expenses,
+});
+
 export const fetchCurrencies = () => (
   async (dispatch) => {
     try {
@@ -35,13 +41,3 @@ export const fetchCurrencies = () => (
     }
   }
 );
-
-// export const waitForExpenses = (expense) => (
-//   async (dispatch) => {
-//     try {
-//       return dispatch(setExpense(expense));
-//     } catch (error) {
-//       return console.log(error);
-//     }
-//   }
-// )

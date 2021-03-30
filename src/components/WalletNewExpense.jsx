@@ -15,7 +15,6 @@ class WalletNewExpense extends React.Component {
     };
 
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
-    this.setTotalPrice = this.setTotalPrice.bind(this);
     this.handleInputs = this.handleInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderCurrencySelector = this.renderCurrencySelector.bind(this);
@@ -23,11 +22,6 @@ class WalletNewExpense extends React.Component {
 
   componentDidMount() {
     this.fetchCurrencies();
-  }
-
-  setTotalPrice() {
-    const { expenses } = this.props;
-    console.log(expenses);
   }
 
   async fetchCurrencies() {
