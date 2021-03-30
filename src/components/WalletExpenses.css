@@ -1,0 +1,8 @@
+.expenses-table-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.expenses-table-header h4 {
+  /* margin: 0 1%; */
+}
