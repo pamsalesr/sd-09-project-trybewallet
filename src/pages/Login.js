@@ -106,7 +106,7 @@ class Login extends React.Component {
               onClick={ () => this.redirectToWallet() || addUser(email, password) }
               disabled={ !validateUser }
             >
-              Login
+              Entrar
             </button>
           </section>
         </form>
