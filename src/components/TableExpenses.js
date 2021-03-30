@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deletedExpense } from '../actions';
 
 class TableExpenses extends Component {
   constructor(props) {
@@ -9,31 +10,43 @@ class TableExpenses extends Component {
     this.renderTableBody = this.renderTableBody.bind(this);
   }
 
+  handleDelete(filter) {
+    const { expenses, deleteExpense } = this.props;
+    const filteredExpenses = expenses.filter((expense) => expense.id !== filter.id);
+    deleteExpense(filteredExpenses);
+  }
+
   renderTableBody() {
     const { expenses } = this.props;
-    const expenseKeys = Object.keys(expenses);
     return (
       <tbody>
-        {expenseKeys.map((expense) => (
+        {expenses.map((expense) => (
           <tr key={ Math.random() }>
-            <td key={ Math.random() }>{expenses[expense].description}</td>
-            <td key={ Math.random() }>{expenses[expense].tag}</td>
-            <td key={ Math.random() }>{expenses[expense].method}</td>
-            <td key={ Math.random() }>{expenses[expense].value}</td>
-            <td key={ Math.random() }>
-              {expenses[expense].exchangeRates[expenses[expense].currency].name}
+            <td>{expense.description}</td>
+            <td>{expense.tag}</td>
+            <td>{expense.method}</td>
+            <td>{expense.value}</td>
+            <td>
+              {expense.exchangeRates[expense.currency].name}
             </td>
-            <td key={ Math.random() }>
-              {Number(expenses[expense].exchangeRates[expenses[expense].currency].ask)
-                .toFixed(2)}
+            <td>
+              {Number(expense.exchangeRates[expense.currency].ask).toFixed(2)}
             </td>
-            <td key={ Math.random() }>
-              {Number(expenses[expense].value
-                * expenses[expense].exchangeRates[expenses[expense].currency].ask)
-                .toFixed(2)}
+            <td>
+              {Number(expense.value
+                * expense.exchangeRates[expense.currency].ask).toFixed(2)}
             </td>
-            <td key={ Math.random() }>Real</td>
-            <td key={ Math.random() }>editar/excluir</td>
+            <td>Real</td>
+            <td>
+              <button type="button">Editar</button>
+              <button
+                type="button"
+                data-testid="delete-btn"
+                onClick={ () => this.handleDelete(expense) }
+              >
+                Excluir
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
@@ -66,8 +79,12 @@ const mapStatetoProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  deleteExpense: (expenses) => dispatch(deletedExpense(expenses)),
+});
+
 TableExpenses.propTypes = {
-  espenses: PropTypes.objectOf(),
+  espenses: PropTypes.arrayOf(PropTypes.object),
 }.isRequered;
 
-export default connect(mapStatetoProps)(TableExpenses);
+export default connect(mapStatetoProps, mapDispatchToProps)(TableExpenses);

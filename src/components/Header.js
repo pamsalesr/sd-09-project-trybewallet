@@ -7,12 +7,10 @@ class Header extends Component {
     const { email, expenses } = this.props;
     let totalExpenses = 0;
     if (expenses.length > 0) {
-      const expenseKeys = Object.keys(expenses);
-      totalExpenses = expenseKeys
-        .reduce((acc, curr) => (
-          acc
-          + (Number(expenses[curr].value)
-          * Number(expenses[curr].exchangeRates[expenses[curr].currency].ask))), 0);
+      totalExpenses = expenses
+        .reduce((acc, curr) => (acc
+          + (Number(curr.value)
+          * Number(curr.exchangeRates[curr.currency].ask))), 0).toFixed(2);
     }
     return (
       <div>

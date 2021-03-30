@@ -2,6 +2,7 @@ export const LOGIN = 'LOGIN';
 export const REQ_CURRENCIES = 'REQ_CURRENCIES';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const DELETED_EXPENSE = 'DELETE_EXPENSE';
 
 export const loginAction = (email) => ({
   type: LOGIN,
@@ -44,3 +45,8 @@ export const addNewExpense = (expense) => (
     return dispatch(addExpense(newExpenseToAdd));
   }
 );
+
+export const deletedExpense = (expenses) => ({
+  type: DELETED_EXPENSE,
+  expenses,
+});
