@@ -28,8 +28,7 @@ class Login extends React.Component {
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit() {
     const { email } = this.state;
     const { history, loginActionProp } = this.props;
     loginActionProp(email);
@@ -40,19 +39,27 @@ class Login extends React.Component {
     const { login } = this.state;
     return (
       <form>
-        <input
-          type="text"
-          name="email"
-          data-testid="email-input"
-          onChange={ this.handleChange }
-        />
+        <label htmlFor="email">
+          Email:
+          <input
+            type="text"
+            name="email"
+            id="email"
+            data-testid="email-input"
+            onChange={ this.handleChange }
+          />
+        </label>
 
-        <input
-          type="password"
-          name="password"
-          data-testid="password-input"
-          onChange={ this.handleChange }
-        />
+        <label htmlFor="password">
+          Senha:
+          <input
+            type="password"
+            name="password"
+            id="password"
+            data-testid="password-input"
+            onChange={ this.handleChange }
+          />
+        </label>
 
         <button
           type="submit"
