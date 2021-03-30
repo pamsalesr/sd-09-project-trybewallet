@@ -37,7 +37,6 @@ class Login extends React.Component {
     const passwordVerifier = /[\w\D]{6}/g;
     if (emailVerifier.test(email) && passwordVerifier.test(password)) {
       this.setState({ disable: false });
-      console.log(typeof password);
     } else {
       this.setState({ disable: true });
     }
