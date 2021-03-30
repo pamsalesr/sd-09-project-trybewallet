@@ -38,16 +38,12 @@ body {
 }
 
 .input {
-  border: none;
-  outline: none;
   background: none;
+  border: none;
   color: white;
   font-size: 18px;
   float: left;
   margin: 0 10px;
+  outline: none;
   width: 80%;
-}
-
-.input-button {
-  
 }
