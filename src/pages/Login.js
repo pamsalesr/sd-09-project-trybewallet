@@ -66,8 +66,18 @@ class Login extends React.Component {
           onChange={ this.handleInputChange }
           placeholder="Password"
         />
-        {loggedIn ? <Redirect to="/carteira" />
-          : <button type="button" disabled={ isButtonDisabled } onClick={ this.handleClick }>Entrar</button> }
+        {loggedIn ? (
+          <Redirect to="/carteira" />
+        )
+          : (
+            <button
+              type="button"
+              disabled={ isButtonDisabled }
+              onClick={ this.handleClick }
+            >
+              Entrar
+            </button>
+          )}
       </div>
     );
   }
