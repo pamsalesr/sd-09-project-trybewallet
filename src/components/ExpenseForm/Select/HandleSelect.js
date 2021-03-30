@@ -26,7 +26,6 @@ class HandleSelect extends React.Component {
         value={ value }
         onChange={ this.handleChange }
       >
-        {name}
         {array.map((element, i) => (
           <option key={ i }>{ element }</option>
         ))}

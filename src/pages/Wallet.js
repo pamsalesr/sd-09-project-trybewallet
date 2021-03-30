@@ -6,7 +6,6 @@ import ExpenseForm from '../components/ExpenseForm';
 import { currentPrice } from '../actions';
 
 class Wallet extends React.Component {
-
   componentDidMount() {
     const { propGetCurrentFetch } = this.props;
     propGetCurrentFetch();
@@ -25,6 +24,7 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
   propGetCurrentFetch: PropTypes.func.isRequired,
+  coins: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = ({ currentPriceReducer: { data } }) => ({
