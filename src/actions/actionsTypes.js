@@ -1,2 +1,5 @@
 export const LOGIN = 'LOGIN';
-export const WALLET = 'WALLET';
+export const EXPENSES = 'EXPENSES';
+export const REQUEST_CURRENCY = 'REQUEST_CURRENCY';
+export const GET_CURRENCY = 'GET_CURRENCY';
+export const FAILURE_CURRENCY = 'FAILURE_CURRENCY';
