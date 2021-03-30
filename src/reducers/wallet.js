@@ -6,6 +6,7 @@ import {
   REQUEST_EXPENSE,
   RESOLVED_EXPENSE,
   REJECT_EXPENSE,
+  DELETE_EXPENSE,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -14,6 +15,8 @@ const INITIAL_STATE = {
   currencies: [],
   expenses: [],
 };
+
+const addId = (state, expense) => ({ ...expense, id: (state.length) });
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -29,10 +32,13 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       loadingExpense: false,
-      expenses: [...state.expenses, action.expense],
+      expenses: [...state.expenses, addId(state.expenses, action.expense)],
     };
   case REJECT_EXPENSE:
     return { ...state, loadingExpense: false, error: action.error };
+  case DELETE_EXPENSE:
+    return { ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== action.id) };
   default:
     return state;
   }

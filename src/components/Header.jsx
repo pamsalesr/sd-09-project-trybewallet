@@ -18,7 +18,7 @@ class Header extends React.Component {
       <div>
         <h1>Trybe Header</h1>
         <span data-testid="email-field">{ email }</span>
-        <span data-testid="total-field">{ this.sumExpenses() || 0 }</span>
+        <span data-testid="total-field">{ this.sumExpenses().toFixed(2) || 0 }</span>
         <span data-testid="header-currency-field">BRL</span>
       </div>
     );

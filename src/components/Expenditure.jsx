@@ -35,27 +35,42 @@ class Expenditure extends React.Component {
 
   saveExpense() {
     const { saveExpense } = this.props;
+    this.setState({
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+    });
     saveExpense(this.state);
   }
 
   renderSelection(value) {
     const { currencies } = this.props;
     return (
-      <label htmlFor="description-input">
-        Moeda:
-        <select
-          value={ value }
-          onChange={ this.handleInputs }
-          name="currency"
-          data-testid="currency-input"
-        >
-          <option>Selecione uma moeda</option>
-          { currencies
-            .map((coin) => (
-              coin !== 'USDT' && <option data-testid={ coin }>{ coin }</option>
-            ))}
-        </select>
-      </label>
+      <select
+        value={ value }
+        onChange={ this.handleInputs }
+        name="currency"
+        data-testid="currency-input"
+      >
+        <option>Selecione uma moeda</option>
+        <option value="USD" data-testid="USD">USD</option>
+        { currencies.map((coin) => {
+          if (coin !== 'USDT' && coin !== 'USD') {
+            return (
+              <option
+                value={ coin }
+                data-testid={ coin }
+                key={ coin }
+              >
+                {coin}
+              </option>
+            );
+          }
+          return '';
+        })}
+      </select>
     );
   }
 
@@ -89,41 +104,35 @@ class Expenditure extends React.Component {
 
   renderMethod(value) {
     return (
-      <label htmlFor="method-input">
-        Método:
-        <select
-          data-testid="method-input"
-          onChange={ this.handleInputs }
-          value={ value }
-          name="method"
-        >
-          <option>Selecione uma opção</option>
-          <option>Dinheiro</option>
-          <option>Cartão de crédito</option>
-          <option>Cartão de débito</option>
-        </select>
-      </label>
+      <select
+        data-testid="method-input"
+        onChange={ this.handleInputs }
+        value={ value }
+        name="method"
+      >
+        <option>Selecione uma opção</option>
+        <option>Dinheiro</option>
+        <option>Cartão de crédito</option>
+        <option>Cartão de débito</option>
+      </select>
     );
   }
 
   renderTag(value) {
     return (
-      <label htmlFor="tag-input">
-        Categoria (tag)
-        <select
-          onChange={ this.handleInputs }
-          value={ value }
-          data-testid="tag-input"
-          name="tag"
-        >
-          <option>Selecione uma opção</option>
-          <option>Alimentação</option>
-          <option>Lazer</option>
-          <option>Trabalho</option>
-          <option>Transporte</option>
-          <option>Saúde</option>
-        </select>
-      </label>
+      <select
+        onChange={ this.handleInputs }
+        value={ value }
+        data-testid="tag-input"
+        name="tag"
+      >
+        <option>Selecione uma opção</option>
+        <option>Alimentação</option>
+        <option>Lazer</option>
+        <option>Trabalho</option>
+        <option>Transporte</option>
+        <option>Saúde</option>
+      </select>
     );
   }
 
