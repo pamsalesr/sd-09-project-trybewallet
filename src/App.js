@@ -9,7 +9,7 @@ function App() {
       </header>
       <Login />
     </div>
-);
+  );
 }
 
 export default App;
