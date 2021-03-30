@@ -1,0 +1,15 @@
+.header {
+  align-items: center;
+  box-shadow: 0 8px 6px -6px black;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.user {
+  display: flex;
+}
+
+.user div:first-child {
+  margin-right: 20px;
+} 

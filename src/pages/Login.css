@@ -21,8 +21,9 @@
   width: 100%;
 }
 
-.form-login button {
+.btn-login {
   cursor: pointer;
   height: 30px;
-  width: 100%;
+  width: 308px;
+  font-size: 18px;
 }

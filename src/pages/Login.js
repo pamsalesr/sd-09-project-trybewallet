@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { MdAccountCircle } from 'react-icons/md';
 
 import './Login.css';
@@ -9,9 +10,25 @@ class Login extends React.Component {
       <div className="container-login">
         <form className="form-login" action="">
           <MdAccountCircle size={ 80 } />
-          <input type="email" name="email" id="email" placeholder="E-mail" data-testid="email-input" />
-          <input type="password" name="password" id="password" placeholder="Senha" data-testid="password-input" />
-          <button type="button" >Enviar</button>
+          <input
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            pattern="^\w*(\.\w*)?@\w*\.[a-z]+(\.[a-z]+)?$"
+            data-testid="email-input"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Senha"
+            minLength="6"
+            data-testid="password-input"
+            required
+          />
+          <Link to="/carteira" >
+            <button className="btn-login" type="submit" >Entrar</button>
+          </Link>
         </form>
       </div>
     );
