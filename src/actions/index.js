@@ -9,7 +9,7 @@ export const handleUserLogin = (email) => ({
   email,
 });
 
-export const addExpense = (expense) => ({
+const receiveExpenseAddition = (expense) => ({
   type: ADD_EXPENSE,
   expense,
 });
@@ -23,4 +23,9 @@ export const getCurrenciesList = () => async (dispatch) => {
   const currenciesObj = await requestCurrencies();
   const currencies = Object.keys(currenciesObj).filter((currency) => currency !== 'USDT');
   return (dispatch(receiveCurrenciesList(currencies)));
+};
+
+export const addExpense = (expense) => async (dispatch) => {
+  const exchangeRates = await requestCurrencies();
+  return (dispatch(receiveExpenseAddition({ ...expense, exchangeRates })));
 };

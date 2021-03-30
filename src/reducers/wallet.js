@@ -13,7 +13,10 @@ const expensesReducer = (state = initialState, action) => {
   case ADD_EXPENSE:
     return {
       ...state,
-      expenses: [...state.expenses, expense],
+      expenses: [
+        ...state.expenses,
+        { ...expense, id: state.expenses.length },
+      ],
     };
   default:
     return state;

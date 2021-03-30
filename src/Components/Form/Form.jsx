@@ -3,7 +3,7 @@ import { arrayOf, string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import InputBox from '../InputBox';
 import Dropdown from '../Dropdown';
-import { getCurrenciesList } from '../../actions';
+import { getCurrenciesList, addExpense as addExpenseAction } from '../../actions';
 
 class Form extends Component {
   constructor(props) {
@@ -41,6 +41,15 @@ class Form extends Component {
   sendExpenseForm(e) {
     e.preventDefault();
     const { formControl } = this.state;
+    const { addExpense } = this.props;
+    addExpense(formControl);
+    this.setState({ formControl: {
+      value: '',
+      currency: '',
+      description: '',
+      method: '',
+      tag: '',
+    } });
   }
 
   renderValueinput() {
@@ -130,11 +139,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencies: () => dispatch(getCurrenciesList()),
+  addExpense: (expense) => dispatch(addExpenseAction(expense)),
 });
 
 Form.propTypes = {
   currencies: arrayOf(string).isRequired,
   getCurrencies: func.isRequired,
+  addExpense: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
