@@ -1,0 +1,57 @@
+main {
+  align-items: center;
+  background-image: url('../Wallpaper_01.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding: 2em 5em;
+}
+
+.login-container h1 {
+  color: #036b52;
+  text-align: center;
+  text-shadow: 1px 1px black;
+}
+
+.login-container input {
+  border: none;
+  display: block;
+  font-size: 1rem;
+  height: 1.5em;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  width: 95%;
+}
+
+.login-container a {
+  align-self: center;
+}
+
+.login-container button {
+  background-color: #036b52;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1em;
+  padding: 1em 8em;
+}
+
+.login-container button:hover {
+  background-color: white;
+  border: 1px solid #036b52;
+  color: #036b52;
+}
+
+.login-container button:disabled {
+  background-color: transparent;
+}

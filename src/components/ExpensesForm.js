@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrency, fetchExchangeRate } from '../actions';
+import './ExpensesForm.css';
 
 const INITIAL_STATE = {
   valueInput: 0,
@@ -83,6 +84,7 @@ class ExpensesForm extends Component {
           name="valueInput"
           value={ valueInput }
           onChange={ this.handleChange }
+          className="form-input"
         />
       </label>
     );
@@ -99,6 +101,7 @@ class ExpensesForm extends Component {
           name="currencySelect"
           value={ currencySelect }
           onChange={ this.handleChange }
+          className="form-input"
         >
           { currencies.map((currency) => (
             <option
@@ -125,6 +128,7 @@ class ExpensesForm extends Component {
           name="paymentSelect"
           value={ paymentSelect }
           onChange={ this.handleChange }
+          className="form-input"
         >
           <option value="Dinheiro">Dinheiro</option>
           <option value="Cartão de crédito">Cartão de crédito</option>
@@ -145,6 +149,7 @@ class ExpensesForm extends Component {
           name="tagSelect"
           value={ tagSelect }
           onChange={ this.handleChange }
+          className="form-input"
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
@@ -169,6 +174,7 @@ class ExpensesForm extends Component {
           value={ descriptionInput }
           onChange={ this.handleChange }
           autoComplete="off"
+          className="form-input"
         />
       </label>
     );
@@ -184,7 +190,7 @@ class ExpensesForm extends Component {
       );
     }
     return (
-      <div>
+      <div className="form-container">
         { this.renderValueInput() }
         { this.renderCurrencySelect() }
         { this.renderPaymentMethod() }
@@ -193,6 +199,7 @@ class ExpensesForm extends Component {
         <button
           type="button"
           onClick={ () => this.handleSubmit() }
+          className="add-btn"
         >
           Adicionar despesa
         </button>

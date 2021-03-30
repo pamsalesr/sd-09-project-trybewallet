@@ -5,6 +5,7 @@ import {
   CURRENCY_REQUEST_FAILURE,
   EXCHANGE_RATE_REQUEST,
   DELETE_EXPENSE,
+  EDIT_EXPENSE,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -46,6 +47,14 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.expense),
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      expenses: [
+        ...state.expenses.filter((expense) => expense.id !== action.expense.id),
+        action.expense,
+      ].sort((a, b) => a.id - b.id),
     };
   default:
     return state;

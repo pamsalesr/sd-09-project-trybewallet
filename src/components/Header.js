@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './Header.css';
 
 class Header extends Component {
   sumExpenses() {
@@ -15,9 +17,14 @@ class Header extends Component {
     const { email } = this.props;
     return (
       <header>
-        <p data-testid="email-field">{ email }</p>
-        <p data-testid="total-field">{ this.sumExpenses() }</p>
-        <p data-testid="header-currency-field">BRL</p>
+        <Link to="/"><h3>Trybe-Wallet</h3></Link>
+        <div className="account-container">
+          <p data-testid="email-field">{ email }</p>
+          <div>
+            <p data-testid="total-field">{ this.sumExpenses() }</p>
+            <p data-testid="header-currency-field">BRL</p>
+          </div>
+        </div>
       </header>
     );
   }

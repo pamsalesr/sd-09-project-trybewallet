@@ -1,0 +1,24 @@
+.form-container {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em;
+}
+
+.form-container label {
+  font-weight: 650;
+}
+
+.form-input {
+  padding: 1em;
+}
+
+.add-btn {
+  background-color: #036b52;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 900;
+  padding: 0 1.5em;
+}

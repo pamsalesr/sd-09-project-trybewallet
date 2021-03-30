@@ -4,6 +4,7 @@ import {
   CURRENCY_REQUEST_FAILURE,
   EXCHANGE_RATE_REQUEST,
   DELETE_EXPENSE,
+  EDIT_EXPENSE,
 } from './actionTypes';
 
 const currencyRequest = () => ({
@@ -54,5 +55,10 @@ export const fetchExchangeRate = (expenses) => (
 
 export const deleteExpense = (expense) => ({
   type: DELETE_EXPENSE,
+  expense,
+});
+
+export const editExpense = (expense) => ({
+  type: EDIT_EXPENSE,
   expense,
 });

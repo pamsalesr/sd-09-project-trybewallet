@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userLogin } from '../actions';
+import './Login.css';
 
 const PASSWORD_MINIMUM_LENGTH = 6;
 
@@ -66,41 +67,44 @@ class Login extends React.Component {
     } = this.state;
     const { logIn } = this.props;
     return (
-      <div>
-        <label htmlFor="email-input">
-          Email:
-          <input
-            data-testid="email-input"
-            type="text"
-            id="email-input"
-            name="emailInput"
-            value={ emailInput }
-            onChange={ this.handleChange }
-            autoComplete="off"
-          />
-        </label>
-        <label htmlFor="password-input">
-          Senha:
-          <input
-            data-testid="password-input"
-            type="password"
-            id="password-input"
-            name="passwordInput"
-            value={ passwordInput }
-            onChange={ this.handleChange }
-            autoComplete="off"
-          />
-        </label>
-        <Link to="/carteira">
-          <button
-            type="button"
-            disabled={ !emailTyped || !passwordTyped || emailError || passwordError }
-            onClick={ () => logIn(emailInput) }
-          >
-            Entrar
-          </button>
-        </Link>
-      </div>
+      <main>
+        <div className="login-container">
+          <h1>Trybe-Wallet</h1>
+          <label htmlFor="email-input">
+            Email:
+            <input
+              data-testid="email-input"
+              type="text"
+              id="email-input"
+              name="emailInput"
+              value={ emailInput }
+              onChange={ this.handleChange }
+              autoComplete="off"
+            />
+          </label>
+          <label htmlFor="password-input">
+            Senha:
+            <input
+              data-testid="password-input"
+              type="password"
+              id="password-input"
+              name="passwordInput"
+              value={ passwordInput }
+              onChange={ this.handleChange }
+              autoComplete="off"
+            />
+          </label>
+          <Link to="/carteira">
+            <button
+              type="button"
+              disabled={ !emailTyped || !passwordTyped || emailError || passwordError }
+              onClick={ () => logIn(emailInput) }
+            >
+              Entrar
+            </button>
+          </Link>
+        </div>
+      </main>
     );
   }
 }
