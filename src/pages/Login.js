@@ -1,5 +1,8 @@
-import { Button, TextField } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import React from 'react';
+import { login } from '../actions';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -7,61 +10,68 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      loggedIn: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validateLoginFields = this.validateLoginFields.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  validateLoginFields(email, password) {
+  validateLoginFields() {
+    const { email, password } = this.state;
     const re = /[^@]+@[^.]+\..+/g;
     const minimumPasswordLength = 6;
     const emailTest = re.test(String(email).toLowerCase());
     const passwordTest = password.length >= minimumPasswordLength;
-    console.log(emailTest);
-    console.log(passwordTest);
-    return emailTest && passwordTest;
+    return (emailTest && passwordTest);
   }
 
   handleInputChange({ target }) {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const { name } = target;
 
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+    const { email, password } = this.state;
+    this.props.dispatchLogin({ email, password });
+    this.setState({ loggedIn: true });
   }
 
   render() {
-    const { email, password } = this.state;
-    const joinButton = this.validateLoginFields(email, password)
-      ? <Button>Entrar</Button> : <Button disabled>Entrar</Button>;
+    const { email, password, loggedIn } = this.state;
+    const isButtonDisabled = !this.validateLoginFields(email, password);
     return (
-      <div>
-        <TextField
+      <div className="login-container">
+        <input
           id="input-email"
           name="email"
-          label="Login"
           data-testid="email-input"
-          variant="outlined"
           type="email"
           value={ email }
           onChange={ this.handleInputChange }
+          placeholder="Login"
         />
-        <TextField
+        <input
           id="input-password"
           name="password"
-          label="Senha"
           data-testid="password-input"
-          variant="outlined"
           type="password"
           value={ password }
           onChange={ this.handleInputChange }
+          placeholder="Password"
         />
-        {joinButton}
+        {loggedIn ? <Redirect to="/carteira" />
+          : <button type="button" disabled={ isButtonDisabled } onClick={ this.handleClick }>Entrar</button> }
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchLogin: (credentials) => dispatch(login(credentials)) });
+
+export default connect(null, mapDispatchToProps)(Login);

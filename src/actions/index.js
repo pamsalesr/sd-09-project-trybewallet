@@ -1,1 +1,1 @@
-// Coloque aqui suas actions
+export const login = (credentials) => ({ type: 'LOGIN', credentials });
