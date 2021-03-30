@@ -6,12 +6,14 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import Wallet from './pages/Wallet';
 
 ReactDOM.render(
   <Provider store={ store }>
     <BrowserRouter>
       <Switch>
         <Route exact path="/" render={ () => (<App />) } />
+        <Route path="/carteira" render={ () => (<Wallet />) } />
         <Redirect to="/" />
       </Switch>
     </BrowserRouter>
