@@ -3,10 +3,7 @@ import Login from './pages/Login';
 
 function App() {
   return (
-    <div>
-      <header>
-        <h2>Hello, TrybeWallet!</h2>
-      </header>
+    <div className="main">
       <Login />
     </div>
   );
