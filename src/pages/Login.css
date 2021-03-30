@@ -1,8 +1,8 @@
 .login-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .login-page {
-  background-color: #0A0E12;
+  background-color: #0a0e12;
   border: #4dffc3 1px solid;
   color: aqua;
   display: flex;
