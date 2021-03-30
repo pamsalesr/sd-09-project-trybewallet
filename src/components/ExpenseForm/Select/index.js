@@ -11,4 +11,12 @@ class selectOptions extends React.Component {
   }
 }
 
+// const mapStateToProps = (state) => {
+//   coins = state.currentPriceReducer
+// }
+
+// selectOptions.propTypes = {
+//   coins: PropTypes.arrayOf(PropTypes.object).isRequired
+// }
+
 export default connect()(selectOptions);

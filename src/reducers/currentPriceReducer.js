@@ -11,7 +11,6 @@ const INITIAL_STATE = {
 };
 
 const currentPriceReducer = (state = INITIAL_STATE, action) => {
-  console.log(action);
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
     return {
@@ -20,7 +19,9 @@ const currentPriceReducer = (state = INITIAL_STATE, action) => {
     };
   case RECEIVE_CURRENT_PRICE_SUCCESS:
     return {
-
+      ...state,
+      isFetching: false,
+      data: action.data,
     };
   case RECEIVE_CURRENT_PRICE_FAIL:
     return {
