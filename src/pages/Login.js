@@ -16,7 +16,8 @@ class Login extends Component {
 
     this.updateEmail = this.updateEmail.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-    this.login = this.login.bind(this);
+    this.renderLogInForm = this.renderLogInForm.bind(this);
+    this.signIn = this.signIn.bind(this);
   }
 
   validateEmail(email) {
@@ -37,45 +38,51 @@ class Login extends Component {
     this.setState({ password });
   }
 
-  login() {
+  signIn() {
     const { email } = this.state;
     const { dispatchEmail } = this.props;
     dispatchEmail(email);
     this.setState({ loggedIn: true });
   }
 
-  render() {
-    const { email, password, loggedIn } = this.state;
-    if (loggedIn) return <Redirect to={ WALLET_PATH } />;
-
+  renderLogInForm() {
+    const { email, password } = this.state;
     const isLogInDisabled = !(
       this.validateEmail(email) && this.validatePassword(password)
     );
-
     return (
       <>
         <div>Login</div>
-        <form>
-          <input
-            type="email"
-            data-testid="email-input"
-            placeholder="Usuário"
-            onChange={ this.updateEmail }
-          />
-          <input
-            type="password"
-            data-testid="password-input"
-            placeholder="Senha"
-            onChange={ this.updatePassword }
-          />
-          <button
-            type="button"
-            disabled={ isLogInDisabled }
-            onClick={ this.login }
-          >
-            Entrar
-          </button>
-        </form>
+        <input
+          type="email"
+          data-testid="email-input"
+          placeholder="Usuário"
+          onChange={ this.updateEmail }
+        />
+        <input
+          type="password"
+          data-testid="password-input"
+          placeholder="Senha"
+          onChange={ this.updatePassword }
+        />
+        <button
+          type="button"
+          disabled={ isLogInDisabled }
+          onClick={ this.signIn }
+        >
+          Entrar
+        </button>
+      </>
+    );
+  }
+
+  render() {
+    const { loggedIn } = this.state;
+
+    return (
+      <>
+        { loggedIn && <Redirect to={ WALLET_PATH } /> }
+        { this.renderLogInForm() }
       </>
     );
   }
