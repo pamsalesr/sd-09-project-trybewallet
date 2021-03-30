@@ -85,7 +85,6 @@ class Wallet extends Component {
           </span>
           <span data-testid="header-currency-field"> BRL </span>
         </header>
-        <div className="form">
           <form>
             <label htmlFor="value">
               <span>Valor: </span>
@@ -122,9 +121,9 @@ class Wallet extends Component {
                 onChange={ (e) => this.handleInputChange(e.target) }
               >
                 <option disabled value="default"> Selecione </option>
-                {/* <option value="Dinheiro"> Dinheiro </option>
+                <option value="Dinheiro"> Dinheiro </option>
                 <option value="Cartão de crédito"> Cartão de crédito </option>
-                <option value="Cartão de débito"> Cartão de débito </option> */}
+                <option value="Cartão de débito"> Cartão de débito </option>
               </select>
             </label>
             <label htmlFor="tag">
@@ -137,10 +136,10 @@ class Wallet extends Component {
                 onChange={ (e) => this.handleInputChange(e.target) }
               >
                 <option disabled value="default"> Selecione </option>
-                {/* <option value="Alimentação"> Alimentação </option>
+                <option value="Alimentação"> Alimentação </option>
                 <option value="Lazer"> Lazer </option>
                 <option value="Trabalho"> Trabalho </option>
-                <option value="Transporte"> Transporte </option> */}
+                <option value="Transporte"> Transporte </option>
                 {/*  */}
                 <option value="Saúde"> Saúde </option>
               </select>
@@ -163,7 +162,6 @@ class Wallet extends Component {
               Adicionar despesa
             </button>
           </form>
-        </div>
         <Table />
       </div>
     );
