@@ -39,9 +39,9 @@ class Table extends React.Component {
   render() {
     const { expenses } = this.props;
     return (
-      <div>
+      <div className="table-container">
         <table>
-          <thead className="table-header">
+          <thead>
             <tr>
               <th>Descrição</th>
               <th>Tag</th>
@@ -70,7 +70,7 @@ class Table extends React.Component {
                     <td>{ parseFloat(ask).toFixed(2) }</td>
                     <td>{ (ask * parseInt(value, 10)).toFixed(2) }</td>
                     <td>Real</td>
-                    <td>
+                    <td className="button-container">
                       { this.renderEditButton(expense) }
                       { this.renderDeleteButton(id) }
                     </td>

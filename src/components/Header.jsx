@@ -20,18 +20,20 @@ class Header extends React.Component {
   render() {
     const { email } = this.props;
     return (
-      <header>
+      <header className="wallet-header">
         <p
           data-testid="email-field"
         >
           {`E-mail: ${email}`}
         </p>
-        <p
-          data-testid="total-field"
-        >
-          {`Despesa Total: R$ ${this.getTotalValue()}`}
-        </p>
-        <p data-testid="header-currency-field">BRL</p>
+        <div className="wallet-header-total">
+          <p
+            data-testid="total-field"
+          >
+            {`Despesa Total: R$ ${this.getTotalValue()}`}
+          </p>
+          <p data-testid="header-currency-field">BRL</p>
+        </div>
       </header>
     );
   }

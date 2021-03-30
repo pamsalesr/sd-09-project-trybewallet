@@ -1,0 +1,58 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.button-container button {
+  width: 40px;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  font-size: 12px;
+  padding: 8px;
+  width: 100px;
+}
+
+tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: black;
+  color: white;
+}
+
+.wallet-header {
+  background-color: #4CAF50;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.wallet-header-total {
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+}

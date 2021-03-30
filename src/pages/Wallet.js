@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import NewExpense from '../components/NewExpense';
 import Table from '../components/Table';
 import EditExpense from '../components/EditExpense';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   componentDidMount() {
