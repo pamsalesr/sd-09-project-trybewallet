@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'ADD_EXPENSES':
+  case 'ADD_EXPENSE':
     return {
       ...state,
       expenses: [...state.expenses, action.expense],

@@ -5,7 +5,7 @@ export const registerEmailAction = (email) => ({
 });
 
 export const addExpenseAction = (expense) => ({
-  type: 'REGISTER_EXPENSES',
+  type: 'ADD_EXPENSE',
   expense,
 });
 
