@@ -13,7 +13,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(history.location.pathname).toBe('/');
   });
 
-  test.skip('Crie um local para que o usuário insira seu email e senha', () => {
+  test('Crie um local para que o usuário insira seu email e senha', () => {
     renderWithRouterAndStore(<App />, '/');
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');
@@ -22,7 +22,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(senha).toBeInTheDocument();
   });
 
-  test.skip('Crie um botão com o texto \'Entrar\'', () => {
+  test('Crie um botão com o texto \'Entrar\'', () => {
     renderWithRouterAndStore(<App />, '/');
 
     const button = screen.getByText(/Entrar/i);
