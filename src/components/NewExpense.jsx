@@ -39,12 +39,12 @@ class NewExpense extends React.Component {
     const { value, description, currency, method, tag } = this.state;
     const { addExpenses, expenses } = this.props;
     const expense = {
+      id: expenses.length,
       value,
       description,
       currency,
       method,
       tag,
-      id: expenses.length,
       exchangeRates,
     };
     addExpenses(expense);
@@ -89,6 +89,7 @@ class NewExpense extends React.Component {
 
   renderCurrency() {
     const { currencies } = this.props;
+    const { currency } = this.state;
     return (
       <label htmlFor="currency-input">
         Moeda:
@@ -96,12 +97,13 @@ class NewExpense extends React.Component {
           name="currency"
           data-testid="currency-input"
           onChange={ this.handleChange }
+          value={ currency }
           id="currency-input"
         >
           {
-            currencies.map((currency) => ((currency !== 'USDT') ? (
-              <option key={ currency } data-testid={ currency }>
-                {currency}
+            currencies.map((option) => ((option !== 'USDT') ? (
+              <option key={ option } data-testid={ option }>
+                {option}
               </option>
             ) : ''))
           }
