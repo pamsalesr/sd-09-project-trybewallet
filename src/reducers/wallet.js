@@ -1,4 +1,5 @@
 import {
+  ADD_CURRENCY,
   ADD_EXPANSE,
   DELETE_EXPENSE,
   EDIT_EXPENSE,
@@ -6,6 +7,7 @@ import {
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
+  currencys: [],
   expenses: [],
   numberExpense: 0,
   // totalExpense: 0,
@@ -13,6 +15,11 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case ADD_CURRENCY:
+    return {
+      ...state,
+      currencys: [...action.currencys],
+    };
   case ADD_EXPANSE:
     return {
       ...state,

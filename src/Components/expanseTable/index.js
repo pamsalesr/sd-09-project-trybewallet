@@ -45,28 +45,27 @@ class ExpanseTable extends Component {
           <th>Moeda de conversão</th>
           <th>Editar/Excluir</th>
         </tr>
-        { (expenses.length > 0)
-          ? (
-            expenses.map((expense, i) => {
-              const exchangeArray = Object.values(expense.exchangeRates);
-              const coin = exchangeArray.find((obj) => obj.code === expense.currency);
-              const totalExpense = parseFloat(expense.value * coin.ask);
-              return (
-                <tr key={ i }>
-                  <td>{expense.description}</td>
-                  <td>{expense.tag}</td>
-                  <td>{expense.method}</td>
-                  <td>{expense.value}</td>
-                  <td>{coin.name}</td>
-                  <td>{parseFloat(coin.ask).toFixed(2)}</td>
-                  <td>{parseFloat(expense.value * coin.ask).toFixed(2)}</td>
-                  <td>Real</td>
-                  { this.renderButton(i, totalExpense) }
-                </tr>
-              );
-            })
-          )
-          : null }
+        {
+          expenses.map((expense, i) => {
+            // const exchangeArray = Object.values(expense.exchangeRates);
+            // const coin = exchangeArray.find((obj) => obj.code === expense.currency);
+            const { name, ask } = expense.exchangeRates[expense.currency];
+            const totalExpense = parseFloat(expense.value * ask);
+            return (
+              <tr key={ i }>
+                <td>{expense.description}</td>
+                <td>{expense.tag}</td>
+                <td>{expense.method}</td>
+                <td>{expense.value}</td>
+                <td>{name}</td>
+                <td>{parseFloat(ask).toFixed(2)}</td>
+                <td>{parseFloat(expense.value * ask).toFixed(2)}</td>
+                <td>Real</td>
+                { this.renderButton(i, totalExpense) }
+              </tr>
+            );
+          })
+        }
       </table>
     );
   }

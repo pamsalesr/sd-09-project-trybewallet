@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { func } from 'prop-types';
+import { func, PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { expenseThunk } from '../../actions';
+import { addCurrencys, expenseThunk } from '../../actions';
 import './walletForm.css';
 
 class WalletForm extends Component {
   constructor(props) {
     super(props);
 
-    this.fetchCurrency = this.fetchCurrency.bind(this);
+    // this.fetchCurrency = this.fetchCurrency.bind(this);
     this.addExpense = this.addExpense.bind(this);
     this.handleyForm = this.handleyForm.bind(this);
 
     this.state = {
-      currencys: [],
       value: '0',
       currency: 'USD',
       payment: 'Dinheiro',
@@ -23,26 +22,8 @@ class WalletForm extends Component {
   }
 
   componentDidMount() {
-    this.fetchCurrency();
-  }
-
-  async fetchCurrency() {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const resp = await request.json();
-    const currencyArray = Object.values(resp);
-    currencyArray.forEach((obj) => {
-      if (obj.name !== 'Dólar Turismo') {
-        this.setState((prevState) => ({
-          currencys: [...prevState.currencys, obj.code],
-        }));
-      }
-    });
-  }
-
-  async fetchExpanse() {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const resp = await request.json();
-    return resp;
+    const { initialCurrancys } = this.props;
+    initialCurrancys();
   }
 
   handleyForm({ target }) {
@@ -65,7 +46,8 @@ class WalletForm extends Component {
   }
 
   renderSelectCurrency() {
-    const { currencys } = this.state;
+    const { stateCurrency } = this.props;
+    // const { currencys } = this.state;
     return (
       <label htmlFor="currency-input">
         Moeda:&nbsp;
@@ -75,7 +57,7 @@ class WalletForm extends Component {
           id="currency-input"
           onChange={ this.handleyForm }
         >
-          { currencys.map((code) => (
+          { (stateCurrency) && stateCurrency.map((code) => (
             <option value={ code } key={ code } data-testid={ code }>
               { code }
             </option>
@@ -150,12 +132,19 @@ class WalletForm extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  stateCurrency: state.wallet.currencys,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   thunk: (expanse) => dispatch(expenseThunk(expanse)),
+  initialCurrancys: () => dispatch(addCurrencys()),
 });
 
 WalletForm.propTypes = {
   thunk: func.isRequired,
+  initialCurrancys: func.isRequired,
+  stateCurrency: PropTypes.arrayOf().isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(WalletForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

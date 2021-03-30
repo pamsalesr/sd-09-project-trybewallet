@@ -8,24 +8,21 @@ class EditExpenseForm extends Component {
   constructor(props) {
     super(props);
 
-    this.fetchCurrency = this.fetchCurrency.bind(this);
     this.editExpense = this.editExpense.bind(this);
     this.handleyForm = this.handleyForm.bind(this);
     this.initialState = this.initialState.bind(this);
 
     this.state = {
-      currencys: [],
-      value: undefined,
-      currency: undefined,
-      method: undefined,
-      tag: undefined,
-      description: undefined,
-      exchangeRates: undefined,
+      value: 0,
+      currency: '',
+      method: '',
+      tag: '',
+      description: '',
+      exchangeRates: [],
     };
   }
 
   componentDidMount() {
-    this.fetchCurrency();
     this.initialState();
   }
 
@@ -42,42 +39,30 @@ class EditExpenseForm extends Component {
     });
   }
 
-  async fetchCurrency() {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const resp = await request.json();
-    const currencyArray = Object.values(resp);
-    currencyArray.forEach((obj) => {
-      if (obj.name !== 'Dólar Turismo') {
-        this.setState((prevState) => ({
-          currencys: [...prevState.currencys, obj.code],
-        }));
-      }
-    });
-  }
-
-  async fetchExpanse() {
-    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const resp = await request.json();
-    return resp;
-  }
-
   handleyForm({ target }) {
     const { name, value } = target;
     this.setState({ [name]: value });
   }
 
-  async editExpense() {
+  editExpense() {
     const { editID } = this.props;
     const { value, currency, method, tag, description, exchangeRates } = this.state;
     const expanse = {
-      value, currency, method, tag, description, exchangeRates,
+      id: editID,
+      value,
+      currency,
+      method,
+      tag,
+      description,
+      exchangeRates,
     };
     const { editExpenseID } = this.props;
     editExpenseID(expanse, editID);
   }
 
   renderSelectCurrency() {
-    const { currencys, currency } = this.state;
+    const { stateCurrency } = this.props;
+    const { currency } = this.state;
     return (
       <label htmlFor="currency-input">
         Moeda:&nbsp;
@@ -88,7 +73,7 @@ class EditExpenseForm extends Component {
           id="currency-input"
           onChange={ this.handleyForm }
         >
-          { currencys.map((code) => (
+          { (stateCurrency) && stateCurrency.map((code) => (
             <option value={ code } key={ code } data-testid={ code }>
               { code }
             </option>
@@ -171,6 +156,7 @@ class EditExpenseForm extends Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  stateCurrency: state.wallet.currencys,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -182,6 +168,7 @@ EditExpenseForm.propTypes = {
   editExpenseID: func.isRequired,
   expenses: arrayOf().isRequired,
   editID: number.isRequired,
+  stateCurrency: arrayOf().isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditExpenseForm);

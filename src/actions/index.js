@@ -4,6 +4,7 @@ import {
   DELETE_EXPENSE,
   EDIT_EXPENSE,
   EDIT_EXPENSE_FOR_ID,
+  ADD_CURRENCY,
 } from './actionTypes';
 
 export const addUser = (email) => ({
@@ -11,15 +12,26 @@ export const addUser = (email) => ({
   email,
 });
 
+const requestCurrencysSuccess = (currencys) => {
+  const currencysFilter = currencys.filter((value) => value !== 'USDT');
+  return {
+    type: ADD_CURRENCY,
+    currencys: currencysFilter,
+  };
+};
+
+export const addCurrencys = () => async (dispatch) => {
+  const resp = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const result = await resp.json();
+  return dispatch(requestCurrencysSuccess(Object.keys(result)));
+};
+
 export const requestCurrency = () => ({
   type: 'REQUEST',
   idFetching: true,
 });
 
 export const newExpanseAndCurrency = (expense, exchangeRates) => {
-  const coin = Object.values(exchangeRates).find((moeda) => (
-    moeda.code === expense.currency
-  ));
   const {
     value,
     description,
@@ -36,7 +48,6 @@ export const newExpanseAndCurrency = (expense, exchangeRates) => {
     payment,
     exchangeRates,
     // totalExpense: parseFloat(value) * parseFloat(coin.ask),
-    coin,
   };
 };
 
