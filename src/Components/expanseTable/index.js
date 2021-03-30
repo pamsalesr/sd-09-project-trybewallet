@@ -49,7 +49,6 @@ class ExpanseTable extends Component {
           expenses.map((expense, i) => {
             const { exchangeRates, currency } = expense;
             const { name, ask } = exchangeRates[currency];
-            const totalExpense = parseFloat(expense.value * ask);
             return (
               <tr key={ i }>
                 <td>{expense.description}</td>
