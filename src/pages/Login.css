@@ -1,44 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap') ;
 
-.main-div{
-  font-family: 'Playfair Display', serif;
-  width: 100%;
-  height: 100vh;
+.main-div {
   background-color: whitesmoke;
-  margin: 0;
   display: flex;
   flex-direction: column;
+  font-family: Playfair Display, serif;
+  height: 100vh;
   justify-content: center;
+  margin: 0;
+  width: 100%;
 }
 
 .login-div {
-  margin: auto;
-  background-color: white;
-  height: 50%;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  background-color: white;
   border: solid 1px black;
   border-radius: 5px;
-  padding: 30px;
   box-shadow: inset 0 0 1em white, 0 0 1em black;
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  justify-content: center;
+  margin: auto;
+  padding: 30px;
+  width: 50%;
 }
 
 .login-div form {
-  height: fit-content;
-  width: 60%;
+  align-items: center;
   display: flex;
   flex-direction: column;
+  height: fit-content;
   justify-items: center;
-  align-items: center;
+  width: 60%;
 }
 
 .login-div label {
   display: inline-block;
-  width: 88%;
   margin-top: 10px;
+  width: 88%;
 }
 
 .login-div input {
@@ -48,25 +48,25 @@
 
 .alert {
   color: red;
+  font-size: 12px;
+  margin: 0;
+  margin-right: 5px;
   text-align: center;
   width: 100%;
-  font-size: 12px;
-  margin-right: 5px;
-  margin: 0;
 }
 
-.login-message{
+.login-message {
   margin-bottom: 20px;
 }
 
 .login-div button {
+  border-radius: 5px;
+  height: 30px;
   margin-top: 20px;
   width: 90px;
-  height: 30px;
-  border-radius: 5px;
 }
 
 .trybe-wallet {
-  margin: auto;
   font-size: 60px;
+  margin: auto;
 }
