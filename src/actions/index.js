@@ -1,1 +1,2 @@
-// Coloque aqui suas actions
+const Actions = (email) => ({ type: 'VALID_EMAIL', email });
+export default Actions;

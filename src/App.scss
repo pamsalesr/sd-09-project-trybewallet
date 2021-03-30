@@ -21,3 +21,25 @@
 .App-link {
   color: #61dafb;
 }
+
+.login {
+  border: solid 1px lightgrey;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  margin: 1em auto;
+  max-width: 320px;
+  padding: 2em 1%;
+}
+
+.send-button:disabled {
+  background-color: lightgrey;
+}
+
+.send-button {
+  background-color: #00aa00;
+  color: #fff;
+  font-weight: 700;
+  margin: 1em 0;
+  padding: 0.5em 5em;
+}
