@@ -48,12 +48,12 @@
 .header {
   background: #1abc9c;
   color: white;
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-around;
   padding: 60px;
-  text-align: center;
   font-size: 30px;
+  text-align: center;
   height: 10px;
   width: 90%;
 }
