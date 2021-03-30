@@ -12,11 +12,12 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { coins } = this.props;
+    // const { coins } = this.props;
     return (
       <div>
         <Header />
-        {coins && <ExpenseForm />}
+        <ExpenseForm />
+        {/* {coins && <ExpenseForm />} */}
       </div>
     );
   }
@@ -24,16 +25,16 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
   propGetCurrentFetch: PropTypes.func.isRequired,
-  coins: PropTypes.string.isRequired,
+  // coins: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ currentPriceReducer: { data } }) => ({
-  coins: data,
-});
+// const mapStateToProps = ({ currentPriceReducer: { data } }) => ({
+//   coins: data,
+// });
 
 // Implementar fetch e chamar a action em dispatch
 const mapDispatchToProps = (dispatch) => ({
   propGetCurrentFetch: () => dispatch(currentPrice()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(null, mapDispatchToProps)(Wallet);

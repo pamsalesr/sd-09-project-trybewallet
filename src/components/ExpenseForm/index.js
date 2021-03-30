@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Inputs from './Inputs';
 import SelectOptions from './Select/SelectOptions';
 import HandleSelect from './Select/HandleSelect';
+import ButtonAdd from './ButtonAdd';
 
 class expenseForm extends React.Component {
   render() {
@@ -21,29 +22,28 @@ class expenseForm extends React.Component {
 
     return (
       <div>
-        <form>
-          <Inputs
-            name="Valor"
-            dataTestid="value-input"
-          />
-          <Inputs
-            name="Descrição:"
-            dataTestid="description-input"
-          />
-          <SelectOptions />
-          <HandleSelect
-            title="Forma de pagament"
-            dataTestid="method-input"
-            name="Forma-de-pagamento"
-            array={ payWith }
-          />
-          <HandleSelect
-            title="Tag"
-            dataTestid="tag-input"
-            name="tag"
-            array={ tags }
-          />
-        </form>
+        <Inputs
+          name="Valor"
+          dataTestid="value-input"
+        />
+        <Inputs
+          name="Descrição:"
+          dataTestid="description-input"
+        />
+        <SelectOptions />
+        <HandleSelect
+          title="Forma de pagament"
+          dataTestid="method-input"
+          name="Forma-de-pagamento"
+          array={ payWith }
+        />
+        <HandleSelect
+          title="Tag"
+          dataTestid="tag-input"
+          name="tag"
+          array={ tags }
+        />
+        <ButtonAdd />
       </div>
     );
   }
