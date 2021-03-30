@@ -11,6 +11,14 @@ class expenseForm extends React.Component {
       'Cartão de crédito',
       'Cartão de débito',
     ];
+    const tags = [
+      'Alimentação',
+      'Lazer',
+      'Trabalho',
+      'Transporte',
+      'Saúde',
+    ];
+
     return (
       <div>
         <form>
@@ -23,11 +31,17 @@ class expenseForm extends React.Component {
             dataTestid="description-input"
           />
           <SelectOptions />
-          <p>Forma de pagamento</p>
           <HandleSelect
+            title="Forma de pagament"
             dataTestid="method-input"
             name="Forma-de-pagamento"
             array={ payWith }
+          />
+          <HandleSelect
+            title="Tag"
+            dataTestid="tag-input"
+            name="tag"
+            array={ tags }
           />
         </form>
       </div>

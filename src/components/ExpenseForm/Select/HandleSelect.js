@@ -17,24 +17,28 @@ class HandleSelect extends React.Component {
   }
 
   render() {
-    const { dataTestid, name, array } = this.props;
+    const { title, dataTestid, name, array } = this.props;
     const { value } = this.state;
     return (
-      <select
-        data-testid={ dataTestid }
-        name={ name }
-        value={ value }
-        onChange={ this.handleChange }
-      >
-        {array.map((element, i) => (
-          <option key={ i }>{ element }</option>
-        ))}
-      </select>
+      <label htmlFor={ name }>
+        {title}
+        <select
+          data-testid={ dataTestid }
+          name={ name }
+          value={ value }
+          onChange={ this.handleChange }
+        >
+          {array.map((element, i) => (
+            <option key={ i }>{ element }</option>
+          ))}
+        </select>
+      </label>
     );
   }
 }
 
 HandleSelect.propTypes = {
+  title: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   array: PropTypes.arrayOf(PropTypes.array).isRequired,
