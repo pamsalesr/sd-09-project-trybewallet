@@ -1,0 +1,28 @@
+.container-login {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.form-login {
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  width: 300px;
+}
+
+.form-login input {
+  height: 30px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form-login button {
+  cursor: pointer;
+  height: 30px;
+  width: 100%;
+}
