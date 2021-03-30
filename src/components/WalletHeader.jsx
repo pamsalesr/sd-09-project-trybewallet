@@ -4,7 +4,7 @@ import { string } from 'prop-types';
 
 class WalletHeader extends React.Component {
   render() {
-    const { email } = this.props;
+    const { email, totalPrice } = this.props;
     return (
       <div>
         Trybe Wallet
@@ -12,7 +12,7 @@ class WalletHeader extends React.Component {
           <span>Email: </span>
           <span data-testid="email-field">{ email }</span>
           <span>Despesa Total: </span>
-          <span data-testid="total-field">0</span>
+          <span data-testid="total-field">{ totalPrice || '0' }</span>
           <span data-testid="header-currency-field">BRL</span>
         </div>
       </div>
@@ -22,6 +22,7 @@ class WalletHeader extends React.Component {
 
 const mapStatetoProps = (state) => ({
   email: state.user.email,
+  totalPrice: state.wallet.totalPrice,
 });
 
 WalletHeader.propTypes = {
