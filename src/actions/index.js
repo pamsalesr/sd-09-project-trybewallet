@@ -12,3 +12,19 @@ export const removeItem = (expenses, id) => {
     expenses: expensesFilter,
   });
 };
+
+export const GETITEM_ACTION = 'GETITEM_ACTION';
+
+export const getItemAction = (getState) => ({ type: GETITEM_ACTION, getState });
+
+export const EDITSTATE_ACTION = 'EDITSTATE_ACTION ';
+
+export const editStateAction = (name, value) => ({ type: EDITSTATE_ACTION, name, value });
+
+export const RESETSTATE_ACTION = 'RESETSTATE_ACTION';
+
+export const resetStateAction = () => ({ type: RESETSTATE_ACTION });
+
+export const EDITITEM_ACTION = 'EDITITEM_ACTION';
+
+export const editItemAction = (editItem) => ({ type: EDITITEM_ACTION, editItem });

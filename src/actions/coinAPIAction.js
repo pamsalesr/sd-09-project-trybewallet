@@ -4,13 +4,13 @@ export const GET_CURRENCIES = 'GET_CURRENCIES';
 
 function getCurrencies(currencies) {
   const currenciesFilter = currencies
-    .filter((currency) => currency.name !== 'Dólar Turismo');
+    .filter((currency) => currency !== 'USDT');
   return { type: GET_CURRENCIES, currencies: currenciesFilter };
 }
 
 export const thunkWalletAction = () => async (dispatch) => {
   const result = await coinAPI();
-  return dispatch(getCurrencies(Object.values(result)));
+  return dispatch(getCurrencies(Object.keys(result)));
 };
 
 export const GET_EXPENSES = 'GET_EXPENSES';

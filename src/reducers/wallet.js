@@ -1,5 +1,5 @@
 import { GET_CURRENCIES, GET_EXPENSES } from '../actions/coinAPIAction';
-import { REMOVEITEM_ACTION } from '../actions/index';
+import { REMOVEITEM_ACTION, EDITITEM_ACTION } from '../actions/index';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -14,6 +14,8 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return { ...state, expenses: [...state.expenses, action.expenses] };
   case REMOVEITEM_ACTION:
     return { ...state, expenses: [...action.expenses] };
+  case EDITITEM_ACTION:
+    return { ...state, expenses: [...action.editItem] };
   default:
     return state;
   }

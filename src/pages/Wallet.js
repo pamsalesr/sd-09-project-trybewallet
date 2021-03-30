@@ -1,28 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { thunkExpensesAction, thunkWalletAction } from '../actions/coinAPIAction';
+import { thunkWalletAction } from '../actions/coinAPIAction';
 import Table from '../components/Table';
+import { editStateAction, editItemAction } from '../actions';
+import ButtonChange from '../components/ButtonChange';
 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
+
     this.methodPayFunc = this.methodPayFunc.bind(this);
     this.coinFunc = this.coinFunc.bind(this);
     this.tagFunc = this.tagFunc.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.expenseClick = this.expenseClick.bind(this);
     this.calcExpense = this.calcExpense.bind(this);
     this.descriptionFunc = this.descriptionFunc.bind(this);
-
-    this.state = {
-      id: 0,
-      value: '0',
-      method: 'Dinheiro',
-      currency: 'USD',
-      tag: 'Alimentacao',
-      description: '',
-    };
+    this.valueFunc = this.valueFunc.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +25,7 @@ class Wallet extends React.Component {
   }
 
   valueFunc() {
-    const { value } = this.state;
+    const { value } = this.props;
 
     return (
       <label htmlFor="value">
@@ -49,7 +43,7 @@ class Wallet extends React.Component {
   }
 
   methodPayFunc() {
-    const { method } = this.state;
+    const { method } = this.props;
     const methodPay = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 
     return (
@@ -70,7 +64,7 @@ class Wallet extends React.Component {
   }
 
   tagFunc() {
-    const { tag } = this.state;
+    const { tag } = this.props;
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
     return (
@@ -91,8 +85,7 @@ class Wallet extends React.Component {
   }
 
   coinFunc() {
-    const { currencies } = this.props;
-    const { currency } = this.state;
+    const { currencies, currency } = this.props;
 
     return (
       <label htmlFor="currency">
@@ -106,11 +99,11 @@ class Wallet extends React.Component {
         >
           {currencies.map((currencyMap) => (
             <option
-              value={ currencyMap.code }
-              key={ currencyMap.code }
-              data-testid={ currencyMap.code }
+              value={ currencyMap }
+              key={ currencyMap }
+              data-testid={ currencyMap }
             >
-              {currencyMap.code}
+              {currencyMap }
             </option>
           ))}
         </select>
@@ -119,7 +112,7 @@ class Wallet extends React.Component {
   }
 
   descriptionFunc() {
-    const { description } = this.state;
+    const { description } = this.props;
 
     return (
       <label htmlFor="description">
@@ -138,23 +131,8 @@ class Wallet extends React.Component {
 
   handleChange(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
-  expenseClick() {
-    const { id, value, method, currency, tag, description } = this.state;
-    const { addExpense } = this.props;
-
-    addExpense({ id, value, currency, method, tag, description });
-
-    this.setState((prevState) => ({
-      id: prevState.id + 1,
-      value: 0,
-      method: 'Dinheiro',
-      currency: 'USD',
-      tag: 'Alimentacao',
-      description: '',
-    }));
+    const { editState } = this.props;
+    editState(name, value);
   }
 
   calcExpense() {
@@ -189,12 +167,7 @@ class Wallet extends React.Component {
             {this.coinFunc()}
             {this.tagFunc()}
             {this.descriptionFunc()}
-            <button
-              type="button"
-              onClick={ this.expenseClick }
-            >
-              Adicionar despesa
-            </button>
+            <ButtonChange />
           </form>
         </div>
         <Table />
@@ -207,11 +180,19 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
   currencies: state.wallet.currencies,
+  id: state.formStateReducer.id,
+  value: state.formStateReducer.value,
+  method: state.formStateReducer.method,
+  currency: state.formStateReducer.currency,
+  tag: state.formStateReducer.tag,
+  description: state.formStateReducer.description,
+  exchangeRates: state.formStateReducer.exchangeRates,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addCoin: () => dispatch(thunkWalletAction()),
-  addExpense: (expenses) => dispatch(thunkExpensesAction(expenses)),
+  editState: (name, value) => dispatch(editStateAction(name, value)),
+  editExpense: (editItem) => dispatch(editItemAction(editItem)),
 });
 
 Wallet.propTypes = {
@@ -219,7 +200,12 @@ Wallet.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
   currencies: PropTypes.arrayOf(PropTypes.object),
   addCoin: PropTypes.func,
-  addExpense: PropTypes.func,
+  id: PropTypes.string,
+  value: PropTypes.string,
+  method: PropTypes.string,
+  currency: PropTypes.string,
+  tag: PropTypes.string,
+  description: PropTypes.string,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

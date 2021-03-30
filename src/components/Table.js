@@ -1,11 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeItem } from '../actions';
+import { getItemAction, removeItem } from '../actions';
 
 class Table extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.buttonEdit = this.buttonEdit.bind(this);
+  }
+
+  buttonEdit(expense) {
+    const { editItemFunc } = this.props;
+
+    return (
+      <button
+        type="button"
+        data-testid="edit-btn"
+        onClick={ () => editItemFunc(expense) }
+      >
+        Editar
+      </button>
+    );
+  }
+
   render() {
     const { expenses, removeItemFunc } = this.props;
+
     return (
       <div>
         <table>
@@ -37,6 +58,7 @@ class Table extends React.Component {
                 </td>
                 <td>Real</td>
                 <td>
+                  {this.buttonEdit(expense)}
                   <button
                     type="button"
                     data-testid="delete-btn"
@@ -60,6 +82,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   removeItemFunc: (expenses, id) => dispatch(removeItem(expenses, id)),
+  editItemFunc: (expense) => dispatch(getItemAction(expense)),
 });
 
 Table.propTypes = {
