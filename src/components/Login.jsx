@@ -22,8 +22,7 @@ class Login extends React.Component {
     const { name, value } = target;
     this.setState({
       [name]: value,
-    });
-    this.stateVerifier();
+    }, () => this.stateVerifier());
   }
 
   handleClick(email) {
@@ -34,7 +33,7 @@ class Login extends React.Component {
   stateVerifier() {
     const { email, password } = this.state;
     const emailRegex = new RegExp(/^[\w.]+@[a-z]+.\w{2,3}$/g);
-    const passwordRegex = new RegExp(/[\w\D]{5}/g);
+    const passwordRegex = new RegExp(/[\w\D]{6}/g);
     if (emailRegex.test(email) && passwordRegex.test(password)) {
       this.setState({ allow: false });
     } else {
