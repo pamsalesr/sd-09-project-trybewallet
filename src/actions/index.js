@@ -1,4 +1,9 @@
 // Coloque aqui suas actions
 import userLogin from './userAction';
+import { fetchCurrency, fetchExchangeRate } from './walletActions';
 
-export default userLogin;
+export {
+  userLogin,
+  fetchCurrency,
+  fetchExchangeRate,
+};

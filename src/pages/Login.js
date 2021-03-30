@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import userLogin from '../actions';
+import { userLogin } from '../actions';
 
 const PASSWORD_MINIMUM_LENGTH = 6;
 
@@ -17,7 +17,10 @@ class Login extends React.Component {
         emailInput: '',
         passwordInput: '',
       },
-      typed: false,
+      typed: {
+        emailInput: false,
+        passwordInput: false,
+      },
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,7 +36,10 @@ class Login extends React.Component {
         ...state.formErrors,
         [name]: this.validateField(name, value),
       },
-      typed: true,
+      typed: {
+        ...state.typed,
+        [name]: true,
+      },
     }));
   }
 
@@ -56,7 +62,7 @@ class Login extends React.Component {
       emailInput,
       passwordInput,
       formErrors: { emailInput: emailError, passwordInput: passwordError },
-      typed,
+      typed: { emailInput: emailTyped, passwordInput: passwordTyped },
     } = this.state;
     const { logIn } = this.props;
     return (
@@ -88,7 +94,7 @@ class Login extends React.Component {
         <Link to="/carteira">
           <button
             type="button"
-            disabled={ !typed || emailError || passwordError }
+            disabled={ !emailTyped || !passwordTyped || emailError || passwordError }
             onClick={ () => logIn(emailInput) }
           >
             Entrar
