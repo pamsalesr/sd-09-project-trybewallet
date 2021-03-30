@@ -1,1 +1,5 @@
-// Coloque aqui suas actions
+import userAction from './userAction';
+
+export {
+  userAction,
+};
