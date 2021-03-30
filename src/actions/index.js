@@ -1,6 +1,11 @@
 // Coloque aqui suas actions
 import userLogin from './userAction';
-import { fetchCurrency, fetchExchangeRate, deleteExpense, editExpense } from './walletActions';
+import {
+  fetchCurrency,
+  fetchExchangeRate,
+  deleteExpense,
+  editExpense,
+} from './walletActions';
 
 export {
   userLogin,
