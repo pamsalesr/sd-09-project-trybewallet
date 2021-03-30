@@ -3,6 +3,7 @@ import {
   FETCH_SUCCESS,
   FETCH_FAIL,
   ADD_EXPENSE,
+  DELETE_EXPENSE,
 } from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
@@ -34,6 +35,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       expenses: [...state.expenses, action.expense],
+    });
+  case DELETE_EXPENSE:
+    return ({
+      ...state,
+      expenses: state.expenses
+        .filter((expense) => expense.id !== action.id),
     });
   default:
     return state;

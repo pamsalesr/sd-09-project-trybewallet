@@ -5,6 +5,7 @@ import {
   FETCH_FAIL,
   LOGIN,
   ADD_EXPENSE,
+  DELETE_EXPENSE,
 } from './actionsTypes';
 
 const startFetch = () => ({
@@ -38,4 +39,9 @@ export const loginEmail = (email) => ({
 export const addExpense = (expense) => ({
   type: ADD_EXPENSE,
   expense,
+});
+
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
 });

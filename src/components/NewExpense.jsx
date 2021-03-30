@@ -39,7 +39,7 @@ class NewExpense extends React.Component {
     const { value, description, currency, method, tag } = this.state;
     const { addExpenses, expenses } = this.props;
     const expense = {
-      id: expenses.length,
+      id: (expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1),
       value,
       description,
       currency,
