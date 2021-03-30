@@ -6,9 +6,9 @@ class Header extends Component {
   sumExpenses() {
     const { expenses } = this.props;
     const total = expenses.reduce((acc, expense) => (
-      acc + parseFloat(expense.value)
+      acc + parseFloat(expense.value * expense.exchangeRates[expense.currency].ask)
     ), 0);
-    return total;
+    return total.toFixed(2);
   }
 
   render() {

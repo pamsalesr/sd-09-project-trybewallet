@@ -3,6 +3,7 @@ import {
   CURRENCY_REQUEST_SUCCESS,
   CURRENCY_REQUEST_FAILURE,
   EXCHANGE_RATE_REQUEST,
+  DELETE_EXPENSE,
 } from './actionTypes';
 
 const currencyRequest = () => ({
@@ -50,3 +51,8 @@ export const fetchExchangeRate = (expenses) => (
     }
   }
 );
+
+export const deleteExpense = (expense) => ({
+  type: DELETE_EXPENSE,
+  expense,
+});

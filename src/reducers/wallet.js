@@ -4,6 +4,7 @@ import {
   CURRENCY_REQUEST_SUCCESS,
   CURRENCY_REQUEST_FAILURE,
   EXCHANGE_RATE_REQUEST,
+  DELETE_EXPENSE,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -39,6 +40,12 @@ const wallet = (state = INITIAL_STATE, action) => {
         ...action.expenses,
         exchangeRates: { ...action.data },
       }],
+      isFetching: false,
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== action.expense),
     };
   default:
     return state;
