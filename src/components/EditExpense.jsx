@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { finishEdit } from '../actions';
-// import cotationsApi from '../services/fetchCotation';
 
 class EditExpense extends React.Component {
   constructor(props) {
@@ -149,21 +148,19 @@ class EditExpense extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form-container">
         <form>
           { this.renderValue() }
           { this.renderDescription() }
           { this.renderCurrency() }
           { this.renderMethod() }
           { this.renderTag() }
-          <div>
-            <button
-              type="button"
-              onClick={ this.handleClick }
-            >
-              Editar despesa
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Editar despesa
+          </button>
         </form>
       </div>
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { loginEmail } from '../actions';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -51,27 +52,39 @@ class Login extends React.Component {
     return (
       <main>
         {isLoggedIn && <Redirect to="/carteira" />}
-        <input
-          type="text"
-          name="email"
-          data-testid="email-input"
-          onChange={ this.handleChange }
-          value={ email }
-        />
-        <input
-          type="text"
-          name="password"
-          data-testid="password-input"
-          onChange={ this.handleChange }
-          value={ password }
-        />
-        <button
-          type="button"
-          disabled={ isDisabled }
-          onClick={ this.handleClick }
-        >
-          Entrar
-        </button>
+        <div className="login-container">
+          <h1>Trybe Wallet</h1>
+          <h3>Por favor, faça o login.</h3>
+          <label htmlFor="email-input">
+            Email:
+            <input
+              type="text"
+              name="email"
+              data-testid="email-input"
+              onChange={ this.handleChange }
+              value={ email }
+              id="email-input"
+            />
+          </label>
+          <label htmlFor="password-input">
+            Senha:
+            <input
+              type="text"
+              name="password"
+              data-testid="password-input"
+              onChange={ this.handleChange }
+              value={ password }
+              id="password-input"
+            />
+          </label>
+          <button
+            type="button"
+            disabled={ isDisabled }
+            onClick={ this.handleClick }
+          >
+            Entrar
+          </button>
+        </div>
       </main>
     );
   }

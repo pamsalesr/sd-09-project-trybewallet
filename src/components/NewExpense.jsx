@@ -160,21 +160,19 @@ class NewExpense extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form-container">
         <form>
           { this.renderValue() }
           { this.renderDescription() }
           { this.renderCurrency() }
           { this.renderMethod() }
           { this.renderTag() }
-          <div>
-            <button
-              type="button"
-              onClick={ this.handleClick }
-            >
-              Adicionar despesa
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa
+          </button>
         </form>
       </div>
     );
