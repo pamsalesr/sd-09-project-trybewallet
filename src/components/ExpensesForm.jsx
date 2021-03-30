@@ -6,6 +6,7 @@ class ExpensesForm extends React.Component {
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
     this.dropDownCreator = this.dropDownCreator.bind(this);
     this.currenciesToState = this.currenciesToState.bind(this);
+    this.paymentTypeCreator = this.paymentTypeCreator.bind(this);
     this.state = {
       currencies: {},
     };
@@ -49,12 +50,23 @@ class ExpensesForm extends React.Component {
     );
   }
 
+  paymentTypeCreator() {
+    return (
+      <select data-testid="method-input">
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartão de crédito">Cartão de crédito</option>
+        <option value="Cartão de débito">Cartão de débito</option>
+      </select>
+    );
+  }
+
   render() {
     return (
       <div>
         <input type="text" placeholder="Valor" data-testid="value-input" />
         <input type="text" placeholder="Descrição" data-testid="description-input" />
         {this.dropDownCreator()}
+        {this.paymentTypeCreator()}
       </div>
     );
   }
