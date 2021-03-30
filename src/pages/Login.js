@@ -9,17 +9,20 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: '',
+      password: '',
       redirect: false,
+      disable: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.verifier = this.verifier.bind(this);
   }
 
   handleChange({ target }) {
     const { value, name } = target;
     this.setState({
       [name]: value,
-    });
+    }, () => this.verifier());
   }
 
   handleClick(email) {
@@ -28,8 +31,20 @@ class Login extends React.Component {
     this.setState({ email: '', redirect: true });
   }
 
+  verifier() {
+    const { email, password } = this.state;
+    const emailVerifier = /^[\w.]+@[a-z]+\.\w{2,3}$/g;
+    const passwordVerifier = /[\w\D]{6}/g;
+    if (emailVerifier.test(email) && passwordVerifier.test(password)) {
+      this.setState({ disable: false });
+      console.log(typeof password);
+    } else {
+      this.setState({ disable: true });
+    }
+  }
+
   render() {
-    const { email, redirect } = this.state;
+    const { email, redirect, disable } = this.state;
     if (redirect) return <Redirect push to="/carteira" />;
 
     return (
@@ -42,7 +57,6 @@ class Login extends React.Component {
             type="email"
             placeholder="alguem@alguem.com"
             id="email"
-            maxLength="30"
             value={ email }
             name="email"
             required
@@ -64,6 +78,7 @@ class Login extends React.Component {
         <button
           type="button"
           onClick={ () => this.handleClick(email) }
+          disabled={ disable }
         >
           Entrar
         </button>
