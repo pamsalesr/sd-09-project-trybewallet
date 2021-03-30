@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-
     const { userState, walletState } = this.props;
-
-    return ( 
+    return (
       <div>
         <section>
           <label htmlFor="user-email">
@@ -44,6 +43,11 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = {
+  userState: PropTypes.object.isRequired,
+  walletState: PropTypes.object,
+};
 
 const mapStateToProps = (state) => ({
   userState: state.user,
