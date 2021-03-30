@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deletedExpense } from '../actions';
+import { deletedExpense, editRequest } from '../actions';
 
 class TableExpenses extends Component {
   constructor(props) {
@@ -14,6 +14,11 @@ class TableExpenses extends Component {
     const { expenses, deleteExpense } = this.props;
     const filteredExpenses = expenses.filter((expense) => expense.id !== filter.id);
     deleteExpense(filteredExpenses);
+  }
+
+  handleEdit(expense) {
+    const { expenseToEdit } = this.props;
+    expenseToEdit(expense);
   }
 
   renderTableBody() {
@@ -38,7 +43,13 @@ class TableExpenses extends Component {
             </td>
             <td>Real</td>
             <td>
-              <button type="button">Editar</button>
+              <button
+                type="button"
+                data-testid="edit-btn"
+                onClick={ () => this.handleEdit(expense) }
+              >
+                Editar
+              </button>
               <button
                 type="button"
                 data-testid="delete-btn"
@@ -81,6 +92,7 @@ const mapStatetoProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteExpense: (expenses) => dispatch(deletedExpense(expenses)),
+  expenseToEdit: (expense) => dispatch(editRequest(expense)),
 });
 
 TableExpenses.propTypes = {

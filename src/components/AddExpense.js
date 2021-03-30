@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies, addNewExpense } from '../actions';
+import { fetchCurrencies, addNewExpense, editExpense } from '../actions';
 
 class AddExpense extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      id: 0,
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-    };
-
+    const { editing, expenseToEdit } = this.props;
+    if (editing) {
+      this.state = expenseToEdit;
+    } else {
+      this.state = {
+        id: 0,
+        value: '',
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+      };
+    }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderValueInput = this.renderValueInput.bind(this);
@@ -23,6 +26,9 @@ class AddExpense extends Component {
     this.renderCurrencyInput = this.renderCurrencyInput.bind(this);
     this.renderPaymentInput = this.renderPaymentInput.bind(this);
     this.renderTagInput = this.renderTagInput.bind(this);
+    this.renderAddButton = this.renderAddButton.bind(this);
+    this.renderEditButton = this.renderEditButton.bind(this);
+    this.handleEditButton = this.handleEditButton.bind(this);
   }
 
   componentDidMount() {
@@ -32,18 +38,25 @@ class AddExpense extends Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
   }
 
   handleClick() {
     const { addExpense } = this.props;
     addExpense(this.state);
-    this.setState((state) => ({
-      id: state.id + 1,
-      value: '',
-    }));
+    this.setState((state) => ({ id: state.id + 1, value: '', description: '' }));
+  }
+
+  handleEditButton() {
+    const { expenses, dispatchEditedExpenses, expenseToEdit } = this.props;
+    const editedState = this.state;
+    const editedExpense = { ...expenseToEdit, ...editedState };
+    const editedExpenses = expenses.map((expense) => (
+      (expense.id === editedExpense.id)
+        ? { ...expense, ...editedExpense }
+        : { ...expense }
+    ));
+    dispatchEditedExpenses(editedExpenses);
   }
 
   renderValueInput() {
@@ -109,7 +122,6 @@ class AddExpense extends Component {
   renderPaymentInput() {
     const paymentMethods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const { method } = this.state;
-
     return (
       <label htmlFor="method">
         Pagamento:
@@ -134,7 +146,6 @@ class AddExpense extends Component {
   renderTagInput() {
     const expenseTags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     const { tag } = this.state;
-
     return (
       <label htmlFor="tag">
         Categoria:
@@ -156,8 +167,31 @@ class AddExpense extends Component {
     );
   }
 
+  renderAddButton() {
+    return (
+      <button
+        type="button"
+        onClick={ this.handleClick }
+      >
+        Adicionar despesa
+      </button>
+    );
+  }
+
+  renderEditButton() {
+    return (
+      <button
+        type="button"
+        data-testid="edit-btn"
+        onClick={ this.handleEditButton }
+      >
+        Editar despesa
+      </button>
+    );
+  }
+
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, editing } = this.props;
     if (isLoading) return <div>...Loading</div>;
     return (
       <form>
@@ -166,12 +200,8 @@ class AddExpense extends Component {
         { this.renderCurrencyInput() }
         { this.renderPaymentInput() }
         { this.renderTagInput() }
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
+        { !editing && this.renderAddButton() }
+        { editing && this.renderEditButton() }
       </form>
     );
   }
@@ -180,16 +210,21 @@ class AddExpense extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   isLoading: state.wallet.isLoading,
+  editing: state.wallet.edit,
+  expenseToEdit: state.wallet.toEdit,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCoins: () => dispatch(fetchCurrencies()),
   addExpense: (expense) => dispatch(addNewExpense(expense)),
+  dispatchEditedExpenses: (expenses) => dispatch(editExpense(expenses)),
 });
 
 AddExpense.propTypes = {
   currencies: PropTypes.arrayOf(),
   isLoading: PropTypes.string,
+  editing: PropTypes.boll,
 }.isRequered;
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddExpense);

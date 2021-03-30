@@ -28,7 +28,7 @@ class Login extends React.Component {
   validInput() {
     const { email, password } = this.state;
     const validEmail = new RegExp(/^[\w.]+@[a-z]+.\w{2,3}$/g);
-    const validPassword = new RegExp(/[\w\D]{5}/g);
+    const validPassword = new RegExp(/[\w\D]{6}/g);
     if (validEmail.test(email) && validPassword.test(password)) {
       this.setState({ disable: false });
     } else this.setState({ disable: true });
