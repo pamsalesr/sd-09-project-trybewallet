@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 import InputGeneric from './InputGeneric';
+import expensesAction from '../actions/expensesAction';
 
 class FormDispense extends React.Component {
   constructor(props) {
@@ -8,14 +11,16 @@ class FormDispense extends React.Component {
     this.inputsForm = this.inputsForm.bind(this);
     this.fecthCurrency = this.fecthCurrency.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      valueDispense: 0,
-      discription: '',
-      currencyList: [],
-      currencySelected: '',
+      id: 0,
+      value: 0,
+      currency: '',
       method: '',
       tag: '',
+      description: '',
+      currencyList: [],
     };
   }
 
@@ -44,48 +49,53 @@ class FormDispense extends React.Component {
     });
   }
 
+  handleClick() {
+    const { expensesAction: sendData } = this.props;
+    sendData(this.state);
+    this.setState((oldState) => ({
+      id: oldState.id + 1,
+      value: 0,
+      currency: '',
+      method: '',
+      tag: '',
+      description: '',
+    }));
+  }
+
   inputsForm() {
     const {
-      valueDispense,
-      discription,
-      currencyList,
-      currencySelected,
-      method,
-      tag } = this.state;
+      value,
+      description,
+      currencyList } = this.state;
     return (
       <div>
         <InputGeneric
+          title="Valor"
           type="number"
           dataTestId="value-input"
-          name="valueDispense"
-          value={ valueDispense }
+          name="value"
+          value={ value }
           functionChange={ this.handleChange }
         />
         <InputGeneric
+          title="Descrição"
           type="text"
           dataTestId="description-input"
-          name="discription"
-          value={ discription }
+          name="description"
+          value={ description }
           functionChange={ this.handleChange }
         />
-        <select data-testid="currency-input" value={ currencySelected }>
+        <select
+          data-testid="currency-input"
+          name="currency"
+          onChange={ this.handleChange }
+        >
+          <option value="">Moeda</option>
           {currencyList.map((currency) => (
             <option key={ currency } data-testid={ currency } value={ currency }>
               {currency}
             </option>
           ))}
-        </select>
-        <select data-testid="method-input" value={ method }>
-          <option value="Dinheiro">Dinheiro</option>
-          <option value="Cartão de crédito">Cartão de crédito</option>
-          <option value="Cartão de débito">Cartão de débito</option>
-        </select>
-        <select data-testid="tag-input" value={ tag }>
-          <option value="Alimentação">Alimentação</option>
-          <option value="Lazer">Lazer</option>
-          <option value="Trabalho">Trabalho</option>
-          <option value="Transporte">Transporte</option>
-          <option value="Saúde">Saúde</option>
         </select>
       </div>
     );
@@ -95,10 +105,38 @@ class FormDispense extends React.Component {
     return (
       <section>
         { this.inputsForm() }
-        <button type="button">Adicionar despesa</button>
+        <select
+          data-testid="method-input"
+          onChange={ this.handleChange }
+          name="method"
+        >
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
+        </select>
+        <select
+          data-testid="tag-input"
+          onChange={ this.handleChange }
+          name="tag"
+        >
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+        </select>
+        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
       </section>
     );
   }
 }
 
-export default FormDispense;
+const mapDispatchToProps = {
+  expensesAction,
+};
+
+FormDispense.propTypes = {
+  expensesAction: func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(FormDispense);

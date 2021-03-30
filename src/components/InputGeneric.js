@@ -3,20 +3,25 @@ import { string, func } from 'prop-types';
 
 class InputGeneric extends React.Component {
   render() {
-    const { type, name, value, functionChange, dataTestId } = this.props;
+    const { title, type, name, value, functionChange, dataTestId } = this.props;
     return (
-      <input
-        type={ type }
-        name={ name }
-        value={ value }
-        onChange={ functionChange }
-        data-testid={ dataTestId }
-      />
+      <label htmlFor={ name }>
+        { title }
+        <input
+          type={ type }
+          name={ name }
+          id={ name }
+          value={ value }
+          onChange={ functionChange }
+          data-testid={ dataTestId }
+        />
+      </label>
     );
   }
 }
 
 InputGeneric.propTypes = {
+  title: string.isRequired,
   type: string.isRequired,
   name: string.isRequired,
   value: string.isRequired,

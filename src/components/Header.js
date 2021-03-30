@@ -1,17 +1,34 @@
 import React from 'react';
-import { string, shape } from 'prop-types';
+import { string, shape, objectOf } from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.calcConvertion = this.calcConvertion.bind(this);
+  }
+
+  calcConvertion() {
+    const { wallet: { expenses } } = this.props;
+    let total = 0;
+    expenses.forEach((expense) => {
+      const { value, currency, exchangeRates } = expense;
+      const currencyFiltred = Object.entries(exchangeRates)
+        .filter((element) => element.includes(currency))[0][1];
+      total += value * Number(currencyFiltred.ask);
+    });
+    return total;
+  }
+
   render() {
     const { userData: { email } } = this.props;
-    const value = 0.00;
     return (
       <header>
         <div>
           <p data-testid="email-field">{ email }</p>
           <p data-testid="total-field">
-            {`Dispesa Total R$ ${value}`}
+            {`Dispesa Total R$ ${this.calcConvertion()}`}
             <span data-testid="header-currency-field">BRL</span>
           </p>
         </div>
@@ -22,11 +39,17 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   userData: state.user,
+  wallet: state.wallet,
 });
 
 Header.propTypes = {
   userData: shape({
     email: string.isRequired,
+  }).isRequired,
+  wallet: shape({
+    value: string.isRequired,
+    currency: string.isRequired,
+    exchangeRates: shape(objectOf).isRequired,
   }).isRequired,
 };
 
