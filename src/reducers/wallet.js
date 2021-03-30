@@ -1,11 +1,17 @@
-// Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-// import React, { Component } from 'react';
-// // import { connect } from 'react-redux';
+const INITIAL_STATE = {
+  currencies: [],
+  expenses: [],
+};
 
-// class Wallet extends Component {
-//   render() {
-//     return <p>teste</p>;
-//   }
-// }
+const ADD_TO_WALLET = 'ADD_TO_WALLET';
 
-// export default Wallet;
+function wallet(state = INITIAL_STATE, action) {
+  switch (action.type) {
+  case ADD_TO_WALLET:
+    return { ...state, expenses: action.expense };
+  default:
+    return state;
+  }
+}
+
+export default wallet;
