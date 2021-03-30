@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { user } from '../actions';
+import { PropTypes } from 'prop-types';
+import { Redirect } from 'react-router';
+import { doLogin } from '../actions';
 import './Login.css';
 
 class Login extends React.Component {
@@ -9,13 +11,18 @@ class Login extends React.Component {
     this.state = {
       invalidPass: false,
       invalidEmail: false,
+      loggedIn: false,
       email: '',
       password: '',
     };
 
     this.validateFields = this.validateFields.bind(this);
-    this.redirectPage = this.redirectPage.bind(this);
+    this.setLogOn = this.setLogOn.bind(this);
     this.loginEnabled = this.loginEnabled.bind(this);
+  }
+
+  setLogOn() {
+    this.setState({ loggedIn: true });
   }
 
   validateFields() {
@@ -45,64 +52,62 @@ class Login extends React.Component {
     return (invalidPass || invalidEmail);
   }
 
-  redirectPage() {
-    const { history } = this.props;
-    history.push('/carteira');
-  }
-
   render() {
-    const { invalidEmail, invalidPass } = this.state;
+    const { invalidEmail, invalidPass, loggedIn, email } = this.state;
+    const { login } = this.props;
     return (
-      <main>
-        <form>
-          <h1>Trybe Wallet</h1>
-          <label htmlFor="user">
-            usuário:
-            <input
-              data-testid="email-input"
-              type="text"
-              name="user"
-              onChange={ (event) => {
-                this.validateFields();
-                this.setState({ email: event.target.value });
-              } }
-            />
-            {invalidEmail && <span className="invalid">Insira um email valido</span>}
-          </label>
-          <label htmlFor="password">
-            senha:
-            <input
-              data-testid="password-input"
-              id="input-senha"
-              type="password"
-              name="password"
-              onChange={ (event) => {
-                this.validateFields();
-                this.setState({ password: event.target.value });
-              } }
-            />
-            {invalidPass
-              && <span className="invalid">Senha de pelo menos 6 caracteres</span>}
-          </label>
-          <button
-            type="button"
-            disabled={ this.loginEnabled() }
-            onClick={ () => {
-              this.redirectPage();
-              // this.props.user({ email });
-            } }
-          >
-            Entrar
-          </button>
-        </form>
-      </main>
+      loggedIn ? <Redirect to="/carteira" />
+        : (
+          <main>
+            <form>
+              <h1>Trybe Wallet</h1>
+              <label htmlFor="user">
+                usuário:
+                <input
+                  data-testid="email-input"
+                  type="text"
+                  name="user"
+                  onChange={ (event) => {
+                    this.validateFields();
+                    this.setState({ email: event.target.value });
+                  } }
+                />
+                {invalidEmail && <span className="invalid">Insira um email valido</span>}
+              </label>
+              <label htmlFor="password">
+                senha:
+                <input
+                  data-testid="password-input"
+                  id="input-senha"
+                  type="password"
+                  name="password"
+                  onChange={ (event) => {
+                    this.validateFields();
+                    this.setState({ password: event.target.value });
+                  } }
+                />
+                {invalidPass
+                  && <span className="invalid">Senha de pelo menos 6 caracteres</span>}
+              </label>
+              <button
+                type="button"
+                disabled={ this.loginEnabled() }
+                onClick={ () => { this.setLogOn(); login({ email }); } }
+              >
+                Entrar
+              </button>
+            </form>
+          </main>)
     );
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   login: (event) => dispatch(user(event)),
-// });
-// connect(null, mapDispatchToProps)();
+const mapDispatchToProps = (dispatch) => ({
+  login: (event) => dispatch(doLogin(event)),
+});
 
-export default Login;
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
