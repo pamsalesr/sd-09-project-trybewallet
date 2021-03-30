@@ -51,10 +51,9 @@ export const newExpanseAndCurrency = (expense, exchangeRates) => {
   };
 };
 
-export const deleteExpense = (index, expense) => ({
+export const deleteExpense = (index) => ({
   type: DELETE_EXPENSE,
   index,
-  expense,
 });
 
 export const editExpense = (editID) => ({

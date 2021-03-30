@@ -43,7 +43,6 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: state.expenses
         .filter((expanse) => expanse !== state.expenses[action.index]),
-      // totalExpense: parseFloat(state.totalExpense) - parseFloat(action.expense),
     };
   case EDIT_EXPENSE:
     return {

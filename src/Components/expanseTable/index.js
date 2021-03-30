@@ -6,7 +6,7 @@ import { deleteExpense, editExpense } from '../../actions';
 import './expanseTable.css';
 
 class ExpanseTable extends Component {
-  renderButton(i, totalExpense) {
+  renderButton(i) {
     const { deliteItem, editItem } = this.props;
     return (
       <td>
@@ -22,7 +22,7 @@ class ExpanseTable extends Component {
           type="button"
           data-testid="delete-btn"
           className="btn btn-danger"
-          onClick={ () => deliteItem(i, totalExpense) }
+          onClick={ () => deliteItem(i) }
         >
           <RiDeleteBin2Fill />
         </button>
@@ -47,9 +47,8 @@ class ExpanseTable extends Component {
         </tr>
         {
           expenses.map((expense, i) => {
-            // const exchangeArray = Object.values(expense.exchangeRates);
-            // const coin = exchangeArray.find((obj) => obj.code === expense.currency);
-            const { name, ask } = expense.exchangeRates[expense.currency];
+            const { exchangeRates, currency } = expense;
+            const { name, ask } = exchangeRates[currency];
             const totalExpense = parseFloat(expense.value * ask);
             return (
               <tr key={ i }>
@@ -61,7 +60,7 @@ class ExpanseTable extends Component {
                 <td>{parseFloat(ask).toFixed(2)}</td>
                 <td>{parseFloat(expense.value * ask).toFixed(2)}</td>
                 <td>Real</td>
-                { this.renderButton(i, totalExpense) }
+                { this.renderButton(i) }
               </tr>
             );
           })
