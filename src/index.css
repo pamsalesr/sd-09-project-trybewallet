@@ -9,7 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 90vh;
-  width: 80vw;
+  width: 100vw;
 }
 
 #login form {
@@ -45,6 +45,23 @@ body {
 
 #wallet-header span {
   margin-right: 20px;
+}
+
+#inputs-section form {
+  display: flex;
+  width: 100vw;
+  justify-content: space-around;
+  padding: 20px;
+  box-shadow: black 2px 2px 10px;
+  position: absolute;
+  top: 58px;
+  left: 0;
+  align-items: stretch;
+}
+
+#inputs-section label {
+  display: flex;
+  flex-direction: column;
 }
 
 code {

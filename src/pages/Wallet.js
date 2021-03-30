@@ -10,6 +10,7 @@ class Wallet extends React.Component {
     super();
 
     this.state = {
+      expensesSum: 0,
       currencies: [],
       currentExpense: {
         currency: 'USD',
@@ -21,6 +22,7 @@ class Wallet extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.sumExpenses = this.sumExpenses.bind(this);
   }
 
   componentDidMount() {
@@ -58,8 +60,26 @@ class Wallet extends React.Component {
     });
   }
 
+  sumExpenses() {
+    const { expenses } = this.props;
+
+    const expensesSum = expenses
+      .map(({ value }) => parseInt(value, 10))
+      .reduce((acc, current) => acc + current, 0);
+
+    this.setState({
+      expensesSum,
+    });
+  }
+
   handleClick(addExpense, currentExpense) {
+    const interval = 5000;
+
     addExpense(currentExpense);
+
+    setTimeout(() => {
+      this.sumExpenses();
+    }, interval);
 
     this.setState({
       currentExpense: {
@@ -73,17 +93,17 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { currencies, currentExpense } = this.state;
+    const { currencies, currentExpense, expensesSum } = this.state;
     const { currency, description, method, tag, value } = currentExpense;
     const { email, addExpense } = this.props;
 
     return (
       <div>
         <header>
-          <Header email={ email } />
+          <Header email={ email } expensesSum={ expensesSum } />
         </header>
         <main>
-          <section>
+          <section id="inputs-section">
             <Inputs
               handleChange={ this.handleChange }
               currencies={ currencies }
@@ -103,6 +123,7 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -110,8 +131,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Wallet.propTypes = {
-  email: PropTypes.string.isRequired,
-  addExpense: PropTypes.func.isRequired,
-};
+  email: PropTypes.string,
+  addExpense: PropTypes.func,
+  expenses: PropTypes.arrayOf({}),
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

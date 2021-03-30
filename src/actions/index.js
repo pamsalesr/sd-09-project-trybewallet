@@ -13,3 +13,11 @@ export const registerCurrenciesAction = (currencies) => ({
   type: 'REGISTER_CURRENCIES',
   currencies,
 });
+
+export const getCurrenciesAction = () => {
+  return async (dispatch) => {
+    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
+    const request = await fetch(endpoint);
+    
+  };
+};

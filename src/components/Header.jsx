@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-    const { email } = this.props;
+    const { email, expensesSum } = this.props;
 
     return (
       <div id="wallet-header">
@@ -12,7 +12,7 @@ class Header extends React.Component {
           <span data-testid="email-field">{`Email: ${email}`}</span>
           <span>
             Despesa total:
-            <span data-testid="total-field"> 0</span>
+            <span data-testid="total-field">{ ` ${expensesSum}` }</span>
             <span data-testid="header-currency-field">BRL</span>
           </span>
         </div>
@@ -22,7 +22,8 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
-};
+  email: PropTypes.string,
+  expensesSum: PropTypes.number,
+}.isRequired;
 
 export default Header;

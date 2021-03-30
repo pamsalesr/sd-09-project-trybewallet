@@ -87,6 +87,7 @@ class Inputs extends React.Component {
     const { tag } = this.props;
     return (
       <label htmlFor="tag">
+        Tag:
         <select
           onChange={ handleChange }
           value={ tag }
