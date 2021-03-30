@@ -1,4 +1,4 @@
-import LOGIN from '../actions/ActionsDescribe';
+import { LOGIN } from '../actions/ActionsDescribe';
 
 const INITIAL_STATE = {
   email: '',

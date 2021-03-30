@@ -1,8 +1,11 @@
-import LOGIN from './ActionsDescribe';
+import { LOGIN, ADD, DELETE } from './ActionsDescribe';
 
-const login = (email) => ({
+export const login = (email) => ({
   type: LOGIN,
   email,
 });
 
-export default login;
+export const launchOperation = (launch) => ({
+  type: ADD,
+  launch,
+});
