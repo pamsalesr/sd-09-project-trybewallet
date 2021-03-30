@@ -20,7 +20,7 @@ export default class InputBox extends Component {
 
     return (
       <label htmlFor={ id }>
-        { label }
+        {/* { label } */}
         <input
           type={ type }
           id={ id }

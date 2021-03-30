@@ -20,7 +20,7 @@ export default class Dropdown extends Component {
 
     return (
       <label htmlFor={ id }>
-        { label }
+        {/* { label } */}
         <select
           id={ id }
           data-testid={ id }
