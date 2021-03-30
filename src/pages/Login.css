@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap') ;
-
 .main-div {
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
-  font-family: Playfair Display, serif;
   height: 100vh;
   justify-content: center;
   margin: 0;

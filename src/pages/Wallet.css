@@ -1,0 +1,11 @@
+header {
+  border-bottom: black solid 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 30px;
+}
+
+.span-header {
+  margin: 0 5px;
+}
