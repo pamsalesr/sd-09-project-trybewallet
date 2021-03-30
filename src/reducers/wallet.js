@@ -12,4 +12,4 @@ function wallet(state = INITIAL_STATE, action) {
   }
 }
 
-  export default wallet;
+export default wallet;
