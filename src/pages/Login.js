@@ -10,16 +10,14 @@ class Login extends React.Component {
     this.checkFormats = this.checkFormats.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { email: props, password: '', redirect: false };
+    this.state = { email: '', password: '', redirect: false };
   }
-
-  checkEmail(email) { return /^[\w.]+@[a-z]+\.\w{2,3}$/g.test(email); }
-
-  checkPassword(password) { return /[\w\D]{6}/g.test(password); }
 
   checkFormats() {
     const { email, password } = this.state;
-    return this.checkEmail(email) && this.checkPassword(password);
+    const emailFormat = /^[\w.]+@[a-z]+\.\w{2,3}$/g.test(email);
+    const passwordFormat = /[\w\D]{6}/g.test(password);
+    return emailFormat && passwordFormat;
   }
 
   handleChange({ target }) {
@@ -64,7 +62,5 @@ class Login extends React.Component {
 }
 
 Login.propTypes = { submit: PropTypes.func.isRequired };
-
-const mapStateToProps = (state) => ({ email: state.user.email });
 const mapDispatchToProps = (dispatch) => ({ submit: (email) => dispatch(login(email)) });
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
