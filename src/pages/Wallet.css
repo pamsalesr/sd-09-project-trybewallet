@@ -34,8 +34,8 @@ body {
 }
 
 .form-container input {
-  height: 15px;
   border-radius: 10px;
+  height: 15px;
   margin: 0 10px;
 }
 
@@ -58,7 +58,7 @@ td , th {
   width: 100px;
 }
 
-tr:nth-child(even) {
+tr:nth-child( even ) {
   background-color: #f2f2f2;
 }
 
@@ -78,8 +78,8 @@ th {
   background-color: #32a791;
   color: white;
   display: flex;
-  justify-content: space-between;
   height: 50px;
+  justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
 }
