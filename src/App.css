@@ -46,14 +46,14 @@
 }
 
 .header {
+  align-items: center;
   background: #1abc9c;
   color: white;
-  align-items: center;
   display: flex;
+  font-size: 30px;
+  height: 10px;
   justify-content: space-around;
   padding: 60px;
-  font-size: 30px;
   text-align: center;
-  height: 10px;
   width: 90%;
 }
