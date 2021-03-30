@@ -1,11 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense } from '../actions';
+import { deleteExpense, edit } from '../actions';
 
 class Expenses extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderButtons = this.renderButtons.bind(this);
+  }
+
+  renderButtons(id) {
+    const { delExpense, editExpense } = this.props;
+    return (
+      <div>
+        <button
+          type="button"
+          data-testid="delete-btn"
+          onClick={ () => delExpense(id) }
+        >
+          Deletar
+        </button>
+        <button
+          type="button"
+          data-testid="edit-btn"
+          onClick={ () => editExpense(id) }
+        >
+          Editar
+        </button>
+      </div>
+    );
+  }
+
   render() {
-    const { expenses, delExpense } = this.props;
+    const { expenses } = this.props;
     const descriptions = ['Descrição', 'Tag', 'Método de pagamento',
       'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
       'Editar/Excluir'];
@@ -33,15 +60,7 @@ class Expenses extends React.Component {
                     <td>{ (+(ask)).toFixed(2) }</td>
                     <td>{ (+(ask) * +(value)).toFixed(2) }</td>
                     <td>Real</td>
-                    <td>
-                      <button
-                        type="button"
-                        data-testid="delete-btn"
-                        onClick={ () => delExpense(id) }
-                      >
-                        Deletar
-                      </button>
-                    </td>
+                    <td>{ this.renderButtons(id) }</td>
                   </tr>
                 );
               })
@@ -59,6 +78,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   delExpense: (id) => dispatch(deleteExpense(id)),
+  editExpense: (id) => dispatch(edit(id)),
 });
 
 Expenses.propTypes = {

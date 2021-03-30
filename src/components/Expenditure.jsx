@@ -1,18 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveCurrencies, setExpense } from '../actions';
+import { reset, saveCurrencies, setExpense } from '../actions';
+
+const INITIAL_STATE = {
+  value: '',
+  description: '',
+  currency: '',
+  method: '',
+  tag: '',
+};
 
 class Expenditure extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: '',
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-    };
+    const { edit, editExpense } = this.props;
+    if (edit) {
+      this.state = { ...editExpense[0] };
+    } else {
+      this.state = INITIAL_STATE;
+    }
     this.handleInputs = this.handleInputs.bind(this);
     this.renderSelection = this.renderSelection.bind(this);
     this.renderValue = this.renderValue.bind(this);
@@ -20,6 +27,8 @@ class Expenditure extends React.Component {
     this.renderMethod = this.renderMethod.bind(this);
     this.renderTag = this.renderTag.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
+    this.renderButton = this.renderButton.bind(this);
+    this.editExpense = this.editExpense.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +52,11 @@ class Expenditure extends React.Component {
       tag: '',
     });
     saveExpense(this.state);
+  }
+
+  editExpense() {
+    const { resetExpense } = this.props;
+    resetExpense(this.state);
   }
 
   renderSelection(value) {
@@ -136,8 +150,20 @@ class Expenditure extends React.Component {
     );
   }
 
+  renderButton(edit) {
+    return (
+      <button
+        type="button"
+        onClick={ edit ? this.editExpense : this.saveExpense }
+      >
+        { edit ? 'Editar despesa' : 'Adicionar despesa' }
+      </button>
+    );
+  }
+
   render() {
     const { value, description, currency, method, tag } = this.state;
+    const { edit } = this.props;
     return (
       <div>
         <form>
@@ -147,12 +173,7 @@ class Expenditure extends React.Component {
           { this.renderMethod(method) }
           { this.renderTag(tag) }
         </form>
-        <button
-          type="button"
-          onClick={ this.saveExpense }
-        >
-          Adicionar despesa
-        </button>
+        { this.renderButton(edit) }
       </div>
     );
   }
@@ -161,10 +182,13 @@ class Expenditure extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrencies: () => dispatch(saveCurrencies()),
   saveExpense: (expense) => dispatch(setExpense(expense)),
+  resetExpense: (expense) => dispatch(reset(expense)),
 });
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  edit: state.wallet.edit,
+  editExpense: state.wallet.editExpense,
 });
 
 Expenditure.propTypes = {
