@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import login from '../actions';
 
 class Login extends React.Component {
@@ -61,6 +62,8 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = { submit: PropTypes.func.isRequired };
 
 const mapStateToProps = (state) => ({ email: state.user.email });
 const mapDispatchToProps = (dispatch) => ({ submit: (email) => dispatch(login(email)) });
