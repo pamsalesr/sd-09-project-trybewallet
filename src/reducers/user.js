@@ -1,16 +1,12 @@
 import SAVE_EMAIL from '../actions/actionTypes';
 
-const initialState = {
-  user: '',
-};
+const initialState = {};
 
 function user(state = initialState, action) {
+  const email = action.user;
   switch (action.type) {
   case SAVE_EMAIL:
-    email = action.user;
-    return {
-      ...state, email,
-    };
+    return { email };
   default:
     return state;
   }
