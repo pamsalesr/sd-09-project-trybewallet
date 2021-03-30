@@ -5,7 +5,6 @@ const INITIAL_SATATE = {
 };
 
 const user = (state = INITIAL_SATATE, action) => {
-  console.log(action);
   switch (action.type) {
   case 'SUBMIT_LOGIN':
     return ({
