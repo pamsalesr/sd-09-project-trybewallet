@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { arrayOf, string, func } from 'prop-types';
+import { connect } from 'react-redux';
 import InputBox from '../InputBox';
 import Dropdown from '../Dropdown';
+import { getCurrenciesList } from '../../actions';
 
-export default class Form extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
-    this.apiUrl = 'https://economia.awesomeapi.com.br/json/all';
+    this.API_URL = 'https://economia.awesomeapi.com.br/json/all';
     this.state = {
-      currencies: [],
       payMethods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       categories: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
       formControl: {
@@ -19,22 +21,12 @@ export default class Form extends Component {
       },
     };
     this.updateFormControl = this.updateFormControl.bind(this);
+    this.sendExpenseForm = this.sendExpenseForm.bind(this);
   }
 
   componentDidMount() {
-    this.fetchCurrencies();
-  }
-
-  async fetchCurrencies() {
-    try {
-      const resultHttp = await fetch(this.apiUrl);
-      const currencies = await resultHttp.json();
-      this.setState({
-        currencies: Object.keys(currencies).filter((currency) => currency !== 'USDT'),
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const { getCurrencies } = this.props;
+    getCurrencies();
   }
 
   updateFormControl(field, value) {
@@ -44,6 +36,11 @@ export default class Form extends Component {
         [field]: value,
       } }
     ));
+  }
+
+  sendExpenseForm(e) {
+    e.preventDefault();
+    const { formControl } = this.state;
   }
 
   renderValueinput() {
@@ -61,7 +58,8 @@ export default class Form extends Component {
   }
 
   renderCurrencyInput() {
-    const { currencies, formControl: { currency } } = this.state;
+    const { formControl: { currency } } = this.state;
+    const { currencies } = this.props;
     return (
       <Dropdown
         id="currency-input"
@@ -120,7 +118,23 @@ export default class Form extends Component {
         {this.renderDescriptionInput()}
         {this.renderPayMethodInput()}
         {this.renderCategoriesInput()}
+        <button type="submit" onClick={ this.sendExpenseForm }>Adicionar despesa</button>
       </form>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrencies: () => dispatch(getCurrenciesList()),
+});
+
+Form.propTypes = {
+  currencies: arrayOf(string).isRequired,
+  getCurrencies: func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
