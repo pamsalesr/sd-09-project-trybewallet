@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { arrayOf, number } from 'prop-types';
+import { arrayOf, number, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { editExpense, editExpenseForID, expenseThunk } from '../../actions';
+import { editExpenseForID, expenseThunk } from '../../actions';
 import './editExpenseForm.css';
 
 class EditExpenseForm extends Component {
@@ -146,7 +146,8 @@ class EditExpenseForm extends Component {
             id="tag-input"
             onChange={ this.handleyForm }
           >
-            { tags.map((tag, i) => <option value={ tag } key={ i }>{ tag }</option>) }
+            { tags
+              .map((tagF, i) => <option value={ tagF } key={ i }>{ tagF }</option>) }
           </select>
         </label>
         <label htmlFor="description-input">
@@ -178,6 +179,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 EditExpenseForm.propTypes = {
+  editExpenseID: func.isRequired,
   expenses: arrayOf().isRequired,
   editID: number.isRequired,
 };
