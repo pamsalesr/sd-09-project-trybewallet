@@ -30,7 +30,7 @@ class ExpenseForm extends Component {
         </label>
         <label htmlFor="tag-input">
           Tag:
-          <select id="tag-inputt" ddata-testid="tag-input">
+          <select id="tag-inputt" data-testid="tag-input">
             <option>Alimentação</option>
             <option>Lazer</option>
             <option>Trabalho</option>
