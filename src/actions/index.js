@@ -1,1 +1,3 @@
-// Coloque aqui suas actions
+const adicionaDespesa = (despesa) => (({ type: 'addDespesa', value: despesa }));
+
+export default adicionaDespesa;
