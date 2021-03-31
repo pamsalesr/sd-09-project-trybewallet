@@ -29,7 +29,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(button).toBeInTheDocument();
   });
 
-  test.skip('Realize as seguintes verificações nos campos de email, senha e botão:', () => {
+  test('Realize as seguintes verificações nos campos de email, senha e botão:', () => {
     renderWithRouterAndStore(<App />);
 
     const button = screen.getByText(/Entrar/i);
@@ -63,7 +63,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(button).toBeEnabled();
   });
 
-  test.skip('Salve o email no estado da aplicação, com a chave email, assim que o usuário logar.', () => {
+  test('Salve o email no estado da aplicação, com a chave email, assim que o usuário logar.', () => {
     const { store } = renderWithRouterAndStore(<App />);
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');
@@ -76,7 +76,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(store.getState().user.email).toBe('alguem@email.com');
   });
 
-  test.skip('A rota deve ser mudada para \'/carteira\' após o clique no botão.', () => {
+  test('A rota deve ser mudada para \'/carteira\' após o clique no botão.', () => {
     const { history } = renderWithRouterAndStore(<App />);
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');
