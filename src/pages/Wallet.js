@@ -8,10 +8,10 @@ import Table from '../components/Table';
 class Wallet extends React.Component {
   sumExpenses() {
     const { expenses } = this.props;
-    const sum = expenses.reduce((acc, curr) => {
+    const sum = expenses.reduce((total, curr) => {
       const value = Number(curr.exchangeRates[curr.currency].ask * curr.value);
-      acc = value + acc;
-      return acc;
+      total = value + total;
+      return total;
     }, 0).toFixed(2);
     return sum;
   }

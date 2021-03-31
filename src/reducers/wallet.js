@@ -25,10 +25,11 @@ const walletReducer = (state = initialState, action) => {
       expenses: [...state.expenses, action.payload.object],
     };
 
-  case 'SET_TOTAL':
+  case 'DELETE_EXPENSE':
     return {
       ...state,
-      totalPrice: state.totalPrice + action.payload.total,
+      expenses: [...state.expenses.filter((element) => element.id
+        !== action.payload.id)],
     };
 
   default:
