@@ -26,19 +26,20 @@ class Table extends Component {
             expenses.map((expense) => {
               const { id, description, tag, method,
                 value, currency, exchangeRates } = expense;
-              const { ask, nome } = exchangeRates[currency];
-              // const intValue = value;
-              const convertedValue = Math.round(value * ask * 100) / 100;
+              const { ask, name } = exchangeRates[currency];
+              // const formatedValue = (Math.round(value * 100) / 100).toFixed(2);
+              const formatedAsk = (Math.round(ask * 100) / 100).toFixed(2);
+              const convertedValue = (Math.round(value * ask * 100) / 100).toFixed(2);
               return (
                 <tr key={ `${id}${value}${currency}` }>
-                  <th>{ description }</th>
-                  <th>{ tag }</th>
-                  <th>{ method }</th>
-                  <th>{ value }</th>
-                  <th>{ nome }</th>
-                  <th>{ ask }</th>
-                  <th>{ convertedValue }</th>
-                  <th>Real</th>
+                  <td>{ description }</td>
+                  <td>{ tag }</td>
+                  <td>{ method }</td>
+                  <td>{ value }</td>
+                  <td>{ name }</td>
+                  <td>{ formatedAsk }</td>
+                  <td>{ convertedValue }</td>
+                  <td>Real</td>
                   {/* <th>Editar/Excluir</th> */}
                 </tr>
               );
