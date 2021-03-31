@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createExpense, currencyFetching } from '../actions/index';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -157,6 +158,7 @@ class Wallet extends React.Component {
 
   render() {
     const { value } = this.state;
+    const { expenses } = this.props;
     return (
       <div>
         {this.createHeader()}
@@ -193,6 +195,7 @@ class Wallet extends React.Component {
         >
           Adicionar despesa
         </button>
+        <Table />
       </div>);
   }
 }
