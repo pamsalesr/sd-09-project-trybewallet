@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import ExpensesTable from '../components/ExpensesTable';
+import ExpensesTable from '../components/ExpensesTable';
 import ExpensesAddition from '../components/ExpensesAddition';
 import { fetchCurrencies } from '../actions';
 
@@ -39,7 +39,7 @@ class Wallet extends React.Component {
           </span>
         </header>
         <ExpensesAddition />
-        { /* <ExpensesTable /> */ }
+        <ExpensesTable />
       </main>
     );
   }
