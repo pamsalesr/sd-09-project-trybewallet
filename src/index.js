@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
@@ -12,9 +12,8 @@ ReactDOM.render(
   <Provider store={ store }>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" render={ () => (<App />) } />
-        <Route path="/carteira" render={ () => (<Wallet />) } />
-        <Redirect to="/" />
+        <Route exact path="/" component={ App } />
+        <Route path="/carteira" component={ Wallet } />
       </Switch>
     </BrowserRouter>
   </Provider>,
