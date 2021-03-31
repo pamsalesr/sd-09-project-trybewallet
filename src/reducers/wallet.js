@@ -3,6 +3,7 @@ const initialState = {
   currencies: [],
   currenciesCode: [],
   expenses: [],
+  totalPrice: 0,
 };
 
 const walletReducer = (state = initialState, action) => {
@@ -19,10 +20,15 @@ const walletReducer = (state = initialState, action) => {
     };
 
   case 'SAVE_DESPENSES':
-    console.log(action.payload.object);
     return {
       ...state,
       expenses: [...state.expenses, action.payload.object],
+    };
+
+  case 'SET_TOTAL':
+    return {
+      ...state,
+      totalPrice: state.totalPrice + action.payload.total,
     };
 
   default:

@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import '../App.css';
 import PropTypes from 'prop-types';
 import InputsFields from '../components/inputsField';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
-
-  totalCost() {
+  sumExpenses() {
     const { expenses } = this.props;
-
-    const total = expenses.reduce((totalSum, expenseInfos) => {
-      const { value, currency, exchangeRates } = expenseInfos;
-      const currencyValue = Number(exchangeRates[currency].ask);
-      return totalSum + (value * currencyValue);
-    }, 0);
-    return total.toFixed(2);
+    const sum = expenses.reduce((acc, curr) => {
+      const value = Number(curr.exchangeRates[curr.currency].ask * curr.value);
+      acc = value + acc;
+      return acc;
+    }, 0).toFixed(2);
+    return sum;
   }
 
   render() {
@@ -28,12 +27,13 @@ class Wallet extends React.Component {
           </span>
           <div>
             <span data-testid="total-field">
-              {this.totalCost()}
+              {this.sumExpenses()}
             </span>
             <span data-testid="header-currency-field">BRL</span>
           </div>
         </header>
         <InputsFields />
+        <Table />
       </div>
     );
   }
@@ -44,12 +44,9 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
-
 Wallet.propTypes = {
-  user: PropTypes.string.isRequired,
-};
+  user: PropTypes.string,
+  expenses: PropTypes.arrayOf(PropTypes.object),
+}.isRequired;
 
-export default connect(mapStateToProps, null)(Wallet);
+export default connect(mapStateToProps)(Wallet);
