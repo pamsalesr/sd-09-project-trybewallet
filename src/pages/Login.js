@@ -11,29 +11,24 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      validEmail: false,
-      validPassword: false,
+      loginValidation: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
   }
 
-  validateLogin(name, value) {
-    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]$/i;
-    const passwordMinLenght = 6;
+  validateLogin() {
+    const { email, password } = this.state;
+    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.com$/i;
+    const passwordMinLength = 6;
+    let validate = false;
 
-    if (name === 'email' && emailRegex.test(value)) {
-      this.setState({
-        validEmail: true,
-      });
-    }
+    if (emailRegex.test(email) && password.length >= passwordMinLength) validate = true;
 
-    if (name === 'password' && value.length >= passwordMinLenght) {
-      this.setState({
-        validPassword: true,
-      });
-    }
+    this.setState({
+      loginValidation: validate,
+    });
   }
 
   handleChange({ target }) {
@@ -41,15 +36,13 @@ class Login extends React.Component {
 
     this.setState({
       [name]: value,
-    });
-
-    this.validateLogin(name, value);
+    }, () => this.validateLogin());
   }
 
   render() {
-    const { email, password, validEmail, validPassword } = this.state;
+    const { email, password, loginValidation } = this.state;
     const { dispatchLogin } = this.props;
-    const buttonStatus = validEmail && validPassword;
+
     return (
       <div>
         <input
@@ -71,8 +64,8 @@ class Login extends React.Component {
         <Link to="/carteira">
           <button
             type="button"
-            disabled={ !buttonStatus }
-            onClick={ dispatchLogin }
+            disabled={ !loginValidation }
+            onClick={ () => dispatchLogin(email) }
           >
             Entrar
           </button>
