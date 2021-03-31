@@ -84,4 +84,3 @@ Login.propTypes = {
 };
 
 export default connect(null, mapDispatchToProps)(Login);
-
