@@ -45,6 +45,7 @@ export const saveUserExpense = (state) => {
   };
 };
 
-export const addSaveUserExpense = () => ({
+export const addSaveUserExpense = (coin) => ({
   type: ADD_SAVE_USER_EXPENSE,
+  ask: coin[1].ask,
 });

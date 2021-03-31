@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   expenseDetails: {
     id: 0,
     value: '',
+    ask: '',
     description: '',
     currency: 'USD',
     method: 'Dinheiro',
@@ -24,13 +25,10 @@ const INITIAL_STATE = {
 };
 
 function wallet(state = INITIAL_STATE, action) {
-  const { expenseDetails } = action;
+  const { expenseDetails, ask } = action;
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
-    return {
-      ...state,
-      isFetching: true,
-    };
+    return { ...state, isFetching: true };
   case RECEIVE_CURRENT_PRICE_SUCCESS:
     return {
       ...state,
@@ -51,15 +49,17 @@ function wallet(state = INITIAL_STATE, action) {
       },
     };
   case ADD_SAVE_USER_EXPENSE:
+    console.log(ask);
     return {
       ...state,
       expenses: [
         ...state.expenses,
-        state.expenseDetails,
+        { ...state.expenseDetails, ask },
       ],
       expenseDetails: {
         id: state.expenseDetails.id + 1,
         value: '',
+        ask: '',
         description: '',
         currency: 'USD',
         method: 'Dinheiro',

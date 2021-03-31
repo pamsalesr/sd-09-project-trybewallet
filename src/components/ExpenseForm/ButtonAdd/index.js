@@ -12,14 +12,7 @@ class buttonAdd extends React.Component {
   handleClick() {
     const { propaddSaveUserExpense, coins, currency } = this.props;
     currentPrice(); // Chama a api e atualiza valores na store.
-    propaddSaveUserExpense(Object.entries(coins).find((coin) => {
-      if (currency === coin[0]) {
-        return (
-          console.log(coin[1].ask)
-        );
-      }
-      return '';
-    }));
+    propaddSaveUserExpense(Object.entries(coins).find((coin) => currency === coin[0]));
   }
 
   render() {
@@ -39,12 +32,12 @@ class buttonAdd extends React.Component {
 }
 
 buttonAdd.propTypes = {
-  name: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  currency: PropTypes.string.isRequired,
-  coins: PropTypes.arrayOf(PropTypes.object).isRequired,
-  propaddSaveUserExpense: PropTypes.func.isRequired,
-};
+  name: PropTypes.string,
+  title: PropTypes.string,
+  currency: PropTypes.string,
+  coins: PropTypes.arrayOf(PropTypes.object),
+  propaddSaveUserExpense: PropTypes.func,
+}.isRequired;
 
 const mapStateToProps = ({ wallet: { currencies, expenseDetails: { currency } } }) => ({
   coins: currencies,
@@ -52,7 +45,7 @@ const mapStateToProps = ({ wallet: { currencies, expenseDetails: { currency } } 
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  propaddSaveUserExpense: (obj) => dispatch(addSaveUserExpense(obj)),
+  propaddSaveUserExpense: (coin) => dispatch(addSaveUserExpense(coin)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(buttonAdd);

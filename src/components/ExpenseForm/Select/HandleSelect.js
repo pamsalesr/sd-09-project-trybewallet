@@ -43,7 +43,7 @@ HandleSelect.propTypes = {
   title: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  array: PropTypes.arrayOf(PropTypes.array).isRequired,
+  array: PropTypes.node.isRequired,
   propSaveUserExpense: PropTypes.func.isRequired,
 };
 

@@ -56,8 +56,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 selectOptions.propTypes = {
-  coins: PropTypes.arrayOf(PropTypes.object).isRequired,
-  propSaveUserExpense: PropTypes.func.isRequired,
-};
+  coins: PropTypes.arrayOf(PropTypes.object),
+  propSaveUserExpense: PropTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(selectOptions);
