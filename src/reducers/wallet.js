@@ -1,5 +1,4 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import Imutable from 'seamless-immutable';
 import {
   REQUEST,
   REQUEST_SECCESS,
@@ -7,10 +6,10 @@ import {
   EXPENSES_DATA,
 } from '../actions';
 
-const INITIAL_STATE = Imutable({
+const INITIAL_STATE = {
   currencies: {},
   expenses: [],
-});
+};
 
 const requestApireducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
