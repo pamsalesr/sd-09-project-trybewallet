@@ -10,12 +10,6 @@ class Inputs extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  // handleChange({ target: { value } }) {
-  //   this.setState({
-  //     value,
-  //   });
-  // }
-
   handleChange({ target: { name, value } }) {
     const { propSaveUserExpense } = this.props;
     this.setState({

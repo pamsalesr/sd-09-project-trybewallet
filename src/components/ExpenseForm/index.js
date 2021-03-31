@@ -5,21 +5,7 @@ import SelectOptions from './Select/SelectOptions';
 import HandleSelect from './Select/HandleSelect';
 import ButtonAdd from './ButtonAdd';
 
-// const INITIAL_STATE = {
-//   value: '0',
-//   description: '',
-//   currency: '',
-//   method: '',
-//   id: 0,
-//   tag: '',
-// };
-
 class expenseForm extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { ...INITIAL_STATE };
-  // }
-
   render() {
     const payWith = [
       'Dinheiro',
@@ -57,7 +43,7 @@ class expenseForm extends React.Component {
           name="tag"
           array={ tags }
         />
-        <ButtonAdd />
+        <ButtonAdd title="Adicionar despesa" />
       </div>
     );
   }
