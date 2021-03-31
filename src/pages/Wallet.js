@@ -48,13 +48,11 @@ class Wallet extends React.Component {
 Wallet.propTypes = {
   email: PropTypes.string,
   expenses: PropTypes.arrayOf(Object),
-  dispatchCurrencies: PropTypes.func,
 };
 
 Wallet.defaultProps = {
   email: '',
   expenses: [{}],
-  dispatchCurrencies: PropTypes.func,
 };
 
 const mapStateToProps = ({ user: { email }, wallet: { expenses } }) => (
