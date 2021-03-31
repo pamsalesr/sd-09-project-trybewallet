@@ -8,7 +8,7 @@ class ExpenseForm extends Component {
       <form>
         <label htmlFor="value-input">
           Valor:
-          <input id="value-input" data-testid="value-input" type="number" />
+          <input id="value-input" data-testid="value-input" type="textr" />
         </label>
         <label htmlFor="description-input">
           Descrição:

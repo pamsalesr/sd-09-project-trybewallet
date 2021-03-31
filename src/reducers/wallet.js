@@ -2,10 +2,9 @@
 import { REQUEST, REQUEST_SECCESS, REQUEST_ERROR } from '../actions';
 
 const INITIAL_STATE = {
-  wallet: {
-    currencies: {},
-    expenses: [],
-  },
+  currencies: {},
+  expenses: [],
+
 };
 
 const requestApireducer = (state = INITIAL_STATE, action) => {
@@ -19,7 +18,7 @@ const requestApireducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       loading: action.loading,
-      wallet: { currencies: { ...action.data }, expenses: [] },
+      currencies: { ...action.data },
     };
   case REQUEST_ERROR:
     return {
