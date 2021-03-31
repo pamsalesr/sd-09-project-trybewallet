@@ -3,13 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class buttonAdd extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-    }
-  }
-
   handleClick() {
 
   }
