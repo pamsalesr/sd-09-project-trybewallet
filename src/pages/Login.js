@@ -45,7 +45,6 @@ class Login extends React.Component {
   render() {
     const { email, redirect, disable } = this.state;
     if (redirect) return <Redirect push to="/carteira" />;
-
     return (
       <div>
         <h1>Faça seu Login</h1>
