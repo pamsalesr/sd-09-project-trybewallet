@@ -1,5 +1,8 @@
 import userAction from './userAction';
 
-export default {
+const oi = 'ói';
+
+export {
   userAction,
+  oi,
 };
