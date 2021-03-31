@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import './App.css';
 import Login from './pages/Login';
+import Wallet from './pages/Wallet';
 
 class App extends Component {
   render() {
     return (
       <Switch>
         <Route exact path="/" component={ Login } />
+        <Route path="/carteira" component={ Wallet } />
       </Switch>
     );
   }

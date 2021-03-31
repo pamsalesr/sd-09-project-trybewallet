@@ -1,5 +1,5 @@
 import userAction from './userAction';
 
-export {
+export default {
   userAction,
 };
