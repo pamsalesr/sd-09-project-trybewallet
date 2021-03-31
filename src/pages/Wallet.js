@@ -38,7 +38,7 @@ const mapStateToprops = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestApi: (data) => dispatch(requestApiAction(data)),
+  requestApi: () => dispatch(requestApiAction()),
 });
 export default connect(mapStateToprops, mapDispatchToProps)(Wallet);
 

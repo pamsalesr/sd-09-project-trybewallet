@@ -5,6 +5,8 @@ export const USER_EMAIL = 'USER_EMAIL';
 export const REQUEST = 'REQUEST';
 export const REQUEST_SECCESS = 'REQUEST_SECCESS';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
+export const EXCHANGE_RATES = 'EXCHANGE_RATS';
+export const EXPENSES_DATA = 'EXPENSES_DATA';
 
 export const userEmailAction = (email) => ({
   type: USER_EMAIL,
@@ -33,6 +35,26 @@ export const requestApiAction = () => (dispatch) => {
   currencyApi()
     .then(
       (data) => dispatch(requestSuccess(data)),
+      (error) => dispatch(requestRerror(error)),
+    );
+};
+
+export const requestExangeRatesAction = (data) => ({
+  type: EXCHANGE_RATES,
+  data,
+});
+
+export const expensesDataAction = (object) => ({
+  type: EXPENSES_DATA,
+  payload: {
+    object,
+  },
+});
+export const exchangeRatesAction = () => (dispatch) => {
+  request();
+  currencyApi()
+    .then(
+      (data) => dispatch(requestExangeRatesAction(data)),
       (error) => dispatch(requestRerror(error)),
     );
 };
