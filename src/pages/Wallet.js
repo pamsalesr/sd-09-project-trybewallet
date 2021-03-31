@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Inputs from '../components/Inputs';
-import { addExpenseAction } from '../actions';
+import { addExpenseAction, getUpdatedCurrenciesThunk } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class Wallet extends React.Component {
       expensesSum: 0,
       currencies: [],
       currentExpense: {
+        id: 0,
         currency: 'USD',
         method: 'money',
         tag: 'food',
@@ -22,6 +23,7 @@ class Wallet extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.sumExpenses = this.sumExpenses.bind(this);
   }
 
@@ -72,30 +74,31 @@ class Wallet extends React.Component {
     });
   }
 
-  handleClick(addExpense, currentExpense) {
+  handleClick(addExpense, currentExpense, getUpdatedCurrencies) {
     const interval = 5000;
-
+    getUpdatedCurrencies();
     addExpense(currentExpense);
 
     setTimeout(() => {
       this.sumExpenses();
     }, interval);
 
-    this.setState({
+    this.setState((previousState) => ({
       currentExpense: {
+        id: previousState.currentExpense.id + 1,
         currency: 'USD',
         method: 'money',
         tag: 'food',
         value: 0,
         description: '',
       },
-    });
+    }));
   }
 
   render() {
     const { currencies, currentExpense, expensesSum } = this.state;
     const { currency, description, method, tag, value } = currentExpense;
-    const { email, addExpense } = this.props;
+    const { email, addExpense, getUpdatedCurrencies } = this.props;
 
     return (
       <div>
@@ -107,7 +110,11 @@ class Wallet extends React.Component {
             <Inputs
               handleChange={ this.handleChange }
               currencies={ currencies }
-              handleClick={ () => this.handleClick(addExpense, currentExpense) }
+              handleClick={ () => this.handleClick(
+                addExpense,
+                currentExpense,
+                getUpdatedCurrencies,
+              ) }
               currency={ currency }
               description={ description }
               method={ method }
@@ -128,6 +135,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addExpense: (expense) => dispatch(addExpenseAction(expense)),
+  getUpdatedCurrencies: () => dispatch(getUpdatedCurrenciesThunk()),
 });
 
 Wallet.propTypes = {
