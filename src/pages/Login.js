@@ -9,7 +9,7 @@ class Login extends React.Component {
     super();
 
     this.handleInputs = this.handleInputs.bind(this);
-    this.validation = this.validation.bind(this);
+    this.validation = this.validationFunction.bind(this);
 
     this.state = {
       email: '',
@@ -18,7 +18,7 @@ class Login extends React.Component {
     };
   }
 
-  validation() {
+  validationFunction() {
     const { email, password } = this.state;
     const passwordConditional = 6;
     const regex = /[a-zA-Z0-9\-_.]+@[a-zA-Z0-9]+.[a-z]+$/gm.test(email);
@@ -33,7 +33,7 @@ class Login extends React.Component {
   handleInputs({ target }) {
     this.setState(() => ({
       [target.name]: target.value,
-    }), () => this.validation());
+    }), () => this.validationFunction());
   }
 
   render() {
