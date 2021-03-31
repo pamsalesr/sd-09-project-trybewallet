@@ -1,4 +1,3 @@
-// Coloque aqui suas actions
 import fetchCurrency from '../services/currencyApi';
 
 export const USER_LOGIN = 'USER_LOGIN';
