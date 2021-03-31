@@ -75,9 +75,9 @@ class Inputs extends React.Component {
           name="method"
           id="method"
         >
-          <option value="money">Dinheiro</option>
-          <option value="credit">Cartão de crédito</option>
-          <option value="debit">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
       </label>
     );
@@ -95,11 +95,11 @@ class Inputs extends React.Component {
           name="tag"
           id="tag"
         >
-          <option value="food">Alimentação</option>
-          <option value="recreation">Lazer</option>
-          <option value="work">Trabalho</option>
-          <option value="transport">Transporte</option>
-          <option value="health">Saúde</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
       </label>
     );

@@ -6,9 +6,10 @@ export const registerEmailAction = (email) => ({
   email,
 });
 
-export const addExpenseAction = (expense) => ({
+export const addExpenseAction = (expense, data) => ({
   type: 'ADD_EXPENSE',
   expense,
+  data,
 });
 
 const receiveCurrenciesAction = (data) => ({
@@ -16,10 +17,10 @@ const receiveCurrenciesAction = (data) => ({
   data,
 });
 
-export function getUpdatedCurrenciesThunk() {
-  return (dispatch) => (
-    // dispatch(fetchCurrenciesAction());
-    fetchCurrencies()
-      .then((data) => dispatch(receiveCurrenciesAction(data)))
-  );
+export function getUpdatedCurrenciesThunk(currentExpense) {
+  return (dispatch) => fetchCurrencies()
+    .then((data) => {
+      dispatch(receiveCurrenciesAction(data));
+      dispatch(addExpenseAction(currentExpense, data));
+    });
 }
