@@ -62,9 +62,9 @@ body {
   cursor: pointer;
   font-size: 18px;
   font-weight: 600;
+  margin: 12px 0;
   opacity: 85%;
   padding: 5px;
-  margin: 12px 0;
   width: 100%;
 }
 
