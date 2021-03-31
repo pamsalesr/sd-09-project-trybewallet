@@ -12,12 +12,6 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: [...state.expenses, action.expense],
     };
 
-  case 'REGISTER_CURRENCIES':
-    return {
-      ...state,
-      currencies: action.currencies,
-    };
-
   case 'RECEIVE_CURRENCIES':
     return {
       ...state,

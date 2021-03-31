@@ -11,15 +11,6 @@ export const addExpenseAction = (expense) => ({
   expense,
 });
 
-export const registerCurrenciesAction = (currencies) => ({
-  type: 'REGISTER_CURRENCIES',
-  currencies,
-});
-
-// const fetchCurrenciesAction = () => ({
-//   type: 'REQUEST_CURRENCIES',
-// });
-
 const receiveCurrenciesAction = (data) => ({
   type: 'RECEIVE_CURRENCIES',
   data,
