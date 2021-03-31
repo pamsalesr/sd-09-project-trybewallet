@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { saveUserExpenses } from '../../../actions';
+import { saveUserExpense } from '../../../actions';
 
 class HandleSelect extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
-    const { getSelected } = this.props;
+    const { propSaveUserExpense } = this.props;
     this.setState({
       [name]: value,
     });
-    getSelected(name, value);
+    propSaveUserExpense({ [name]: value });
   }
 
   render() {
@@ -46,10 +44,11 @@ HandleSelect.propTypes = {
   dataTestid: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   array: PropTypes.arrayOf(PropTypes.array).isRequired,
+  propSaveUserExpense: PropTypes.func.isRequired,
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   getSelected: () => dispatch(saveUserExpenses()),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  propSaveUserExpense: (obj) => dispatch(saveUserExpense(obj)),
+});
 
-export default connect(null, null)(HandleSelect);
+export default connect(null, mapDispatchToProps)(HandleSelect);

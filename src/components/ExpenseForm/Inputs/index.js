@@ -1,20 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { saveUserExpense } from '../../../actions';
 
 class Inputs extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: '',
-    };
+    this.state = {};
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange({ target: { value } }) {
+  // handleChange({ target: { value } }) {
+  //   this.setState({
+  //     value,
+  //   });
+  // }
+
+  handleChange({ target: { name, value } }) {
+    const { propSaveUserExpense } = this.props;
     this.setState({
-      value,
+      [name]: value,
     });
+    propSaveUserExpense({ [name]: value });
   }
 
   render() {
@@ -40,8 +47,11 @@ class Inputs extends React.Component {
 Inputs.propTypes = {
   name: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
+  propSaveUserExpense: PropTypes.func.isRequired,
 };
 
-// mapDispatchToProps()
+const mapDispatchToProps = (dispatch) => ({
+  propSaveUserExpense: (obj) => dispatch(saveUserExpense(obj)),
+});
 
-export default connect()(Inputs);
+export default connect(null, mapDispatchToProps)(Inputs);

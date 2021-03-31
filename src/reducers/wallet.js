@@ -3,7 +3,7 @@ import {
   REQUEST_CURRENT_PRICE,
   RECEIVE_CURRENT_PRICE_SUCCESS,
   RECEIVE_CURRENT_PRICE_FAIL,
-  SAVE_USER_EXPENSES_SELECT,
+  SAVE_USER_EXPENSE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -11,10 +11,20 @@ const INITIAL_STATE = {
   expenses: [],
   isFetching: false,
   error: '',
+  expensesCount: 0,
+  expenseDetails: {
+    id: 0,
+    value: '',
+    description: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
+  },
 };
 
 function wallet(state = INITIAL_STATE, action) {
-
+  const { expenseDetails } = action;
+  console.log(expenseDetails);
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
     return {
@@ -32,10 +42,14 @@ function wallet(state = INITIAL_STATE, action) {
       isFetching: false,
       error: action.error,
     };
-  case SAVE_USER_EXPENSES_SELECT:
+  case SAVE_USER_EXPENSE:
     return {
       ...state,
-      ...action,
+      expensesCount: state.expensesCount + 1,
+      expenseDetails: {
+        ...state.expenseDetails,
+        ...expenseDetails,
+      },
     };
   default:
     return state;
