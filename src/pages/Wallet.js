@@ -1,25 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// import ExpensesTable from '../components/ExpensesTable';
+import ExpensesAddition from '../components/ExpensesAddition';
+import { fetchCurrencies } from '../actions';
 
 class Wallet extends React.Component {
+  constructor() {
+    super();
+
+    this.updateTotalExpensesValue = this.updateTotalExpensesValue.bind(this);
+  }
+
+  updateTotalExpensesValue() {
+    const { expenses } = this.props;
+    let totalExpensesValue = 0;
+    expenses.forEach(({ value, exchangeRates, currency }) => {
+      totalExpensesValue += value * exchangeRates[currency].ask;
+    });
+    return totalExpensesValue;
+  }
+
   render() {
     const { email } = this.props;
+
     return (
       <main>
         <header>
           <span data-testid="email-field">
-            Email:
-            { email }
+            {`Email: ${email}`}
           </span>
           <span data-testid="total-field">
-            Despesa Total:
-            0
+            Despesa total:
+            {this.updateTotalExpensesValue().toFixed(2)}
           </span>
           <span data-testid="header-currency-field">
             BRL
           </span>
         </header>
+        <ExpensesAddition />
+        { /* <ExpensesTable /> */ }
       </main>
     );
   }
@@ -27,12 +47,21 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
   email: PropTypes.string,
+  expenses: PropTypes.arrayOf(Object),
+  dispatchCurrencies: PropTypes.func,
 };
 
 Wallet.defaultProps = {
   email: '',
+  expenses: [{}],
+  dispatchCurrencies: PropTypes.func,
 };
 
-const mapStateToProps = ({ user: { email } }) => ({ email }); // O parâmetro de mapStateToProps é o reducer do usuario (user) desestruturado para pegar a chave email.
+const mapStateToProps = ({ user: { email }, wallet: { expenses } }) => (
+  { email, expenses });
 
-export default connect(mapStateToProps, null)(Wallet);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchCurrencies: () => dispatch(fetchCurrencies()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

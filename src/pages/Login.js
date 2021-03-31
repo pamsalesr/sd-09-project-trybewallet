@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import userLogin from '../actions';
+import { userLogin } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -75,7 +75,7 @@ Login.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEmail: (state) => dispatch(userLogin(state)),
+  dispatchEmail: (email) => dispatch(userLogin(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
