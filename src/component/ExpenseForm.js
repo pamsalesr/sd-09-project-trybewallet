@@ -93,7 +93,12 @@ class ExpenseForm extends Component {
       <>
         <label htmlFor="method-input">
           Forma de pagamento:
-          <select onChange={ this.handleChange } name="method" id="method-input" data-testid="method-input">
+          <select
+            onChange={ this.handleChange }
+            name="method"
+            id="method-input"
+            data-testid="method-input"
+          >
             <option>Dinheiro</option>
             <option>Cartão de crédito</option>
             <option>Cartão de débito</option>
@@ -102,7 +107,12 @@ class ExpenseForm extends Component {
 
         <label htmlFor="tag-input">
           Tag:
-          <select onChange={ this.handleChange } name="tag" id="tag-input" data-testid="tag-input">
+          <select
+            onChange={ this.handleChange }
+            name="tag"
+            id="tag-input"
+            data-testid="tag-input"
+          >
             <option>Alimentação</option>
             <option>Lazer</option>
             <option>Trabalho</option>
