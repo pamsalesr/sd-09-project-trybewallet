@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isFetching: false,
   currencies: [],
   expenses: [],
+  currencyField: 'USD',
 };
 
 function wallet(state = INITIAL_STATE, action) {
@@ -35,6 +36,16 @@ function wallet(state = INITIAL_STATE, action) {
           exchangeRates: state.exchangeRatesHolder,
         },
       ],
+    };
+  case 'UPDATE_EXPENSES_LIST':
+    return {
+      ...state,
+      expenses: action.updatedExpensesList,
+    };
+  case 'UPDATE_CURRENCY_FIELD':
+    return {
+      ...state,
+      currencyField: action.currencyString,
     };
   default:
     return state;

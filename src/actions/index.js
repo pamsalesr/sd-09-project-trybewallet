@@ -7,6 +7,14 @@ export function addExpend(data) {
   return { type: 'ADD_EXPEND', data };
 }
 
+export function updateExpenses(updatedExpensesList) {
+  return { type: 'UPDATE_EXPENSES_LIST', updatedExpensesList };
+}
+
+export function updateCurrencyField(currencyString) {
+  return { type: 'UPDATE_CURRENCY_FIELD', currencyString };
+}
+
 function requestCurrency() {
   return { type: 'REQUEST_CURRENCY' };
 }

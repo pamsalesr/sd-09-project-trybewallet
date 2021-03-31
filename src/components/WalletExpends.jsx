@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -37,15 +36,15 @@ class WalletExpends extends React.Component {
     this.setState(firstState);
   }
 
-  createJSXInput(textLabel, name, dataTestId) {
+  createJSXInputValue() {
     const { value } = this.state;
     return (
-      <label htmlFor={ name }>
-        {textLabel}
+      <label htmlFor="value">
+        Valor:
         <input
-          id={ name }
-          name={ name }
-          data-testid={ dataTestId }
+          id="value"
+          name="value"
+          data-testid="value-input"
           onChange={ (event) => this.handleChange(event) }
           value={ value }
         />
@@ -126,14 +125,30 @@ class WalletExpends extends React.Component {
     );
   }
 
+  createJSXInputDescription() {
+    const { description } = this.state;
+    return (
+      <label htmlFor="description">
+        Descrição:
+        <input
+          id="description"
+          name="description"
+          data-testid="description-input"
+          onChange={ (event) => this.handleChange(event) }
+          value={ description }
+        />
+      </label>
+    );
+  }
+
   render() {
     return (
       <fieldset>
-        {this.createJSXInput('Valor:', 'value', 'value-input')}
+        {this.createJSXInputValue()}
         {this.createJSXDropdownCurrencies()}
         {this.createJSXDropdownPaymentMethods()}
         {this.createJSXDropdownTags()}
-        {this.createJSXInput('Descrição:', 'description', 'description-input')}
+        {this.createJSXInputDescription()}
         <button type="button" onClick={ () => this.handleSubmitExpenses() }>
           Adicionar despesa
         </button>
@@ -152,7 +167,7 @@ const mapDispatchToProps = (dispatch) => (
 const mapStateToProps = (state) => ({ currencies: state.wallet.currencies });
 
 WalletExpends.propTypes = {
-  currencies: PropTypes.arrayOf(PropTypes.object),
+  currencies: PropTypes.arrayOf(PropTypes.string),
   fetchAPIExpenses: PropTypes.func,
   fetchCurrencyList: PropTypes.func,
   submitExpend: PropTypes.fund,
