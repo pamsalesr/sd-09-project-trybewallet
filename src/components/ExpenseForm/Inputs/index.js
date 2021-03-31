@@ -42,4 +42,6 @@ Inputs.propTypes = {
   dataTestid: PropTypes.string.isRequired,
 };
 
+// mapDispatchToProps()
+
 export default connect()(Inputs);

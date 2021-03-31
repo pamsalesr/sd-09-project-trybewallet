@@ -13,11 +13,11 @@ class LoginInput extends React.Component {
       loginWallet: false,
     };
 
-    this.handleInputs = this.handleInputs.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleInputs({ target: { name, value } }) {
+  handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
@@ -33,8 +33,9 @@ class LoginInput extends React.Component {
     event.preventDefault();
   }
 
+  // Validação abaixo tirada do site: (Com pequenos ajustes)
+  // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_email_pattern
   handleValidateEmail(value) {
-    // return (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value));
     return (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(value));
   }
 
@@ -42,9 +43,9 @@ class LoginInput extends React.Component {
     return (value.length >= number);
   }
 
-  handleValidateBtn(number, pattern) {
+  handleValidateBtn(number) {
     const { email, password } = this.state;
-    return (this.handleValidateEmail(email, pattern)
+    return (this.handleValidateEmail(email)
     && this.handleValidatePassword(password, number));
   }
 
@@ -63,7 +64,7 @@ class LoginInput extends React.Component {
             data-testid="email-input"
             name="email"
             value={ email }
-            onChange={ this.handleInputs }
+            onChange={ this.handleChange }
           />
         </div>
         <div>
@@ -73,17 +74,13 @@ class LoginInput extends React.Component {
             data-testid="password-input"
             name="password"
             value={ password }
-            // minLength="6"
-            onChange={ this.handleInputs }
+            onChange={ this.handleChange }
           />
         </div>
         <button
           type="submit"
-          // Prop "pattern" abaixo tirado do site:
-          // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_email_pattern
-          // pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
           onClick={ this.handleClick }
-          disabled={ !this.handleValidateBtn(minLengthPassword, this.pattern) }
+          disabled={ !this.handleValidateBtn(minLengthPassword) }
         >
           Entrar
         </button>

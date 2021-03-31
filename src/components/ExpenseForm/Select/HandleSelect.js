@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import { saveUserExpenses } from '../../../actions';
 
 class HandleSelect extends React.Component {
   constructor(props) {
@@ -11,9 +13,11 @@ class HandleSelect extends React.Component {
   }
 
   handleChange({ target: { name, value } }) {
+    const { getSelected } = this.props;
     this.setState({
       [name]: value,
     });
+    getSelected(name, value);
   }
 
   render() {
@@ -44,4 +48,8 @@ HandleSelect.propTypes = {
   array: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
-export default HandleSelect;
+// const mapDispatchToProps = (dispatch) => ({
+//   getSelected: () => dispatch(saveUserExpenses()),
+// });
+
+export default connect(null, null)(HandleSelect);

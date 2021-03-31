@@ -21,8 +21,8 @@ class selectOptions extends React.Component {
   }
 }
 
-const mapStateToProps = ({ currentPriceReducer: { data } }) => ({
-  coins: data,
+const mapStateToProps = ({ wallet: { currencies } }) => ({
+  coins: currencies,
 });
 
 selectOptions.propTypes = {
