@@ -1,4 +1,4 @@
-import { ADD_EXPENSE, RECEIVE_CURRENCIES } from '../actions';
+import { RECEIVE_CURRENCIES, ADD_EXPENSE, DELETE_EXPENSE } from '../actions';
 
 const initialState = {
   currencies: [],
@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const expensesReducer = (state = initialState, action) => {
-  const { type, expense, currencies } = action;
+  const { type, expense, currencies, expenses } = action;
   switch (type) {
   case RECEIVE_CURRENCIES:
     return { ...state, currencies };
@@ -18,6 +18,8 @@ const expensesReducer = (state = initialState, action) => {
         { ...expense, id: state.expenses.length },
       ],
     };
+  case DELETE_EXPENSE:
+    return { ...state, expenses };
   default:
     return state;
   }

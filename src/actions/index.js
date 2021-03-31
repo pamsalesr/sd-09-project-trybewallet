@@ -1,12 +1,18 @@
 import requestCurrencies from '../services/currenciesAPI';
 
 export const LOGIN_USER = 'LOGIN_USER';
-export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const RECEIVE_CURRENCIES = 'RECEIVE_CURRENCIES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const ADD_EXPENSE = 'ADD_EXPENSE';
 
 export const handleUserLogin = (email) => ({
   type: LOGIN_USER,
   email,
+});
+
+const receiveCurrenciesList = (currencies) => ({
+  type: RECEIVE_CURRENCIES,
+  currencies,
 });
 
 const receiveExpenseAddition = (expense) => ({
@@ -14,9 +20,9 @@ const receiveExpenseAddition = (expense) => ({
   expense,
 });
 
-const receiveCurrenciesList = (currencies) => ({
-  type: RECEIVE_CURRENCIES,
-  currencies,
+export const handleDeleteExpense = (newArrExpenses) => ({
+  type: DELETE_EXPENSE,
+  expenses: newArrExpenses,
 });
 
 export const getCurrenciesList = () => async (dispatch) => {

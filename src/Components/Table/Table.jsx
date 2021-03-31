@@ -1,8 +1,40 @@
 import React, { Component } from 'react';
-import { arrayOf, shape } from 'prop-types';
+import { arrayOf, shape, func } from 'prop-types';
 import { connect } from 'react-redux';
+import { handleDeleteExpense } from '../../actions';
 
 class Table extends Component {
+  constructor(props) {
+    super(props);
+    this.deleteItem = this.deleteItem.bind(this);
+  }
+
+  deleteItem(id) {
+    const { expenses, sendUpdatedList } = this.props;
+    sendUpdatedList(expenses.filter(({ id: expenseID }) => expenseID !== id));
+  }
+
+  renderDataFields(expense) {
+    const { description, tag, method,
+      value, currency, exchangeRates } = expense;
+    const { ask, name } = exchangeRates[currency];
+    // const formatedValue = (Math.round(value * 100) / 100).toFixed(2);
+    const formatedAsk = (Math.round(ask * 100) / 100).toFixed(2);
+    const convertedValue = (Math.round(value * ask * 100) / 100).toFixed(2);
+    return (
+      <>
+        <td>{ description }</td>
+        <td>{ tag }</td>
+        <td>{ method }</td>
+        <td>{ value }</td>
+        <td>{ name }</td>
+        <td>{ formatedAsk }</td>
+        <td>{ convertedValue }</td>
+        <td>Real</td>
+      </>
+    );
+  }
+
   render() {
     const { expenses } = this.props;
 
@@ -24,23 +56,25 @@ class Table extends Component {
         <tbody>
           {
             expenses.map((expense) => {
-              const { id, description, tag, method,
-                value, currency, exchangeRates } = expense;
-              const { ask, name } = exchangeRates[currency];
-              // const formatedValue = (Math.round(value * 100) / 100).toFixed(2);
-              const formatedAsk = (Math.round(ask * 100) / 100).toFixed(2);
-              const convertedValue = (Math.round(value * ask * 100) / 100).toFixed(2);
+              const { id, value, currency } = expense;
               return (
                 <tr key={ `${id}${value}${currency}` }>
-                  <td>{ description }</td>
-                  <td>{ tag }</td>
-                  <td>{ method }</td>
-                  <td>{ value }</td>
-                  <td>{ name }</td>
-                  <td>{ formatedAsk }</td>
-                  <td>{ convertedValue }</td>
-                  <td>Real</td>
-                  {/* <th>Editar/Excluir</th> */}
+                  {this.renderDataFields(expense)}
+                  <td>
+                    <button
+                      type="button"
+                      data-testid="edit-btn"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      data-testid="delete-btn"
+                      onClick={ () => this.deleteItem(id) }
+                    >
+                      Excluir
+                    </button>
+                  </td>
                 </tr>
               );
             })
@@ -55,8 +89,13 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  sendUpdatedList: (newArrExpenses) => dispatch(handleDeleteExpense(newArrExpenses)),
+});
+
 Table.propTypes = {
   expenses: arrayOf(shape()).isRequired,
+  sendUpdatedList: func.isRequired,
 };
 
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
