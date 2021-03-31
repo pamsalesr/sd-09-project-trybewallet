@@ -15,11 +15,11 @@ body {
 }
 
 .main-header {
-    border-bottom: 2px solid #81ecec;
-    color: white;
-    font-size: 20px;
-    width: 100%;
-  }
+  border-bottom: 2px solid #81ecec;
+  color: white;
+  font-size: 20px;
+  width: 100%;
+}
 
 .secondary-heading {
   border-bottom: 4px solid #81ecec;
@@ -56,12 +56,12 @@ body {
 }
 
 .input-button {
-  font-weight: 600;
   background: none;
   border: 2px solid #81ecec;
   color: white;
   cursor: pointer;
   font-size: 18px;
+  font-weight: 600;
   opacity: 85%;
   padding: 5px;
   margin: 12px 0;
@@ -74,8 +74,8 @@ body {
 }
 
 .input-button:enabled:hover {
-    background-color: #0984e3;
-    opacity: 100%;
+  background-color: #0984e3;
+  opacity: 100%;
 }
 
 .error-message {
