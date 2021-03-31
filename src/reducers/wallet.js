@@ -1,8 +1,17 @@
-import { RECEIVE_CURRENCIES, ADD_EXPENSE, DELETE_EXPENSE } from '../actions';
+import { RECEIVE_CURRENCIES, ADD_EXPENSE,
+  DELETE_EXPENSE, RECEIVE_EXPENSE_EDITIONS } from '../actions';
 
 const initialState = {
   currencies: [],
   expenses: [],
+};
+
+const replacedExpenses = (expenses, expense) => {
+  console.log('replace');
+  const expensesCopy = expenses.slice();
+  const indexOfExpenses = expensesCopy.findIndex(({ id }) => id === expense.id);
+  expensesCopy[indexOfExpenses] = expense;
+  return expensesCopy;
 };
 
 const expensesReducer = (state = initialState, action) => {
@@ -20,6 +29,12 @@ const expensesReducer = (state = initialState, action) => {
     };
   case DELETE_EXPENSE:
     return { ...state, expenses };
+  case RECEIVE_EXPENSE_EDITIONS:
+    console.log('switch');
+    return {
+      ...state,
+      expenses: replacedExpenses(state.expenses, expense),
+    };
   default:
     return state;
   }

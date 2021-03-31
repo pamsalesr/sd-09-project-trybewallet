@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
-import { arrayOf, string, func } from 'prop-types';
+import { arrayOf, string, func, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import InputBox from '../InputBox';
 import Dropdown from '../Dropdown';
-import { getCurrenciesList, addExpense as addExpenseAction } from '../../actions';
+import {
+  getCurrenciesList,
+  addExpense as addExpenseAction,
+  receiveExpenseEdition } from '../../actions';
 
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.API_URL = 'https://economia.awesomeapi.com.br/json/all';
     this.state = {
       payMethods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       categories: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
-      formControl: {
-        value: '',
-        currency: '',
-        description: '',
-        method: '',
-        tag: '',
-      },
+      method: props.method,
+      formControl: { ...props.formControl },
     };
     this.updateFormControl = this.updateFormControl.bind(this);
     this.sendExpenseForm = this.sendExpenseForm.bind(this);
@@ -27,6 +24,23 @@ class Form extends Component {
   componentDidMount() {
     const { getCurrencies } = this.props;
     getCurrencies();
+  }
+
+  componentDidUpdate({ method: prevMethod }) {
+    const { method: currMethod, formControl } = this.props;
+    // const { formControl: currForm } = this.state;
+    // console.log(Object.values(prevForm).every((field) => field === ''));
+    // const formWasCleared = (
+    //   Object.values(prevForm).every((field) => field === '')
+    //   && Object.values(currForm).every((field) => field !== '')
+    // );
+    if (currMethod !== prevMethod) {
+      this.updateFormMethodAndData(currMethod, formControl);
+    }
+  }
+
+  updateFormMethodAndData(method, formControl) {
+    this.setState({ method, formControl });
   }
 
   updateFormControl(field, value) {
@@ -40,16 +54,14 @@ class Form extends Component {
 
   sendExpenseForm(e) {
     e.preventDefault();
-    const { formControl } = this.state;
-    const { addExpense } = this.props;
-    addExpense(formControl);
-    this.setState({ formControl: {
-      value: '',
-      currency: '',
-      description: '',
-      method: '',
-      tag: '',
-    } });
+    const { method, formControl } = this.state;
+    if (method === 'edition') {
+      const { sendEdition } = this.props;
+      sendEdition(formControl);
+    } else {
+      const { addExpense } = this.props;
+      addExpense(formControl);
+    }
   }
 
   renderValueinput() {
@@ -120,6 +132,8 @@ class Form extends Component {
   }
 
   render() {
+    const { method } = this.state;
+
     return (
       <form>
         {this.renderValueinput()}
@@ -127,7 +141,13 @@ class Form extends Component {
         {this.renderDescriptionInput()}
         {this.renderPayMethodInput()}
         {this.renderCategoriesInput()}
-        <button type="submit" onClick={ this.sendExpenseForm }>Adicionar despesa</button>
+        <button type="submit" onClick={ this.sendExpenseForm }>
+          {
+            method === 'creation'
+              ? 'Adicionar despesa'
+              : 'Editar despesa'
+          }
+        </button>
       </form>
     );
   }
@@ -135,17 +155,23 @@ class Form extends Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  method: state.formControl.method,
+  formControl: state.formControl.formData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencies: () => dispatch(getCurrenciesList()),
   addExpense: (expense) => dispatch(addExpenseAction(expense)),
+  sendEdition: (expense) => dispatch(receiveExpenseEdition(expense)),
 });
 
 Form.propTypes = {
   currencies: arrayOf(string).isRequired,
   getCurrencies: func.isRequired,
   addExpense: func.isRequired,
+  method: string.isRequired,
+  formControl: shape({}).isRequired,
+  sendEdition: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

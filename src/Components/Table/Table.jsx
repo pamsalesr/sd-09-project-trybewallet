@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { arrayOf, shape, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { handleDeleteExpense } from '../../actions';
+import { handleExpenseDeletion, handleExpenseEdition } from '../../actions';
 
 class Table extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class Table extends Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, sendDatatoEdition } = this.props;
 
     return (
       <table>
@@ -64,6 +64,7 @@ class Table extends Component {
                     <button
                       type="button"
                       data-testid="edit-btn"
+                      onClick={ () => sendDatatoEdition(expense) }
                     >
                       Editar
                     </button>
@@ -90,12 +91,18 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  sendUpdatedList: (newArrExpenses) => dispatch(handleDeleteExpense(newArrExpenses)),
+  sendUpdatedList: (newArrExpenses) => dispatch(
+    handleExpenseDeletion(newArrExpenses),
+  ),
+  sendDatatoEdition: (expenseData) => dispatch(
+    handleExpenseEdition(expenseData),
+  ),
 });
 
 Table.propTypes = {
   expenses: arrayOf(shape()).isRequired,
   sendUpdatedList: func.isRequired,
+  sendDatatoEdition: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
