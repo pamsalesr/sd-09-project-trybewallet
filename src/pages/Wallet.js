@@ -82,15 +82,18 @@ class Wallet extends React.Component {
 
   createMethod() {
     return (
-      <select
-        name="method"
-        data-testid="method-input"
-        onChange={ this.handleChange }
-      >
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Cartão de crédito">Cartão de crédito</option>
-        <option value="Cartão de débito">Cartão de débito</option>
-      </select>
+      <label htmlFor="method">
+        <select
+          name="method"
+          data-testid="method-input"
+          onChange={ this.handleChange }
+          id="method"
+        >
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
+        </select>
+      </label>
     );
   }
 
@@ -113,6 +116,7 @@ class Wallet extends React.Component {
         name="tag"
         data-testid="tag-input"
         onChange={ this.handleChange }
+        id="tag"
       >
         <option value="Alimentação">Alimentação</option>
         <option value="Lazer">Lazer</option>
@@ -156,37 +160,39 @@ class Wallet extends React.Component {
     return (
       <div>
         {this.createHeader()}
-        <form>
-          <label htmlFor="currency">
-            Moeda:
-            {this.createCurrency()}
-          </label>
-          <label htmlFor="spending">
-            Valor:
-            <input
-              name="value"
-              value={ value }
-              data-testid="value-input"
-              id="value"
-              onChange={ this.handleChange }
-            />
-            {this.createMethod()}
-          </label>
-          <label htmlFor="description">
-            Descrição:
-            {this.createDescription()}
-          </label>
-          <label htmlFor="tags">
-            Tag:
-            {this.createTags()}
-          </label>
-          <button
-            type="button"
-            onClick={ this.handleClick }
-          >
-            Adicionar despesa
-          </button>
-        </form>
+        <label htmlFor="currency">
+          Moeda:
+          {this.createCurrency()}
+        </label>
+        <label htmlFor="spending">
+          Valor:
+          <input
+            name="value"
+            value={ value }
+            data-testid="value-input"
+            id="value"
+            onChange={ this.handleChange }
+          />
+        </label>
+
+        {this.createMethod()}
+
+        <label htmlFor="description">
+          Descrição:
+          {this.createDescription()}
+        </label>
+
+        <label htmlFor="tag">
+          Tag:
+          {this.createTags()}
+        </label>
+
+        <button
+          type="button"
+          onClick={ this.handleClick }
+        >
+          Adicionar despesa
+        </button>
       </div>);
   }
 }
