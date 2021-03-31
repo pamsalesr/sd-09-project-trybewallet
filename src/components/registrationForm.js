@@ -16,13 +16,26 @@ class RegistrationForm extends React.Component {
         </label>
         <label htmlFor="select-currency">
           Moeda
-          <select name="select-currency" data-testid="header-currency-field">
-            <option value="BRL">BRL</option>
+          <select
+            name="select-currency"
+            data-testid="header-currency-field"
+          >
+            <option value="BRL" data-testid="BRL">BRL</option>
             <option value="USD">USD</option>
             <option value="TEST">TEST</option>
           </select>
         </label>
-
+        <label htmlFor="method-payment">
+          Método de Pagamento
+          <select
+            name="method-payment"
+            data-testid="method-input"
+          >
+            <option value="money">Dinheiro</option>
+            <option value="debit">Cartão de crédito</option>
+            <option value="credit">Cartão de débito</option>
+          </select>
+        </label>
         <label htmlFor="value">
           Descrição
           <input
@@ -31,6 +44,19 @@ class RegistrationForm extends React.Component {
             data-testid="description-input"
             onChange=""
           />
+        </label>
+        <label htmlFor="cost-center">
+          Despesa
+          <select
+            name="cost-center"
+            data-testid="tag-input"
+          >
+            <option value="food">Alimentação</option>
+            <option value="recreation">Lazer</option>
+            <option value="health">Saúde</option>
+            <option value="work">Trabalho</option>
+            <option value="transport">Transporte</option>
+          </select>
         </label>
         <button
           type="button"

@@ -56,7 +56,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { emailError, passWordError, desableButton, logIn } = this.state;
+    const { desableButton, logIn } = this.state;
     // const messagePassWordError = <p>A senha deve conter ao menos 6 caracteres</p>;
     // const messageEmailError = <p>Digite um e-mail válido</p>;
     const logInWallet = <Redirect push to="/carteira" />;
