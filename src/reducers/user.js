@@ -10,12 +10,12 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
 function userReducer(state = INITIAL_STATE, action) {
-  switch (action) {
+  switch (action.type) {
   case LOGIN:
-    state = action.state;
+    state = action.user;
     return state;
   case LOGOUT:
-    state = { ...state, state };
+    state = { ...state, action };
     return state;
   default:
     return state;

@@ -14,8 +14,15 @@ body {
   width: 280px;
 }
 
+.main-header {
+    border-bottom: 2px solid #81ecec;
+    color: white;
+    font-size: 20px;
+    width: 100%;
+  }
+
 .secondary-heading {
-  border-bottom: 6px solid #81ecec;
+  border-bottom: 4px solid #81ecec;
   float: left;
   font-size: 40px;
   margin-bottom: 50px;
@@ -46,4 +53,36 @@ body {
   margin: 0 10px;
   outline: none;
   width: 80%;
+}
+
+.input-button {
+  font-weight: 600;
+  background: none;
+  border: 2px solid #81ecec;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 85%;
+  padding: 5px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.input-button:disabled {
+  background-color: #b1c4d3d4;
+  opacity: 40%;
+}
+
+.input-button:enabled:hover {
+    background-color: #0984e3;
+    opacity: 100%;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.269);
+  color: rgb(250, 247, 247);
+  opacity: 50;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
 }

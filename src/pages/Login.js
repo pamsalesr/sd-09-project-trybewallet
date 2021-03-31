@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import { authLogin } from '../actions';
 import './Login.css';
 
@@ -8,58 +9,73 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      isEmailValid: false,
+      isPasswordValid: false,
       auth: false,
-      isEmailValid: true,
-      isPasswordValid: true,
+      logs: '',
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
-    this.checkAuth = this.checkAuth.bind(this);
+    this.getAuthStatus = this.getAuthStatus.bind(this);
+  }
+
+  getAuthStatus() {
+    const { isEmailValid, isPasswordValid } = this.state;
+    const auth = isEmailValid && isPasswordValid;
+    return !auth;
   }
 
   handleChange(name, value) {
+    const { isEmailValid, isPasswordValid } = this.state;
     this.setState({
       [name]: value,
+      auth: (isEmailValid && isPasswordValid),
     });
-  }
-
-  checkAuth(isEmailValid, isPasswordValid) {
-    const auth = isEmailValid && isPasswordValid;
-    this.setState({ auth });
   }
 
   validateFields({ target }) {
     const { name, value } = target;
-    let { isEmailValid, isPasswordValid } = this.state;
+    let { auth, isEmailValid, isPasswordValid } = this.state;
     const emailRegularEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordLength = 6;
     switch (name) {
     case 'email':
       isEmailValid = emailRegularEx.test(value);
-      this.checkAuth(isEmailValid, isPasswordValid);
-      this.setState({ isEmailValid });
+      auth = isEmailValid && isPasswordValid;
+      if (!isEmailValid) {
+        this.setState({ logs: 'Email deve seguir fulano@email.com', auth });
+      }
+      this.setState({ isEmailValid, auth });
       this.handleChange(name, value);
-      return isEmailValid;
+      break;
     case 'password':
       isPasswordValid = value.length >= passwordLength;
-      this.checkAuth(isEmailValid, isPasswordValid);
-      this.setState({ isPasswordValid });
+      isEmailValid = emailRegularEx.test(value);
+      auth = isEmailValid && isPasswordValid;
+      if (!isPasswordValid) {
+        this.setState({ logs: 'Senha insegura.', auth });
+      }
+      this.setState({ isPasswordValid, auth });
       this.handleChange(name, value);
-      return isPasswordValid;
+      break;
     default:
-      return 'Error';
+      return 'Error: Invalid Element';
     }
   }
 
+  saveReduxState({ loginDispatch }) {
+    loginDispatch(this.state);
+    this.setState({ redirect: true });
+  }
+
   render() {
-    const { loginDispatch } = this.props;
-    console.log(loginDispatch);
-    const { auth, isEmailValid, isPasswordValid } = this.state;
-    const isFieldsValid = isEmailValid && isPasswordValid;
-    const errorMessage = isFieldsValid ? ''
-      : <p className="error-message">Email ou Senha incorretos</p>;
+    const { redirect, logs } = this.state;
+    const disableButton = this.getAuthStatus();
+    const errorMessage = disableButton && logs
+      ? <span className="error-message">{ logs }</span>
+      : '';
+    if (redirect) { return <Redirect to="/carteira" />; }
     return (
       <section id="Login">
         <header className="main-header">
@@ -72,7 +88,7 @@ class Login extends React.Component {
             <input
               type="text"
               name="email"
-              className="input"
+              className="input input-text"
               onChange={ this.validateFields }
               placeholder="Email"
               data-testid="email-input"
@@ -83,7 +99,7 @@ class Login extends React.Component {
             <input
               type="password"
               name="password"
-              className="input"
+              className="input input-text"
               onChange={ this.validateFields }
               placeholder="Password"
               data-testid="password-input"
@@ -91,13 +107,12 @@ class Login extends React.Component {
           </div>
           <input
             type="button"
-            disabled={ !auth || '' }
+            disabled={ disableButton }
             value="Entrar"
-            className="input input-text"
-            onMouseDown={ this.auth }
-            onClick={ () => loginDispatch(this.state) }
+            className="input input-button"
+            onClick={ () => (this.saveReduxState(this.props)) }
           />
-          { auth ? '' : errorMessage}
+          { errorMessage }
         </div>
       </section>
     );
