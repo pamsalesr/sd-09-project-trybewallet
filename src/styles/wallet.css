@@ -6,6 +6,10 @@
   padding: 1px 40px;
 }
 
+h1 {
+  color: rgb(33, 100, 33);
+}
+
 .div-email-total {
   display: flex;
 }
@@ -20,7 +24,7 @@
 }
 
 .form-wallet {
-  background-color: gray;
+  background-color: rgb(33, 100, 33);
   display: flex;
   justify-content: space-around;
   padding: 20px 10px;

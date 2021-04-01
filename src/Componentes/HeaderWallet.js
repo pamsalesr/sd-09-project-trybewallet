@@ -7,7 +7,10 @@ class HeaderWallet extends React.Component {
   sunTotal() {
     const { listExpenses } = this.props;
     return listExpenses
-      .reduce((total, currentValue) => total + Number(currentValue.value), 0).toFixed(2);
+      .reduce((total, currentValue) => (
+        total + Number(currentValue.value)
+        * Number(currentValue.exchangeRates[currentValue.currency].ask)
+      ), 0).toFixed(2);
   }
 
   render() {
@@ -22,7 +25,7 @@ class HeaderWallet extends React.Component {
           <div className="div-total">
             <p className="element-total">Despesa Total R$</p>
             <p className="element-total" data-testid="total-field">
-              { String(this.sunTotal()) }
+              { this.sunTotal() }
             </p>
             <p className="element-total" data-testid="header-currency-field">BRL</p>
           </div>
