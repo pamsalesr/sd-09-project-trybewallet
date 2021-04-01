@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../Styles/wallet.css';
+import '../styles/wallet.css';
 
 class HeaderWallet extends React.Component {
   sunTotal() {
     const { listExpenses } = this.props;
     return listExpenses
-      .reduce((total, currentValue) => total + Number(currentValue.value), 0);
+      .reduce((total, currentValue) => total + Number(currentValue.value), 0).toFixed(2);
   }
 
   render() {
@@ -22,7 +22,7 @@ class HeaderWallet extends React.Component {
           <div className="div-total">
             <p className="element-total">Despesa Total R$</p>
             <p className="element-total" data-testid="total-field">
-              { this.sunTotal() }
+              { String(this.sunTotal()) }
             </p>
             <p className="element-total" data-testid="header-currency-field">BRL</p>
           </div>

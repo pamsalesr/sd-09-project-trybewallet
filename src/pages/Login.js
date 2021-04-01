@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { saveEmail } from '../actions';
-import '../Styles/login.css';
+import '../styles/login.css';
 
 class Login extends React.Component {
   constructor(props) {

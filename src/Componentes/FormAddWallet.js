@@ -10,6 +10,7 @@ class FormAddWallet extends React.Component {
 
     this.updateState = this.updateState.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
+    this.handleButton = this.handleButton.bind(this);
 
     this.state = {
       currencies: {},
@@ -40,6 +41,20 @@ class FormAddWallet extends React.Component {
     );
   }
 
+  handleButton() {
+    const { expenses } = this.state;
+    const { saveData, nextId } = this.props;
+    const resetExpenses = {
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+    };
+    saveData({ id: nextId, ...expenses });
+    this.setState((state) => ({ ...state, expenses: resetExpenses }));
+  }
+
   createOption(key) {
     const { currencies } = this.state;
     return (
@@ -54,10 +69,13 @@ class FormAddWallet extends React.Component {
   }
 
   renderValueInput() {
+    const { expenses } = this.state;
+    const { value } = expenses;
     return (
       <label htmlFor="valueInput">
         Valor
         <input
+          value={ value }
           id="valueInput"
           type="number"
           data-testid="value-input"
@@ -69,11 +87,13 @@ class FormAddWallet extends React.Component {
   }
 
   renderCurrencyInput() {
-    const { currencies } = this.state;
+    const { currencies, expenses } = this.state;
+    const { currency } = expenses;
     return (
       <label htmlFor="currencyInput">
         Moeda
         <select
+          value={ currency }
           id="currencyInput"
           data-testid="currency-input"
           name="currency"
@@ -87,10 +107,13 @@ class FormAddWallet extends React.Component {
   }
 
   renderMethodInput() {
+    const { expenses } = this.state;
+    const { method } = expenses;
     return (
       <label htmlFor="methodInput">
         Método de pagamento
         <select
+          value={ method }
           id="methodInput"
           data-testid="method-input"
           name="method"
@@ -106,10 +129,13 @@ class FormAddWallet extends React.Component {
   }
 
   renderTagInput() {
+    const { expenses } = this.state;
+    const { tag } = expenses;
     return (
       <label htmlFor="tagInput">
         Tag
         <select
+          value={ tag }
           id="tagInput"
           data-testid="tag-input"
           name="tag"
@@ -127,10 +153,13 @@ class FormAddWallet extends React.Component {
   }
 
   renderDescriptionInput() {
+    const { expenses } = this.state;
+    const { description } = expenses;
     return (
       <label htmlFor="descriptionInput">
         Descrição
         <input
+          value={ description }
           id="descriptionInput"
           type="text"
           data-testid="description-input"
@@ -142,8 +171,6 @@ class FormAddWallet extends React.Component {
   }
 
   render() {
-    const { expenses } = this.state;
-    const { saveData, nextId } = this.props;
     return (
       <div>
         <form className="form-wallet">
@@ -153,7 +180,7 @@ class FormAddWallet extends React.Component {
           { this.renderTagInput() }
           { this.renderDescriptionInput() }
           <button
-            onClick={ () => saveData({ id: nextId, ...expenses }) }
+            onClick={ this.handleButton }
             type="button"
           >
             Adicionar despesa
