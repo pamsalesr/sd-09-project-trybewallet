@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import img from '../logoTrybe.png';
 import { LoginContainer, Img, Input, Button } from './LoginStyled';
-import userEmail from '../actions/index';
+import { userEmailActions } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -69,7 +69,6 @@ class Login extends React.Component {
         <Link to="/carteira" className="link" onClick={ () => dispatchEmail(email) }>
           <Button
             type="button"
-            // onClick={ () => dispatchEmail(email) }
             disabled={ buttonState }
           >
             Entrar
@@ -86,7 +85,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEmail: (email) => dispatch(userEmail(email)),
+  dispatchEmail: (email) => dispatch(userEmailActions(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
