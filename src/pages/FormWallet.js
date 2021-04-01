@@ -9,7 +9,7 @@ class FormWallet extends React.Component {
     this.fetchAwesomeapi = this.fetchAwesomeapi.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
-      id: 1,
+      id: 0,
       exchangeRates: {},
       arrayWithTypes: [],
       method: 'Dinheiro',
@@ -117,7 +117,7 @@ class FormWallet extends React.Component {
         { this.renderSelects() }
         <button
           onClick={ () => {
-            this.setState((prevState) => ({ id: prevState.id + 1 }));
+            this.setState((prevState) => ({ id: prevState.id + 1, value: 0 }));
             sendFormSubmit(this.state);
           } }
           type="button"

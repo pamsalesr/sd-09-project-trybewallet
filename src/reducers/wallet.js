@@ -2,15 +2,15 @@
 
 const INITIAL_STATE = {
   currencies: [],
-  expenses: [{
-    id: 0,
-    value: 0,
-    description: '',
-    currency: '',
-    method: '',
-    tag: '',
-    exchangeRates: {},
-  }],
+  expenses: [//{
+  //  id: 0,
+  //  value: 0,
+  //  description: '',
+  //  currency: '',
+  //  method: '',
+  //  tag: '',
+  //  exchangeRates: {},
+  ],
 };
 
 const wallet = (state = INITIAL_STATE, action) => {

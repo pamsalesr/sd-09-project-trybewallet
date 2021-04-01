@@ -8,7 +8,7 @@ export const onSubmitLogin = (state) => ({
 
 export const fetchAPI = (state) => ({
   type: SUBMIT_FORM_API,
-  currency: state,
+  exchange: state,
 });
 
 export const sendDataForms = (state) => ({
@@ -20,6 +20,7 @@ export const sendDataForms = (state) => ({
     currency: state.currency,
     method: state.method,
     tag: state.tag,
+    exchangeRates: state.exchangeRates,
   },
 
 });
@@ -37,4 +38,4 @@ export function onSubmitForm(state) {
           });
       });
   };
-};
+}
