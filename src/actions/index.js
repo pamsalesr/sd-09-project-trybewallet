@@ -1,15 +1,31 @@
 // Coloque aqui suas actions
+import getCurrency from '../api';
 
-const login = (value) => ({
+const addEmail = (value) => ({
   type: 'ADD_EMAIL',
   value,
 });
 
-const wallet = (expense) => ({
+const addToWallet = (expense) => ({
   type: 'ADD_TO_WALLET',
-  payload: {
-    expense,
-  },
+  expense,
 });
 
-export { login, wallet };
+const getCurrencyAction = (data) => ({
+  type: 'GET-CURRENCY',
+  data,
+});
+
+function fetchCurrencyAction() {
+  return async (dispatch) => {
+    try {
+      const data = await getCurrency();
+      delete data.USDT;
+      return dispatch(getCurrencyAction(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+export { addEmail, addToWallet, fetchCurrencyAction, getCurrencyAction };

@@ -15,14 +15,13 @@
 }
 
 .App-header {
-  align-items: center;
   background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  justify-content: start;
   min-height: 100vh;
+  width: 100%;
 }
 
 .App-link {
@@ -41,8 +40,10 @@
 }
 
 .login {
+  align-items: center;
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 
 .header {
@@ -51,9 +52,17 @@
   color: white;
   display: flex;
   font-size: 30px;
-  height: 10px;
-  justify-content: space-around;
-  padding: 60px;
+  justify-content: space-between;
+  padding: 10px;
   text-align: center;
-  width: 90%;
+  width: 100%;
+}
+
+.form-despesa {
+  align-items: flex-start;
+  background-color: cornsilk;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 15px;
 }

@@ -1,6 +1,7 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
-  wallet: [],
+  expenses: [],
+  currencies: [],
   totalExpense: 0,
 };
 
@@ -9,8 +10,12 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case 'ADD_TO_WALLET':
     return {
       // ...state, wallet: state.wallet.concat(action.payload.expense),
-      wallet: [...state.wallet, action.payload.expense],
-      totalExpense: state.totalExpense + action.payload.expense,
+      expenses: [...state.expenses, action.expense],
+      totalExpense: (state.totalExpense) + Number(action.expense.value),
+    };
+  case 'ADD_CURRENCY_API':
+    return {
+      currencies: action.data,
     };
   default:
     return state;
