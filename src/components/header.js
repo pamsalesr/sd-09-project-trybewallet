@@ -22,7 +22,7 @@ class Header extends React.Component {
     const { email } = this.props;
     return (
       <div>
-        <img src="9814df697eaf49815d7df109110815ff887b3457.png" alt="trybe logo" />
+        <img src="https://theme.zdassets.com/theme_assets/9633455/9814df697eaf49815d7df109110815ff887b3457.png" alt="trybe logo" height="45px" />
         <div className="header">
           <h3 data-testid="email-field">
             Email:
