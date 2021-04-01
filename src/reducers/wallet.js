@@ -8,7 +8,7 @@ const expenses = (state = INITIAL_STATE, action) => {
   case 'ADD_EXPENSES':
     return { ...state, expenses: [...state.expenses, action.expenses] };
   case 'REMOVE_EXPENSES':
-    return { ...state, expenses: action.id };
+    return { ...state };
   default:
     return state;
   }
