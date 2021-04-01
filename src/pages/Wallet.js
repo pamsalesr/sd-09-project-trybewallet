@@ -14,7 +14,11 @@ class Wallet extends React.Component {
       description: '',
     };
     this.makeHeader = this.makeHeader.bind(this);
-    this.spendingForm = this.spendingForm.bind(this);
+    this.spendingValue = this.spendingValue.bind(this);
+    this.spendingDescription = this.spendingDescription.bind(this);
+    this.spendingCurrency = this.spendingCurrency.bind(this);
+    this.spendingMethod = this.spendingMethod.bind(this);
+    this.spendingCategory = this.spendingCategory.bind(this);
   }
 
   componentDidMount() {
@@ -40,48 +44,95 @@ class Wallet extends React.Component {
     );
   }
 
-  spendingForm() {
+  spendingValue() {
+    return (
+      <label htmlFor="value">
+        Valor da despesa
+        <input
+          data-testid="value-input"
+          name="value"
+          type="number"
+          step="0.01"
+          min="0"
+          onChange={ ({ target: { value } }) => {
+            this.setState({ newValue: value });
+          } }
+        />
+      </label>
+    );
+  }
+
+  spendingDescription() {
+    return (
+      <label htmlFor="description">
+        Descrição
+        <input
+          data-testid="description-input"
+          name="description"
+          type="text"
+          onChange={ ({ target: { value } }) => {
+            this.setState({ description: value });
+          } }
+        />
+      </label>
+    );
+  }
+
+  spendingCurrency() {
     const { currencies } = this.props;
     return (
-      <form>
-        <label htmlFor="value">
-          Valor da despesa
-          <input
-            data-testid="value-input"
-            name="value"
-            type="number"
-            step="0.01"
-            min="0"
-            onChange={ ({ target: { value } }) => {
-              this.setState({ newValue: value });
-            } }
-          />
-        </label>
-        <label htmlFor="description">
-          Descrição
-          <input
-            data-testid="description-input"
-            name="description"
-            type="text"
-            onChange={ ({ target: { value } }) => {
-              this.setState({ description: value });
-            } }
-          />
-        </label>
-        <label htmlFor="currency">
-          Moeda
-          <select
-            data-testid="currency-input"
-            name="currency"
-          >
-            {Object.keys(currencies)
-              .map((curr) => (curr !== 'USDT'
-                ? <option data-testid={ curr } key={ curr }>{curr}</option>
-                : null))}
-          </select>
-        </label>
-      </form>
+      <label htmlFor="currency">
+        Moeda
+        <select
+          data-testid="currency-input"
+          name="currency"
+        >
+          {Object.keys(currencies)
+            .map((curr) => (curr !== 'USDT'
+              ? <option data-testid={ curr } key={ curr }>{curr}</option>
+              : null))}
+        </select>
+      </label>
     );
+  }
+
+  spendingMethod() {
+    return (
+      <label htmlFor="method">
+        Forma de pagamento
+        <select
+          data-testid="method-input"
+          name="method"
+        >
+          <option value="dinheiro">Dinheiro</option>
+          <option value="credito">Cartão de crédito</option>
+          <option value="debito">Cartão de débito</option>
+        </select>
+      </label>
+    );
+  }
+
+  spendingCategory() {
+    return (
+      <label htmlFor="tag">
+        Forma de pagamento
+        <select
+          data-testid="tag-input"
+          name="tag"
+        >
+          <option value="alimentacao">Alimentação</option>
+          <option value="lazer">Lazer</option>
+          <option value="trabalho">Trabalho</option>
+          <option value="transport">Transporte</option>
+          <option value="saude">Saúde</option>
+        </select>
+      </label>
+    );
+  }
+
+  submit() {
+    const { newValue, description } = this.state;
+    console.log(newValue, description);
   }
 
   render() {
@@ -91,9 +142,14 @@ class Wallet extends React.Component {
         <div>
           { this.makeHeader() }
         </div>
-        <div>
-          { currencies && this.spendingForm() }
-        </div>
+        <form>
+          { this.spendingValue() }
+          { this.spendingDescription() }
+          { currencies && this.spendingCurrency() }
+          { this.spendingMethod() }
+          { this.spendingCategory() }
+          <button type="button" onClick={ this.submit }>Adicionar despesa</button>
+        </form>
       </>
     );
   }
