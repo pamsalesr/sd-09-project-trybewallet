@@ -1,2 +1,5 @@
 export const LOGIN = 'LOGIN';
-export const OUTRA_ACTION = 'LOGIN';
+
+export const RECEIVE_CURRENCIES_SUCCESS = 'RECEIVE_CURRENCIES_SUCCESS';
+
+export const ADD_EXPENSE = 'ADD_EXPENSE';

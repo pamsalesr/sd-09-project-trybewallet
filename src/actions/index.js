@@ -1,8 +1,24 @@
-import { LOGIN } from './actionTypes';
+import { LOGIN, RECEIVE_CURRENCIES_SUCCESS, ADD_EXPENSE } from './actionTypes';
+import getCurrencies from '../services/apiRequests';
 
-const makeLogin = (email) => ({
+export const makeLogin = (email) => ({
   type: LOGIN,
   email,
 });
 
-export default makeLogin;
+const receiveCurrenciesSuccess = (data) => ({
+  type: RECEIVE_CURRENCIES_SUCCESS,
+  currencies: data,
+});
+
+export function fetchCurrencies() {
+  return (dispatch) => (
+    getCurrencies()
+      .then((data) => dispatch(receiveCurrenciesSuccess(data)))
+  );
+}
+
+export const addExpense = (expense) => ({
+  type: ADD_EXPENSE,
+  expense,
+});
