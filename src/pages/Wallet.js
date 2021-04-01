@@ -1,8 +1,15 @@
 import React from 'react';
+import FormAddWallet from '../Componentes/FormAddWallet';
+import HeaderWallet from '../Componentes/HeaderWallet';
 
 class Wallet extends React.Component {
   render() {
-    return <div>TrybeWallet</div>;
+    return (
+      <div>
+        <HeaderWallet />
+        <FormAddWallet />
+      </div>
+    );
   }
 }
 
