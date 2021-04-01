@@ -158,7 +158,6 @@ class Wallet extends React.Component {
 
   render() {
     const { value } = this.state;
-    const { expenses } = this.props;
     return (
       <div>
         {this.createHeader()}
