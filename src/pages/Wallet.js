@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 import ExpenseForm from '../component/ExpenseForm';
 import Header from '../component/Header';
 import { requestApiAction } from '../actions';
+import Table from '../component/Table';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -26,7 +27,7 @@ class Wallet extends React.Component {
       <>
         <Header email={ userEmail } />
         <ExpenseForm option={ mapArr } />
-        )
+        <Table />
       </>
     );
   }
