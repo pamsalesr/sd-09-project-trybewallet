@@ -1,29 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bool, number } from 'prop-types';
+import ExpanseTable from './ExpanseTable';
+import WalletForm from './WalletForm';
+import EditExpenseForm from './EditExpenseForm';
+import WalletHeader from './WalletHeader';
 
 class Wallet extends React.Component {
   render() {
-    const { walletEmail } = this.props;
-    const expenditure = 0;
+    const { editActivated = false, editID } = this.props;
     return (
       <div>
-        <header>
-          <span data-testid="email-field">{ walletEmail }</span>
-          <span data-testid="total-field">{ expenditure }</span>
-          <span data-testid="header-currency-field">BRL</span>
-        </header>
+        <WalletHeader />
+        { (editActivated) ? <EditExpenseForm editID={ editID } /> : <WalletForm />}
+        <ExpanseTable />
       </div>
     );
   }
 }
 
-Wallet.propTypes = {
-  walletEmail: PropTypes.string.isRequired,
-};
-
 const mapStateToProps = (state) => ({
-  walletEmail: state.user.email,
+  editActivated: state.wallet.editActivated,
+  editID: state.wallet.editID,
 });
+
+Wallet.propTypes = {
+  editActivated: bool.isRequired,
+  editID: number.isRequired,
+};
 
 export default connect(mapStateToProps)(Wallet);

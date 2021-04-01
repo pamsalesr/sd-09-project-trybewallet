@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../actions';
@@ -6,7 +6,7 @@ import './Login.css';
 import Footer from './Footer';
 import Header from './Header';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 

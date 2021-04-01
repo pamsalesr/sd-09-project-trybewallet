@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.currency-container {
+  color: #4dffc3;
+}
+
 .header-div {
   align-items: center;
   border-bottom: 1px #4dffc3 ridge;
