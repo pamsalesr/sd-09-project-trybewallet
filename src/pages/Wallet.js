@@ -70,7 +70,7 @@ class Wallet extends React.Component {
       .map((expense) => {
         const currentCurrency = expense.currency;
         const currentExchangeRate = Object.entries(expense.exchangeRates)
-          .find((currency) => currency[0] === currentCurrency)[1].bid;
+          .find((currency) => currency[0] === currentCurrency)[1].ask;
 
         const valueToBRL = (parseInt(expense.value, 10) * currentExchangeRate);
 

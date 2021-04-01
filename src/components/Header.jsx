@@ -12,7 +12,7 @@ class Header extends React.Component {
           <span data-testid="email-field">{`Email: ${email}`}</span>
           <span>
             Despesa total:
-            <span data-testid="total-field">{ ` R$ ${expensesSum}` }</span>
+            <span data-testid="total-field">{ ` R$ ${expensesSum.toFixed(2)}` }</span>
             <span data-testid="header-currency-field">BRL</span>
           </span>
         </div>
