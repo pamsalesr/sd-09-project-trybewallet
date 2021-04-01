@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { onSubmitForm } from '../actions';
+import '../pageStyle/formWallet.css';
 
 class FormWallet extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class FormWallet extends React.Component {
     } = this.state;
     const currencyegory = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
-      <div>
+      <div className="formWallet">
         Moeda:
         <select
           name="currency"
