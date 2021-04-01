@@ -17,7 +17,7 @@ export function addCurrency(code, name) {
 
 export function addExpense(expense) {
   return {
-    type: type.ADD_EXPENSE,
+    type: Type.ADD_EXPENSE,
     id: expense.id,
     value: expense.value,
     description: expense.description,

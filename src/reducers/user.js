@@ -1,18 +1,14 @@
 import * as Type from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
-  user: {
-    email: '',
-  },
+  email: '',
 };
 
 function userReducer(state = INITIAL_STATE, action) {
-  switch (action.Type) {
+  switch (action.type) {
   case Type.ADD_USER:
     return {
-      user: {
-        email: action.email,
-      },
+      email: action.email,
     };
   default:
     return state;
