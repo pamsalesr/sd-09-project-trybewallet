@@ -28,7 +28,7 @@ class Table extends Component {
               <td>{item.method}</td>
               <td>{item.value}</td>
               <td>{item.exchangeRates[item.currency].name}</td>
-              <td>{item.exchangeRates[item.currency].ask}</td>
+              <td>{parseFloat(item.exchangeRates[item.currency].ask).toFixed(2)}</td>
               <td>{(item.value * item.exchangeRates[item.currency].ask).toFixed(2)}</td>
               <td>Real</td>
             </tr>
