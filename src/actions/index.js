@@ -1,8 +1,9 @@
 import userAction from './userAction';
-
-const oi = 'ói';
+import { addExpense, saveCurrencies, getCurrencies } from './walletActions';
 
 export {
   userAction,
-  oi,
+  addExpense,
+  saveCurrencies,
+  getCurrencies,
 };

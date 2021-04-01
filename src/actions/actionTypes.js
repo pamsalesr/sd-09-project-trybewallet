@@ -1,2 +1,3 @@
 export const LOGIN = 'LOGIN';
-export const LOGIN2 = 'LOGIN2';
+export const REQUEST_API = 'REQUEST_API';
+export const ADD_EXPENSE = 'ADD_EXPENSE';
