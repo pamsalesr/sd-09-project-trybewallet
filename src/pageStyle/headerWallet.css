@@ -1,14 +1,14 @@
 .header-wallet {
-    display: flex;
-    justify-content: flex-end;
-    padding: 3px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 3px;
 }
 
 .email-field {
-    margin-right: 2%
+  margin-right: 2%;
 }
 
 .total-price {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
