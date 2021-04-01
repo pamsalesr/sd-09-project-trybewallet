@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Inputs from '../components/Inputs';
 import { getUpdatedCurrenciesThunk } from '../actions';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   constructor() {
@@ -67,13 +68,13 @@ class Wallet extends React.Component {
 
     const expensesSum = expenses
       .map((expense) => {
-        const currentCurrencie = expense.currency;
+        const currentCurrency = expense.currency;
         const currentExchangeRate = Object.entries(expense.exchangeRates)
-          .find((currency) => currency[0] === currentCurrencie)[1].bid;
+          .find((currency) => currency[0] === currentCurrency)[1].bid;
 
-        const valueToBRL = (parseInt(expense.value, 10) * currentExchangeRate).toFixed(2);
+        const valueToBRL = (parseInt(expense.value, 10) * currentExchangeRate);
 
-        return parseFloat(valueToBRL);
+        return parseFloat(valueToBRL.toFixed(2));
       })
       .reduce((acc, current) => acc + current, 0);
 
@@ -128,6 +129,9 @@ class Wallet extends React.Component {
               tag={ tag }
               value={ value }
             />
+          </section>
+          <section id="table-section">
+            <Table />
           </section>
         </main>
       </div>

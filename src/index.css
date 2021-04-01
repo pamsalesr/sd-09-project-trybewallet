@@ -9,7 +9,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 90vh;
-  width: 100vw;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 #login form {
@@ -49,19 +50,29 @@ body {
 
 #inputs-section form {
   display: flex;
-  width: 100vw;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: space-between;
   padding: 20px;
   box-shadow: black 2px 2px 10px;
   position: absolute;
   top: 58px;
   left: 0;
   align-items: stretch;
+  box-sizing: border-box;
 }
 
 #inputs-section label {
   display: flex;
   flex-direction: column;
+}
+
+#table-section table {
+  width: 100vw;
+  position: absolute;
+  top: 137px;
+  left: 0;
+  padding: 20px;
+  text-align: center;
 }
 
 code {
