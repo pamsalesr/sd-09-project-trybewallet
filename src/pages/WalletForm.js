@@ -106,7 +106,7 @@ class WalletForm extends Component {
     const { value } = this.state;
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
-      <form className="form-container">
+      <form>
         <label htmlFor="value-input">
           Valor:
           <input

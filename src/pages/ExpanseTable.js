@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { deleteExpense, editExpense } from '../actions/index';
 
 class ExpanseTable extends Component {
@@ -15,7 +14,7 @@ class ExpanseTable extends Component {
           className="btn-edit"
           onClick={ () => editItem(i) }
         >
-          <RiDeleteBin2Fill />
+          <p>Editar</p>
         </button>
         <button
           type="button"
@@ -23,7 +22,7 @@ class ExpanseTable extends Component {
           className="btn-delete"
           onClick={ () => deliteItem(i, totalExpense) }
         >
-          <RiDeleteBin2Fill />
+          <p>Delete</p>
         </button>
       </td>
     );

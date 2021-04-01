@@ -19,8 +19,8 @@ class WalletHeader extends Component {
       <div>
         <header>
           <h1>TrybeWallet</h1>
-          <div className="header-info-container">
-            <div data-testid="email-field" className="header-email-user">
+          <div>
+            <div data-testid="email-field">
               E-mail:
               { email }
             </div>
