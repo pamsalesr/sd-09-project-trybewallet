@@ -6,10 +6,10 @@ class WalletTable extends Component {
   constructor(props) {
     super(props);
 
-    this.tableHeader = this.tableHeader.bind(this);
+    this.walletTable = this.walletTable.bind(this);
   }
 
-  tableHeader() {
+  walletTable() {
     const { expenses } = this.props;
     const tbHead = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
       'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
@@ -39,6 +39,15 @@ class WalletTable extends Component {
                 <td>{ Number(ask).toFixed(2) }</td>
                 <td>{ Number(ask * Number(value)).toFixed(2) }</td>
                 <td>Real</td>
+                <td>
+                  <button
+                    data-testid="delete-btn"
+                    type="button"
+                    onClick={ () => {} }
+                  >
+                    D
+                  </button>
+                </td>
               </tr>
             );
           })}
@@ -50,7 +59,7 @@ class WalletTable extends Component {
   render() {
     return (
       <>
-        { this.tableHeader() }
+        { this.walletTable() }
       </>
     );
   }

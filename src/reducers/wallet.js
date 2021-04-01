@@ -7,6 +7,8 @@ const expenses = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'ADD_EXPENSES':
     return { ...state, expenses: [...state.expenses, action.expenses] };
+  case 'REMOVE_EXPENSES':
+    return { ...state, expenses: action.id };
   default:
     return state;
   }

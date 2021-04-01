@@ -21,7 +21,7 @@ class WalletHeader extends Component {
 
         <TotalContainer>
           <span>Despesa Total:</span>
-          <span data-testid="total-field">R$ 0,00</span>
+          <span data-testid="total-field">0</span>
           <span data-testid="header-currency-field">BRL</span>
         </TotalContainer>
       </Header>
