@@ -1,15 +1,10 @@
-export const getCurrentPrice = () => {
-  console.log('fecht teste')
-  return fetch('https://economia.awesomeapi.com.br/json/all')
-    .then((response) => (
-      response.json()
-        .then((data) => (
-          data
-        ))
-        .catch((error) => (
-          error
-        ))
-    ));
-};
+export const getCurrentPrice = () => fetch('https://economia.awesomeapi.com.br/json/all')
+  .then((response) => response.json()
+    .then((data) => (
+      data
+    ))
+    .catch((error) => (
+      error
+    )));
 
 export default getCurrentPrice;

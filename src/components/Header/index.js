@@ -7,9 +7,14 @@ class Header extends React.Component {
   render() {
     let totalExpenses = 0;
     const { email, expenses } = this.props;
-    totalExpenses = expenses.reduce((acc, coin) => {
-      return parseFloat(acc) + (parseFloat(coin.ask) * parseFloat(coin.value));
-    }, 0);
+    if (expenses) {
+      expenses.forEach((item) => console.log(item.exchangeRates[item.currency].ask));
+    }
+    totalExpenses = expenses.reduce((acc, coin) => (
+      parseFloat(acc)
+      + (parseFloat(coin.exchangeRates[coin.currency].ask)
+      * parseFloat(coin.value))), 0)
+      .toFixed(2);
 
     return (
       <header className="header">

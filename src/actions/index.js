@@ -37,14 +37,13 @@ export const saveUserEmail = (email) => ({
   email,
 });
 
-export const saveUserExpense = (state) => {
-  return {
-    type: SAVE_USER_EXPENSE,
-    expenseDetails: state,
-  };
-};
+export const saveUserExpense = (state) => ({
+  type: SAVE_USER_EXPENSE,
+  expenseDetails: state,
+});
 
-export const addSaveUserExpense = (coin) => ({
+export const addSaveUserExpense = (chooseCoinAndCoins) => ({
   type: ADD_SAVE_USER_EXPENSE,
-  ask: coin[1].ask,
+  ask: chooseCoinAndCoins[0],
+  coins: chooseCoinAndCoins[1],
 });

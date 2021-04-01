@@ -30,13 +30,11 @@ class expenseForm extends React.Component {
           value={ value }
           name="value"
           dataTestid="value-input"
-          // state={ { value: '' } }
         />
         <Inputs
           value={ description }
           name="description"
           dataTestid="description-input"
-          // state={ { description: '' } }
         />
         <SelectOptions />
         <HandleSelect

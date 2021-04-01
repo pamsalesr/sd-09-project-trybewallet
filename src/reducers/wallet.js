@@ -16,16 +16,15 @@ const INITIAL_STATE = {
   expenseDetails: {
     id: 0,
     value: '',
-    ask: '',
     description: '',
-    currency: 'USD',
-    method: 'Dinheiro',
-    tag: 'Alimentação',
+    currency: '',
+    method: '',
+    tag: '',
   },
 };
 
 function wallet(state = INITIAL_STATE, action) {
-  const { expenseDetails, ask } = action;
+  const { expenseDetails, ask, coins } = action;
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
     return { ...state, isFetching: true };
@@ -49,16 +48,16 @@ function wallet(state = INITIAL_STATE, action) {
       },
     };
   case ADD_SAVE_USER_EXPENSE:
+    console.log(ask);
     return {
       ...state,
       expenses: [
         ...state.expenses,
-        { ...state.expenseDetails, ask },
+        { ...state.expenseDetails, exchangeRates: coins },
       ],
       expenseDetails: {
         id: state.expenseDetails.id + 1,
         value: '',
-        ask: '',
         description: '',
         currency: 'USD',
         method: 'Dinheiro',

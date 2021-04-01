@@ -12,15 +12,11 @@ class Inputs extends React.Component {
 
   handleChange({ target: { name, value } }) {
     const { propSaveUserExpense } = this.props;
-    // this.setState({
-    //   [name]: value,
-    // });
     propSaveUserExpense({ [name]: value });
   }
 
   render() {
     const { name, dataTestid, value } = this.props;
-    // const { value } = this.state;
     return (
       <div>
         <label htmlFor={ name }>
