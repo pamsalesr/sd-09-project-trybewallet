@@ -45,7 +45,7 @@ class FormAddWallet extends React.Component {
     return (
       <option
         key={ currencies[key].name }
-        data-testid="USD"
+        data-testid={ currencies[key].code }
         value={ currencies[key].code }
       >
         {currencies[key].code}
@@ -89,7 +89,7 @@ class FormAddWallet extends React.Component {
   renderMethodInput() {
     return (
       <label htmlFor="methodInput">
-        Metodo Pagamento
+        Método de pagamento
         <select
           id="methodInput"
           data-testid="method-input"

@@ -7,7 +7,7 @@ class HeaderWallet extends React.Component {
   sunTotal() {
     const { listExpenses } = this.props;
     return listExpenses
-      .reduce((total, currentValue) => total + Number(currentValue.value), 0).toFixed(2);
+      .reduce((total, currentValue) => total + Number(currentValue.value), 0);
   }
 
   render() {
