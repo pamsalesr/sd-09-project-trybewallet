@@ -45,11 +45,11 @@ header .container .user-email {
 header .container .value-container {
   display: flex;
   flex-flow: row wrap;
-  margin: 10px;
   justify-content: space-between;
+  margin: 10px;
 }
 
-header .container .value-container .total-expense{
+header .container .value-container .total-expense {
   margin: 10px;
 }
 
