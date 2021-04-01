@@ -5,27 +5,26 @@ import Inputs from './Inputs';
 import SelectOptions from './Select/SelectOptions';
 import HandleSelect from './Select/HandleSelect';
 import ButtonAdd from './ButtonAdd';
+import '../components.css';
+
+const payWith = [
+  'Dinheiro',
+  'Cartão de crédito',
+  'Cartão de débito',
+];
+const tags = [
+  'Alimentação',
+  'Lazer',
+  'Trabalho',
+  'Transporte',
+  'Saúde',
+];
 
 class expenseForm extends React.Component {
   render() {
-    const payWith = [
-      'Dinheiro',
-      'Cartão de crédito',
-      'Cartão de débito',
-    ];
-    const tags = [
-      'Alimentação',
-      'Lazer',
-      'Trabalho',
-      'Transporte',
-      'Saúde',
-    ];
     const { expenseDetails: { value = '', description = '' } = {} } = this.props;
-    // const { value, description } = expenseDetails;
-    // console.log(expenseDetails);
-    // console.log(!value, !description);
     return (
-      <div>
+      <div className="form-group">
         <Inputs
           value={ value }
           name="value"
@@ -52,6 +51,7 @@ class expenseForm extends React.Component {
           id="idTag"
         />
         <ButtonAdd title="Adicionar despesa" />
+        <button type="button" data-testid="delete-btn">Deletar</button>
       </div>
     );
   }

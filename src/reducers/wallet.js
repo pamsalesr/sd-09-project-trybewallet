@@ -17,7 +17,7 @@ const INITIAL_STATE = {
     id: 0,
     value: '',
     description: '',
-    currency: '',
+    currency: 'USD',
     method: '',
     tag: '',
   },
