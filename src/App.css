@@ -19,10 +19,10 @@
   background-color: #282c34;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
+  justify-content: space-around;
+  min-height: 50px;
 }
 
 .App-link {

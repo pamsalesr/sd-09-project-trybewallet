@@ -1,10 +1,11 @@
 const INITIAL_STATE = {};
-const wallet = 'wallet';
 
 const walletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case wallet:
-    return 0;
+  case 'SET_CURRENCY_LIST':
+    return { ...state, currencies: action.data };
+  case 'RECEIVE_CURRENCY_FAIL':
+    return { error: action.error };
   default:
     return state;
   }
