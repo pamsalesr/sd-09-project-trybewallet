@@ -1,4 +1,4 @@
-import { SAVE } from '../actions';
+import { SAVE, DEL } from '../actions';
 
 const INICIAL_STATE_WALLET = {
   currencies: [],
@@ -6,10 +6,17 @@ const INICIAL_STATE_WALLET = {
 };
 
 const wallet = (state = INICIAL_STATE_WALLET, action) => {
-  if (action.type === SAVE) {
-    return { ...state, expenses: [...state.expenses, action.value] };
+  switch (action.type) {
+  case SAVE:
+    return ({ ...state, expenses: [...state.expenses, action.value] });
+  case DEL:
+    return ({
+      ...state,
+      expenses: state.expenses.filter((item) => item.id !== action.value),
+    });
+  default:
+    return state;
   }
-  return state;
 };
 
 export default wallet;

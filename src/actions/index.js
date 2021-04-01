@@ -1,5 +1,6 @@
 export const LOGIN = 'LOGIN';
 export const SAVE = 'SAVE';
+export const DEL = 'DEL';
 
 export const saveEmail = (email) => ({
   type: LOGIN,
@@ -9,6 +10,11 @@ export const saveEmail = (email) => ({
 export const saveExpense = (expenseObj) => ({
   type: SAVE,
   value: expenseObj,
+});
+
+export const delExpense = (id) => ({
+  type: DEL,
+  value: id,
 });
 
 export const constructObj = (dataObj) => (dispatch) => {

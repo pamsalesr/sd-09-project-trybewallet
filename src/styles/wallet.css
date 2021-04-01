@@ -52,3 +52,7 @@ th {
 td {
   text-align: center;
 }
+
+.btn-del {
+  background-color: red;
+}

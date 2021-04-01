@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { delExpense } from '../actions';
 
 class TableWallet extends React.Component {
   renderTitleTable() {
@@ -20,7 +21,8 @@ class TableWallet extends React.Component {
   }
 
   renderDatas(data) {
-    const { description, tag, method, value, currency, exchangeRates } = data;
+    const { description, tag, method, value, currency, exchangeRates, id } = data;
+    const { del } = this.props;
     return (
       <tr>
         <td>{description}</td>
@@ -31,6 +33,16 @@ class TableWallet extends React.Component {
         <td>{Number(exchangeRates[currency].ask).toFixed(2)}</td>
         <td>{Number(value * exchangeRates[currency].ask).toFixed(2)}</td>
         <td>Real</td>
+        <td>
+          <button
+            onClick={ () => del(id) }
+            className="btn-del"
+            type="button"
+            data-testid="delete-btn"
+          >
+            X
+          </button>
+        </td>
       </tr>
     );
   }
@@ -54,8 +66,13 @@ const mapStateToProps = (state) => ({
   listExpenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  del: (value) => dispatch(delExpense(value)),
+});
+
 TableWallet.propTypes = {
   listExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  del: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(TableWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(TableWallet);
