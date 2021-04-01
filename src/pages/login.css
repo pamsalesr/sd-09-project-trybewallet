@@ -4,7 +4,7 @@
 
 .login-input {
   display: flex;
-  margin-left: 50vh;
   flex-direction: column;
+  margin-left: 50vh;
   width: 300px;
 }
