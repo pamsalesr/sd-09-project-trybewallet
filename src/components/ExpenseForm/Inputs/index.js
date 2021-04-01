@@ -6,21 +6,21 @@ import { saveUserExpense } from '../../../actions';
 class Inputs extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = props.state;
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
     const { propSaveUserExpense } = this.props;
-    this.setState({
-      [name]: value,
-    });
+    // this.setState({
+    //   [name]: value,
+    // });
     propSaveUserExpense({ [name]: value });
   }
 
   render() {
-    const { name, dataTestid } = this.props;
-    const { value } = this.state;
+    const { name, dataTestid, value } = this.props;
+    // const { value } = this.state;
     return (
       <div>
         <label htmlFor={ name }>
@@ -40,6 +40,7 @@ class Inputs extends React.Component {
 
 Inputs.propTypes = {
   name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
   propSaveUserExpense: PropTypes.func.isRequired,
 };

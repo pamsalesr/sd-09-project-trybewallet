@@ -5,7 +5,12 @@ import './header.css';
 
 class Header extends React.Component {
   render() {
-    const { email } = this.props;
+    let totalExpenses = 0;
+    const { email, expenses } = this.props;
+    totalExpenses = expenses.reduce((acc, coin) => {
+      return parseFloat(acc) + (parseFloat(coin.ask) * parseFloat(coin.value));
+    }, 0);
+
     return (
       <header className="header">
         <div className="header-title">
@@ -19,7 +24,7 @@ class Header extends React.Component {
             <p>
               Despesa total:
               R$
-              <span data-testid="total-field">0</span>
+              <span data-testid="total-field">{totalExpenses}</span>
             </p>
           </div>
           <div>
@@ -32,11 +37,13 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
-};
+  email: PropTypes.string,
+  expenses: PropTypes.object,
+}.isRequired;
 
-const mapStateToProps = (state) => ({
-  email: state.user.email,
+const mapStateToProps = ({ user, wallet: { expenses } }) => ({
+  email: user.email,
+  expenses,
 });
 
 export default connect(mapStateToProps, null)(Header);

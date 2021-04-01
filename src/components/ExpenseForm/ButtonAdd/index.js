@@ -10,9 +10,17 @@ class buttonAdd extends React.Component {
   }
 
   handleClick() {
-    const { propaddSaveUserExpense, coins, currency } = this.props;
-    currentPrice(); // Chama a api e atualiza valores na store.
-    propaddSaveUserExpense(Object.entries(coins).find((coin) => currency === coin[0]));
+    const { propaddSaveUserExpense,
+      coins,
+      expenseDetails,
+      propCurrentPrice,
+    } = this.props;
+    console.log(coins);
+    propCurrentPrice(); // Chama a api e atualiza valores na store.
+    if (expenseDetails) {
+      propaddSaveUserExpense(Object.entries(coins)
+        .find((coin) => expenseDetails.currency === coin[0]));
+    }
   }
 
   render() {
@@ -39,13 +47,16 @@ buttonAdd.propTypes = {
   propaddSaveUserExpense: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ wallet: { currencies, expenseDetails: { currency } } }) => ({
-  coins: currencies,
-  currency,
-});
+const mapStateToProps = ({ wallet: { currencies, expenseDetails } }) => {
+  return ({
+    coins: currencies,
+    expenseDetails,
+  });
+};
 
 const mapDispatchToProps = (dispatch) => ({
   propaddSaveUserExpense: (coin) => dispatch(addSaveUserExpense(coin)),
+  propCurrentPrice: () => dispatch(currentPrice()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(buttonAdd);

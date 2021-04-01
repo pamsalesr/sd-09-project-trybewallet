@@ -49,7 +49,6 @@ function wallet(state = INITIAL_STATE, action) {
       },
     };
   case ADD_SAVE_USER_EXPENSE:
-    console.log(ask);
     return {
       ...state,
       expenses: [

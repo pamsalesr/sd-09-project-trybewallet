@@ -19,14 +19,15 @@ class HandleSelect extends React.Component {
   }
 
   render() {
-    const { title, dataTestid, name, array } = this.props;
+    const { title, dataTestid, name, array, id } = this.props;
     const { value } = this.state;
     return (
-      <label htmlFor={ name }>
+      <label htmlFor={ id }>
         {title}
         <select
           data-testid={ dataTestid }
           name={ name }
+          id={ id }
           value={ value }
           onChange={ this.handleChange }
         >
@@ -41,6 +42,7 @@ class HandleSelect extends React.Component {
 
 HandleSelect.propTypes = {
   title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   array: PropTypes.node.isRequired,

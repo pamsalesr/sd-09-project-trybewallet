@@ -38,7 +38,6 @@ export const saveUserEmail = (email) => ({
 });
 
 export const saveUserExpense = (state) => {
-  console.log(state);
   return {
     type: SAVE_USER_EXPENSE,
     expenseDetails: state,
