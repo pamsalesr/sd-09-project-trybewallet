@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import NewInput from './NewInput';
 
 class Wallet extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   calculateTotalExpenses() {
     const { expenses } = this.props;
     if (expenses.length === 0) return 0;
@@ -16,19 +12,8 @@ class Wallet extends React.Component {
       const convertedExpense = Number(expenseRate) * Number(curr.value);
       return acc + convertedExpense;
     }, 0);
-    // console.log(convertedTotal);
     return convertedTotal.toFixed(2);
   }
-
-  // calculateConvertedTotal() {
-  //   const { expenses } = this.props;
-  //   const convertedTotal = expenses.reduce((acc, curr) => {
-  //     return acc + curr.value * (Object.entries(curr.exchangeRates).find((currencyName) => {
-  //       currencyName === curr.currency;
-  //       return currencyName.ask;
-  //     }))
-  //   }, 0)
-  // }
 
   render() {
     const { email } = this.props;
