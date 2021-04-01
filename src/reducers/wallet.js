@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const replacedExpenses = (expenses, expense) => {
-  console.log('replace');
   const expensesCopy = expenses.slice();
   const indexOfExpenses = expensesCopy.findIndex(({ id }) => id === expense.id);
   expensesCopy[indexOfExpenses] = expense;
@@ -30,7 +29,6 @@ const expensesReducer = (state = initialState, action) => {
   case DELETE_EXPENSE:
     return { ...state, expenses };
   case RECEIVE_EXPENSE_EDITIONS:
-    console.log('switch');
     return {
       ...state,
       expenses: replacedExpenses(state.expenses, expense),

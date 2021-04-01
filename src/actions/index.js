@@ -49,6 +49,5 @@ export const addExpense = (expense) => async (dispatch) => {
 
 export const receiveExpenseEdition = (expense) => (dispatch) => {
   dispatch(resetForm());
-  console.log('action');
   return (dispatch({ type: RECEIVE_EXPENSE_EDITIONS, expense }));
 };

@@ -15,6 +15,7 @@ class Form extends Component {
       payMethods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       categories: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
       method: props.method,
+      formWasSent: false,
       formControl: { ...props.formControl },
     };
     this.updateFormControl = this.updateFormControl.bind(this);
@@ -26,21 +27,20 @@ class Form extends Component {
     getCurrencies();
   }
 
-  componentDidUpdate({ method: prevMethod }) {
-    const { method: currMethod, formControl } = this.props;
-    // const { formControl: currForm } = this.state;
-    // console.log(Object.values(prevForm).every((field) => field === ''));
-    // const formWasCleared = (
-    //   Object.values(prevForm).every((field) => field === '')
-    //   && Object.values(currForm).every((field) => field !== '')
-    // );
-    if (currMethod !== prevMethod) {
-      this.updateFormMethodAndData(currMethod, formControl);
+  componentDidUpdate({ formControl: { id: prevId } }) {
+    const { formWasSent } = this.state;
+    const { method, formControl } = this.props;
+    const EDITION = 'edition';
+
+    const isEdition = method === EDITION && prevId !== formControl.id;
+
+    if (formWasSent || isEdition) {
+      this.updateFormMethodAndData(method, formControl);
     }
   }
 
   updateFormMethodAndData(method, formControl) {
-    this.setState({ method, formControl });
+    this.setState({ method, formControl, formWasSent: false });
   }
 
   updateFormControl(field, value) {
@@ -62,6 +62,7 @@ class Form extends Component {
       const { addExpense } = this.props;
       addExpense(formControl);
     }
+    this.setState({ formWasSent: true });
   }
 
   renderValueinput() {

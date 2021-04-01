@@ -20,6 +20,7 @@ const formReducer = (state = initialState, action) => {
       formData,
     };
   case RESET_FORM:
+    return initialState;
   default:
     return state;
   }
