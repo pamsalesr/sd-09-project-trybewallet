@@ -53,7 +53,7 @@ class ExpenseForm extends Component {
             name="value"
             id="value-input"
             data-testid="value-input"
-            type="textr"
+            type="text"
           />
         </label>
 
@@ -131,6 +131,9 @@ class ExpenseForm extends Component {
     const data = { id, value, currency, method, tag, description, exchangeRates };
     expensesData(data);
     requestApi();
+    this.setState({
+      id: id + 1,
+    });
     this.setState(this.initialState());
   }
 
