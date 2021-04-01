@@ -58,7 +58,7 @@ class Login extends React.Component {
     return (
       loggedIn ? <Redirect to="/carteira" />
         : (
-          <main>
+          <main className="login-screen">
             <form>
               <h1>Trybe Wallet</h1>
               <label htmlFor="user">

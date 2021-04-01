@@ -1,4 +1,4 @@
-main {
+.login-screen {
   align-items: center;
   background-color: #a2b6f0;
   display: flex;
@@ -8,7 +8,7 @@ main {
   width: 100vw;
 }
 
-form {
+.login-screen form {
   align-items: center;
   border: 1px solid #a2b6f0;
   border-radius: 10px;
@@ -21,7 +21,7 @@ form {
   width: 20%;
 }
 
-form input {
+.login-screen form input {
   border: 2px solid white;
   border-radius: 10px;
   box-sizing: border-box;
@@ -29,11 +29,11 @@ form input {
   width: 100%;
 }
 
-input:focus {
+.login-screen form input:focus {
   outline: none;
 }
 
-form button {
+.login-screen form button {
   background-color: #3443ca;
   border: 2px solid #3443ca;
   border-radius: 10px;
@@ -45,11 +45,11 @@ form button {
   width: 100%;
 }
 
-form button:disabled {
+.login-screen form button:disabled {
   opacity: 50%;
 }
 
-form label {
+.login-screen form label {
   box-sizing: border-box;
   display: flex;
   flex-flow: column wrap;
