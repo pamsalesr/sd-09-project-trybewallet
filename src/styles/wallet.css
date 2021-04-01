@@ -10,6 +10,12 @@ h1 {
   color: rgb(33, 100, 33);
 }
 
+select {
+  border: solid 1.5px;
+  border-radius: 20px;
+  padding: 2px 4px;
+}
+
 .div-email-total {
   display: flex;
 }
@@ -32,4 +38,17 @@ h1 {
 
 input , select {
   margin-left: 5px;
+}
+
+.tr-title {
+  border-bottom: solid 1.5px;
+}
+
+th {
+  padding: 10px 25px;
+  text-align: center;
+}
+
+td {
+  text-align: center;
 }

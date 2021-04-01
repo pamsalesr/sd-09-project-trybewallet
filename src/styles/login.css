@@ -1,3 +1,9 @@
+.container-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 15%;
+}
+
 .container-login {
   align-items: center;
   border: solid 1.5px;
@@ -6,8 +12,13 @@
   flex-direction: column;
   height: 180px;
   justify-content: space-around;
-  margin-left: 40%;
-  margin-top: 15%;
   padding-bottom: 20px;
   width: 240px;
+}
+
+input {
+  border: solid 1.5px;
+  border-radius: 20px;
+  padding: 2px 4px;
+  width: 200px;
 }

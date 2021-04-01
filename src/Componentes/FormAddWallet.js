@@ -73,7 +73,7 @@ class FormAddWallet extends React.Component {
     const { value } = expenses;
     return (
       <label htmlFor="valueInput">
-        Valor
+        Valor:
         <input
           value={ value }
           id="valueInput"
@@ -91,7 +91,7 @@ class FormAddWallet extends React.Component {
     const { currency } = expenses;
     return (
       <label htmlFor="currencyInput">
-        Moeda
+        Moeda:
         <select
           value={ currency }
           id="currencyInput"
@@ -111,7 +111,7 @@ class FormAddWallet extends React.Component {
     const { method } = expenses;
     return (
       <label htmlFor="methodInput">
-        Método de pagamento
+        Método de pagamento:
         <select
           value={ method }
           id="methodInput"
@@ -133,7 +133,7 @@ class FormAddWallet extends React.Component {
     const { tag } = expenses;
     return (
       <label htmlFor="tagInput">
-        Tag
+        Tag:
         <select
           value={ tag }
           id="tagInput"
@@ -157,7 +157,7 @@ class FormAddWallet extends React.Component {
     const { description } = expenses;
     return (
       <label htmlFor="descriptionInput">
-        Descrição
+        Descrição:
         <input
           value={ description }
           id="descriptionInput"

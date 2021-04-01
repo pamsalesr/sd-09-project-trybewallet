@@ -64,31 +64,33 @@ class Login extends React.Component {
     const { status, email } = this.state;
     const { saveMail } = this.props;
     return (
-      <div className="container-login">
-        <h1>Login</h1>
-        <input
-          name="email"
-          type="text"
-          data-testid="email-input"
-          placeholder="Email"
-          onChange={ this.updateState }
-        />
-        <input
-          name="password"
-          type="password"
-          data-testid="password-input"
-          placeholder="Senha"
-          onChange={ this.updateState }
-        />
-        <Link to="/carteira">
-          <button
-            disabled={ status }
-            onClick={ () => saveMail(email) }
-            type="button"
-          >
-            Entrar
-          </button>
-        </Link>
+      <div className="container-center">
+        <div className="container-login">
+          <h1>Login</h1>
+          <input
+            name="email"
+            type="text"
+            data-testid="email-input"
+            placeholder="Email"
+            onChange={ this.updateState }
+          />
+          <input
+            name="password"
+            type="password"
+            data-testid="password-input"
+            placeholder="Senha"
+            onChange={ this.updateState }
+          />
+          <Link to="/carteira">
+            <button
+              disabled={ status }
+              onClick={ () => saveMail(email) }
+              type="button"
+            >
+              Entrar
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
