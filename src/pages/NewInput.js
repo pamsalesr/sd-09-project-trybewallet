@@ -185,6 +185,10 @@ NewInput.propTypes = {
   sendCurrencyAction: PropTypes.func.isRequired,
   saveExpenseAction: PropTypes.func.isRequired,
   expense: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currencies: PropTypes
+    .arrayOf(PropTypes
+      .oneOfType([PropTypes.string, PropTypes
+        .arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.string]))])).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInput);
