@@ -4,6 +4,7 @@ import './Wallet.css';
 import PropTypes from 'prop-types';
 import currenciesAPI from '../actions/apiRequest';
 import addExpense from '../actions/addExpense';
+import deleteExpense from '../actions/deleteExpense';
 
 class Wallet extends React.Component {
   constructor() {
@@ -14,6 +15,9 @@ class Wallet extends React.Component {
     this.handleButton = this.handleButton.bind(this);
     this.handleTotal = this.handleTotal.bind(this);
     this.createTable = this.createTable.bind(this);
+    this.state = {
+      id: 0,
+    };
   }
 
   componentDidMount() {
@@ -34,8 +38,9 @@ class Wallet extends React.Component {
   }
 
   handleButton() {
-    const { expenses, submitExpense } = this.props;
-    let expense = { id: expenses.length };
+    const { submitExpense } = this.props;
+    const { id } = this.state;
+    let expense = { id };
     const inputs = ['value', 'currency', 'method', 'tag', 'description'];
     inputs.forEach((input) => {
       let { value } = document.getElementById(input);
@@ -48,6 +53,9 @@ class Wallet extends React.Component {
       }
     });
     submitExpense(expense);
+    this.setState({
+      id: id + 1,
+    });
   }
 
   returnSelect() {
@@ -90,8 +98,9 @@ class Wallet extends React.Component {
     const createBody = () => {
       if (expenses.length > 0) {
         return (expenses.map((expense) => {
-          const { description, tag, method, value, currency } = expense;
+          const { description, tag, method, value, currency, id } = expense;
           const { ask, name } = expense.exchangeRates[currency];
+          const { removeExpense } = this.props;
           return (
             <tr key={ description }>
               <td>{ description }</td>
@@ -104,7 +113,13 @@ class Wallet extends React.Component {
               <td>Real</td>
               <td>
                 <button type="button">Editar</button>
-                <button type="button" data-testid="delete-btn">Apagar</button>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => removeExpense(id) }
+                >
+                  Apagar
+                </button>
               </td>
             </tr>
           );
@@ -113,7 +128,7 @@ class Wallet extends React.Component {
       return null;
     };
     return (
-      <table>
+      <table className="table">
         <thead>
           <tr>
             {titles.map((title) => <th key={ title }>{ title }</th>)}
@@ -140,8 +155,8 @@ class Wallet extends React.Component {
             <span className="span-header" data-testid="header-currency-field">BRL</span>
           </div>
         </header>
-        <div>
-          <form>
+        <div className="form">
+          <form className="form">
             <label htmlFor="value">
               Valor:
               <input id="value" type="number" data-testid="value-input" />
@@ -171,7 +186,7 @@ class Wallet extends React.Component {
             <button type="button" onClick={ this.handleButton }>Adicionar despesa</button>
           </form>
         </div>
-        <div>{ this.createTable() }</div>
+        <div className="table">{ this.createTable() }</div>
       </div>
     );
   }
@@ -183,6 +198,7 @@ Wallet.propTypes = {
   currencies: PropTypes.objectOf(PropTypes.object).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   submitExpense: PropTypes.func.isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -194,6 +210,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchCurrency: () => dispatch(currenciesAPI()),
   submitExpense: (expense) => dispatch(addExpense(expense)),
+  removeExpense: (id) => dispatch(deleteExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

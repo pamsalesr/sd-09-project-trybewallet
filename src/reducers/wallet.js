@@ -14,6 +14,11 @@ const walletReducer = (state = INNITAL_STATE, action) => {
   case 'ADD_EXPENSE':
     return { ...state,
       expenses: [...state.expenses, { ...action.expense, exchangeRates: action.data }] };
+  case 'DELETE_EXPENSE':
+    state.expenses.splice(action.id, 1);
+    return { ...state,
+      expenses: [...state.expenses],
+    };
   default:
     return state;
   }

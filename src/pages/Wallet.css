@@ -9,3 +9,25 @@ header {
 .span-header {
   margin: 0 5px;
 }
+
+.table {
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  justify-content: space-around;
+  padding: 5px 0;
+  width: 100%;
+}
+
+th , td {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  text-align: center;
+}
+
+table {
+  border: 1px solid black;
+  border-spacing: 0;
+}
