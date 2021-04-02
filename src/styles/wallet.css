@@ -44,8 +44,8 @@ select {
 }
 
 input , select {
-  margin-left: 5px;
   background-color: white;
+  margin-left: 5px;
 }
 
 .tr-title {
