@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class ShowExpenses extends React.Component {
   constructor(props) {
@@ -83,6 +84,9 @@ class ShowExpenses extends React.Component {
     );
   }
 }
+ShowExpenses.propTypes = {
+  wallet: PropTypes.shape().isRequired,
+};
 const mapStateToProps = (state) => ({
   wallet: state.wallet,
 });
