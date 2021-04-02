@@ -18,7 +18,6 @@ class buttonAdd extends React.Component {
     propCurrentPrice(); // Chama a api e atualiza valores na store.
     if (coins) {
       const chooseCoinAndCoins = [];
-      console.log(Object.entries(expenseDetails));
       chooseCoinAndCoins.push(Object.entries(coins)
         .find((coin) => expenseDetails.currency === coin[0])[1].ask);
       chooseCoinAndCoins.push(coins);

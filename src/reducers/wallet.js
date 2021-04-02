@@ -18,13 +18,13 @@ const INITIAL_STATE = {
     value: '',
     description: '',
     currency: 'USD',
-    method: '',
-    tag: '',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
   },
 };
 
 function wallet(state = INITIAL_STATE, action) {
-  const { expenseDetails, ask, coins } = action;
+  const { expenseDetails, coins } = action;
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
     return { ...state, isFetching: true };
@@ -48,7 +48,6 @@ function wallet(state = INITIAL_STATE, action) {
       },
     };
   case ADD_SAVE_USER_EXPENSE:
-    console.log(ask);
     return {
       ...state,
       expenses: [

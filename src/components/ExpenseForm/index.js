@@ -37,14 +37,14 @@ class expenseForm extends React.Component {
         />
         <SelectOptions />
         <HandleSelect
-          title="Forma de pagamento"
+          title="Forma de pagamento:"
           dataTestid="method-input"
           name="method"
           id="Metodo"
           array={ payWith }
         />
         <HandleSelect
-          title="Tag"
+          title="Tag:"
           dataTestid="tag-input"
           name="tag"
           array={ tags }
