@@ -8,6 +8,13 @@
   pointer-events: none;
 }
 
+.App-header-color {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  padding: 0 0 1em 0;
+}
+
 .App-header {
   align-items: center;
   background-color: #282c34;
@@ -36,6 +43,10 @@
   margin: 1em auto;
   max-width: 320px;
   padding: 2em 1%;
+}
+
+.table {
+  width: 100%;
 }
 
 .send-button:disabled {

@@ -5,6 +5,7 @@ import '../App.scss';
 import logo from '../logo.svg';
 import fetchCurrencies from '../api';
 import walletAction from '../actions/walletAction';
+import RenderExpenses from '../components/Expenses';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -189,41 +190,6 @@ class Wallet extends React.Component {
     );
   }
 
-  renderExpenses() {
-    const { expenses } = this.props;
-    return (
-      <table className="App">
-        <thead>
-          <tr className="">
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
-          { expenses.length === 0 ? null : expenses.map((expense) => (
-            <tr key={ expense.id }>
-              <td>{expense.description}</td>
-              <td>{expense.tag}</td>
-              <td>{expense.method}</td>
-              <td>{`${expense.value}`}</td>
-              <td>{this.findExchange(expense).name}</td>
-              <td>{Math.round(this.findExchange(expense).ask * 100) / 100}</td>
-              <td>{Math.round(this.convertValue(expense) * 100) / 100}</td>
-              <td>Real</td>
-            </tr>
-          )) }
-        </tbody>
-      </table>
-    );
-  }
-
   render() {
     const { email, expenses } = this.props;
     const { selectedCurrency, loading } = this.state;
@@ -241,7 +207,9 @@ class Wallet extends React.Component {
           </div>
         </header>
         { loading ? <p>Carregando...</p> : this.renderForm() }
-        {this.renderExpenses()}
+        <RenderExpenses
+          expenses={ expenses }
+        />
       </div>
     );
   }
