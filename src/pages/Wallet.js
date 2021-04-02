@@ -31,14 +31,18 @@ class Wallet extends React.Component {
     const { expenses } = this.props;
     const values = [];
     expenses.forEach((expense) => values
-      .push(parseFloat(expense.value) * this.findExchange(expense)));
-    const total = values.reduce((prev, current) => prev + current);
+      .push(this.convertValue(expense)));
+    const total = (values.reduce((prev, current) => prev + current)).toFixed(2);
     return total;
+  }
+
+  convertValue(expense) {
+    return (parseFloat(expense.value) * this.findExchange(expense).ask);
   }
 
   findExchange(expense) {
     const rates = Object.entries(expense.exchangeRates);
-    const foundRate = rates.find((rate) => rate[1].code === expense.currency)[1].ask;
+    const foundRate = rates.find((rate) => rate[1].code === expense.currency)[1];
     return foundRate;
   }
 
@@ -185,11 +189,46 @@ class Wallet extends React.Component {
     );
   }
 
+  renderExpenses() {
+    const { expenses } = this.props;
+    return (
+      <table className="App">
+        <thead>
+          <tr className="">
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          { expenses.length === 0 ? null : expenses.map((expense) => (
+            <tr key={ expense.id }>
+              <td>{expense.description}</td>
+              <td>{expense.tag}</td>
+              <td>{expense.method}</td>
+              <td>{`${expense.value}`}</td>
+              <td>{this.findExchange(expense).name}</td>
+              <td>{Math.round(this.findExchange(expense).ask * 100) / 100}</td>
+              <td>{Math.round(this.convertValue(expense) * 100) / 100}</td>
+              <td>Real</td>
+            </tr>
+          )) }
+        </tbody>
+      </table>
+    );
+  }
+
   render() {
     const { email, expenses } = this.props;
     const { selectedCurrency, loading } = this.state;
     return (
-      <div className="App">
+      <div className="App wallet">
         <header className="App-header">
           <img src={ logo } alt="trybe logo" width="36px" />
           <h1>TrybeWallet</h1>
@@ -202,6 +241,7 @@ class Wallet extends React.Component {
           </div>
         </header>
         { loading ? <p>Carregando...</p> : this.renderForm() }
+        {this.renderExpenses()}
       </div>
     );
   }
