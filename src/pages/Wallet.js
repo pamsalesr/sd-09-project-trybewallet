@@ -67,8 +67,8 @@ class Wallet extends React.Component {
           type="number"
           step="0.01"
           min="0"
-          onChange={ ({ target: { value } }) => {
-            this.setState({ value });
+          onChange={ ({ target }) => {
+            this.setState({ value: target.value });
           } }
         />
       </label>
