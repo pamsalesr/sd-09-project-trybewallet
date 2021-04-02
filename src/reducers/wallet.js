@@ -31,8 +31,10 @@ function walletReducer(state = INITIAL_STATE, action) {
     };
     return state;
   case DELETE_EXPENSE:
-    state = { ...state, ...state.wallet, expenses: state.wallet.expenses.pop(action.id) };
-    return state;
+    return { ...state,
+      expenses: [...state.expenses
+        .slice(0, action.index), ...state.expenses
+        .slice(action.index + 1, state.expenses.length)] };
   case RETRIEVE_EXPENSE:
     return state.wallet.expenses[action.id];
   case REQUEST_CURRENCIES:

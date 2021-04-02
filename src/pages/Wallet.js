@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AddExpense from './AddExpense';
-import { fetchCurrencies, createExpense } from '../actions';
+import { fetchCurrencies, createExpense, deleteExpense } from '../actions';
 import ShowExpenses from './ShowExpenses';
 
 class Wallet extends React.Component {
@@ -22,6 +22,7 @@ class Wallet extends React.Component {
     this.handleInputEvents = this.handleInputEvents.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
     this.createLocalExpense = this.createLocalExpense.bind(this);
+    this.removeExpense = this.removeExpense.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +63,7 @@ class Wallet extends React.Component {
     getCurrencies();
     const { expense } = this.state;
     const form = document.getElementById('add-expense');
-    newExpenseDispatch(expense);
+    if (expense) { newExpenseDispatch(expense); }
     this.setState({
       value: '',
       description: '',
@@ -74,16 +75,28 @@ class Wallet extends React.Component {
     form.reset();
   }
 
+  removeExpense({ target }) {
+    const { id } = target;
+    const { deleteExpenseDispatch, wallet } = this.props;
+    const { expenses } = wallet;
+    const filteredExpense = expenses.find((expense) => expense.id === parseInt(id, 10));
+    const expenseIndex = expenses.indexOf(filteredExpense);
+    deleteExpenseDispatch(expenseIndex);
+  }
+
   render() {
     const { user, wallet } = this.props;
     const { expenses } = wallet;
     let totalExpenses = 0;
-    expenses.forEach((expense) => {
-      const exchangeRates = Object.values(expense.exchangeRates);
-      const currentAsk = exchangeRates.find((rate) => rate.code === expense.currency).ask;
-      const totalExpense = (parseFloat(expense.value) * parseFloat(currentAsk));
-      totalExpenses += totalExpense;
-    });
+    if (expenses.length > 0) {
+      expenses.forEach((expense) => {
+        const exchangeRates = Object.values(expense.exchangeRates);
+        const currentAsk = exchangeRates
+          .find((rate) => rate.code === expense.currency).ask;
+        const totalExpense = (parseFloat(expense.value) * parseFloat(currentAsk));
+        totalExpenses += totalExpense;
+      });
+    }
     return ((
       <section className="general">
         <header>
@@ -110,7 +123,7 @@ class Wallet extends React.Component {
               </section>
             )
         }
-        <ShowExpenses />
+        <ShowExpenses onclickDelete={ this.removeExpense } />
       </section>
     )
     );
@@ -121,13 +134,9 @@ Wallet.propTypes = {
     email: PropTypes.string,
   }).isRequired,
   newExpenseDispatch: PropTypes.func.isRequired,
+  deleteExpenseDispatch: PropTypes.func.isRequired,
   getCurrencies: PropTypes.func.isRequired,
-  wallet: PropTypes.shape({
-    isFetching: PropTypes.bool,
-    currencies: PropTypes.shape(),
-    expenses: PropTypes.shape().isRequired,
-    totalExpense: PropTypes.number.isRequired,
-  }).isRequired,
+  wallet: PropTypes.shape().isRequired,
 };
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -136,5 +145,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getCurrencies: () => dispatch(fetchCurrencies()),
   newExpenseDispatch: (expense) => dispatch(createExpense(expense)),
+  deleteExpenseDispatch: (index) => dispatch(deleteExpense(index)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

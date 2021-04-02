@@ -103,7 +103,7 @@ class AddExpense extends React.Component {
 }
 AddExpense.propTypes = {
   onClick: PropTypes.func.isRequired,
-  stateWallet: PropTypes.shape({ currencies: PropTypes.shape() }).isRequired,
+  stateWallet: PropTypes.shape().isRequired,
   onChange: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({

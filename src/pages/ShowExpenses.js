@@ -11,6 +11,7 @@ class ShowExpenses extends React.Component {
 
   renderExpenseData(expense) {
     const { exchangeRates } = expense;
+    const { onclickDelete } = this.props;
     const { ask, name } = Object.values(exchangeRates)
       .find((rate) => rate.code === expense.currency);
     const convertedValue = parseFloat(expense.value) * parseFloat(ask);
@@ -25,8 +26,14 @@ class ShowExpenses extends React.Component {
         <td role="cell">{(convertedValue).toFixed(2)}</td>
         <td role="cell">Real</td>
         <td role="cell">
-          <input data-testid="delete-btn" type="button" value="X" />
-          <input type="button" value="E" />
+          <input
+            onClick={ onclickDelete }
+            id={ expense.id }
+            data-testid="delete-btn"
+            type="button"
+            value="X"
+          />
+          <input id={ expense.id } type="button" value="E" />
         </td>
       </tr>
     );

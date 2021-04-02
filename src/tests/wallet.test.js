@@ -144,7 +144,6 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
   
     test('Um botão com o texto \'Adicionar despesa\' que salva as informações da despesa no estado global e atualiza a soma de despesas no header', async () => {
       const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-      console.log('passei no render...');
       const addButton = await screen.findByText(/Adicionar despesa/i);
       const valueInput = await screen.findByTestId('value-input');
       const currencyInput = await screen.findByTestId('currency-input');
@@ -159,7 +158,6 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
       userEvent.selectOptions(methodInput, 'Cartão de crédito');
       userEvent.selectOptions(tagInput, 'Lazer');
       userEvent.type(descriptionInput, 'Dez dólares');
-      console.log(addButton);
       fireEvent.click(addButton);
       expect(mockedExchange).toBeCalledTimes(2);
   
@@ -185,9 +183,7 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
       userEvent.selectOptions(methodInput, 'Cartão de débito');
       userEvent.selectOptions(tagInput, 'Trabalho');
       userEvent.type(descriptionInput, 'Vinte euros');
-      console.log(addButton);
       fireEvent.click(addButton);
-      console.log('Passei no teste... #SQN');
       expect(mockedExchange).toBeCalledTimes(3);
   
       const expectedStateExpense2 = [
