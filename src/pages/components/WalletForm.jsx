@@ -20,8 +20,8 @@ class WalletForm extends Component {
     this.setCurrencies = this.setCurrencies.bind(this);
     this.reduceTotal = this.reduceTotal.bind(this);
     this.resetStates = this.resetStates.bind(this);
-    this.renderFormInputs = this.renderFormInputs(this);
-    this.renderFormSelects = this.renderFormSelects(this);
+    this.renderFormInputs = this.renderFormInputs.bind(this);
+    this.renderFormSelects = this.renderFormSelects.bind(this);
   }
 
   componentDidMount() {
@@ -88,20 +88,28 @@ class WalletForm extends Component {
     const { value, description } = this.state;
     return (
       <>
-        <input
-          data-testid="value-input"
-          value={ value }
-          type="text"
-          name="value"
-          onChange={ (e) => this.setState({ value: e.target.value }) }
-        />
-        <input
-          data-testid="description-input"
-          value={ description }
-          type="text"
-          name="description"
-          onChange={ (e) => this.setState({ description: e.target.value }) }
-        />
+        <label htmlFor="value">
+          Valor da despesa
+          <input
+            data-testid="value-input"
+            value={ value }
+            type="text"
+            name="value"
+            id="value"
+            onChange={ (e) => this.setState({ value: e.target.value }) }
+          />
+        </label>
+        <label htmlFor="description">
+          Descrição da despesa
+          <input
+            data-testid="description-input"
+            value={ description }
+            type="text"
+            name="description"
+            id="description"
+            onChange={ (e) => this.setState({ description: e.target.value }) }
+          />
+        </label>
       </>
     );
   }
@@ -110,61 +118,67 @@ class WalletForm extends Component {
     const { method, tag } = this.state;
     return (
       <>
-        <select
-          data-testid="method-input"
-          value={ method }
-          name="method"
-          id="method"
-          onChange={ (e) => this.setState({ method: e.target.value }) }
-        >
-          <option value="Dinheiro">Dinheiro</option>
-          <option value="Cartão de crédito">Cartão de crédito</option>
-          <option value="Cartão de débito">Cartão de débito</option>
-        </select>
-        <select
-          data-testid="tag-input"
-          value={ tag }
-          name="tag"
-          id="tag"
-          onChange={ (e) => this.setState({ tag: e.target.value }) }
-        >
-          <option value="Alimentação">Alimentação</option>
-          <option value="Lazer">Lazer</option>
-          <option value="Trabalho">Trabalho</option>
-          <option value="Transporte">Transporte</option>
-          <option value="Saúde">Saúde</option>
-        </select>
+        <label htmlFor="method">
+          Forma de Pagamento
+          <select
+            data-testid="method-input"
+            value={ method }
+            name="method"
+            id="method"
+            onChange={ (e) => this.setState({ method: e.target.value }) }
+          >
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+          </select>
+        </label>
+        <label htmlFor="tag">
+          Categoria da despesa
+          <select
+            data-testid="tag-input"
+            value={ tag }
+            name="tag"
+            id="tag"
+            onChange={ (e) => this.setState({ tag: e.target.value }) }
+          >
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
+          </select>
+        </label>
       </>
     );
   }
 
   render() {
     const { currency } = this.state;
-    const { expenses, currencyList } = this.props;
+    const { currencyList } = this.props;
     return (
       <form>
-        <span className="hidden-ID">
-          {expenses.length}
-        </span>
-        {this.renderFormInputs}
-        <select
-          data-testid="currency-input"
-          value={ currency }
-          name="currency"
-          id="currency"
-          onChange={ (e) => this.setState({ currency: e.target.value }) }
-        >
-          {currencyList
-            .map((item) => (
-              <option
-                key={ item }
-                data-testid={ item }
-                value={ item }
-              >
-                {item}
-              </option>))}
-        </select>
-        {this.renderFormSelects}
+        {this.renderFormInputs()}
+        <label htmlFor="currency">
+          Moeda da despesa
+          <select
+            data-testid="currency-input"
+            value={ currency }
+            name="currency"
+            id="currency"
+            onChange={ (e) => this.setState({ currency: e.target.value }) }
+          >
+            {currencyList
+              .map((item) => (
+                <option
+                  key={ item }
+                  data-testid={ item }
+                  value={ item }
+                >
+                  {item}
+                </option>))}
+          </select>
+        </label>
+        {this.renderFormSelects()}
         <button
           type="button"
           onClick={ this.saveExpense }
