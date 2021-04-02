@@ -51,7 +51,6 @@ class expenseForm extends React.Component {
           id="idTag"
         />
         <ButtonAdd title="Adicionar despesa" />
-        <button type="button" data-testid="delete-btn">Deletar</button>
       </div>
     );
   }

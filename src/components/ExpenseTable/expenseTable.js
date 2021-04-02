@@ -54,9 +54,7 @@ class expenseTable extends React.Component {
     return (
       <table>
         <thead>
-          <tr>
-            {this.createThTag(headerTable)}
-          </tr>
+          {this.createThTag(headerTable)}
         </thead>
         <tbody>
           {expenses && this.createTBodyExpenseTatle(expenses)}
