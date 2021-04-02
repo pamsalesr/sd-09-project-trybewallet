@@ -27,7 +27,6 @@ export const getCurrencies = (currencies) => ({ type: GET_CURRENCIES, currencies
 export function fetchCurrencies() {
   return (dispatch) => {
     dispatch(requestCurrencies());
-    console.log('Meu fetch');
     return fetch(urlRequest)
       .then((response) => response.json())
       .then((currencies) => dispatch(getCurrencies(currencies)));

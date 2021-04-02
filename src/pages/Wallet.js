@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AddExpense from './AddExpense';
 import { fetchCurrencies, createExpense } from '../actions';
+import ShowExpenses from './ShowExpenses';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -25,7 +26,6 @@ class Wallet extends React.Component {
 
   componentDidMount() {
     const { getCurrencies } = this.props;
-    console.log('chamei meu didmount');
     getCurrencies();
   }
 
@@ -58,7 +58,6 @@ class Wallet extends React.Component {
   }
 
   saveExpense() {
-    console.log('chamei');
     const { newExpenseDispatch, getCurrencies } = this.props;
     getCurrencies();
     const { expense } = this.state;
@@ -86,7 +85,7 @@ class Wallet extends React.Component {
       totalExpenses += totalExpense;
     });
     return ((
-      <div className="general">
+      <section className="general">
         <header>
           <h1>TrybeWallet</h1>
           <span data-testid="email-field">
@@ -103,12 +102,16 @@ class Wallet extends React.Component {
           wallet.isFetching
             ? <div><h2 className="secondary-heading">Loading...</h2></div>
             : (
-              <AddExpense
-                onChange={ this.handleInputEvents }
-                onClick={ this.saveExpense }
-              />)
+              <section className="data">
+                <AddExpense
+                  onChange={ this.handleInputEvents }
+                  onClick={ this.saveExpense }
+                />
+              </section>
+            )
         }
-      </div>
+        <ShowExpenses />
+      </section>
     )
     );
   }

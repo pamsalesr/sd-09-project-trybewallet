@@ -36,8 +36,8 @@ class AddExpense extends React.Component {
           { this.renderCurrencySelect() }
           { this.renderPayMethodSelect() }
           { this.renderTagSelect() }
+          <button type="button" onClick={ onClick }>Adicionar despesa</button>
         </form>
-        <button type="button" onClick={ onClick }>Adicionar despesa</button>
       </div>
     );
   }
