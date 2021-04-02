@@ -43,7 +43,7 @@ class AddExpenseForms extends React.Component {
 
   async addExpense() {
     const { receiveCurrencies, sumExpense, currencies, expenses } = this.props;
-    console.log(currencies, expenses);
+
     await receiveCurrencies();
 
     const id = expenses.length;
@@ -81,7 +81,7 @@ class AddExpenseForms extends React.Component {
           <PaymentMethod value={ method } onChange={ this.handleChange } />
           <Tag value={ tag } onChange={ this.handleChange } />
           <label htmlFor="description">
-            Descrição
+            Descrição:
             <input
               id="description"
               name="description"
