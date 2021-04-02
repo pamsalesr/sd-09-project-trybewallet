@@ -8,7 +8,7 @@ import fetchCurrenciesApi from '../services/fetchCurrenciesApi';
 const paymentMethods = ['Dinheiro', 'Cartão de débito', 'Cartão de crédito'];
 const expenseCategories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 const INITIAL_STATE = {
-  value: '0',
+  value: '',
   description: '',
   currency: 'USD',
   method: 'Dinheiro',
@@ -69,7 +69,7 @@ class WalletForm extends React.Component {
           <input
             data-testid="value-input"
             name="value"
-            type="number"
+            type="text"
             onChange={ this.handleChange }
           />
           Descrição
