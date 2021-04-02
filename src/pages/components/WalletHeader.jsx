@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class WalletHeader extends Component {
@@ -13,7 +14,7 @@ class WalletHeader extends Component {
             data-testid="email-field"
           >
             {email}
-         </div>
+          </div>
           <div className="value-container">
             <div
               className="total-expense"
@@ -22,14 +23,14 @@ class WalletHeader extends Component {
               {total || 0}
             </div>
             <div
-             className="wallet-currency"
+              className="wallet-currency"
               data-testid="header-currency-field"
             >
               BRL
             </div>
           </div>
         </div>
-     </header>
+      </header>
     );
   }
 }
@@ -37,6 +38,15 @@ class WalletHeader extends Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   total: state.wallet.expensesTotal,
-})
+});
+
+WalletHeader.propTypes = {
+  email: PropTypes.string.isRequired,
+  total: PropTypes.number,
+};
+
+WalletHeader.defaultProps = {
+  total: 0,
+};
 
 export default connect(mapStateToProps)(WalletHeader);
