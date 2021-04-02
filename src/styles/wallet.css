@@ -36,12 +36,20 @@ select {
   padding: 20px 10px;
 }
 
+.form-edit {
+  background-color: yellow;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 10px;
+}
+
 input , select {
   margin-left: 5px;
+  background-color: white;
 }
 
 .tr-title {
-  border-bottom: solid 1.5px;
+  background-color: gray;
 }
 
 th {
@@ -55,4 +63,9 @@ td {
 
 .btn-del {
   background-color: red;
+}
+
+.btn-edit {
+  background-color: yellow;
+  margin-right: 10px;
 }

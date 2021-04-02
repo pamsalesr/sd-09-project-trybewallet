@@ -22,7 +22,7 @@ class TableWallet extends React.Component {
 
   renderDatas(data) {
     const { description, tag, method, value, currency, exchangeRates, id } = data;
-    const { del } = this.props;
+    const { del, handleEdit } = this.props;
     return (
       <tr>
         <td>{description}</td>
@@ -34,6 +34,14 @@ class TableWallet extends React.Component {
         <td>{Number(value * exchangeRates[currency].ask).toFixed(2)}</td>
         <td>Real</td>
         <td>
+          <button
+            onClick={ () => handleEdit(true, id) }
+            className="btn-edit"
+            type="button"
+            data-testid="edit-btn"
+          >
+            E
+          </button>
           <button
             onClick={ () => del(id) }
             className="btn-del"
@@ -73,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
 TableWallet.propTypes = {
   listExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   del: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableWallet);

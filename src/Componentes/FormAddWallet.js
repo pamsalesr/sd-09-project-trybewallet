@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import listCurrencies from '../services/serviceAPI';
-import { constructObj } from '../actions';
+import { mapStateToProps, mapDispatchToProps } from '../services/propsReduxForm';
 
 class FormAddWallet extends React.Component {
   constructor(props) {
@@ -11,16 +11,14 @@ class FormAddWallet extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
     this.handleButton = this.handleButton.bind(this);
+    this.updateEdit = this.updateEdit.bind(this);
+
+    this.IN_STATE = { value: '', description: '', currency: '', method: '', tag: '' };
 
     this.state = {
+      statusEdition: false,
       currencies: {},
-      expenses: {
-        value: '',
-        description: '',
-        currency: '',
-        method: '',
-        tag: '',
-      },
+      expenses: { value: '', description: '', currency: '', method: '', tag: '' },
     };
   }
 
@@ -41,18 +39,29 @@ class FormAddWallet extends React.Component {
     );
   }
 
+  updateEdit(id) {
+    const { listExpenses } = this.props;
+    const expenseEdit = listExpenses.find((expense) => expense.id === id);
+    this.setState(
+      (state) => ({ ...state, statusEdition: true, expenses: { ...expenseEdit } }),
+    );
+  }
+
   handleButton() {
     const { expenses } = this.state;
     const { saveData, nextId } = this.props;
-    const resetExpenses = {
-      value: '',
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-    };
     saveData({ id: nextId, ...expenses });
-    this.setState((state) => ({ ...state, expenses: resetExpenses }));
+    this.setState((state) => ({ ...state, expenses: this.IN_STATE }));
+  }
+
+  handleButtonEdit(id) {
+    const { saveDataEdited, handleEdit } = this.props;
+    const { expenses } = this.state;
+    saveDataEdited(id, expenses);
+    handleEdit(false);
+    this.setState(
+      (state) => ({ ...state, statusEdition: false, expenses: this.IN_STATE }),
+    );
   }
 
   createOption(key) {
@@ -170,7 +179,7 @@ class FormAddWallet extends React.Component {
     );
   }
 
-  render() {
+  renderForm() {
     return (
       <div>
         <form className="form-wallet">
@@ -189,19 +198,43 @@ class FormAddWallet extends React.Component {
       </div>
     );
   }
+
+  renderEdit(id) {
+    const { statusEdition } = this.state;
+    if (!statusEdition) this.updateEdit(id);
+    return (
+      <div>
+        <form className="form-edit">
+          { this.renderValueInput() }
+          { this.renderCurrencyInput() }
+          { this.renderMethodInput() }
+          { this.renderTagInput() }
+          { this.renderDescriptionInput() }
+          <button
+            type="button"
+            onClick={ () => this.handleButtonEdit(id) }
+          >
+            Editar despesa
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  render() {
+    const { statusEdit, idEdit } = this.props;
+    return (statusEdit) ? this.renderEdit(idEdit) : this.renderForm();
+  }
 }
 
 FormAddWallet.propTypes = {
   nextId: PropTypes.string.isRequired,
   saveData: PropTypes.func.isRequired,
+  statusEdit: PropTypes.bool.isRequired,
+  listExpenses: PropTypes.func.isRequired,
+  idEdit: PropTypes.string.isRequired,
+  saveDataEdited: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
-
-const mapDispatchToProps = (dispatch) => ({
-  saveData: (value) => dispatch(constructObj(value)),
-});
-
-const mapStateToProps = (state) => ({
-  nextId: state.wallet.expenses.length,
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormAddWallet);

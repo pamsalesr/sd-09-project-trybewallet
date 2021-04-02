@@ -1,4 +1,4 @@
-import { SAVE, DEL } from '../actions';
+import { SAVE, DEL, EDIT } from '../actions';
 
 const INICIAL_STATE_WALLET = {
   currencies: [],
@@ -13,6 +13,14 @@ const wallet = (state = INICIAL_STATE_WALLET, action) => {
     return ({
       ...state,
       expenses: state.expenses.filter((item) => item.id !== action.value),
+    });
+  case EDIT:
+    return ({
+      ...state,
+      expenses: state.expenses.map((item) => {
+        if (item.id === action.id) return { ...action.value };
+        return { ...item };
+      }),
     });
   default:
     return state;
