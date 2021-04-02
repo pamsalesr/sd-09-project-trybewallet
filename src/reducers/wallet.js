@@ -6,10 +6,7 @@ const INITIAL_WALLET = {
 function wallet(noWallet = INITIAL_WALLET, action) {
   switch (action.type) {
   case 'VALID_WALLET':
-    return {
-      currencies: action.currencies,
-      expenses: action.expenses,
-    };
+    return action.wallet;
   default:
     return noWallet;
   }

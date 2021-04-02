@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Actions from '../actions';
+import logo from '../logo.svg';
 import '../App.scss';
 
 class Login extends React.Component {
@@ -44,7 +45,7 @@ class Login extends React.Component {
     return (
       <div className="App">
         <form className="login">
-          <img src="" alt="" />
+          <img src={ logo } alt="Trybe logo" width="36px" className="App" />
           <h1>TrybeWallet</h1>
           <input
             name="email"
@@ -62,7 +63,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
             value={ password }
           />
-          <Link to="/carteira">
+          <Link to="/carteira" className="link">
             <button
               className="send-button"
               type="submit"
