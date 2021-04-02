@@ -6,7 +6,7 @@ const INITIAL_USER_STATE = {
     email: 'yoda@starwars.com',
     password: '123456',
     authorizedLogin: false,
-  }
+  },
 };
 
 const user = (state = INITIAL_USER_STATE, action) => {
@@ -19,6 +19,6 @@ const user = (state = INITIAL_USER_STATE, action) => {
     default:
       return state;
   }
-}
+};
 
 export default user;
