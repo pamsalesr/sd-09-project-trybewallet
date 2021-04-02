@@ -56,12 +56,14 @@ class Wallet extends React.Component {
   }
 
   spendingValue() {
+    const { value } = this.state;
     return (
       <label htmlFor="value">
         Valor da despesa
         <input
           data-testid="value-input"
           name="value"
+          value={ value }
           type="number"
           step="0.01"
           min="0"
@@ -96,14 +98,14 @@ class Wallet extends React.Component {
         Moeda
         <select
           data-testid="currency-input"
-          name="currency"
+          id="currency"
           onChange={ ({ target: { value } }) => {
             this.setState({ currency: value });
           } }
         >
           {Object.keys(currencies)
             .map((curr) => (curr !== 'USDT'
-              ? <option data-testid={ curr } key={ curr }>{curr}</option>
+              ? <option data-testid={ curr } key={ curr } value={ curr }>{curr}</option>
               : null))}
         </select>
       </label>
@@ -116,15 +118,15 @@ class Wallet extends React.Component {
         Forma de pagamento
         <select
           data-testid="method-input"
-          name="method"
+          id="method"
           onChange={ ({ target: { value } }) => {
             this.setState({ method: value });
           } }
         >
           <option defaultValue hidden>Escolha</option>
-          <option value="money">Dinheiro</option>
-          <option value="credit">Cartão de crédito</option>
-          <option value="debit">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
       </label>
     );
@@ -136,17 +138,17 @@ class Wallet extends React.Component {
         Categoria da despesa
         <select
           data-testid="tag-input"
-          name="tag"
+          id="tag"
           onChange={ ({ target: { value } }) => {
             this.setState({ tag: value });
           } }
         >
           <option defaultValue hidden>Escolha</option>
-          <option value="food">Alimentação</option>
-          <option value="recreation">Lazer</option>
-          <option value="work">Trabalho</option>
-          <option value="transport">Transporte</option>
-          <option value="health">Saúde</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
       </label>
     );
@@ -157,6 +159,7 @@ class Wallet extends React.Component {
     const { propAddExpenses, expenses, currencies } = this.props;
     propCurrenciesObj();
     propAddExpenses({ id: expenses.length, ...this.state, exchangeRates: currencies });
+    this.setState({ value: 0 });
   }
 
   expansesList() {
