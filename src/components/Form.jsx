@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { sendObj, sendExpenses } from '../actions';
 import { methodsPayment, tagsData, getAPI } from '../services/data';
 
@@ -201,5 +202,12 @@ const mapStateToProps = (state) => ({
   coinsApi: state.wallet.currencies,
   globalExpenses: state.wallet.expenses,
 });
+
+Form.propTypes = {
+  coinsApi: PropTypes.arrayOf({}),
+  globalExpenses: PropTypes.arrayOf({}),
+  sendCoins: PropTypes.func,
+  expenses: PropTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
