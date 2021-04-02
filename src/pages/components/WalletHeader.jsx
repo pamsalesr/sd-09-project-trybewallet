@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 
 class WalletHeader extends Component {
   render() {
-    const { email } = this.props;
-    console.log(this.props.email)
+    const { email, total } = this.props;
     return (
       <header>
         <div className="header-title">TrybeWallet</div>
@@ -20,7 +19,7 @@ class WalletHeader extends Component {
               className="total-expense"
               data-testid="total-field"
             >
-              1.000.000,00
+              {total || 0}
             </div>
             <div
              className="wallet-currency"
@@ -37,6 +36,7 @@ class WalletHeader extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  total: state.wallet.expensesTotal,
 })
 
 export default connect(mapStateToProps)(WalletHeader);

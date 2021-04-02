@@ -1,9 +1,28 @@
-const initialState = { currencies: [], expenses: [] };
+import { CURRENCIES, ADD_EXPENSE, UPDATE_TOTAL_EXPENSE } from '../actions';
+
+const initialState = {
+  currencies: [],
+  expenses: [],
+  expensesTotal: 0,
+};
 
 function wallet(state = initialState, actions) {
   switch (actions.type) {
-  case 'CURRENCY':
-  case 'EXPENSE':
+  case CURRENCIES:
+    return {
+      ...state,
+      currencies: actions.currencies,
+    };
+  case ADD_EXPENSE:
+    return {
+      ...state,
+      expenses: [...state.expenses, actions.expense],
+    };
+  case UPDATE_TOTAL_EXPENSE:
+    return {
+      ...state,
+      expensesTotal: actions.value,
+    };
   default:
     return state;
   }
