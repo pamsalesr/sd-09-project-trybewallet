@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { deleteUserExpense } from '../../actions';
 
 const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
   'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
@@ -13,18 +14,18 @@ class expenseTable extends React.Component {
     ));
   }
 
-  handleButtons() {
-
+  handleClick(id) {
+    const { propDeleteUserExpense } = this.props;
+    propDeleteUserExpense(id);
   }
 
   createTBodyExpenseTatle(expenses) {
-    // console.log(expenses);
     return expenses.map((expense, index) => {
       const { description, tag, method, value, currency,
         exchangeRates, id } = expense;
       const { ask, name } = exchangeRates[currency];
       return (
-        <tr key={ index } role="row">
+        <tr key={ index }>
           <td>{description}</td>
           <td>{tag}</td>
           <td>{method}</td>
@@ -34,8 +35,14 @@ class expenseTable extends React.Component {
           <td>{(Number(ask) * value).toFixed(2)}</td>
           <td>Real</td>
           <td>
-            {this.handleButtons('delete', id)}
-            {this.handleButtons('edit', id)}
+            <button
+              data-testid="delete-btn"
+              type="button"
+              id={ id }
+              onClick={ () => this.handleClick(id) }
+            >
+              Deletar
+            </button>
           </td>
         </tr>
       );
@@ -44,7 +51,6 @@ class expenseTable extends React.Component {
 
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     return (
       <table>
         <thead>
@@ -68,4 +74,8 @@ const mapStateToProps = ({ wallet: { expenses } }) => ({
   expenses,
 });
 
-export default connect(mapStateToProps)(expenseTable);
+const mapDispatchToProps = (dispatch) => ({
+  propDeleteUserExpense: (id) => dispatch(deleteUserExpense(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(expenseTable);

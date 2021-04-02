@@ -4,6 +4,7 @@ import { getCurrentPrice } from '../services/getCurrentPricesAPI';
 export const SAVE_USER_EMAIL = 'SAVE_USER_EMAIL';
 export const SAVE_USER_EXPENSE = 'SAVE_USER_EXPENSES_SELECT';
 export const ADD_SAVE_USER_EXPENSE = 'ADD_SAVE_USER_EXPENSE';
+export const DELETE_USER_EXPENSE = 'DELETE_USER_EXPENSE';
 
 export const REQUEST_CURRENT_PRICE = 'REQUEST_CURRENT_PRICE';
 export const RECEIVE_CURRENT_PRICE_SUCCESS = 'RECEIVE_CURRENT_PRICE_SUCCESS';
@@ -46,4 +47,9 @@ export const addSaveUserExpense = (chooseCoinAndCoins) => ({
   type: ADD_SAVE_USER_EXPENSE,
   ask: chooseCoinAndCoins[0],
   coins: chooseCoinAndCoins[1],
+});
+
+export const deleteUserExpense = (id) => ({
+  type: DELETE_USER_EXPENSE,
+  id,
 });

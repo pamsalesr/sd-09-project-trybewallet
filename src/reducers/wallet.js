@@ -5,6 +5,7 @@ import {
   RECEIVE_CURRENT_PRICE_FAIL,
   SAVE_USER_EXPENSE,
   ADD_SAVE_USER_EXPENSE,
+  DELETE_USER_EXPENSE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -24,7 +25,7 @@ const INITIAL_STATE = {
 };
 
 function wallet(state = INITIAL_STATE, action) {
-  const { expenseDetails, coins } = action;
+  const { expenseDetails, coins, id } = action;
   switch (action.type) {
   case REQUEST_CURRENT_PRICE:
     return { ...state, isFetching: true };
@@ -62,6 +63,12 @@ function wallet(state = INITIAL_STATE, action) {
         method: 'Dinheiro',
         tag: 'Alimentação',
       },
+    };
+  case DELETE_USER_EXPENSE:
+    return {
+      ...state,
+      expenses: [
+        ...state.expenses.filter((expense) => expense.id !== id)],
     };
   default:
     return state;
