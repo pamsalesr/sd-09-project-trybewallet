@@ -18,7 +18,7 @@ const INITIAL_STATE = {
 class WalletForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {...INITIAL_STATE };
+    this.state = { ...INITIAL_STATE };
     this.dispatchCurrencies = this.dispatchCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
