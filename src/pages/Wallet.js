@@ -6,10 +6,13 @@ class Wallet extends React.Component {
   render() {
     const { email } = this.props;
     return (
-      <div>
-        TrybeWallet
+      <header>
+        TrybeWallet - E-mail:
         <span data-testid="email-field">{ email }</span>
-      </div>
+        Despesa total: R$
+        <span data-testid="total-field"> 0</span>
+        <span data-testid="header-currency-field">BRL</span>
+      </header>
     );
   }
 }

@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import setUserEmail from '../actions';
+import './Login.css';
+
+import emailIcon from '../images/email_black_24dp.svg';
+import lockIcon from '../images/lock_black_24dp.svg';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,28 +37,37 @@ class Login extends React.Component {
     const patternEmail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
     const patternPassword = /[\w\D]{6}/g;
     return (
-      <div>
-        Login
-        <form>
+      <section className="login-section">
+        <h1>Acesse sua conta</h1>
+        <form className="login-form">
+          <label htmlFor="email">
+            <img src={ emailIcon } className="input-image" alt="Email field" />
+            <input
+              type="email"
+              name="email"
+              className="data-input"
+              data-testid="email-input"
+              placeholder="E-mail"
+              onChange={ (event) => this.handleChange(event) }
+              pattern={ patternEmail }
+              required
+            />
+          </label>
+          <label htmlFor="password">
+            <img src={ lockIcon } className="input-image" alt="Password field" />
+            <input
+              type="password"
+              name="password"
+              className="data-input"
+              data-testid="password-input"
+              placeholder="Senha"
+              onChange={ (event) => this.handleChange(event) }
+              pattern={ patternPassword }
+              required
+            />
+          </label>
           <input
-            type="email"
-            name="email"
-            data-testid="email-input"
-            placeholder="E-mail"
-            onChange={ (event) => this.handleChange(event) }
-            pattern={ patternEmail }
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            data-testid="password-input"
-            placeholder="Senha"
-            onChange={ (event) => this.handleChange(event) }
-            pattern={ patternPassword }
-            required
-          />
-          <input
+            className="login-button"
             type="submit"
             value="Entrar"
             onClick={ this.handleClick }
@@ -62,7 +75,7 @@ class Login extends React.Component {
             // https://www.w3schools.com/jsref/jsref_regexp_test.asp
           />
         </form>
-      </div>
+      </section>
     );
   }
 }
