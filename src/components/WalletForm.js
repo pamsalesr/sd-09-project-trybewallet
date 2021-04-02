@@ -8,7 +8,7 @@ import fetchCurrenciesApi from '../services/fetchCurrenciesApi';
 const paymentMethods = ['Dinheiro', 'Cartão de débito', 'Cartão de crédito'];
 const expenseCategories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 const INITIAL_STATE = {
-  value: 0,
+  value: '0',
   description: '',
   currency: 'USD',
   method: 'Dinheiro',
