@@ -12,7 +12,6 @@ class Login extends React.Component {
       password: '',
       disableButton: true,
     };
-    this.submitLogin = this.submitLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -25,12 +24,6 @@ class Login extends React.Component {
         this.setState({ disableButton: false });
       } else this.setState({ disableButton: true });
     });
-  }
-
-  submitLogin() {
-    const { email, password } = this.state;
-    console.log(`Login: ${email} senha: ${password}`);
-    this.setState({ email: '', password: '', disableButton: true });
   }
 
   render() {
@@ -69,6 +62,6 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({ submit: (email) => dispatch(login(email)) });
 
-Login.propTypes = { submit: Proptypes.func.isRequired };
+Login.propTypes = { submit: Proptypes.func }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
