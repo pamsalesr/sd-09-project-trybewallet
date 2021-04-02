@@ -14,7 +14,7 @@ class Header extends React.Component {
     expenses.forEach(({ value, currency, exchangeRates }) => {
       sum += +(value * exchangeRates[currency].ask);
     });
-    return sum;
+    return parseFloat(sum).toFixed(2);
   }
 
   render() {
@@ -30,9 +30,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = { expenses: arrayOf().isRequired, email: string.isRequired };
-
 const mapStateToProps = ({ user, wallet }) => (
   { email: user.email, expenses: wallet.expenses }
 );
-
 export default connect(mapStateToProps)(Header);

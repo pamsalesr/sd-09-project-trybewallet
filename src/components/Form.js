@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf, func } from 'prop-types';
 import fetchAPI from '../services/api';
-import { updateCurr, updateExpenses } from '../actions';
+import { setCurrencies, addExpense } from '../actions';
 
 class Form extends React.Component {
   constructor(props) {
@@ -22,9 +22,9 @@ class Form extends React.Component {
   componentDidMount() { this.fetchCurrencies(); }
 
   async fetchCurrencies() {
-    const { setCurr } = this.props;
+    const { updateCurrencies } = this.props;
     const result = await fetchAPI();
-    setCurr(result);
+    updateCurrencies(result);
   }
 
   handleChange({ target }) {
@@ -37,24 +37,24 @@ class Form extends React.Component {
     const { submit, currencies, expenses } = this.props;
     const expense = { id: expenses.length, ...this.state, exchangeRates: currencies };
     submit(expense);
-    this.setState({ value: 0 });
+    this.setState({ value: 0, description: '' });
   }
 
   render() {
     const { currencies } = this.props;
-    const { value } = this.state;
+    const { value, description } = this.state;
     const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     const stateFn = this.handleChange;
     return (
-      <div>
+      <form>
         <label htmlFor="value">
           <input
             data-testid="value-input"
             id="value"
             type="number"
-            onChange={ stateFn }
             value={ value }
+            onChange={ stateFn }
           />
         </label>
         <label htmlFor="description">
@@ -62,6 +62,7 @@ class Form extends React.Component {
             data-testid="description-input"
             id="description"
             type="text"
+            value={ description }
             onChange={ stateFn }
           />
         </label>
@@ -74,20 +75,17 @@ class Form extends React.Component {
         </label>
         <label htmlFor="method">
           <select data-testid="method-input" id="method" onChange={ stateFn }>
-            {methods.map((method) => (
-              <option value={ method } key={ method }>{ method }</option>
-            ))}
+            {methods.map((met) => (<option value={ met } key={ met }>{ met }</option>))}
           </select>
         </label>
         <label htmlFor="tag">
           <select data-testid="tag-input" id="tag" onChange={ stateFn }>
-            {tags.map((tag) => (
-              <option value={ tag } key={ tag }>{ tag }</option>
-            ))}
+            {tags.map((tag) => (<option value={ tag } key={ tag }>{ tag }</option>))}
           </select>
         </label>
-        <button type="submit" onClick={ this.handleSubmit }>Adicionar despesa</button>
-      </div>
+        <button type="button" onClick={ this.handleSubmit }>Adicionar despesa</button>
+        <button type="button">Editar despesa</button>
+      </form>
     );
   }
 }
@@ -95,7 +93,7 @@ class Form extends React.Component {
 Form.propTypes = {
   currencies: arrayOf().isRequired,
   expenses: arrayOf().isRequired,
-  setCurr: func.isRequired,
+  updateCurrencies: func.isRequired,
   submit: func.isRequired,
 };
 
@@ -104,8 +102,8 @@ const mapStateToProps = ({ wallet }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurr: (currencies) => dispatch(updateCurr(currencies)),
-  submit: (expenses) => dispatch(updateExpenses(expenses)),
+  updateCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
+  submit: (expense) => dispatch(addExpense(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

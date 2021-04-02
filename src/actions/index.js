@@ -1,5 +1,4 @@
 export const login = (email) => ({ type: 'LOGIN', email });
-
-export const updateCurr = (currencies) => ({ type: 'UPDATE_CURR', currencies });
-
-export const updateExpenses = (expenses) => ({ type: 'UPDATE_EXPENSES', expenses });
+export const setCurrencies = (currencies) => ({ type: 'SET_CURRENCIES', currencies });
+export const setExpenses = (expenses) => ({ type: 'SET_EXPENSES', expenses });
+export const addExpense = (expense) => ({ type: 'ADD_EXPENSE', expense });
