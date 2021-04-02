@@ -10,9 +10,9 @@ const expenseCategories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', '
 const INITIAL_STATE = {
   value: 0,
   description: '',
-  currency: '',
-  method: '',
-  tag: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
 };
 
 class WalletForm extends React.Component {
