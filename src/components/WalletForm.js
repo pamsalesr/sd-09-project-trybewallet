@@ -1,33 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { sendCurrencies } from '../actions';
+import { sendCurrencies, addNewExpense } from '../actions';
 import DynamicSelect from './DynamicSelect';
 import fetchCurrenciesApi from '../services/fetchCurrenciesApi';
 
 const paymentMethods = ['Dinheiro', 'Cartão de débito', 'Cartão de crédito'];
 const expenseCategories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+const INITIAL_STATE = {
+  value: 0,
+  description: '',
+  currency: '',
+  method: '',
+  tag: '',
+};
 
 class WalletForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      id: 0,
-      value: 0,
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-    };
-
+    this.state = INITIAL_STATE;
+    this.dispatchCurrencies = this.dispatchCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
-    const { sendCurrenciesToRedux } = this.props;
-    const currencies = await fetchCurrenciesApi();
-    sendCurrenciesToRedux(currencies);
+    this.dispatchCurrencies();
   }
 
   handleChange({ target }) {
@@ -37,7 +35,29 @@ class WalletForm extends React.Component {
     });
   }
 
-  handleClick(){
+  async dispatchCurrencies() {
+    const { sendCurrenciesToRedux } = this.props;
+    const currencies = await fetchCurrenciesApi();
+    sendCurrenciesToRedux(currencies);
+  }
+
+  async handleClick() {
+    this.dispatchCurrencies();
+    const { value, description, currency, method, tag } = this.state;
+    const { currencies, expenses, sendNewExpense } = this.props;
+
+    const newExpense = {
+      id: expenses.length,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: currencies,
+    };
+    // * Source https://github.com/tryber/sd-09-project-trybewallet/pull/52/files /
+    sendNewExpense(newExpense);
+    this.setState(INITIAL_STATE);
   }
 
   render() {
@@ -45,24 +65,20 @@ class WalletForm extends React.Component {
     return (
       <div>
         <form>
-          <label htmlFor="value">
-            Valor
-            <input
-              data-testid="value-input"
-              name="value"
-              type="number"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="description">
-            Descrição
-            <input
-              data-testid="description-input"
-              name="description"
-              type="text"
-              onChange={ this.handleChange }
-            />
-          </label>
+          Valor
+          <input
+            data-testid="value-input"
+            name="value"
+            type="number"
+            onChange={ this.handleChange }
+          />
+          Descrição
+          <input
+            data-testid="description-input"
+            name="description"
+            type="text"
+            onChange={ this.handleChange }
+          />
           <DynamicSelect
             textLabel="Moedas:"
             name="currency"
@@ -83,6 +99,7 @@ class WalletForm extends React.Component {
           />
           <button
             type="button"
+            onClick={ this.handleClick }
           >
             Adicionar despesa
           </button>
@@ -94,15 +111,19 @@ class WalletForm extends React.Component {
 
 WalletForm.propTypes = {
   sendCurrenciesToRedux: PropTypes.func.isRequired,
-  currencies: PropTypes.string.isRequired,
+  currencies: PropTypes.arrayOf(Object).isRequired,
+  expenses: PropTypes.arrayOf(Object).isRequired,
+  sendNewExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   sendCurrenciesToRedux: (currencies) => dispatch(sendCurrencies(currencies)),
+  sendNewExpense: (newExpense) => dispatch(addNewExpense(newExpense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);
