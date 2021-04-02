@@ -4,6 +4,7 @@ import {
   REQUEST_SECCESS,
   REQUEST_ERROR,
   EXPENSES_DATA,
+  DELETE_TABLE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -34,6 +35,11 @@ const requestApireducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.payload.object],
+    };
+  case DELETE_TABLE:
+    return {
+      ...state,
+      expenses: state.expenses.filter((_, index) => index !== action.index),
     };
   default:
     return state;

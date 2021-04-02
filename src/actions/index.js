@@ -7,6 +7,7 @@ export const REQUEST_SECCESS = 'REQUEST_SECCESS';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const EXCHANGE_RATES = 'EXCHANGE_RATS';
 export const EXPENSES_DATA = 'EXPENSES_DATA';
+export const DELETE_TABLE = 'DELETE_TABLE';
 
 export const userEmailAction = (email) => ({
   type: USER_EMAIL,
@@ -57,4 +58,11 @@ export const exchangeRatesAction = () => (dispatch) => {
       (data) => dispatch(requestExangeRatesAction(data)),
       (error) => dispatch(requestRerror(error)),
     );
+};
+
+export const deleteTableLineAction = (index) => (dispatch) => {
+  dispatch({
+    type: DELETE_TABLE,
+    index,
+  });
 };
