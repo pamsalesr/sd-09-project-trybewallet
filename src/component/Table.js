@@ -41,7 +41,16 @@ class Table extends Component {
               <td>{Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
               <td>Real</td>
               <td><button data-testid="edit-btn" type="button">Edit</button></td>
-              <td><button onClick={ () => { this.deleteData(index); } } data-testid="delete-btn" type="button">X</button></td>
+              <td>
+                <button
+                  onClick={ () => { this.deleteData(index); } }
+                  data-testid="delete-btn"
+                  type="button"
+                >
+                  X
+                </button>
+
+              </td>
             </tr>
           )) }
         </tbody>
@@ -64,11 +73,13 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
 
-const { arrayOf } = propTypes;
+const { arrayOf, func } = propTypes;
 Table.propTypes = {
   walletData: arrayOf(Object),
+  deleteTable: func,
 };
 
 Table.defaultProps = {
   walletData: [],
+  deleteTable: () => {},
 };
