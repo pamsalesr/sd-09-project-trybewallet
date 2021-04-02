@@ -1,14 +1,15 @@
 const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-  },
+  currencies: [],
+  expenses: [],
+  isFetching: true,
 };
 
 export const CREATE_EXPENSE = 'CREATE_EXPENSE';
 export const UPDATE_EXPENSE = 'UPDATE_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const RETRIEVE_EXPENSE = 'RETRIEVE_EXPENSE';
+export const GET_CURRENCIES = 'GET_CURRENCIES';
+export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 
 function updateExpense(expenses, newExpense) {
   expenses.forEach((expense) => {
@@ -20,10 +21,10 @@ function updateExpense(expenses, newExpense) {
 }
 
 function walletReducer(state = INITIAL_STATE, action) {
-  switch (action.key) {
+  switch (action.type) {
   case CREATE_EXPENSE:
-    state = { ...state, ...state.wallet, expenses: action.expense };
-    return state;
+    return { ...state,
+      expenses: [...state.expenses, action.expense] };
   case UPDATE_EXPENSE:
     state = {
       ...state, ...state.wallet, expenses: updateExpense(state.expenses, action.expense),
@@ -34,6 +35,13 @@ function walletReducer(state = INITIAL_STATE, action) {
     return state;
   case RETRIEVE_EXPENSE:
     return state.wallet.expenses[action.id];
+  case REQUEST_CURRENCIES:
+    return { ...state, isFetching: true };
+  case GET_CURRENCIES:
+    return {
+      ...state,
+      currencies: [{ ...action.currencies }],
+      isFetching: false };
   default:
     return state;
   }

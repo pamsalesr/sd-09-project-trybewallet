@@ -5,7 +5,10 @@ import {
   UPDATE_EXPENSE,
   DELETE_EXPENSE,
   RETRIEVE_EXPENSE,
+  GET_CURRENCIES,
 } from '../reducers/wallet';
+
+const urlRequest = 'https://economia.awesomeapi.com.br/json/all';
 
 export const getExpense = (id) => ({ type: RETRIEVE_EXPENSE, id });
 
@@ -16,3 +19,17 @@ export const updateExpense = (expense) => ({ type: UPDATE_EXPENSE, expense });
 export const deleteExpense = (id) => ({ type: DELETE_EXPENSE, id });
 
 export const authLogin = (user) => ({ type: LOGIN, user });
+
+export const requestCurrencies = () => ({ type: 'REQUEST_CURRENCIES' });
+
+export const getCurrencies = (currencies) => ({ type: GET_CURRENCIES, currencies });
+
+export function fetchCurrencies() {
+  return (dispatch) => {
+    dispatch(requestCurrencies());
+    console.log('Meu fetch');
+    return fetch(urlRequest)
+      .then((response) => response.json())
+      .then((currencies) => dispatch(getCurrencies(currencies)));
+  };
+}
