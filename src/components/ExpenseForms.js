@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setTotal, setCurrencies, addExpenses } from '../actions';
 import fetchCurrency from '../services/currencyApi';
@@ -36,7 +37,7 @@ class ExpenseForms extends Component {
 
   async handleClick() {
     this.fetchCurrencies();
-    const { getExpenses, currencies, expenses, total } = this.props;
+    const { getExpenses, currencies, expenses } = this.props;
     const expense = { id: expenses.length, ...this.state, exchangeRates: currencies };
     await getExpenses(expense);
     this.totalExpenses();
@@ -57,10 +58,11 @@ class ExpenseForms extends Component {
   }
 
   totalExpenses() {
-    const { expenses, getTotal} = this.props;
+    const { expenses, getTotal } = this.props;
     let sum = 0;
     expenses.forEach((expenseValue) => {
-      sum += expenseValue.value * expenseValue.exchangeRates[expenseValue.currency].ask});
+      sum += expenseValue.value * expenseValue.exchangeRates[expenseValue.currency].ask;
+    });
     getTotal(sum.toFixed(2));
   }
 
@@ -170,5 +172,16 @@ const mapDispatchToProps = (dispatch) => ({
   getCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
   getExpenses: (expenses) => dispatch(addExpenses(expenses)),
 });
+
+ExpenseForms.propTypes = {
+  getCurrencies: PropTypes.func.isRequired,
+  getExpenses: PropTypes.func.isRequired,
+  getTotal: PropTypes.func.isRequired,
+  expenses: PropTypes.shape({
+    length: PropTypes.func.isRequired,
+    forEach: PropTypes.func.isRequired,
+  }).isRequired,
+  currencies: PropTypes.shape.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForms);
