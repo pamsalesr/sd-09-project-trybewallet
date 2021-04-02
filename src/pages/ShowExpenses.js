@@ -93,6 +93,7 @@ class ShowExpenses extends React.Component {
 }
 ShowExpenses.propTypes = {
   wallet: PropTypes.shape().isRequired,
+  onclickDelete: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   wallet: state.wallet,
