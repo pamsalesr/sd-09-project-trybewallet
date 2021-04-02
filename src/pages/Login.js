@@ -27,8 +27,6 @@ class Login extends React.Component {
   handleClick() {
     const { history, sendEmail } = this.props;
     const { email } = this.state;
-    console.log(email);
-    console.log(this.submitValidator());
     if (this.submitValidator()) {
       sendEmail(email);
       history.push('/carteira');
@@ -86,6 +84,8 @@ class Login extends React.Component {
           <button
             type="button"
             onClick={ this.handleClick }
+            disabled={ !this.submitValidator() }
+            // * Source https://github.com/tryber/sd-09-project-trybewallet/pull/7/files
           >
             Entrar
           </button>
