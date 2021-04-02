@@ -13,6 +13,7 @@ class Wallet extends React.Component {
     this.tags = this.tags.bind(this);
     this.handleButton = this.handleButton.bind(this);
     this.handleTotal = this.handleTotal.bind(this);
+    this.createTable = this.createTable.bind(this);
   }
 
   componentDidMount() {
@@ -29,9 +30,6 @@ class Wallet extends React.Component {
       const { ask } = expense.exchangeRates[currency];
       total += (ask * value);
     });
-    if (total === 0) {
-      return 0;
-    }
     return total.toFixed(2);
   }
 
@@ -40,7 +38,10 @@ class Wallet extends React.Component {
     let expense = { id: expenses.length };
     const inputs = ['value', 'currency', 'method', 'tag', 'description'];
     inputs.forEach((input) => {
-      const { value } = document.getElementById(input);
+      let { value } = document.getElementById(input);
+      if (value === '' && input === 'value') {
+        value = 0;
+      }
       expense = { ...expense, [input]: value };
       if (input === 'value' || input === 'description') {
         document.getElementById(input).value = '';
@@ -79,6 +80,50 @@ class Wallet extends React.Component {
   tags() {
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return tags.map((tag) => <option value={ tag } key={ tag }>{ tag }</option>);
+  }
+
+  createTable() {
+    const { expenses } = this.props;
+    const titles = ['Descrição', 'Tag', 'Método de pagamento',
+      'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
+      'Moeda de conversão', 'Editar/Excluir'];
+    const createBody = () => {
+      if (expenses.length > 0) {
+        return (expenses.map((expense) => {
+          const { description, tag, method, value, currency } = expense;
+          const { ask, name } = expense.exchangeRates[currency];
+          return (
+            <tr key={ description }>
+              <td>{ description }</td>
+              <td>{ tag }</td>
+              <td>{ method }</td>
+              <td>{ parseFloat(value) }</td>
+              <td>{ name }</td>
+              <td>{ parseFloat(ask).toFixed(2) }</td>
+              <td>{ (ask * parseFloat(value)).toFixed(2) }</td>
+              <td>Real</td>
+              <td>
+                <button type="button">Editar</button>
+                <button type="button" data-testid="delete-btn">Apagar</button>
+              </td>
+            </tr>
+          );
+        }));
+      }
+      return null;
+    };
+    return (
+      <table>
+        <thead>
+          <tr>
+            {titles.map((title) => <th key={ title }>{ title }</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          { createBody() }
+        </tbody>
+      </table>
+    );
   }
 
   render() {
@@ -126,6 +171,7 @@ class Wallet extends React.Component {
             <button type="button" onClick={ this.handleButton }>Adicionar despesa</button>
           </form>
         </div>
+        <div>{ this.createTable() }</div>
       </div>
     );
   }
