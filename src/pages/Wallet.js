@@ -8,7 +8,7 @@ class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      currency: 'BRL',
+      currency: 'USD',
       value: 0,
       description: '',
       method: '',
@@ -31,8 +31,11 @@ class Wallet extends React.Component {
   }
 
   totalSpending() {
-    const total = 0;
-    return total;
+    const { expenses } = this.props;
+    const total = expenses.reduce((acc, curr) => (
+      acc + (parseFloat(curr.value)
+        * parseFloat(curr.exchangeRates[curr.currency].ask))), 0);
+    return total.toFixed(2);
   }
 
   walletHeader() {
@@ -98,7 +101,6 @@ class Wallet extends React.Component {
             this.setState({ currency: value });
           } }
         >
-          <option defaultValue>BRL</option>
           {Object.keys(currencies)
             .map((curr) => (curr !== 'USDT'
               ? <option data-testid={ curr } key={ curr }>{curr}</option>
@@ -181,9 +183,6 @@ class Wallet extends React.Component {
           { this.spendingCategory() }
           <button type="button" onClick={ this.submit }>Adicionar despesa</button>
         </form>
-        <div>
-          { this.expansesList() }
-        </div>
       </>
     );
   }
