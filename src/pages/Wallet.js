@@ -1,13 +1,12 @@
 import React from 'react';
-import { Link, Field } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Wallet extends React.Component {
   render() {
     return (
-      <header>
+      <div>
         <Link to="/carteira">Carteira</Link>
-        <Field data-testid="total-field" />
-      </header>
+      </div>
     );
   }
 }
