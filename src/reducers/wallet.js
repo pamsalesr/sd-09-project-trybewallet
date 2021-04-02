@@ -1,11 +1,23 @@
+import { SEND_CURRENCIES, ADD_EXPENSE } from '../actions';
+
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  totalExpenses: 0,
+  totalExpenses: 0.00,
 };
 
-const wallet = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
+const wallet = (state = INITIAL_STATE, { currencies, type, newExpense }) => {
+  switch (type) {
+  case SEND_CURRENCIES:
+    return {
+      ...state,
+      currencies,
+    };
+  case ADD_EXPENSE:
+    return {
+      ...state,
+      expenses: [...state.expenses, newExpense],
+    };
   default:
     return state;
   }

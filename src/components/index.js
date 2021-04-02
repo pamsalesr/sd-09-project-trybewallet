@@ -1,3 +1,4 @@
 import WalletHeader from './WalletHeader';
+import WalletForm from './WalletForm';
 
-export default WalletHeader;
+export { WalletHeader, WalletForm };

@@ -12,6 +12,7 @@ class WalletHeader extends React.Component {
         </h1>
         <h2 data-testid="total-field">
           {`Sua despesa total é de R$ ${totalExpenses || 0}`}
+          {/* Source https://github.com/tryber/sd-09-project-trybewallet/pull/7/files */}
         </h2>
         <h2 data-testid="header-currency-field">
           Câmbio: BRL
