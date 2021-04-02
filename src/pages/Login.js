@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import userEmailDispach from '../actions';
+import { userEmailDispach } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -17,29 +17,33 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.credentialValidation = this.credentialValidation.bind(this);
     this.sendBtnClick = this.sendBtnClick.bind(this);
+    this.enableLoginBtn = this.enableLoginBtn.bind(this);
   }
 
   credentialValidation(target) {
-    const { validatedEmail, validatedPassword } = this.state;
     const email = new RegExp(/^[\w.]+@[a-z]+.\w{2,3}$/g);
-    const password = new RegExp(/[\w\D]{5}/g);
+    const password = new RegExp(/[\w\D]{6}/g);
     if (target.name === 'email') {
       this.setState({ validatedEmail: email.test(target.value) });
     }
     if (target.name === 'password') {
       this.setState({ validatedPassword: password.test(target.value) });
     }
-    if (validatedEmail === true && validatedPassword === true) {
-      this.setState({ disableBtn: false });
-    }
   }
 
   handleChange({ target }) {
-    this.setState({ [target.name]: target.value });
     this.setState({
       disableBtn: true,
     });
     this.credentialValidation(target);
+    this.setState({ [target.name]: target.value }, () => this.enableLoginBtn());
+  }
+
+  enableLoginBtn() {
+    const { validatedEmail, validatedPassword } = this.state;
+    if (validatedEmail === true && validatedPassword === true) {
+      this.setState({ disableBtn: false });
+    }
   }
 
   sendBtnClick() {
