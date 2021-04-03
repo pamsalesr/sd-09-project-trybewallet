@@ -1,11 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { removeId } from '../actions';
 
 class TableWallet extends React.Component {
   constructor(props) {
     super(props);
     this.renderTable = this.renderTable.bind(this);
+    this.reset = this.reset.bind(this);
+  }
+
+  reset(e) {
+    const { expenses, deleteId } = this.props;
+    const newArray = expenses.filter((expense) => {
+      const idBtn = parseInt(e.target.id)
+      return idBtn !== expense.id;
+    });
+    deleteId(newArray);
   }
 
   renderTable(arrayExpenses) {
@@ -36,6 +47,16 @@ class TableWallet extends React.Component {
         </td>
         <td>
           Real
+        </td>
+        <td>
+          <button
+            id={ element.id }
+            data-testid="delete-btn"
+            type="button"
+            onClick={ this.reset }
+          >
+            Excluir
+          </button>
         </td>
       </tr>
     ));
@@ -69,10 +90,15 @@ class TableWallet extends React.Component {
 
 TableWallet.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
+  deleteId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(TableWallet);
+const mapDispatchToProps = (dispatch) => ({
+  deleteId: (state) => dispatch(removeId(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableWallet);

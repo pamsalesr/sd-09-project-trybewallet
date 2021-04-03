@@ -27,6 +27,12 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
     });
 
+  case 'REMOVE_ID':
+    return ({
+      ...state,
+      expenses: action.newExpenses,
+    });
+
   default:
     return state;
   }

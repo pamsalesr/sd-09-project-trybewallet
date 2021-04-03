@@ -1,5 +1,10 @@
 // Coloque aqui suas actions
-import { SUBMIT_FORM, SUBMIT_LOGIN, SUBMIT_FORM_API } from './typeActions';
+import { SUBMIT_FORM, SUBMIT_LOGIN, SUBMIT_FORM_API, REMOVE_ID } from './typeActions';
+
+export const removeId = (state) => ({
+  type: REMOVE_ID,
+  newExpenses: state,
+});
 
 export const onSubmitLogin = (state) => ({
   type: SUBMIT_LOGIN,
@@ -39,3 +44,4 @@ export function onSubmitForm(state) {
       });
   };
 }
+
