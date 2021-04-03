@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { userEmailDispach } from '../actions';
 
@@ -47,9 +48,9 @@ class Login extends React.Component {
   }
 
   sendBtnClick() {
-    const { userEmailDispach } = this.props;
+    const { userEmail } = this.props;
     const { email } = this.state;
-    userEmailDispach(email);
+    userEmail(email);
   }
 
   render() {
@@ -90,7 +91,11 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispach) => ({
-  userEmailDispach: (email) => dispach(userEmailDispach(email)),
+  userEmail: (email) => dispach(userEmailDispach(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  userEmail: func,
+}.isRequired;

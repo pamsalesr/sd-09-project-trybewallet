@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { string, number, func } from 'prop-types';
 import { fatchCurrency, registerNewExpense } from '../actions';
 import ExpenseTable from './ExpenseTable';
 import FormSendBtn from './FormSendBtn';
@@ -130,7 +131,6 @@ class ExpenseForm extends React.Component {
       </>
     );
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -144,3 +144,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
+
+ExpenseForm.propTypes = {
+  getCurrencies: func,
+  newExpense: func,
+  expense: number,
+  currencies: string,
+}.isRequired;

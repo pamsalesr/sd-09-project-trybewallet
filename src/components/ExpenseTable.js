@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { arrayOf } from 'prop-types';
+import DeleteBtn from './DeleteBtn';
 
 class ExpenseTable extends React.Component {
   constructor() {
     super();
     this.convertCurrencyAcronym = this.convertCurrencyAcronym.bind(this);
+    this.renderTable = this.renderTable.bind(this);
   }
 
   convertCurrencyAcronym(Acronym, exchangeRates, value) {
@@ -18,13 +21,44 @@ class ExpenseTable extends React.Component {
     };
   }
 
-  convertCurrency() {
-
+  renderTable(expenses) {
+    return (
+      expenses.length !== 0 && expenses.map((expense) => (
+        <tr key={ expense.id }>
+          <td>{expense.description}</td>
+          <td>{expense.tag}</td>
+          <td>{expense.method}</td>
+          <td>{expense.value}</td>
+          <td>
+            {this.convertCurrencyAcronym(expense.currency, expense.exchangeRates).name}
+          </td>
+          <td>
+            {(this.convertCurrencyAcronym(
+              expense.currency, expense.exchangeRates,
+            ).ask * 1).toFixed(2)}
+          </td>
+          <td>
+            {(this.convertCurrencyAcronym(
+              expense.currency, expense.exchangeRates, expense.value,
+            ).value * 1).toFixed(2)}
+          </td>
+          <td>Real</td>
+          <td>
+            <DeleteBtn
+              expenseId={ expense.id }
+              value={ (this.convertCurrencyAcronym(
+                expense.currency, expense.exchangeRates, expense.value,
+              ).value * 1).toFixed(2) }
+            />
+          </td>
+        </tr>
+      ))
+    );
   }
 
   render() {
     const { expenses } = this.props;
-    const expenseCaption = [
+    const expenseCaptions = [
       'Descrição',
       'Tag',
       'Método de pagamento',
@@ -37,31 +71,14 @@ class ExpenseTable extends React.Component {
     ];
     return (
       <table>
-        <tr>
-          {expenseCaption.map((caption) => <th key={ caption }>{caption}</th>)}
-        </tr>
-        {expenses.length !== 0 && expenses.map((expense) => (
-          <tr key={ expense.id }>
-            <td>{expense.description}</td>
-            <td>{expense.tag}</td>
-            <td>{expense.method}</td>
-            <td>{expense.value}</td>
-            <td>
-              {this.convertCurrencyAcronym(expense.currency, expense.exchangeRates).name}
-            </td>
-            <td>
-              {(this.convertCurrencyAcronym(
-                expense.currency, expense.exchangeRates,
-              ).ask * 1).toFixed(2)}
-            </td>
-            <td>
-              {(this.convertCurrencyAcronym(
-                expense.currency, expense.exchangeRates, expense.value,
-              ).value * 1).toFixed(2)}
-            </td>
-            <td>Real</td>
+        <thead>
+          <tr>
+            {expenseCaptions.map((caption) => <th key={ caption }>{caption}</th>)}
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {this.renderTable(expenses)}
+        </tbody>
       </table>
     );
   }
@@ -72,3 +89,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(ExpenseTable);
+
+ExpenseTable.propTypes = {
+  expenses: arrayOf,
+}.isRequired;

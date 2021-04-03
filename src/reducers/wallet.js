@@ -22,6 +22,12 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       total: action.total,
     };
+  case 'REMOVE_TABLE_ITEM':
+    return {
+      ...state,
+      expenses: action.expenses,
+      total: action.total,
+    };
   default:
     return state;
   }

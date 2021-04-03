@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { number, string, func, arrayOf } from 'prop-types';
 import getCurrencyApi from '../service/currenciApi';
 import { sendFormDataToState, setExpenseValue, setTotalValue } from '../actions';
 
@@ -9,7 +10,6 @@ class FormSendBtn extends React.Component {
 
     this.state = {
       id: 0,
-      total: 0,
     };
 
     this.setTotalValue = this.setTotalValue.bind(this);
@@ -17,17 +17,15 @@ class FormSendBtn extends React.Component {
   }
 
   setTotalValue(convertedValue) {
-    const { total } = this.state;
-    const { sendTotalToState } = this.props;
-    const newTotal = Number(total) + Number(convertedValue);
-    this.setState({ total: newTotal });
+    const { sendTotalToState, total } = this.props;
+    const newTotal = parseFloat(total) + parseFloat(convertedValue);
     sendTotalToState(newTotal.toFixed(2));
   }
 
   convertExpense(currency, curencies, expense) {
     const currencyValue = Object.entries(curencies)
       .find((element) => currency === element[0]);
-    const convertedValue = Number(expense) * Number(currencyValue[1].ask);
+    const convertedValue = parseFloat(expense) * parseFloat(currencyValue[1].ask);
     this.setTotalValue(convertedValue);
     return expense;
   }
@@ -77,6 +75,7 @@ const mapStateToProps = (state) => ({
   currency: state.expenseReducer.currency,
   method: state.expenseReducer.method,
   tag: state.expenseReducer.tag,
+  total: state.wallet.total,
 });
 
 const mapDispatchToProps = (dispach) => ({
@@ -86,3 +85,15 @@ const mapDispatchToProps = (dispach) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormSendBtn);
+
+FormSendBtn.propTypes = {
+  total: number,
+  expense: arrayOf,
+  description: string,
+  currency: string,
+  method: string,
+  tag: string,
+  sendNewExpenseObj: func,
+  setDefaultValue: func,
+  sendTotalToState: func,
+}.isRequired;
