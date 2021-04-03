@@ -19,6 +19,23 @@ const walletReducer = (state = INNITAL_STATE, action) => {
     return { ...state,
       expenses: [...state.expenses],
     };
+  case 'EDIT_EXPENSE':
+    state.expenses.forEach((expense, index) => {
+      if (expense.id === action.expense.id) {
+        state.expenses[index] = {
+          ...state.expenses[index],
+          value: action.expense.value,
+          currency: action.expense.currency,
+          method: action.expense.method,
+          tag: action.expense.tag,
+          description: action.expense.description,
+        };
+      }
+    });
+    return {
+      ...state,
+      expenses: [...state.expenses],
+    };
   default:
     return state;
   }
