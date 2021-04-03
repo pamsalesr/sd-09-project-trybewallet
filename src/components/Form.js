@@ -59,6 +59,7 @@ class Form extends React.Component {
       exchangeRates: currencies,
     });
     this.setState({ ...initialState });
+    document.querySelector('.form-despesa').reset();
   }
 
   renderOptionsCurrencies() {
