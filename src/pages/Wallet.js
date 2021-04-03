@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { currenciesObj, addExpenses } from '../actions';
+import { currenciesObj, addExpenses, delExpenses } from '../actions';
 import Table from '../components/Table';
 import '../App.css';
 import '../CSS/wallet.css';
@@ -157,9 +157,9 @@ class Wallet extends React.Component {
 
   submit() {
     const { propCurrenciesObj } = this.props;
-    const { propAddExpenses, expenses, currencies } = this.props;
+    const { propAddExpenses, currencies } = this.props;
     propCurrenciesObj();
-    propAddExpenses({ id: expenses.length, ...this.state, exchangeRates: currencies });
+    propAddExpenses({ id: Math.random(), ...this.state, exchangeRates: currencies });
     this.setState({ value: 0 });
   }
 
@@ -191,6 +191,7 @@ const mapStateToProps = ({ user: { email }, wallet: { currencies, expenses } }) 
 const mapDispatchToProps = (dispatch) => ({
   propCurrenciesObj: () => dispatch(currenciesObj()),
   propAddExpenses: (data) => dispatch(addExpenses(data)),
+  propDelExpense: (data) => dispatch(delExpenses(data)),
 });
 
 Wallet.propTypes = {
