@@ -15,6 +15,49 @@ class Wallet extends React.Component {
     return convertedTotal.toFixed(2);
   }
 
+  renderExpensesTable() {
+    const { expenses } = this.props;
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {expenses.map((item) => {
+            const { id, description, tag, method, currency, value, exchangeRates } = item;
+            const currenciesArray = Object.entries(exchangeRates);
+            const usedCurrency = currenciesArray.find((curr) => curr[0] === currency);
+            // const usedCurrencyExchange = (usedCurrency[1].ask).toFixed(2);
+            // console.log(usedCurrency);
+            return (
+              <tr key={ id }>
+                <td>{ description }</td>
+                <td>{ tag }</td>
+                <td>{ method }</td>
+                <td>{ value }</td>
+                <td>{ usedCurrency[1].name }</td>
+                <td>{ (1 * usedCurrency[1].ask).toFixed(2) }</td>
+                <td>{ (item.value * usedCurrency[1].ask).toFixed(2) }</td>
+                <td>Real</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  }
+
   render() {
     const { email } = this.props;
     return (
@@ -25,10 +68,14 @@ class Wallet extends React.Component {
           <span
             data-testid="total-field"
           >
+            Total gasto: R$
             { this.calculateTotalExpenses() }
           </span>
-          <span data-testid="header-currency-field">BRL</span>
+          <span data-testid="header-currency-field"> BRL</span>
         </header>
+        <main>
+          { this.renderExpensesTable() }
+        </main>
       </div>);
   }
 }

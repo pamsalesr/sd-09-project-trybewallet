@@ -10,7 +10,7 @@ class NewInput extends React.Component {
     this.state = {
       newExpense: {
         description: '',
-        value: 0,
+        value: 0.00,
         currency: 'USD',
         method: 'Dinheiro',
         tag: 'Alimentação',
@@ -31,7 +31,7 @@ class NewInput extends React.Component {
     this.setState({
       newExpense: {
         description: '',
-        value: 0,
+        value: 0.00,
         currency: 'USD',
         method: 'Dinheiro',
         tag: 'Alimentação',
@@ -125,6 +125,7 @@ class NewInput extends React.Component {
         <input
           name="value"
           type="number"
+          step=".01"
           data-testid="value-input"
           onChange={ (e) => this.handleChange(e) }
           value={ newExpense.value }
