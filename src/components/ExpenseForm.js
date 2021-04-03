@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fatchCurrency, registerNewExpense } from '../actions';
+import ExpenseTable from './ExpenseTable';
 import FormSendBtn from './FormSendBtn';
 
 class ExpenseForm extends React.Component {
@@ -125,6 +126,7 @@ class ExpenseForm extends React.Component {
         {this.paymentMethod()}
         {this.categoryInput()}
         <FormSendBtn />
+        <ExpenseTable />
       </>
     );
   }
