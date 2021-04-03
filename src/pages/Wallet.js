@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { currenciesObj, addExpenses } from '../actions';
+import Table from '../components/Table';
 import '../App.css';
+import '../CSS/wallet.css';
 
 class Wallet extends React.Component {
   constructor() {
@@ -22,7 +24,6 @@ class Wallet extends React.Component {
     this.spendingCategory = this.spendingCategory.bind(this);
     this.totalSpending = this.totalSpending.bind(this);
     this.submit = this.submit.bind(this);
-    this.expansesList = this.expansesList.bind(this);
   }
 
   componentDidMount() {
@@ -162,23 +163,12 @@ class Wallet extends React.Component {
     this.setState({ value: 0 });
   }
 
-  expansesList() {
-    const { expenses } = this.props;
-    return (
-      <ul>
-        { expenses.map((exp) => <li key={ exp.id }>{ exp }</li>) }
-      </ul>
-    );
-  }
-
   render() {
-    const { currencies } = this.props;
+    const { currencies, expenses } = this.props;
     return (
-      <>
-        <div>
-          { this.walletHeader() }
-        </div>
-        <form>
+      <div>
+        { this.walletHeader() }
+        <form className="add-expenses input-space">
           { this.spendingValue() }
           { this.spendingDescription() }
           { currencies && this.spendingCurrency() }
@@ -186,7 +176,8 @@ class Wallet extends React.Component {
           { this.spendingCategory() }
           <button type="button" onClick={ this.submit }>Adicionar despesa</button>
         </form>
-      </>
+        { expenses && <Table expenses={ expenses } /> }
+      </div>
     );
   }
 }
