@@ -1,17 +1,17 @@
 import { IS_LOGGED_IN, ADD_USER } from '../actions';
 
-const INITIAL_STATE = {
+const INITIAL_USER_STATE = {
   user: {
     email: '',
   },
-  wallet: {
+  /* wallet: {
     currencies: [],
     expenses: [],
-  },
+  }, */
   isLoggedIn: false,
 };
 
-const userReducer = (state = INITIAL_STATE, action) => {
+const userReducer = (state = INITIAL_USER_STATE, action) => {
   switch (action.type) {
   case IS_LOGGED_IN:
     return {

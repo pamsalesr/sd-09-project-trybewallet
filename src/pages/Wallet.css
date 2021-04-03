@@ -1,0 +1,23 @@
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 100%;
+}
+
+p {
+  flex-grow: 1;
+}
+
+.header h1.title {
+  color: black;
+  flex-grow: 3;
+  margin-left: 10px;
+  text-align: left;
+}
+
+.y {
+  color: rgb(3, 107, 82);
+}
