@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { currenciesObj, addExpenses, delExpenses } from '../actions';
+import { currenciesObj, addExpense, delExpense } from '../actions';
 import Table from '../components/Table';
 import '../App.css';
 import '../CSS/wallet.css';
@@ -25,6 +25,7 @@ class Wallet extends React.Component {
     this.spendingCategory = this.spendingCategory.bind(this);
     this.totalSpending = this.totalSpending.bind(this);
     this.submit = this.submit.bind(this);
+    this.addOrEdit = this.addOrEdit.bind(this);
   }
 
   componentDidMount() {
@@ -67,7 +68,7 @@ class Wallet extends React.Component {
           name="value"
           value={ value }
           type="number"
-          step="0.01"
+          step="1.00"
           min="0"
           onChange={ ({ target }) => {
             this.setState({ value: target.value });
@@ -157,10 +158,31 @@ class Wallet extends React.Component {
   }
 
   submit() {
-    const { propCurrenciesObj, propAddExpenses, currencies } = this.props;
+    const { propCurrenciesObj, propAddExpense, currencies } = this.props;
     propCurrenciesObj();
-    propAddExpenses({ ...this.state, exchangeRates: currencies });
+    propAddExpense({ ...this.state, exchangeRates: currencies });
     this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
+  }
+
+  addOrEdit() {
+    const { status } = this.props;
+    if (status) {
+      return (
+        <button
+          type="button"
+          onClick={ this.submit }
+        >
+          Editar despesa
+        </button>
+      );
+    } return (
+      <button
+        type="button"
+        onClick={ this.submit }
+      >
+        Adicionar despesa
+      </button>
+    );
   }
 
   render() {
@@ -174,12 +196,7 @@ class Wallet extends React.Component {
           { currencies && this.spendingCurrency() }
           { this.spendingMethod() }
           { this.spendingCategory() }
-          <button
-            type="button"
-            onClick={ this.submit }
-          >
-            Adicionar despesa
-          </button>
+          { this.addOrEdit() }
         </form>
         <Table expenses={ expenses } />
       </div>
@@ -187,16 +204,19 @@ class Wallet extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user: { email }, wallet: { currencies, expenses } }) => ({
+const mapStateToProps = ({
+  user: { email }, wallet: { currencies, expenses, edit: { status, id } } }) => ({
   email,
   currencies,
   expenses,
+  status,
+  id,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   propCurrenciesObj: () => dispatch(currenciesObj()),
-  propAddExpenses: (data) => dispatch(addExpenses(data)),
-  propDelExpense: (data) => dispatch(delExpenses(data)),
+  propAddExpense: (data) => dispatch(addExpense(data)),
+  propDelExpense: (data) => dispatch(delExpense(data)),
 });
 
 Wallet.propTypes = {

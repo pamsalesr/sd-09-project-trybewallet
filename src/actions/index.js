@@ -1,8 +1,9 @@
 import apiCoin from '../service/apiCoin';
 
 export const login = (email) => ({ type: 'LOGIN', email });
-export const addExpenses = (data) => ({ type: 'ADD_EXPENSES', data });
-export const delExpenses = (data) => ({ type: 'DELETE_EXPENSE', data });
+export const addExpense = (data) => ({ type: 'ADD_EXPENSE', data });
+export const delExpense = (data) => ({ type: 'DELETE_EXPENSE', data });
+export const editExpense = (status, id) => ({ type: 'EDIT_EXPENSE', status, id });
 
 const receiveCurrencyOk = (data) => ({
   type: 'RECEIVE_CURRENCY_OK',
