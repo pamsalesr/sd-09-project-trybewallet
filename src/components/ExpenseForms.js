@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setTotal, setCurrencies, addExpenses } from '../actions';
 import fetchCurrency from '../services/currencyApi';
-import Expenses from './Expenses';
+// import ExpensesTable from './ExpensesTable';
+import ExpensesList from './ExpensesList';
 
 class ExpenseForms extends Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class ExpenseForms extends Component {
         onChange={ this.handleChange }
         name="value"
         value={ value }
+        pattern="^\d*(\.\d{0,2})?$"
       />
     );
   }
@@ -155,7 +157,8 @@ class ExpenseForms extends Component {
             Adicionar despesa
           </button>
         </forms>
-        <Expenses />
+        {/* <ExpensesTable /> */}
+        <ExpensesList />
       </div>
     );
   }

@@ -6,7 +6,6 @@ import ExpenseForms from '../components/ExpenseForms';
 
 class Wallet extends React.Component {
   render() {
-    // const { total } = this.state;
     const { email, total } = this.props;
     return (
       <div>
