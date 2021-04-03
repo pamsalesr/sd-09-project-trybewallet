@@ -8,10 +8,8 @@ class Wallet extends React.Component {
     return (
       <header>
         <h4 data-testid="email-field">{ email }</h4>
-        <input
-          data-testid="total-field"
-          type="number"
-        />
+        <h3 data-testid="total-field">0</h3>
+        <h3 data-testid="header-currency-field">BRL</h3>
       </header>
     );
   }
