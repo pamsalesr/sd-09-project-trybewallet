@@ -34,10 +34,9 @@ class Form extends React.Component {
     const { fetchCurrency } = this.props;
     const { currency } = await fetchCurrency();
 
-    const filteredCurrency = Object.keys(currency)
-      .filter((initials) => initials !== 'USDT');
+    const currencyKeys = Object.keys(currency);
     this.setState({
-      currencyList: filteredCurrency,
+      currencyList: currencyKeys,
     });
   }
 

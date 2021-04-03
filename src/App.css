@@ -66,13 +66,13 @@
   padding: 15px;
 }
 
-table, th, td {
-  text-align: center;
+table , th , td {
   background-color: cornsilk;
   border: 2px solid black;
   color: #282c34;
   font-size: 0.8em;
-  padding: 15px;
   margin-top: 5px;
+  padding: 15px;
+  text-align: center;
   width: 100%;
 }
