@@ -47,7 +47,7 @@ class Form extends React.Component {
 
   submitChanges() {
     const { updateExpenses, updateEdit, expenses, editid } = this.props;
-    const { id, exchangeRates } = expenses.find(() => el.id === editid);
+    const { id, exchangeRates } = expenses.find((el) => el.id === editid);
     expenses[editid] = { id, ...this.state, exchangeRates };
     updateExpenses([...expenses]);
     updateEdit(false, 0);
