@@ -8,6 +8,8 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return { error: action.error };
   case 'ADD_EXPENSES':
     return { ...state, expenses: [...state.expenses, action.data] };
+  case 'DELETE_EXPENSES':
+    return { ...state, expenses: [...state.expenses, action.data.id] };
   default:
     return state;
   }
