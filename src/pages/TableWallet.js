@@ -13,7 +13,7 @@ class TableWallet extends React.Component {
   reset(e) {
     const { expenses, deleteId } = this.props;
     const newArray = expenses.filter((expense) => {
-      const idBtn = parseInt(e.target.id)
+      const idBtn = parseInt(e.target.id, 10);
       return idBtn !== expense.id;
     });
     deleteId(newArray);
