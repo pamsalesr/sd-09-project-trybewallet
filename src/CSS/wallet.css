@@ -1,10 +1,18 @@
 table , th , td {
   border: 1px solid black;
   text-align: center;
+  opacity: 1;
+  transition: 0.8s;
+}
+
+table td:hover {
+  background-color: rgb(0, 82, 0);
+  opacity: 0.8;
+  color: aliceblue;
 }
 
 .add-expenses {
-  padding: 25px;
+  padding: 20px;
 }
 
 .input-space input , select {

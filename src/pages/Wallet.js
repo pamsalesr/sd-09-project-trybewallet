@@ -60,7 +60,7 @@ class Wallet extends React.Component {
     const { value } = this.state;
     return (
       <label htmlFor="value">
-        Valor da despesa
+        Valor da despesa:
         <input
           data-testid="value-input"
           name="value"
@@ -79,7 +79,7 @@ class Wallet extends React.Component {
   spendingDescription() {
     return (
       <label htmlFor="description">
-        Descrição
+        Descrição:
         <input
           data-testid="description-input"
           name="description"
@@ -96,7 +96,7 @@ class Wallet extends React.Component {
     const { currencies } = this.props;
     return (
       <label htmlFor="currency">
-        Moeda
+        Moeda:
         <select
           data-testid="currency-input"
           id="currency"
@@ -116,7 +116,7 @@ class Wallet extends React.Component {
   spendingMethod() {
     return (
       <label htmlFor="method">
-        Forma de pagamento
+        Forma de pagamento:
         <select
           data-testid="method-input"
           id="method"
@@ -136,7 +136,7 @@ class Wallet extends React.Component {
   spendingCategory() {
     return (
       <label htmlFor="tag">
-        Categoria da despesa
+        Categoria da despesa:
         <select
           data-testid="tag-input"
           id="tag"
@@ -176,7 +176,7 @@ class Wallet extends React.Component {
           { this.spendingCategory() }
           <button type="button" onClick={ this.submit }>Adicionar despesa</button>
         </form>
-        { expenses && <Table expenses={ expenses } /> }
+        <Table expenses={ expenses } />
       </div>
     );
   }
