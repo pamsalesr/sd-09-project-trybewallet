@@ -249,7 +249,7 @@ Se o requisito pedir "crie um botão e adicione o id de teste (ou `data-testid`)
 ou
 
 ```html
-<a data-testid="my-action"><a/>
+<a data-testid="my-action"></a>
 ```
 
 ou seja, o atributo `data-testid="my-action"` servirá para o React Testing Library(RTL) identificar o elemento e dessa forma, conseguiremos realizar testes unitários focados no comportamento da aplicação.
