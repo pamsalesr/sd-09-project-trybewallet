@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 class Wallet extends React.Component {
   render() {
     return (
-      <div>
+      <header>
         <Link to="/carteira">Carteira</Link>
-      </div>
+      </header>
     );
   }
 }
