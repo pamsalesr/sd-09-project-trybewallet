@@ -19,14 +19,14 @@
   width: 400px;
 }
 
-.login-container, .password-container {
+.login-container , .password-container {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
   min-width: 200px;
 }
 
-.login-container > label, .password-container > label {
+.login-container > label , .password-container > label {
   font-weight: 700;
 }
 
@@ -38,8 +38,8 @@
   background-color: green;
   border-radius: 5px;
   color: white;
-  height: 30px;
   font-weight: 700;
+  height: 30px;
   margin-top: 30px;
   width: 60px;
 }
