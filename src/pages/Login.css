@@ -1,4 +1,4 @@
-.email, .password {
+.email , .password {
   height: 25px;
   width: 250px;
 }
@@ -12,8 +12,8 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   height: 150px;
+  justify-content: space-around;
   padding: 20px;
   width: 100%;
 }
@@ -44,5 +44,5 @@
 }
 
 .title {
-  color: #036B52;
+  color: rgb(3, 107, 82);
 }
