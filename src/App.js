@@ -4,10 +4,12 @@ import { Login, Wallet } from './pages';
 
 function App() {
   return (
-    <Switch>
-      <Route exact path="/" component={ Login } />
-      <Route path="/carteira" component={ Wallet } />
-    </Switch>
+    <div>
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/carteira" component={ Wallet } />
+      </Switch>
+    </div>
   );
 }
 
