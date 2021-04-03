@@ -1,5 +1,4 @@
 // Coloque aqui suas actions
-import getCurrency from '../api';
 
 const addEmail = (value) => ({
   type: 'ADD_EMAIL',
@@ -11,21 +10,23 @@ const addToWallet = (expense) => ({
   expense,
 });
 
-const getCurrencyAction = (data) => ({
-  type: 'GET-CURRENCY',
-  data,
+const getCurrency = (currency) => ({
+  type: 'GET_CURRENCY',
+  currency,
 });
 
-function fetchCurrencyAction() {
-  return async (dispatch) => {
+const fetchCurrencyThunk = () => (
+  async (dispatch) => {
     try {
-      const data = await getCurrency();
-      delete data.USDT;
-      return dispatch(getCurrencyAction(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-}
+      const fetchResponse = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const currencies = await fetchResponse.json();
+      delete currencies.USDT;
 
-export { addEmail, addToWallet, fetchCurrencyAction, getCurrencyAction };
+      return dispatch(getCurrency(currencies));
+    } catch (error) {
+      return console.log(error);
+    }
+  }
+);
+
+export { addEmail, addToWallet, fetchCurrencyThunk, getCurrency };

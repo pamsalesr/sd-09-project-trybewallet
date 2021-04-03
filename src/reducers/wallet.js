@@ -13,10 +13,11 @@ const walletReducer = (state = INITIAL_STATE, action) => {
       expenses: [...state.expenses, action.expense],
       totalExpense: (state.totalExpense) + Number(action.expense.value),
     };
-  case 'ADD_CURRENCY_API':
-    return {
-      currencies: action.data,
-    };
+  case 'GET_CURRENCY':
+    return ({
+      ...state,
+      currencies: action.currency,
+    });
   default:
     return state;
   }
