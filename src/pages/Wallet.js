@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCurrency } from '../actions'
+import { getCurrency } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -14,8 +14,8 @@ class Wallet extends React.Component {
   }
 
   async getCurrency() {
-    const { teste } = this.props;
-    await teste();
+    const { dispatchCurrencyToProps } = this.props;
+    await dispatchCurrencyToProps();
   }
 
   render() {
@@ -43,11 +43,15 @@ class Wallet extends React.Component {
           </label>
           <label htmlFor="currency-input">
             Moeda:
-            <select name="currency" data-testid="currency-input" >
+            <select name="currency" data-testid="currency-input">
               <option>Selecione</option>
-              { console.log(currencyList) }
-              {/* { currencies.map((coin) => (<option key={ coin } value={ coin } data-testid={ coin }>{ coin }</option>)) } */}
-              { Object.keys(currencyList).filter((currency) => currency !== 'USDT').map((currency) => (<option key={ currency } value={ currency } data-testid={ currency }>{ currency }</option>)) }
+              { Object.keys(currencyList)
+                .filter((currency) => currency !== 'USDT')
+                .map((currency) => (
+                  <option key={ currency } value={ currency } data-testid={ currency }>
+                    { currency }
+                  </option>
+                ))}
             </select>
           </label>
           <label htmlFor="description-input">
@@ -66,7 +70,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  teste: () => dispatch(getCurrency()),
+  dispatchCurrencyToProps: () => dispatch(getCurrency()),
 });
 
 Wallet.defaultProps = {
@@ -75,8 +79,9 @@ Wallet.defaultProps = {
 };
 
 Wallet.propTypes = {
-  email: PropTypes.string.isRequired,
+  email: PropTypes.string,
   currencyList: PropTypes.objectOf(String),
+  dispatchCurrencyToProps: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

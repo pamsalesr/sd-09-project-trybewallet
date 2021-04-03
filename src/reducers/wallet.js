@@ -5,7 +5,6 @@ const INITIAL_STATE = {
   // expenses: [],
 };
 
-
 function wallet(state = INITIAL_STATE, action) {
   switch (action.type) {
   // case ADD_EXPENSES:

@@ -1,4 +1,5 @@
 import requestCurrency from '../services/awesomeApi';
+
 export const LOGIN_INFORMATION = 'LOGIN_INFORMATION';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 // export const ADD_EXPENSES = 'ADD_EXPENSES';
@@ -27,10 +28,3 @@ export function getCurrency() {
     return dispatch(saveCurrencies(currencyList));
   };
 }
-
-// export const getCurrency = () => (
-//   (dispatch) => {
-//     requestCurrency()
-//       .then((data) => dispatch(saveCurrencies(data)))
-//   }
-// );

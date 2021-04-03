@@ -13,7 +13,7 @@ const requestCurrency = async () => {
     const currencyList = await response.json();
     return currencyList;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
