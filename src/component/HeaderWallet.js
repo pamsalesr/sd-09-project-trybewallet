@@ -11,7 +11,7 @@ class HeaderWallet extends React.Component {
   sumExpensesValues() {
     const { expenses } = this.props;
     let counter = 0;
-    expenses.forEach(({ value, exchangeRates, currency}) => {
+    expenses.forEach(({ value, exchangeRates, currency }) => {
       counter += (value * exchangeRates[currency].ask);
     });
     return parseFloat(counter).toFixed(2);
@@ -36,6 +36,7 @@ const mapStateToProps = (state) => ({
 
 HeaderWallet.propTypes = {
   email: PropTypes.string.isRequired,
+  expenses: PropTypes.arrayOf().isRequired,
 };
 
 export default connect(mapStateToProps)(HeaderWallet);
