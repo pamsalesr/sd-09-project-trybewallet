@@ -1,16 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 import fetchAPI from '../services/api';
-import { setCurrencies, addExpense } from '../actions';
+import { setCurrencies, setExpenses, addExpense, setEdit } from '../actions';
 
 class Form extends React.Component {
   constructor(props) {
     super(props);
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.submitExpense = this.submitExpense.bind(this);
+    this.submitChanges = this.submitChanges.bind(this);
+    this.createInput = this.createInput.bind(this);
+    this.createDropdown = this.createDropdown.bind(this);
+
     this.state = {
+      id: 0,
       value: 0,
       description: '',
       currency: 'USD',
@@ -32,78 +37,99 @@ class Form extends React.Component {
     this.setState({ [id]: value });
   }
 
-  async handleSubmit() {
+  async submitExpense() {
     this.fetchCurrencies();
-    const { submit, currencies, expenses } = this.props;
-    const expense = { id: expenses.length, ...this.state, exchangeRates: currencies };
+    const { submit, currencies } = this.props;
+    const expense = { ...this.state, exchangeRates: currencies };
     submit(expense);
-    this.setState({ value: 0, description: '' });
+    this.setState((previous) => ({ id: previous.id + 1, value: 0, description: '' }));
+  }
+
+  submitChanges() {
+    const { updateExpenses, updateEdit, expenses, editid } = this.props;
+    const { id, exchangeRates } = expenses.find(() => el.id === editid);
+    expenses[editid] = { id, ...this.state, exchangeRates };
+    updateExpenses([...expenses]);
+    updateEdit(false, 0);
+  }
+
+  createInput(label, name, type, value) {
+    return (
+      <label htmlFor={ name }>
+        { label }
+        <input
+          data-testid={ `${name}-input` }
+          id={ name }
+          type={ type }
+          value={ value }
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
+  createDropdown(label, name, value, options) {
+    return (
+      <label htmlFor={ name }>
+        { label }
+        <select
+          data-testid={ `${name}-input` }
+          id={ name }
+          value={ value }
+          onChange={ this.handleChange }
+        >
+          {options.map((el) => (
+            <option data-testid={ el } value={ el } key={ el }>{ el }</option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
+  createButton(name, handleClick) {
+    return <button type="button" onClick={ handleClick }>{ name }</button>;
   }
 
   render() {
-    const { currencies } = this.props;
-    const { value, description } = this.state;
+    const { currencies, edit } = this.props;
+    const currArray = Array.isArray(currencies) ? currencies : Object.keys(currencies);
+    const { value, description, currency, method, tag } = this.state;
     const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-    const stateFn = this.handleChange;
     return (
       <form>
-        <label htmlFor="value">
-          <input
-            data-testid="value-input"
-            id="value"
-            type="number"
-            value={ value }
-            onChange={ stateFn }
-          />
-        </label>
-        <label htmlFor="description">
-          <input
-            data-testid="description-input"
-            id="description"
-            type="text"
-            value={ description }
-            onChange={ stateFn }
-          />
-        </label>
-        <label htmlFor="currency">
-          <select data-testid="currency-input" id="currency" onChange={ stateFn }>
-            {Object.keys(currencies).map((curr) => (
-              <option data-testid={ curr } value={ curr } key={ curr }>{ curr }</option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="method">
-          <select data-testid="method-input" id="method" onChange={ stateFn }>
-            {methods.map((met) => (<option value={ met } key={ met }>{ met }</option>))}
-          </select>
-        </label>
-        <label htmlFor="tag">
-          <select data-testid="tag-input" id="tag" onChange={ stateFn }>
-            {tags.map((tag) => (<option value={ tag } key={ tag }>{ tag }</option>))}
-          </select>
-        </label>
-        <button type="button" onClick={ this.handleSubmit }>Adicionar despesa</button>
-        <button type="button">Editar despesa</button>
+        { this.createInput('Valor:', 'value', 'number', value) }
+        { this.createDropdown('Moeda:', 'currency', currency, currArray)}
+        { this.createDropdown('Método de pagamento:', 'method', method, methods)}
+        { this.createDropdown('Tag:', 'tag', tag, tags)}
+        { this.createInput('Descrição:', 'description', 'text', description) }
+        { edit ? this.createButton('Editar despesa', this.submitChanges)
+          : this.createButton('Adicionar despesa', this.submitExpense) }
       </form>
     );
   }
 }
 
 Form.propTypes = {
-  currencies: arrayOf().isRequired,
-  expenses: arrayOf().isRequired,
-  updateCurrencies: func.isRequired,
-  submit: func.isRequired,
-};
+  currencies: arrayOf(),
+  expenses: arrayOf(),
+  edit: bool,
+  updateCurrencies: func,
+  submit: func,
+}.isRequired;
 
-const mapStateToProps = ({ wallet }) => (
-  { currencies: wallet.currencies, expenses: wallet.expenses }
-);
+const mapStateToProps = ({ wallet }) => ({
+  currencies: wallet.currencies,
+  expenses: wallet.expenses,
+  edit: wallet.edit,
+  editid: wallet.editid,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   updateCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
+  updateExpenses: (expenses) => dispatch(setExpenses(expenses)),
   submit: (expense) => dispatch(addExpense(expense)),
+  updateEdit: (condition, id) => dispatch(setEdit(condition, id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

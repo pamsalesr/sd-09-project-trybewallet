@@ -1,6 +1,6 @@
 import React from 'react';
 
-class THead extends React.Component {
+class TableHead extends React.Component {
   render() {
     const fields = {
       description: 'Descrição',
@@ -25,4 +25,4 @@ class THead extends React.Component {
   }
 }
 
-export default THead;
+export default TableHead;

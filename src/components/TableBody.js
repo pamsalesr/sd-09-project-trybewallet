@@ -1,16 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf, func } from 'prop-types';
-import { setExpenses } from '../actions';
+import { setExpenses, setEdit } from '../actions';
 
-class TBody extends React.Component {
+class TableBody extends React.Component {
   constructor(props) {
     super(props);
     this.editExpense = this.editExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
-  editExpense(expenseID) { return expenseID; }
+  editExpense(expenseID) {
+    const { updateEdit } = this.props;
+    updateEdit(true, expenseID);
+  }
 
   deleteExpense(expenseID) {
     const { expenses, updateExpenses } = this.props;
@@ -20,8 +23,6 @@ class TBody extends React.Component {
 
   render() {
     const { expenses } = this.props;
-    const edit = this.editExpense;
-    const del = this.deleteExpense;
     return (
       <tbody>
         {expenses.map((
@@ -37,10 +38,18 @@ class TBody extends React.Component {
             <td>{ (value * exchangeRates[currency].ask).toFixed(2)}</td>
             <td>Real</td>
             <td>
-              <button data-testid="edit-btn" type="button" onClick={ () => edit(id) }>
+              <button
+                data-testid="edit-btn"
+                type="button"
+                onClick={ () => this.editExpense(id) }
+              >
                 editar
               </button>
-              <button data-testid="delete-btn" type="button" onClick={ () => del(id) }>
+              <button
+                data-testid="delete-btn"
+                type="button"
+                onClick={ () => this.deleteExpense(id) }
+              >
                 deletar
               </button>
             </td>
@@ -51,9 +60,13 @@ class TBody extends React.Component {
   }
 }
 
-TBody.propTypes = { expenses: arrayOf().isRequired, updateExpenses: func.isRequired };
+TableBody.propTypes = { expenses: arrayOf(), updateExpenses: func }.isRequired;
+
 const mapStateToProps = ({ wallet }) => ({ expenses: wallet.expenses });
-const mapDispatchToProps = (dispatch) => (
-  { updateExpenses: (expenses) => dispatch(setExpenses(expenses)) }
-);
-export default connect(mapStateToProps, mapDispatchToProps)(TBody);
+
+const mapDispatchToProps = (dispatch) => ({
+  updateExpenses: (expenses) => dispatch(setExpenses(expenses)),
+  updateEdit: (condition, id) => dispatch(setEdit(condition, id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableBody);
