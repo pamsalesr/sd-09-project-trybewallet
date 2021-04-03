@@ -11,7 +11,7 @@ p {
   flex-grow: 1;
 }
 
-.header h1.title {
+header .title {
   color: black;
   flex-grow: 3;
   margin-left: 10px;
