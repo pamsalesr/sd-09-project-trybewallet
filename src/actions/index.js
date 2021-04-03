@@ -1,5 +1,7 @@
+import requestCurrency from '../services/awesomeApi';
 export const LOGIN_INFORMATION = 'LOGIN_INFORMATION';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
+// export const ADD_EXPENSES = 'ADD_EXPENSES';
 
 export function saveLoginInformation(email, validation) {
   return {
@@ -9,10 +11,26 @@ export function saveLoginInformation(email, validation) {
   };
 }
 
-export function getCurrencies() {
-  return {
-    type: 'GET_CURRENCIES',
-    email,
-    validation,
+// const addExpenses = (expense) => ({
+//   type: ADD_EXPENSES,
+//   expense,
+// });
+
+const saveCurrencies = (currencyList) => ({
+  type: GET_CURRENCIES,
+  currencyList,
+});
+
+export function getCurrency() {
+  return async (dispatch) => {
+    const currencyList = await requestCurrency();
+    return dispatch(saveCurrencies(currencyList));
   };
 }
+
+// export const getCurrency = () => (
+//   (dispatch) => {
+//     requestCurrency()
+//       .then((data) => dispatch(saveCurrencies(data)))
+//   }
+// );
