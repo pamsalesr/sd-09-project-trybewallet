@@ -10,6 +10,7 @@ class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
+      id: 0,
       currency: 'USD',
       value: 0,
       description: '',
@@ -156,11 +157,10 @@ class Wallet extends React.Component {
   }
 
   submit() {
-    const { propCurrenciesObj } = this.props;
-    const { propAddExpenses, currencies } = this.props;
+    const { propCurrenciesObj, propAddExpenses, currencies } = this.props;
     propCurrenciesObj();
-    propAddExpenses({ id: Math.random(), ...this.state, exchangeRates: currencies });
-    this.setState({ value: 0 });
+    propAddExpenses({ ...this.state, exchangeRates: currencies });
+    this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
   }
 
   render() {
@@ -174,7 +174,12 @@ class Wallet extends React.Component {
           { currencies && this.spendingCurrency() }
           { this.spendingMethod() }
           { this.spendingCategory() }
-          <button type="button" onClick={ this.submit }>Adicionar despesa</button>
+          <button
+            type="button"
+            onClick={ this.submit }
+          >
+            Adicionar despesa
+          </button>
         </form>
         <Table expenses={ expenses } />
       </div>
