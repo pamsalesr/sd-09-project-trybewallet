@@ -1,7 +1,9 @@
 // Coloque aqui suas actions
-export function addEmail (email) {
+function addEmail(email) {
   return {
     type: 'addUser',
     email,
-  }
+  };
 }
+
+export default addEmail;

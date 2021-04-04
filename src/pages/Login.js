@@ -1,7 +1,8 @@
 import React from 'react';
+import PropsTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { addEmail } from '../actions';
+import addEmail from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -15,65 +16,85 @@ class Login extends React.Component {
       redirect: false,
       email: '',
       senha: '',
-    }
+    };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.disabledButton();
   }
 
   validation() {
+    const { password } = this.props;
     const { senha, email } = this.state;
-    if (email === "alguem@email.com" && senha.length >= 5) {
-      this.enabledButton();
-    }
+    if (email === 'alguem@email.com'
+    && senha.length >= password.length - 1) this.enabledButton();
+
     else {
       this.disabledButton();
     }
   }
 
   enabledButton() {
-    document.getElementById("value").disabled = false;
+    document.getElementById('value').disabled = false;
   }
 
   disabledButton() {
-    document.getElementById("value").disabled = true;
+    document.getElementById('value').disabled = true;
   }
 
   redirect() {
     const { keyAddemail } = this.props;
     const { email } = this.state;
     keyAddemail(email);
-    this.setState({ redirect: true })
+    this.setState({ redirect: true });
   }
 
   addValue(event) {
     this.setState({
-      [event.target.name]: event.target.value
-    })
+      [event.target.name]: event.target.value,
+    });
   }
 
   render() {
     const { redirect } = this.state;
-    if (redirect) return <Redirect to="/carteira" />
-    return(
-      <div onChange={ this.validation }>
-        <label>
+    if (redirect) return <Redirect to="/carteira" />;
+    return (
+      <form onChange={ this.validation }>
+        <label htmlFor="E-mail">
           E-mail:
-          <input name="email" data-testid="email-input" onChange={ this.addValue } />
+          <input
+            id="E-mail"
+            name="email"
+            data-testid="email-input"
+            onChange={ this.addValue }
+          />
         </label>
-        <label>
+        <label htmlFor="password">
           Senha:
-          <input name="senha" data-testid="password-input" onChange={ this.addValue } />
+          <input
+            id="password"
+            name="senha"
+            data-testid="password-input"
+            onChange={ this.addValue }
+          />
         </label>
-        <button id="value" onClick={ this.redirect }>Entrar</button>
-      </div>
+        <button type="button" id="value" onClick={ this.redirect }>Entrar</button>
+      </form>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  keyAddemail: (email) => (dispatch(addEmail(email)))
-})
+Login.propTypes = {
+  keyAddemail: PropsTypes.func.isRequired,
+  password: PropsTypes.string.isRequired,
+};
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  password: state.user.senha,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  keyAddemail: (email) => (dispatch(addEmail(email))),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
