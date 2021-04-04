@@ -16,8 +16,7 @@ class FormAddWallet extends React.Component {
     this.IN_STATE = { value: '', description: '', currency: '', method: '', tag: '' };
 
     this.state = {
-      statusEdition: false,
-      currencies: {},
+      editingState: false,
       expenses: { value: '', description: '', currency: '', method: '', tag: '' },
     };
   }
@@ -27,9 +26,13 @@ class FormAddWallet extends React.Component {
   }
 
   async updateCurrencies() {
+    const { setCurrencies } = this.props;
     const request = await listCurrencies();
     delete request.USDT;
-    this.setState((state) => ({ ...state, currencies: request }));
+    setCurrencies(Object.keys(request).reduce((finalArray, currentValue) => {
+      finalArray.push(currentValue);
+      return finalArray;
+    }, []));
   }
 
   updateState(event) {
@@ -39,42 +42,39 @@ class FormAddWallet extends React.Component {
     );
   }
 
-  updateEdit(id) {
-    const { listExpenses } = this.props;
-    const expenseEdit = listExpenses.find((expense) => expense.id === id);
+  updateEdit() {
+    const { listExpenses, idEdition } = this.props;
+    const expenseEdit = { ...listExpenses.find((expense) => expense.id === idEdition) };
     this.setState(
-      (state) => ({ ...state, statusEdition: true, expenses: { ...expenseEdit } }),
+      (state) => ({ ...state, editingState: true, expenses: expenseEdit }),
     );
   }
 
   handleButton() {
     const { expenses } = this.state;
-    const { saveData, nextId } = this.props;
-    saveData({ id: nextId, ...expenses });
-    this.setState((state) => ({ ...state, expenses: this.IN_STATE }));
+    const { value, currency } = expenses;
+    if (value === '' || currency === '') {
+      alert('VALOR ou MOEDA não inseridos. Verifique!!!');
+    } else {
+      const { saveData, nextId } = this.props;
+      saveData({ id: nextId, ...expenses });
+      this.setState((state) => ({ ...state, expenses: this.IN_STATE }));
+    }
   }
 
-  handleButtonEdit(id) {
-    const { saveDataEdited, handleEdit } = this.props;
+  handleButtonEdit() {
     const { expenses } = this.state;
-    saveDataEdited(id, expenses);
-    handleEdit(false);
-    this.setState(
-      (state) => ({ ...state, statusEdition: false, expenses: this.IN_STATE }),
-    );
-  }
-
-  createOption(key) {
-    const { currencies } = this.state;
-    return (
-      <option
-        key={ currencies[key].name }
-        data-testid={ currencies[key].code }
-        value={ currencies[key].code }
-      >
-        {currencies[key].code}
-      </option>
-    );
+    const { value, currency } = expenses;
+    const { saveDataEdited, edition, idEdition } = this.props;
+    if (value === '' || currency === '') {
+      alert('VALOR ou MOEDA não inseridos. Verifique!!!');
+    } else {
+      saveDataEdited(idEdition, expenses);
+      edition(false);
+      this.setState(
+        (state) => ({ ...state, editingState: false, expenses: this.IN_STATE }),
+      );
+    }
   }
 
   renderValueInput() {
@@ -96,8 +96,9 @@ class FormAddWallet extends React.Component {
   }
 
   renderCurrencyInput() {
-    const { currencies, expenses } = this.state;
+    const { expenses } = this.state;
     const { currency } = expenses;
+    const { currencies } = this.props;
     return (
       <label htmlFor="currencyInput">
         Moeda:
@@ -109,7 +110,8 @@ class FormAddWallet extends React.Component {
           onChange={ this.updateState }
         >
           <option> </option>
-          { Object.keys(currencies).map((key) => this.createOption(key)) }
+          { currencies.map((item) => (
+            <option data-testid={ item } key={ item } value={ item }>{item}</option>)) }
         </select>
       </label>
     );
@@ -199,9 +201,10 @@ class FormAddWallet extends React.Component {
     );
   }
 
-  renderEdit(id) {
-    const { statusEdition } = this.state;
-    if (!statusEdition) this.updateEdit(id);
+  renderEdit() {
+    const { statusEdition } = this.props;
+    const { editingState } = this.state;
+    if (statusEdition && !editingState) this.updateEdit();
     return (
       <div>
         <form className="form-edit">
@@ -212,7 +215,7 @@ class FormAddWallet extends React.Component {
           { this.renderDescriptionInput() }
           <button
             type="button"
-            onClick={ () => this.handleButtonEdit(id) }
+            onClick={ () => this.handleButtonEdit() }
           >
             Editar despesa
           </button>
@@ -222,19 +225,21 @@ class FormAddWallet extends React.Component {
   }
 
   render() {
-    const { statusEdit, idEdit } = this.props;
-    return (statusEdit) ? this.renderEdit(idEdit) : this.renderForm();
+    const { statusEdition } = this.props;
+    return (statusEdition) ? this.renderEdit() : this.renderForm();
   }
 }
 
 FormAddWallet.propTypes = {
-  nextId: PropTypes.string.isRequired,
+  nextId: PropTypes.number.isRequired,
+  statusEdition: PropTypes.bool.isRequired,
+  idEdition: PropTypes.string.isRequired,
   saveData: PropTypes.func.isRequired,
-  statusEdit: PropTypes.bool.isRequired,
-  listExpenses: PropTypes.func.isRequired,
-  idEdit: PropTypes.string.isRequired,
+  listExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   saveDataEdited: PropTypes.func.isRequired,
-  handleEdit: PropTypes.func.isRequired,
+  edition: PropTypes.func.isRequired,
+  setCurrencies: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormAddWallet);

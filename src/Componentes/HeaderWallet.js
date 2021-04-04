@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// import { Redirect } from 'react-router';
 
 class HeaderWallet extends React.Component {
   sunTotal() {
@@ -14,7 +15,7 @@ class HeaderWallet extends React.Component {
 
   render() {
     const { email } = this.props;
-
+    // if (email === '') return <Redirect to="/" />;
     return (
       <div className="header-wallet">
         <h1>Trybe Wallet</h1>
@@ -36,7 +37,7 @@ class HeaderWallet extends React.Component {
 
 HeaderWallet.propTypes = {
   email: PropTypes.string.isRequired,
-  listExpenses: PropTypes.func.isRequired,
+  listExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({

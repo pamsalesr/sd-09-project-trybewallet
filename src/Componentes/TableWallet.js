@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { delExpense } from '../actions';
+import { delExpense, edition } from '../actions';
 
 class TableWallet extends React.Component {
   renderTitleTable() {
     return (
-      <tr className="tr-title">
+      <thead className="tr-title">
         <th>Descrição</th>
         <th>Tag</th>
         <th>Método de pagamento</th>
@@ -16,15 +16,15 @@ class TableWallet extends React.Component {
         <th>Valor convertido</th>
         <th>Moeda de conversão</th>
         <th>Editar/Excluir</th>
-      </tr>
+      </thead>
     );
   }
 
-  renderDatas(data) {
-    const { description, tag, method, value, currency, exchangeRates, id } = data;
-    const { del, handleEdit } = this.props;
+  renderExpense(expense) {
+    const { description, tag, method, value, currency, exchangeRates, id } = expense;
+    const { del, edit } = this.props;
     return (
-      <tr>
+      <tbody key={ id }>
         <td>{description}</td>
         <td>{tag}</td>
         <td>{method}</td>
@@ -35,7 +35,7 @@ class TableWallet extends React.Component {
         <td>Real</td>
         <td>
           <button
-            onClick={ () => handleEdit(true, id) }
+            onClick={ () => edit(id, true) }
             className="btn-edit"
             type="button"
             data-testid="edit-btn"
@@ -51,13 +51,13 @@ class TableWallet extends React.Component {
             X
           </button>
         </td>
-      </tr>
+      </tbody>
     );
   }
 
   renderLinesTable() {
     const { listExpenses } = this.props;
-    return listExpenses.map((expense) => this.renderDatas(expense));
+    return listExpenses.map((expense) => this.renderExpense(expense));
   }
 
   render() {
@@ -76,12 +76,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   del: (value) => dispatch(delExpense(value)),
+  edit: (id, status) => dispatch(edition(id, status)),
 });
 
 TableWallet.propTypes = {
   listExpenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   del: PropTypes.func.isRequired,
-  handleEdit: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableWallet);
