@@ -1,6 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const CURRENCIES = 'CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const UPDATE_TOTAL_EXPENSE = 'UPDATE_TOTAL_EXPENSE';
 
 export const doLogin = (email) => ({
@@ -21,4 +22,9 @@ export const addExpense = (expense) => ({
 export const updateTotal = (value) => ({
   type: UPDATE_TOTAL_EXPENSE,
   value,
+});
+
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
 });

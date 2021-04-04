@@ -2,10 +2,42 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { deleteExpense, updateTotal } from '../../actions';
+
 class WalletTable extends Component {
   constructor(props) {
     super(props);
+
     this.renderTableRows = this.renderTableRows.bind(this);
+    this.reduceTotal = this.reduceTotal.bind(this);
+    this.updateTotal = this.updateTotal.bind(this);
+    this.deleteExpenseUpdateTotal = this.deleteExpenseUpdateTotal.bind(this);
+  }
+
+  deleteExpenseUpdateTotal(e) {
+    const { id } = e.target;
+    const { expenses, removeExpense, updateNewTotal } = this.props;
+    const [deleted] = expenses.filter((expense) => String(expense.id) === id);
+    const newTotal = this.updateTotal(deleted);
+
+    removeExpense(id);
+    updateNewTotal(newTotal);
+  }
+
+  updateTotal(deletedItem) {
+    const { value, exchangeRates, currency } = deletedItem;
+    const total = this.reduceTotal();
+
+    return total - (value * exchangeRates[currency].ask);
+  }
+
+  reduceTotal() {
+    const { expenses } = this.props;
+    const total = expenses
+      .reduce((prev, { value, currency, exchangeRates }) => (
+        prev + value * exchangeRates[currency].ask
+      ), 0);
+    return total;
   }
 
   renderTableRows() {
@@ -23,7 +55,14 @@ class WalletTable extends Component {
         </td>
         <td>Real</td>
         <td>
-          <button type="button" data-testid="delete-btn">Delete</button>
+          <button
+            id={ item.id }
+            type="button"
+            data-testid="delete-btn"
+            onClick={ (e) => this.deleteExpenseUpdateTotal(e) }
+          >
+            Delete
+          </button>
           <button type="button" data-testid="edit-btn">Editar</button>
         </td>
       </tr>
@@ -54,12 +93,19 @@ class WalletTable extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (expense) => dispatch(deleteExpense(expense)),
+  updateNewTotal: (total) => dispatch(updateTotal(total)),
+});
+
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
 WalletTable.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
+  removeExpense: PropTypes.func.isRequired,
+  updateNewTotal: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(WalletTable);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletTable);
