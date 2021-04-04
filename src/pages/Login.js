@@ -22,34 +22,41 @@ class Login extends React.Component {
   // Verificação de email consultada no Stack OverFlow, vide:
   // https://pt.stackoverflow.com/questions/72617/validar-email-em-javascript
   verifyEmail(email) {
-    const regexVerify = /^[a-z0-9.]+@[a-z0-9]+\.([a-z]+)?$/i;
+    const regexVerify = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+?$/i;
     if (regexVerify.test(email)) {
       return true;
     }
     return false;
   }
 
-  async fieldChecker() {
+  fieldChecker() {
     const { email, passWord } = this.state;
     const minimumPassWordLength = 5;
-    if (await (this.verifyEmail(email)) && (passWord.length > minimumPassWordLength)) {
+    if ((this.verifyEmail(email)) && (passWord.length > minimumPassWordLength)) {
       this.setState({
         desableButton: false,
+      });
+    } else {
+      this.setState({
+        desableButton: true,
       });
     }
   }
 
-  async handleChange({ target }) {
+  handleChange({ target }) {
     const { value, name } = target;
-    await this.setState({
+    this.setState({
       [name]: value,
+    },
+    () => {
+      this.fieldChecker();
     });
-    this.fieldChecker();
   }
 
   logInWallet() {
     const { email } = this.state;
     const { emailOfLogin } = this.props;
+
     emailOfLogin(email);
     this.setState({
       logIn: true,
@@ -58,7 +65,7 @@ class Login extends React.Component {
 
   render() {
     const { desableButton, logIn } = this.state;
-    const teste = <Redirect push to="/carteira" />;
+    const redirect = <Redirect push to="/carteira" />;
     return (
       <div>
         <h1>Jhon Wallet</h1>
@@ -67,14 +74,14 @@ class Login extends React.Component {
           logInWallet={ this.logInWallet }
           desableButton={ desableButton }
         />
-        { (logIn) ? teste : '' }
+        { (logIn) ? redirect : '' }
       </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  emailOfLogin: (state) => dispatch(login(state)),
+  emailOfLogin: (email) => dispatch(login(email)),
 });
 
 Login.propTypes = {
