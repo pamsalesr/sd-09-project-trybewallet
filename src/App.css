@@ -51,6 +51,6 @@ table , th , td {
   width: 100%;
 }
 
-th, td {
+th , td {
   border-bottom: 1px solid #ddd;
 }
