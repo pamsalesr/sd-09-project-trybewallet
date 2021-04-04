@@ -10,25 +10,38 @@ class TableBody extends React.Component {
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
-  editExpense(expenseID) {
+  editExpense(expenseid) {
     const { updateEdit } = this.props;
-    updateEdit(true, expenseID);
+    updateEdit(true, expenseid);
   }
 
-  deleteExpense(expenseID) {
+  deleteExpense(expenseid) {
     const { expenses, updateExpenses } = this.props;
-    const filter = expenses.filter(({ id }) => id !== expenseID);
-    updateExpenses(filter);
+    const expensesList = expenses.filter(({ id }) => id !== expenseid);
+    updateExpenses(expensesList);
+  }
+
+  createButton(label, name, handleClick) {
+    return (
+      <button
+        data-testid={ `${name}-btn` }
+        className={ name }
+        type="button"
+        onClick={ handleClick }
+      >
+        { label }
+      </button>
+    );
   }
 
   render() {
     const { expenses } = this.props;
     return (
-      <tbody>
+      <tbody className="wallet-table-body">
         {expenses.map((
           { id, value, description, currency, method, tag, exchangeRates }, index,
         ) => (
-          <tr key={ index }>
+          <tr className="wallet-table-body-row" key={ index }>
             <td>{ description }</td>
             <td>{ tag }</td>
             <td>{ method }</td>
@@ -38,20 +51,8 @@ class TableBody extends React.Component {
             <td>{ (value * exchangeRates[currency].ask).toFixed(2)}</td>
             <td>Real</td>
             <td>
-              <button
-                data-testid="edit-btn"
-                type="button"
-                onClick={ () => this.editExpense(id) }
-              >
-                editar
-              </button>
-              <button
-                data-testid="delete-btn"
-                type="button"
-                onClick={ () => this.deleteExpense(id) }
-              >
-                deletar
-              </button>
+              { this.createButton('editar', 'edit', () => this.editExpense(id))}
+              { this.createButton('deletar', 'delete', () => this.deleteExpense(id))}
             </td>
           </tr>
         ))}

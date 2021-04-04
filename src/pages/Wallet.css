@@ -1,4 +1,112 @@
-body {
-  margin: 0;
-  padding: 0;
+.header-content {
+  display: flex;
+}
+
+.wallet-form {
+  background-color: #222;
+  color: whitesmoke;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+  padding: 10px 5px;
+}
+
+.wallet-header {
+  align-items: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.wallet-header-email-field {
+  margin: 0 10px;
+}
+
+.wallet-header-total-field {
+  display: flex;
+  flex-flow: row;
+  margin: 0 10px;
+
+}
+
+.wallet-table {
+  display: flex;
+  flex-flow: column;
+}
+
+.wallet-table-body {
+  color: #111;
+  padding: 5px 5px;
+  text-align: center;
+}
+
+.wallet-table-body-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.wallet-table-body-row:nth-child(even) {
+  background-color: lightgray;
+}
+
+.wallet-table-head {
+  background-color: #333;
+  color: whitesmoke;
+  padding: 5px 5px;
+  text-align: center;
+}
+
+.wallet-table-head-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.wallet input, .wallet select, .wallet button {
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.wallet .addExpense {
+  background-color: forestgreen;
+  color: whitesmoke;
+  font-weight: 900;
+}
+
+.wallet .addExpense:hover {
+  background-color: chartreuse;
+}
+
+.wallet .edit {
+  background-color: darkcyan;
+  color: whitesmoke;
+  font-weight: 900;
+}
+
+.wallet .edit:hover {
+  background-color: cyan;
+}
+
+.wallet .editExpense {
+  background-color: darkorange;
+  color: whitesmoke;
+  font-weight: 900;
+}
+
+.wallet .editExpense:hover {
+  background-color: gold;
+}
+
+.wallet .delete {
+  background-color: darkred;
+  color: whitesmoke;
+  font-weight: 900;
+}
+
+.wallet .delete:hover {
+  background-color: red;
 }

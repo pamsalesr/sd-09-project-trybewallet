@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import { login } from '../actions';
@@ -10,7 +10,7 @@ class LoginForm extends React.Component {
     this.checkFormats = this.checkFormats.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { email: '', password: '' };
+    this.state = { email: '', password: '', shouldRedirect: false };
   }
 
   checkFormats() {
@@ -29,38 +29,41 @@ class LoginForm extends React.Component {
     const { submit } = this.props;
     const { email } = this.state;
     submit(email);
+    this.setState({ shouldRedirect: true });
   }
 
   render() {
+    const { shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/carteira" />;
     return (
-      <form>
+      <section className="login-form">
         <input
           data-testid="email-input"
           type="email"
+          placeholder="email"
           onChange={ this.handleChange }
           required
         />
         <input
           data-testid="password-input"
           type="password"
+          placeholder="password"
           onChange={ this.handleChange }
           required
         />
-        <Link to="/carteira">
-          <button
-            type="submit"
-            onClick={ this.handleSubmit }
-            disabled={ !this.checkFormats() }
-          >
-            Entrar
-          </button>
-        </Link>
-      </form>
+        <button
+          type="submit"
+          onClick={ this.handleSubmit }
+          disabled={ !this.checkFormats() }
+        >
+          Entrar
+        </button>
+      </section>
     );
   }
 }
 
-LoginForm.propTypes = { submit: func.isRequired };
+LoginForm.propTypes = { submit: func }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({ submit: (email) => dispatch(login(email)) });
 

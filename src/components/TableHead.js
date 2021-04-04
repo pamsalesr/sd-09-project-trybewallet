@@ -14,8 +14,8 @@ class TableHead extends React.Component {
       editDelete: 'Editar/Excluir',
     };
     return (
-      <thead>
-        <tr>
+      <thead className="wallet-table-head">
+        <tr className="wallet-table-head-row">
           {Object.values(fields).map((fieldName) => (
             <td key={ fieldName }>{ fieldName }</td>
           ))}

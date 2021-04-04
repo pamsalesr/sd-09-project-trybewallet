@@ -28,8 +28,8 @@ class Form extends React.Component {
 
   async fetchCurrencies() {
     const { updateCurrencies } = this.props;
-    const result = await fetchAPI();
-    updateCurrencies(result);
+    const data = await fetchAPI();
+    updateCurrencies(Object.keys(data));
   }
 
   handleChange({ target }) {
@@ -38,18 +38,20 @@ class Form extends React.Component {
   }
 
   async submitExpense() {
-    this.fetchCurrencies();
-    const { submit, currencies } = this.props;
-    const expense = { ...this.state, exchangeRates: currencies };
+    const data = await fetchAPI();
+    const { submit } = this.props;
+    const expense = { ...this.state, exchangeRates: data };
     submit(expense);
-    this.setState((previous) => ({ id: previous.id + 1, value: 0, description: '' }));
+    this.setState((state) => ({ id: state.id + 1, value: 0, description: '' }));
   }
 
   submitChanges() {
     const { updateExpenses, updateEdit, expenses, editid } = this.props;
-    const { id, exchangeRates } = expenses.find((el) => el.id === editid);
-    expenses[editid] = { id, ...this.state, exchangeRates };
-    updateExpenses([...expenses]);
+    const { id, exchangeRates } = expenses.find((expense) => expense.id === editid);
+    const expensesList = expenses.map((expense) => (
+      expense.id === editid ? { id, ...this.state, exchangeRates }
+        : expense));
+    updateExpenses(expensesList);
     updateEdit(false, 0);
   }
 
@@ -86,25 +88,32 @@ class Form extends React.Component {
     );
   }
 
-  createButton(name, handleClick) {
-    return <button type="button" onClick={ handleClick }>{ name }</button>;
+  createButton(label, name, handleClick) {
+    return (
+      <button
+        className={ name }
+        type="button"
+        onClick={ handleClick }
+      >
+        { label }
+      </button>
+    );
   }
 
   render() {
     const { currencies, edit } = this.props;
-    const currArray = Array.isArray(currencies) ? currencies : Object.keys(currencies);
     const { value, description, currency, method, tag } = this.state;
     const methods = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
-      <form>
+      <form className="wallet-form">
         { this.createInput('Valor:', 'value', 'number', value) }
-        { this.createDropdown('Moeda:', 'currency', currency, currArray)}
+        { this.createDropdown('Moeda:', 'currency', currency, currencies)}
         { this.createDropdown('Método de pagamento:', 'method', method, methods)}
         { this.createDropdown('Tag:', 'tag', tag, tags)}
         { this.createInput('Descrição:', 'description', 'text', description) }
-        { edit ? this.createButton('Editar despesa', this.submitChanges)
-          : this.createButton('Adicionar despesa', this.submitExpense) }
+        { edit ? this.createButton('Editar despesa', 'editExpense', this.submitChanges)
+          : this.createButton('Adicionar despesa', 'addExpense', this.submitExpense) }
       </form>
     );
   }

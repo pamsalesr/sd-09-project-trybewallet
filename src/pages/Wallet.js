@@ -5,10 +5,10 @@ import './Wallet.css';
 class Wallet extends React.Component {
   render() {
     return (
-      <div>
+      <div className="wallet">
         <Header />
         <Form />
-        <table>
+        <table className="wallet-table">
           <TableHead />
           <TableBody />
         </table>

@@ -1,4 +1,60 @@
-body {
-  margin: 0;
-  padding: 0;
+.login-form {
+  background: #222;
+  border-radius: 24px;
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%,  -50%);
+  width: 300px;
+}
+
+.login-form h1 {
+  color: whitesmoke;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.login-form input[type="email"], .login-form input[type="password"] {
+  background: none;
+  border: 2px solid darkcyan;
+  border-radius: 24px;
+  color: whitesmoke;
+  display: block;
+  margin: 20px auto;
+  outline: none;
+  padding: 14px 10px;
+  text-align: center;
+  transition: 0.25s;
+  width: 200px;
+}
+
+.login-form input[type="email"]:focus, .login-form input[type="password"]:focus {
+  border-color: darkcyan;
+  width: 280px;
+}
+
+.login-form button {
+  background: none;
+  border: 2px solid forestgreen;
+  border-radius: 24px;
+  color: whitesmoke;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  outline: none;
+  padding: 14px 40px;
+  text-align: center;
+  transition: 0.25s;
+}
+
+.login-form button:hover {
+  background: forestgreen;
+}
+
+.login-form button:disabled, .login-form button:disabled:hover {
+  background: none;
+  border: 2px solid darkred;
+  color: lightgray;
 }
