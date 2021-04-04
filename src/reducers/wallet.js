@@ -5,11 +5,11 @@ const INITIAL_STATE = {
 };
 
 function walletReducer(state = INITIAL_STATE, action) {
-  switch (action.types) {
-  case 'WALLET':
-    return { currencies: action.currencies,
-      expenses: action.expenses,
-    };
+  switch (action.type) {
+  case 'CURRENCIES':
+    return { ...state, currencies: action.currencies };
+  case 'EXPENSES':
+    return { ...state, expenses: [...state.expenses, action.expenses] };
   case 'TOTAL':
     return {
       total: state.total + action.somaTotal,

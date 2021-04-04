@@ -1,14 +1,11 @@
 const INITIAL_STATE = {
   email: '',
-  password: '',
 };
 
 function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case 'LOGIN':
-    return { email: action.email,
-      password: action.email,
-    };
+    return { email: action.email };
   default:
     return state;
   }
