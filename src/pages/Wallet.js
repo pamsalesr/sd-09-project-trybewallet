@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { currenciesObj, addExpense, delExpense } from '../actions';
+import { currenciesObj, addExpense, delExpense, editExpense } from '../actions';
 import Table from '../components/Table';
 import '../App.css';
 import '../CSS/wallet.css';
@@ -9,14 +9,6 @@ import '../CSS/wallet.css';
 class Wallet extends React.Component {
   constructor() {
     super();
-    this.state = {
-      id: 0,
-      currency: 'USD',
-      value: 0,
-      description: '',
-      method: '',
-      tag: '',
-    };
     this.walletHeader = this.walletHeader.bind(this);
     this.spendingValue = this.spendingValue.bind(this);
     this.spendingDescription = this.spendingDescription.bind(this);
@@ -24,8 +16,10 @@ class Wallet extends React.Component {
     this.spendingMethod = this.spendingMethod.bind(this);
     this.spendingCategory = this.spendingCategory.bind(this);
     this.totalSpending = this.totalSpending.bind(this);
-    this.submit = this.submit.bind(this);
     this.addOrEdit = this.addOrEdit.bind(this);
+    this.submit = this.submit.bind(this);
+    this.state = {
+      id: 0, currency: 'USD', value: 0, description: '', method: '', tag: '' };
   }
 
   componentDidMount() {
@@ -59,14 +53,12 @@ class Wallet extends React.Component {
   }
 
   spendingValue() {
-    const { value } = this.state;
     return (
       <label htmlFor="value">
         Valor da despesa:
         <input
           data-testid="value-input"
           name="value"
-          value={ value }
           type="number"
           step="1.00"
           min="0"
@@ -158,28 +150,30 @@ class Wallet extends React.Component {
   }
 
   submit() {
-    const { propCurrenciesObj, propAddExpense, currencies } = this.props;
-    propCurrenciesObj();
-    propAddExpense({ ...this.state, exchangeRates: currencies });
-    this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
+    const {
+      propCurrenciesObj, propAddExpense, propEditExpense, currencies, status, id,
+    } = this.props;
+    if (status) {
+      const editExp = { ...this.state, id };
+      propAddExpense({ ...editExp, exchangeRates: currencies });
+      propEditExpense(false, '');
+    } else {
+      propCurrenciesObj();
+      propAddExpense({ ...this.state, exchangeRates: currencies });
+      this.setState((prev) => ({ id: prev.id + 1 }));
+    }
   }
 
   addOrEdit() {
     const { status } = this.props;
     if (status) {
       return (
-        <button
-          type="button"
-          onClick={ this.submit }
-        >
+        <button data-testid="edit-btn" type="button" onClick={ this.submit }>
           Editar despesa
         </button>
       );
     } return (
-      <button
-        type="button"
-        onClick={ this.submit }
-      >
+      <button type="button" onClick={ this.submit }>
         Adicionar despesa
       </button>
     );
@@ -205,18 +199,14 @@ class Wallet extends React.Component {
 }
 
 const mapStateToProps = ({
-  user: { email }, wallet: { currencies, expenses, edit: { status, id } } }) => ({
-  email,
-  currencies,
-  expenses,
-  status,
-  id,
-});
+  user: { email }, wallet: { currencies, expenses, edit: { status, id } = {} },
+}) => ({ email, currencies, expenses, status, id });
 
 const mapDispatchToProps = (dispatch) => ({
   propCurrenciesObj: () => dispatch(currenciesObj()),
   propAddExpense: (data) => dispatch(addExpense(data)),
   propDelExpense: (data) => dispatch(delExpense(data)),
+  propEditExpense: (status, id) => dispatch(editExpense(status, id)),
 });
 
 Wallet.propTypes = {

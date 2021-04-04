@@ -7,10 +7,12 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case 'RECEIVE_CURRENCY_FAIL':
     return { error: action.error };
   case 'ADD_EXPENSE':
-    return { ...state, expenses: [...state.expenses, action.data] };
+    return { ...state,
+      expenses: [...state.expenses
+        .filter((expense) => expense.id !== action.data.id), action.data] };
   case 'DELETE_EXPENSE':
     return { ...state,
-      expenses: [...state.expenses.filter((expenses) => action.data !== expenses.id)] };
+      expenses: [...state.expenses.filter((expense) => action.data !== expense.id)] };
   case 'EDIT_EXPENSE':
     return { ...state, edit: { status: action.status, id: action.id } };
   default:
