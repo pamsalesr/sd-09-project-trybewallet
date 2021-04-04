@@ -8,7 +8,7 @@ import { currenciesFetch } from '../actions/index';
 class Wallet extends React.Component {
   componentDidMount() {
     const { fetchToApi } = this.props;
-    currenciesFetch();
+    fetchToApi();
   }
 
   render() {
