@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Form extends React.Component {
   render() {
-    const { handleChange, fieldChecker, desableButton } = this.props;
+    const { handleChange, logInWallet, desableButton } = this.props;
     return (
       <form>
         <label htmlFor="email">
@@ -28,7 +28,7 @@ class Form extends React.Component {
           type="button"
           name="entrar"
           disabled={ desableButton }
-          onClick={ () => fieldChecker() }
+          onClick={ () => logInWallet() }
         >
           Entrar
         </button>
@@ -39,7 +39,7 @@ class Form extends React.Component {
 
 Form.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  fieldChecker: PropTypes.func.isRequired,
+  logInWallet: PropTypes.func.isRequired,
   desableButton: PropTypes.bool.isRequired,
 };
 

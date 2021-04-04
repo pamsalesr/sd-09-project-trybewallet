@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchApi } from '../actions/index';
 import Header from '../components/header';
 import RegistrationForm from '../components/registrationForm';
+import { fetchApi } from '../actions/index';
 
 class Wallet extends React.Component {
   componentDidMount() {
-    fetchApi();
+    const { fetchToApi } = this.props;
+    fetchToApi();
   }
 
   render() {
@@ -25,7 +26,7 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
-  // fetchCoinBase: PropTypes.func.isRequired,
+  fetchToApi: PropTypes.func.isRequired,
   isFethingStatus: PropTypes.bool.isRequired,
 };
 
@@ -35,7 +36,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchApi: () => dispatch(fetchApi()),
+  fetchToApi: () => dispatch(fetchApi()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

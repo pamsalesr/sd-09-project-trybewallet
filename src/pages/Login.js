@@ -11,64 +11,63 @@ class Login extends React.Component {
     this.state = {
       email: '',
       passWord: '',
-      desableButton: false,
+      desableButton: true,
       logIn: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.fieldChecker = this.fieldChecker.bind(this);
-    // this.authenticateLogin = this.authenticateLogin.bind(this);
+    this.logInWallet = this.logInWallet.bind(this);
   }
 
-  handleChange({ target }) {
-    const { value, name } = target;
-    this.setState({
-      [name]: value,
-    });
+  // Verificação de email consultada no Stack OverFlow, vide:
+  // https://pt.stackoverflow.com/questions/72617/validar-email-em-javascript
+  verifyEmail(email) {
+    const regexVerify = /^[a-z0-9.]+@[a-z0-9]+\.([a-z]+)?$/i;
+    if (regexVerify.test(email)) {
+      return true;
+    }
+    return false;
   }
 
   async fieldChecker() {
     const { email, passWord } = this.state;
+    const minimumPassWordLength = 5;
+    if (await (this.verifyEmail(email)) && (passWord.length > minimumPassWordLength)) {
+      this.setState({
+        desableButton: false,
+      });
+    }
+  }
+
+  async handleChange({ target }) {
+    const { value, name } = target;
+    await this.setState({
+      [name]: value,
+    });
+    this.fieldChecker();
+  }
+
+  logInWallet() {
+    const { email } = this.state;
     const { emailOfLogin } = this.props;
-    const minimalCaractersForPassWord = 6;
-    const minimalCaractersForEmail = 10;
-
-    if (passWord < minimalCaractersForPassWord) {
-      (this.setState({
-        passWordError: true,
-      }));
-    } else {
-      (this.setState({
-        passWordError: false,
-      }));
-    }
-
-    if (email.length < minimalCaractersForEmail) {
-      (this.setState({
-        emailError: true,
-      }));
-    } else {
-      (this.setState({
-        emailError: false,
-        logIn: true,
-      }));
-    }
     emailOfLogin(email);
+    this.setState({
+      logIn: true,
+    });
   }
 
   render() {
     const { desableButton, logIn } = this.state;
-    // const messagePassWordError = <p>A senha deve conter ao menos 6 caracteres</p>;
-    // const messageEmailError = <p>Digite um e-mail válido</p>;
-    const logInWallet = <Redirect push to="/carteira" />;
+    const teste = <Redirect push to="/carteira" />;
     return (
       <div>
         <h1>Jhon Wallet</h1>
         <Form
           handleChange={ this.handleChange }
-          fieldChecker={ this.fieldChecker }
+          logInWallet={ this.logInWallet }
           desableButton={ desableButton }
         />
-        { (logIn) ? logInWallet : '' }
+        { (logIn) ? teste : '' }
       </div>
     );
   }
