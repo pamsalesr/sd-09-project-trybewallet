@@ -12,7 +12,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { userEmail } = this.props;
+    // const { userEmail } = this.props;
     const { email } = this.state;
     return (
       <header>
