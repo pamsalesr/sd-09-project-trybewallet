@@ -20,13 +20,13 @@
 }
 
 .login-container , .password-container {
-  display: flex;
-  flex-direction: column;
   margin-top: 10px;
   min-width: 200px;
 }
 
 .login-container > label , .password-container > label {
+  display: flex;
+  flex-direction: column;
   font-weight: 700;
 }
 
@@ -46,6 +46,10 @@
 
 .login-form > button:hover {
   cursor: pointer;
+}
+
+.login-form > button:disabled {
+  opacity: 0.5;
 }
 
 .login-form > p {

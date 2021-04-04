@@ -1,0 +1,18 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 50px;
+}
+
+.header-container > div {
+  align-items: center;
+  display: flex;
+}
+
+.header-container > div > p {
+  margin: 0 30px;
+}
+
+.label {
+  font-weight: 700;
+}
