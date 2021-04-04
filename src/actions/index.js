@@ -1,9 +1,9 @@
 export const USER_LOGIN = 'USER_LOGIN';
 // export const WALLET_LOGIN = 'LOGIN_EMAIL';
 
-export const userLogin = (email, senha) => ({
+export const saveEmail = (email) => ({
   type: USER_LOGIN,
-  user: { email, senha },
+  email,
 });
 
 // export const loginEmail = (email) => ({

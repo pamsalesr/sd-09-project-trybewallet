@@ -1,68 +1,98 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { saveEmail } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleChanges = this.handleChanges.bind(this);
+    this.renderEmail = this.renderEmail.bind(this);
+    this.verifyInputs = this.verifyInputs.bind(this);
+
     this.state = {
       email: '',
-      senha: '',
-      redirect: false,
+      password: '',
+      verify: true,
     };
-    this.inputsLogin = inputsLogin.bind(this);
   }
 
-  verifyLogin() {
-    const { email, senha } = this.state;
-    const senhaLength = 6;
-    if (email === 'alguem@alguem.com' && senha >= senhaLength) {
-      this.setState({ redirect: true });
+  verifyInputs() {
+    const { email, password } = this.state;
+    // foi usado regex com auxilio de Luis Carlos
+    const emailValidated = /^[\S.]+@[a-z]+.\w{2,3}$/g.test(email);
+    const passwordValidated = /[0-9a-zA-Z$*&@#]{6}/.test(password);
+    if (emailValidated && passwordValidated) {
+      this.setState({ verify: false });
+    } else {
+      this.setState({ verify: true });
     }
   }
 
-  handleInputsChange({ targe: { name, value } }) {
-    this.setState({ [name]: value });
+  handleChanges(event) {
+    const { target } = event;
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    }, () => this.verifyInputs());
+    // cada mudança de valor no input, ele chama a função verifyInputs
   }
 
-  inputsLogin(labelName, id, name, ...params) {
-    const [type, valueName] = params;
+  renderEmail(value) {
     return (
-      <label htmlFor={ id }>
-        {labelName}
-        <input
-          type={ type }
-          data-testid={ id }
-          value={ valueName }
-          name={ name }
-          onChange={ this.handleInputsChange }
-        />
-      </label>
+      <div>
+        <label htmlFor="email-input">
+          Email:
+          <input
+            id="email-input"
+            type="email"
+            data-testid="email-input"
+            name="email"
+            value={ value }
+            onChange={ this.handleChanges }
+          />
+        </label>
+      </div>
+    );
+  }
+
+  renderPassword(value) {
+    return (
+      <div>
+        <label htmlFor="password-input">
+          Password:
+          <input
+            id="password-input"
+            type="password"
+            data-testid="password-input"
+            name="password"
+            value={ value }
+            onChange={ this.handleChanges }
+          />
+        </label>
+      </div>
     );
   }
 
   render() {
-    const { redirect } = this.state;
-    if (redirect) return <Redirect to="/carteira" />;
+    const { value, verify, email } = this.state;
+    const { addEmail } = this.props;
+
     return (
-      <forms>
-        <Link to="/" />
-        { this.inputsLogin(
-          'Email',
-          '"email-input"',
-          'email-input',
-          'email',
-          email,
-        )}
-        { this.inputsLogin(
-          'Senha',
-          '"password-input"',
-          'password-input', 'password',
-          password,
-        )}
-        <button type="button" onClick={ this.verifyLogin }>Entrar</button>
-      </forms>
+      <section>
+        <form>
+          { this.renderEmail(value) }
+          { this.renderPassword(value) }
+          <Link to="/carteira">
+            <button type="button" disabled={ verify } onClick={ () => addEmail(email) }>Entrar</button>
+          </Link>
+        </form>
+      </section>
     );
   }
 }
-
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  addEmail: (email) => dispatch(saveEmail(email)),
+});
+export default connect(null, mapDispatchToProps)(Login);
