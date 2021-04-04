@@ -37,7 +37,7 @@
 
 .wallet-table-body {
   color: #111;
-  padding: 5px 5px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -47,14 +47,14 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.wallet-table-body-row:nth-child(even) {
+.wallet-table-body-row:nth-child( even ) {
   background-color: lightgray;
 }
 
 .wallet-table-head {
   background-color: #333;
   color: whitesmoke;
-  padding: 5px 5px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -64,7 +64,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.wallet input, .wallet select, .wallet button {
+.wallet input , .wallet select , .wallet button {
   border: none;
   border-radius: 5px;
   margin: 5px;
