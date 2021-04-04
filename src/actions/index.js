@@ -5,11 +5,6 @@ export const setEmail = (email) => (
   { type: SET_EMAIL, email }
 );
 
-export const SET_TOTAL = 'GET_TOTAL';
-export const setTotal = (total) => (
-  { type: SET_TOTAL, total }
-);
-
 export const SET_CURRENCIES = 'GET_CURRENCIES';
 export const setCurrencies = (currencies) => (
   { type: SET_CURRENCIES, currencies }
@@ -18,6 +13,11 @@ export const setCurrencies = (currencies) => (
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const addExpenses = (expenses) => (
   { type: ADD_EXPENSES, expenses }
+);
+
+export const SET_EXPENSES = 'SET_EXPENSES';
+export const setExpenses = (expenses) => (
+  { type: SET_EXPENSES, expenses }
 );
 
 export const thunk = () => (

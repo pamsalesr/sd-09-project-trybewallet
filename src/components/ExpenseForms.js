@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setTotal, setCurrencies, addExpenses } from '../actions';
+import { setCurrencies, addExpenses } from '../actions';
 import fetchCurrency from '../services/currencyApi';
 // import ExpensesTable from './ExpensesTable';
 import ExpensesList from './ExpensesList';
@@ -19,7 +19,6 @@ class ExpenseForms extends Component {
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.totalExpenses = this.totalExpenses.bind(this);
     this.inputNumber = this.inputNumber.bind(this);
     this.inputText = this.inputText.bind(this);
     this.selectMethod = this.selectMethod.bind(this);
@@ -41,7 +40,6 @@ class ExpenseForms extends Component {
     const { getExpenses, currencies, expenses } = this.props;
     const expense = { id: expenses.length, ...this.state, exchangeRates: currencies };
     await getExpenses(expense);
-    this.totalExpenses();
     this.setState({
       value: 0,
       description: 'Hot Dog',
@@ -56,15 +54,6 @@ class ExpenseForms extends Component {
     this.setState({
       [name]: value,
     });
-  }
-
-  totalExpenses() {
-    const { expenses, getTotal } = this.props;
-    let sum = 0;
-    expenses.forEach((expenseValue) => {
-      sum += expenseValue.value * expenseValue.exchangeRates[expenseValue.currency].ask;
-    });
-    getTotal(sum.toFixed(2));
   }
 
   currencyInputDropDown(currencies) {
@@ -165,13 +154,11 @@ class ExpenseForms extends Component {
 }
 
 const mapStateToProps = (state) => (
-  { total: state.wallet.total,
-    currencies: state.wallet.currencies,
+  { currencies: state.wallet.currencies,
     expenses: state.wallet.expenses,
   });
 
 const mapDispatchToProps = (dispatch) => ({
-  getTotal: (total) => dispatch(setTotal(total)),
   getCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
   getExpenses: (expenses) => dispatch(addExpenses(expenses)),
 });
@@ -179,7 +166,6 @@ const mapDispatchToProps = (dispatch) => ({
 ExpenseForms.propTypes = {
   getCurrencies: PropTypes.func.isRequired,
   getExpenses: PropTypes.func.isRequired,
-  getTotal: PropTypes.func.isRequired,
   expenses: PropTypes.shape({
     length: PropTypes.func.isRequired,
     forEach: PropTypes.func.isRequired,
