@@ -10,6 +10,11 @@ const addToWallet = (expense) => ({
   expense,
 });
 
+export const deleteItem = (item) => ({
+  type: 'DELETE_ITEM',
+  item,
+});
+
 const getCurrency = (currency) => ({
   type: 'GET_CURRENCY',
   currency,

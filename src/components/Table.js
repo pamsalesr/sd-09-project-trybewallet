@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes, { object } from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencyThunk } from '../actions';
+import { MdDelete } from 'react-icons/md';
+import { deleteItem, fetchCurrencyThunk } from '../actions';
 
 class Table extends React.Component {
   constructor(props) {
@@ -20,6 +21,11 @@ class Table extends React.Component {
     await fetchCurrency();
   }
 
+  handleClickDel(id) {
+    const { deleteExpense } = this.props;
+    deleteExpense(id);
+  }
+
   renderTableRow() {
     const { expenses } = this.props;
     return expenses.length > 0 && expenses
@@ -35,6 +41,10 @@ class Table extends React.Component {
             {(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
           </td>
           <td>Real</td>
+          <MdDelete
+            data-testid="delete-btn"
+            onClick={ () => this.handleClickDel(expense.id) }
+          />
         </tr>
       ));
   }
@@ -63,6 +73,7 @@ class Table extends React.Component {
 
 Table.propTypes = {
   fetchCurrency: PropTypes.func,
+  deleteExpense: PropTypes.func,
   currencies: PropTypes.objectOf(object),
   expenses: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.string,
@@ -80,6 +91,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrency: () => dispatch(fetchCurrencyThunk()),
+  deleteExpense: (expense) => dispatch(deleteItem(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
