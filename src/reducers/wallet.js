@@ -1,40 +1,17 @@
-import { ADD, DELETE, REQUEST_COIN, RECEIVE_COIN } from '../actions/ActionsDescribe';
+import {
+  ADD_COST,
+  DELETE_COST,
+  REQUEST_COIN,
+  RECEIVE_COIN,
+} from '../actions/ActionsDescribe';
 
 const INITIAL_STATE = {
-  launchs: [],
+  currencies: [],
+  expenses: [],
   isFetching: false,
-  coinBase: '',
 };
 
-export function launchOperation(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case ADD:
-    return ({
-      ...state,
-      launchs: [...state.launchs, action.launch],
-    });
-  default:
-    return ({
-      state,
-    });
-  }
-}
-
-export function deletOperation(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case DELETE:
-    return ({
-      ...state,
-      launchs: state.launchs.filter((operation) => operation !== action.launch),
-    });
-  default:
-    return ({
-      state,
-    });
-  }
-}
-
-export function fetchingCoins(state = INITIAL_STATE, action) {
+const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case REQUEST_COIN:
     return ({
@@ -45,11 +22,21 @@ export function fetchingCoins(state = INITIAL_STATE, action) {
     return ({
       ...state,
       isFetching: false,
-      coinBase: action.coin,
+      currencies: [...Object.keys(action.coins)],
+    });
+  case ADD_COST:
+    return ({
+      ...state,
+      expenses: [...state.expenses, action.expense],
+    });
+  case DELETE_COST:
+    return ({
+      ...state,
+      expenses: state.expenses.filter((expense) => expense !== action.cost),
     });
   default:
-    return ({
-      state,
-    });
+    return state;
   }
-}
+};
+
+export default wallet;

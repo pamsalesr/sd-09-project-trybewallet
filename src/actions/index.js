@@ -1,34 +1,47 @@
-import { LOGIN, ADD, REQUEST_COIN, RECEIVE_COIN } from './ActionsDescribe';
+import {
+  LOGIN,
+  ADD_COST,
+  DELETE_COST,
+  REQUEST_COIN,
+  RECEIVE_COIN,
+  ERROR_FETCH,
+} from './ActionsDescribe';
+import fetchToCoinApi from '../helpers/fetchApi';
 
 export const login = (email) => ({
   type: LOGIN,
   email,
 });
 
-export const launchOperation = (launch) => ({
-  type: ADD,
-  launch,
-});
-
-export const requestCoin = () => ({
+export const requestCoins = () => ({
   type: REQUEST_COIN,
 });
 
-export const receiveCoin = (data) => ({
+export const receiveCoins = (coins) => ({
   type: RECEIVE_COIN,
-  coin: data,
+  coins,
 });
 
-export function fetchApi() {
-  const url = 'https://economia.awesomeapi.com.br/json/all';
-  return async (dispatch) => {
-    try {
-      dispatch(requestCoin());
-      const response = await fetch(url);
-      const data = await response.json();
-      dispatch(receiveCoin(data));
-    } catch (error) {
-      console.log(error);
-    }
+export const fetchError = (error) => ({
+  type: ERROR_FETCH,
+  error,
+});
+
+export const deletCost = (cost) => ({
+  type: DELETE_COST,
+  cost,
+});
+
+export const addCost = (cost) => ({
+  type: ADD_COST,
+  cost,
+});
+
+export function currenciesFetch() {
+  return (dispatch) => {
+    dispatch(requestCoins());
+    return fetchToCoinApi()
+      .then((data) => dispatch(receiveCoins(data)))
+      .catch((error) => dispatch(fetchError(error)));
   };
 }

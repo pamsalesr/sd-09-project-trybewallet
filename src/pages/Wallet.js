@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/header';
-import RegistrationForm from '../components/registrationForm';
-import { fetchApi } from '../actions/index';
+import NewCostForm from '../components/newCostForm';
+import { currenciesFetch } from '../actions/index';
 
 class Wallet extends React.Component {
   componentDidMount() {
     const { fetchToApi } = this.props;
-    fetchToApi();
+    currenciesFetch();
   }
 
   render() {
@@ -18,7 +18,7 @@ class Wallet extends React.Component {
         : (
           <div>
             <Header />
-            <RegistrationForm />
+            <NewCostForm />
           </div>
         )
     );
@@ -36,7 +36,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchToApi: () => dispatch(fetchApi()),
+  fetchToApi: () => dispatch(currenciesFetch()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

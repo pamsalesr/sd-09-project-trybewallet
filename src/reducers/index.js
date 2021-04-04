@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
 import user from './user';
-import { launchOperation, deletOperation, fetchingCoins } from './wallet';
+import wallet from './wallet';
 
 const rootReducer = combineReducers({
   user,
-  launchOperation,
-  deletOperation,
-  fetchingCoins,
+  wallet,
 });
 
 export default rootReducer;

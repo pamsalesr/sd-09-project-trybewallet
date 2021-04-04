@@ -1,6 +1,8 @@
-// function fetchApi() {
-//   const url = 'https://economia.awesomeapi.com.br/json/all';
-//   fetch(url).then((response) => response.json()).then((result) => console.log(result));
-// }
+const fetchToCoinApi = () => (
+  fetch('https://economia.awesomeapi.com.br/json/all')
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => error)
+);
 
-// export default fetchApi;
+export default fetchToCoinApi;
