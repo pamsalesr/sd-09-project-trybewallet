@@ -31,9 +31,9 @@ export default function walletReducer(state = initialWalletState, action) {
   case START_EDIT:
     return { ...state, edit: action.payload, editStatus: true };
   case SAVE_EDIT:
-  // Rodolfo--
+  // Tive muita ajuda do Rodolfo Oliveira neste reducer enquanto estava na turma 8
     return { ...state,
-      expenses: [...action.payload
+      expenses: [...state.expenses
         .filter((e) => e.id !== state.edit), action.payload]
         .sort((a, b) => a.id - b.id),
       editStatus: false,

@@ -10,19 +10,14 @@ import EditExpensesComponent from './EditExpensesComponent';
 import TabelaDeGastos from './TabelaDeGastos';
 
 class Wallet extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.handleChange = this.handleChange.bind(this);
     this.renderCurrencies = this.renderCurrencies.bind(this);
     this.calcularDespesa = this.calcularDespesa.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
   }
-
-  // componentDidMount() {
-  //   const { fetchCurrencies } = this.props;
-  //   fetchCurrencies();
-  // }
 
   handleChange({ target }) {
     const { name, value } = target;
@@ -64,7 +59,6 @@ class Wallet extends React.Component {
 
   render() {
     const { editStatus } = this.props;
-    console.log(editStatus);
     return (
       <>
         <section>

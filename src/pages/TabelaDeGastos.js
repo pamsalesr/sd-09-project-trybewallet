@@ -7,8 +7,8 @@ import {
 } from '../actions/index';
 
 class TabelaDeGastos extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.renderTableData = this.renderTableData.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -22,7 +22,6 @@ class TabelaDeGastos extends React.Component {
   }
 
   handleEdit(id) {
-    console.log(id);
     const { readyEditing } = this.props;
     readyEditing(id);
   }

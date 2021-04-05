@@ -39,7 +39,7 @@ class EditExpensesComponent extends React.Component {
       exchangeRates,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleAddExpense = this.handleEditExpense.bind(this);
+    this.handleEditExpense = this.handleEditExpense.bind(this);
     this.renderCurrencies = this.renderCurrencies.bind(this);
     this.renderValueInput = this.renderValueInput.bind(this);
     this.renderDescriptionInput = this.renderDescriptionInput.bind(this);
@@ -61,8 +61,9 @@ class EditExpensesComponent extends React.Component {
   }
 
   handleEditExpense() {
+    console.log(this.props);
     const { saveEdited } = this.props;
-    console.log(saveEdited());
+    console.log(saveEdited);
     const { value, description, currency, method, tag, id, exchangeRates } = this.state;
     const editedExpenses = {
       value,
