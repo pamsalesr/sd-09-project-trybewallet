@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setEmail } from '../actions';
+import './login.css';
+import logo from './echangeImg.jpg';
 
 class Login extends React.Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      loading: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validate = this.validate.bind(this);
@@ -42,37 +45,50 @@ class Login extends React.Component {
   clickHandler() {
     const { history, getEmail } = this.props;
     const { email } = this.state;
+    this.setState({ loading: true });
+    const timer = 2100;
     getEmail(email);
-    if (this.validate()) history.push('/carteira');
+    if (this.validate()) setTimeout(() => history.push('/carteira'), timer);
   }
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, loading } = this.state;
     return (
-      <div>
-        <input
-          placeholder="Insert your E-mail"
-          name="email"
-          type="email"
-          value={ email }
-          data-testid="email-input"
-          onChange={ this.handleChange }
-        />
-        <input
-          placeholder="Insert Password"
-          name="password"
-          type="password"
-          value={ password }
-          data-testid="password-input"
-          onChange={ this.handleChange }
-        />
-        <button
-          type="button"
-          onClick={ this.clickHandler }
-          disabled={ !this.validate() }
-        >
-          Entrar
-        </button>
+      <div className="backgroundLogin">
+        <div className="login">
+          <div className="loginBox teste">
+            <div className="inputContainer teste">
+              {loading ? <img src={ logo } alt="logo" className="aniLogo" />
+                : <img src={ logo } alt="logo" className="logo" /> }
+              <input
+                className="email"
+                placeholder="Insert your E-mail"
+                name="email"
+                type="email"
+                value={ email }
+                data-testid="email-input"
+                onChange={ this.handleChange }
+              />
+              <input
+                className="password"
+                placeholder="Insert Password"
+                name="password"
+                type="password"
+                value={ password }
+                data-testid="password-input"
+                onChange={ this.handleChange }
+              />
+              <button
+                className="btn"
+                type="button"
+                onClick={ this.clickHandler }
+                disabled={ !this.validate() }
+              >
+                Entrar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

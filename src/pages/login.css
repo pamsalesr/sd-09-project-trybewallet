@@ -1,0 +1,63 @@
+* {
+  overflow: hidden;
+}
+
+.backgroundLogin {
+  background-image: url(https://cdn.finfeed.com/images/FX.2e16d0ba.fill-768x432.jpg);
+  background-size: cover;
+}
+
+.login {
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  justify-items: center;
+  background-color: #000000cb;
+}
+
+.loginBox {
+  border-radius: 30px;
+  grid-row: 2;
+  height: 60vh;
+  border: 1px solid black;
+  background-image: url(https://cdn.finfeed.com/images/FX.2e16d0ba.fill-768x432.jpg);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 8fr 1fr;
+  box-shadow: inset 0 0 4px 2px rgb(121, 121, 121);
+}
+
+.inputContainer {
+  width: 250px;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: none;
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+  box-shadow: inset 1px 1px 4px 2px rgb(0, 0, 0), inset -1px -1px 4px 2px rgb(0, 0, 0);
+}
+
+.inputContainer img {
+  height: 25vh;
+  filter: drop-shadow(6px 6px 9px black);
+  margin-bottom: 15%;
+  margin-right: 10%;
+}
+
+.inputContainer input {
+  width: 90%;
+}
+
+.aniLogo {
+  animation: rotate 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+  transition: 2s;
+  transform-origin: center;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg)}
+  100% { transform: rotate(360deg)}
+}
