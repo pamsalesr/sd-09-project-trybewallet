@@ -1,8 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { currenciesObj, addExpense, delExpense, editExpense, setEditExpense }
+import { connect } from 'react-redux';
+import { addExpense, delExpense, editExpense, setEditExpense, updateCurrencies }
   from '../actions';
+import fetchCurrencies from '../service/apiCoin';
 import Table from '../components/Table';
 import '../App.css';
 import '../CSS/wallet.css';
@@ -10,6 +11,7 @@ import '../CSS/wallet.css';
 class Wallet extends React.Component {
   constructor() {
     super();
+    this.fetchApi = this.fetchApi.bind(this);
     this.walletHeader = this.walletHeader.bind(this);
     this.spendingValue = this.spendingValue.bind(this);
     this.spendingDescription = this.spendingDescription.bind(this);
@@ -24,8 +26,13 @@ class Wallet extends React.Component {
   }
 
   componentDidMount() {
-    const { propCurrenciesObj } = this.props;
-    propCurrenciesObj();
+    this.fetchApi();
+  }
+
+  async fetchApi() {
+    const { propUpdateCurrencies } = this.props;
+    const data = await fetchCurrencies();
+    propUpdateCurrencies(Object.keys(data));
   }
 
   totalSpending() {
@@ -54,12 +61,14 @@ class Wallet extends React.Component {
   }
 
   spendingValue() {
+    const { value } = this.state;
     return (
       <label htmlFor="value">
         Valor da despesa:
         <input
           data-testid="value-input"
           name="value"
+          value={ value }
           type="number"
           step="1.00"
           min="0"
@@ -99,7 +108,7 @@ class Wallet extends React.Component {
             this.setState({ currency: value });
           } }
         >
-          {Object.keys(currencies)
+          {currencies
             .map((curr) => (curr !== 'USDT'
               ? <option data-testid={ curr } key={ curr } value={ curr }>{curr}</option>
               : null))}
@@ -150,19 +159,18 @@ class Wallet extends React.Component {
     );
   }
 
-  submit() {
+  async submit() {
     const {
-      propCurrenciesObj, propAddExpense, propEditExpense, propSetEditExpense,
-      currencies, status, id,
+      propAddExpense, propEditExpense, propSetEditExpense, status, id, expenses,
     } = this.props;
     if (status) {
-      const editExp = { ...this.state, id, exchangeRates: currencies };
+      const { exchangeRates } = expenses.find((expense) => expense.id === id);
+      const editExp = { ...this.state, id, exchangeRates };
       propSetEditExpense(editExp);
       propEditExpense(false, '');
     } else {
-      propCurrenciesObj();
-      propAddExpense({ ...this.state, exchangeRates: currencies });
-      this.setState((prev) => ({ id: prev.id + 1 }));
+      propAddExpense({ ...this.state, exchangeRates: await fetchCurrencies() });
+      this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
     }
   }
 
@@ -205,16 +213,16 @@ const mapStateToProps = ({
 }) => ({ email, currencies, expenses, status, id });
 
 const mapDispatchToProps = (dispatch) => ({
-  propCurrenciesObj: () => dispatch(currenciesObj()),
   propAddExpense: (data) => dispatch(addExpense(data)),
   propDelExpense: (data) => dispatch(delExpense(data)),
-  propEditExpense: (status, id) => dispatch(editExpense(status, id)),
   propSetEditExpense: (data) => dispatch(setEditExpense(data)),
+  propUpdateCurrencies: (data) => dispatch(updateCurrencies(data)),
+  propEditExpense: (status, id) => dispatch(editExpense(status, id)),
 });
 
 Wallet.propTypes = {
   email: Proptypes.string,
-  propCurrenciesObj: Proptypes.func,
+  propUpdateCurrencies: Proptypes.func,
   propAddExpense: Proptypes.func,
   propDelExpense: Proptypes.func,
   propEditExpense: Proptypes.func,
