@@ -15,7 +15,6 @@ class Login extends React.Component {
       email: '',
       password: '',
       authorizedLogin: false,
-      enabledBtn: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -24,84 +23,25 @@ class Login extends React.Component {
 
   handleInputChange({ target }) {
     const { name, value } = target;
-
-    this.setState({
-      [name]: value,
-    });
-
-    //const { email, password } = this.state;
-    const validLogin = this.validateLogin();
-
-    if (validLogin) {
-      this.setState({ enabledBtn: true });
-    } else {
-      this.setState({ enabledBtn: false });
-    }
-  }
-
-  /* handleInputChange({ target }) {
-    const { name, value } = target;
-
-    this.setState({
-      [name]: value,
-    });
-
-    const { password } = this.state;
-    const minLength = 6;
-    const validPassword = password.length >= minLength;
-    const validEmail = this.validateEmail();
-
-    if (validEmail && validPassword) {
-      this.setState({ enabledBtn: true });
-    } else {
-      this.setState({ enabledBtn: false });
-    }
-  } */
-
-  /**
-   * Consulta realizada no Forum da Alura, em como validar email.
-   * Link: https://cursos.alura.com.br/forum/topico-como-validar-email-e-senha-em-javascript-80469
-   */
-  /* validateEmail() {
-    const { email } = this.state;
-    const rgex = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-    return rgex.test(email);
-  } */
-  validateLogin() {
-    const { email, password } = this.state;
-    const rgex = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-    const validEmail = rgex.test(email);
-
-    const minLength = 5;
-    const validPassword = password.length > minLength;
-    console.log('password:', password, 'password-lenght:', password.length);
-
-    if (validEmail && validPassword) {
-      // console.log('email:', validEmail, 'password:', validPassword);
-      return true;
-    }
-    // console.log('email:', validEmail, 'password:', validPassword);
-    return false;
+    this.setState({ [name]: value });
   }
 
   handleClick(setUserData) {
     const { email, password } = this.state;
-    /* const minLength = 6;
-    const validPassword = password.length >= minLength;
-    const validEmail = this.validateEmail(); */
-
-    // if (validEmail && validPassword) {
-      this.setState({ authorizedLogin: true });
-      setUserData({ email, password });
-    /* } else {
-      this.setState({ showAlert: true });
-    } */
+    setUserData({ email, password });
+    this.setState({ authorizedLogin: true });
   }
 
   render() {
     const { setUserData } = this.props;
-    const { email, password, authorizedLogin, enabledBtn } = this.state;
-    console.log('render:', password);
+    const { email, password, authorizedLogin } = this.state;
+    const validateLogin = () => {
+      const rgex = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
+      const validEmail = rgex.test(email);
+      const minlength = 6;
+      const validPassword = password.length >= minlength;
+      return (validEmail && validPassword);
+    };
     const enableButton = (
       <button
         className="btn-login"
@@ -111,7 +51,6 @@ class Login extends React.Component {
         Entrar
       </button>
     );
-
     return (
       <div className="container-login">
         <form className="form-login" action="">
@@ -122,7 +61,6 @@ class Login extends React.Component {
             value={ email }
             onChange={ this.handleInputChange }
             placeholder="E-mail"
-            pattern="^\w*(\.\w*)?@\w*\.[a-z]+(\.[a-z]+)?$"
             data-testid="email-input"
             required
           />
@@ -132,14 +70,12 @@ class Login extends React.Component {
             value={ password }
             onChange={ this.handleInputChange }
             placeholder="Senha"
-            minLength="6"
             data-testid="password-input"
             required
           />
-          {enabledBtn
+          {validateLogin()
             ? enableButton
-            : <button className="btn-login" type="button" disabled>Entrar</button>
-          }
+            : <button className="btn-login" type="button" disabled>Entrar</button>}
         </form>
         {authorizedLogin && <Redirect to="/carteira" />}
       </div>
