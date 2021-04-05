@@ -1,10 +1,10 @@
 html {
-background-color: #6C7A89;
+  background-color: #6c7a89;
 }
 
 .App-header {
   align-items: center;
-  background-color: #6C7A89;
+  background-color: #6c7a89;
   color: whitesmoke;
   display: flex;
   flex-direction: row;
@@ -18,14 +18,21 @@ background-color: #6C7A89;
   background-color: #282c34;
   color: #20db99;
   display: flex;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
+label {
+  text-align: center;
+}
+
+input {
+  width: 120px;
 }
 
 .form-table input , select , button {
-  border-radius: 5px;
   background-color: whitesmoke;
-  margin: 3px;
+  border-radius: 5px;
 }
 
 .expenses-table {
@@ -40,9 +47,13 @@ background-color: #6C7A89;
   background-color: whitesmoke;
   border: 1px solid black;
   border-radius: 3px;
-  padding: 0 5px 0 5px;
+  padding: 0 5px;
   text-align: center;
   transition: 0.5s;
+}
+
+.button-box {
+  display: flex;
 }
 
 .YButton {

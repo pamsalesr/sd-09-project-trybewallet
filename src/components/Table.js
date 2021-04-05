@@ -45,22 +45,24 @@ class Table extends Component {
               <td>{Number(value * exchangeRates[currency].ask).toFixed(2) }</td>
               <td>Real</td>
               <td>
-                <button
-                  className="YButton"
-                  type="button"
-                  data-testid="edit-btn"
-                  onClick={ () => propEditExpense(true, id) }
-                >
-                  Editar
-                </button>
-                <button
-                  className="RButton"
-                  type="button"
-                  data-testid="delete-btn"
-                  onClick={ () => propDelExpense(id) }
-                >
-                  Deletar
-                </button>
+                <div className="button-box">
+                  <button
+                    className="YButton"
+                    type="button"
+                    data-testid="edit-btn"
+                    onClick={ () => propEditExpense(true, id) }
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="RButton"
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => propDelExpense(id) }
+                  >
+                    Deletar
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
