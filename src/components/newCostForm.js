@@ -1,13 +1,29 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addCost, currenciesFetch } from '../actions/index';
 
 const initialState = {
   value: 0,
-  coin: 'BRL',
+  coin: 'USD',
   methodPayment: 'Dinheiro',
   description: '',
   costCenter: 'Alimentação',
+  coins: [
+    'USD',
+    'CAD',
+    'EUR',
+    'GBP',
+    'ARS',
+    'BTC',
+    'LTC',
+    'JPY',
+    'CHF',
+    'AUD',
+    'CNY',
+    'ILS',
+    'ETH',
+    'XRP'],
 };
 
 class NewCostForm extends React.Component {
@@ -15,21 +31,6 @@ class NewCostForm extends React.Component {
     super(props);
     this.state = {
       ...initialState,
-      coins: [
-        'USD',
-        'CAD',
-        'EUR',
-        'GBP',
-        'ARS',
-        'BTC',
-        'LTC',
-        'JPY',
-        'CHF',
-        'AUD',
-        'CNY',
-        'ILS',
-        'ETH',
-        'XRP'],
     };
 
     this.valueInput = this.valueInput.bind(this);
@@ -38,12 +39,33 @@ class NewCostForm extends React.Component {
     this.descriptionCostInput = this.descriptionCostInput.bind(this);
     this.costCenterInput = this.costCenterInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({
       [name]: value,
+    });
+  }
+
+  async handleClick() {
+    const { costs, addExpense, fetchToApi } = this.props;
+    const exchange = await fetchToApi();
+    const { value, coin, methodPayment, description, costCenter } = this.state;
+    const expense = {
+      id: (costs.length === 0 ? 1 : (costs[costs.length - 1].id + 1)),
+      value,
+      coin,
+      methodPayment,
+      description,
+      costCenter,
+      exchange: exchange.coins,
+    };
+    addExpense(expense);
+
+    this.setState({
+      ...initialState,
     });
   }
 
@@ -82,9 +104,6 @@ class NewCostForm extends React.Component {
               </option>
             ))
           }
-          {/* <option value="BRL" data-testid="BRL">BRL</option>
-          <option value="USD">USD</option>
-          <option value="TEST">TEST</option> */}
         </select>
       </label>
     );
@@ -154,7 +173,7 @@ class NewCostForm extends React.Component {
 
         <button
           type="button"
-          onClick=""
+          onClick={ this.handleClick }
         >
           Adicionar despesa
         </button>
@@ -163,16 +182,28 @@ class NewCostForm extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   coins: state.currencies,
-//   isFetching: state.isFetching,
-// });
+const mapStateToProps = (state) => ({
+  // coins: state.currencies,
+  // isFetching: state.isFetching,
+  costs: state.expenses,
+});
 
-// NewCostForm.propTypes = {
-//   coins: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   isFetching: PropTypes.bool.isRequired,
-// };
+const mapDispatchToProps = (dispatch) => ({
+  fetchToApi: () => dispatch(currenciesFetch()),
+  addExpense: (expense) => dispatch(addCost(expense)),
+});
 
-// export default connect(mapStateToProps)(NewCostForm);
+NewCostForm.propTypes = {
+  // coins: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // isFetching: PropTypes.bool.isRequired,
+  costs: PropTypes.arrayOf(PropTypes.object),
+  addExpense: PropTypes.func.isRequired,
+  fetchToApi: PropTypes.func.isRequired,
+};
 
-export default NewCostForm;
+NewCostForm.defaultProps = {
+  costs: [],
+  // coins: [],
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewCostForm);

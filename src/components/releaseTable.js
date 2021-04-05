@@ -38,7 +38,7 @@ class ReleaseTable extends React.Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { costs } = this.props;
     return (
       <table>
         <thead>
@@ -56,27 +56,26 @@ class ReleaseTable extends React.Component {
         </thead>
         <tbody>
           {
-            expenses.map((expense) => {
+            costs.map((cost) => {
               const {
-                id, value, description, currency,
-                method,
-                tag,
-                exchangeRates,
-              } = expense;
-              const { name, ask } = exchangeRates[currency];
+                id, value, coin, methodPayment, description,
+                costCenter,
+                exchange,
+              } = cost;
+              const { name, ask } = exchange[coin];
               return (
                 <tr key={ id }>
                   <td>{ description }</td>
-                  <td>{ tag }</td>
-                  <td>{ method }</td>
+                  <td>{ costCenter }</td>
+                  <td>{ methodPayment }</td>
                   <td>{ value }</td>
                   <td>{ name }</td>
                   <td>{ parseFloat(ask).toFixed(2) }</td>
                   <td>{ (ask * parseInt(value, 10)).toFixed(2) }</td>
                   <td>Real</td>
                   <td>
-                    { this.editButton(expense) }
-                    { this.deletButton(expense) }
+                    { this.editButton(cost) }
+                    { this.deletButton(cost) }
                   </td>
                 </tr>
               );
@@ -89,7 +88,7 @@ class ReleaseTable extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  expenses: state.wallet.expenses,
+  costs: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -100,11 +99,11 @@ const mapDispatchToProps = (dispatch) => ({
 ReleaseTable.propTypes = {
   editExpense: PropTypes.func.isRequired,
   removeExpense: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object),
+  costs: PropTypes.arrayOf(PropTypes.object),
 };
 
 ReleaseTable.defaultProps = {
-  expenses: [],
+  costs: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReleaseTable);
