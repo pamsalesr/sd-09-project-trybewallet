@@ -20,10 +20,6 @@ class Login extends React.Component {
     this.isEmailValid = this.isEmailValid.bind(this);
   }
 
-  componentDidUpdate() {
-    this.isEmailValid();
-  }
-
   handleChange(event) {
     const { name, value } = event.target;
     this.setState({ [name]: value });
