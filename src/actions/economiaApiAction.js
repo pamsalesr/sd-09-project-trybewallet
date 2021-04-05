@@ -22,11 +22,3 @@ export function fetchCurrencies() {
     dispatch(receiveCurrencies(economiaInfosCleaned));
   };
 }
-
-export function fetchExchangeInfos() {
-  return async (dispatch) => {
-    const responseApi = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const exchangeInfos = await responseApi.json();
-    dispatch(receiveExchangeInfos(exchangeInfos));
-  };
-}

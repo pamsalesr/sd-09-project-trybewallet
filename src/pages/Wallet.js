@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ExpensesForm from '../components/ExpensesForm';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      // totalExpenses: 0,
       currency: 'BRL',
     };
   }
@@ -24,6 +24,7 @@ class Wallet extends React.Component {
           <span data-testid="header-currency-field">{currency}</span>
         </header>
         <ExpensesForm />
+        <ExpensesTable />
       </div>
     );
   }

@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrencies,
-  addInfos,
-  fetchExchangeInfos } from '../actions/economiaApiAction';
+  addInfos } from '../actions/economiaApiAction';
 
 class ExpensesForm extends Component {
   constructor() {
     super();
     this.state = {
       currency: 'USD',
-      value: 0,
+      value: '',
       description: '',
       method: 'Dinheiro',
       tag: 'Alimentação',
@@ -170,7 +169,6 @@ class ExpensesForm extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getCurrenciesInfo: () => dispatch(fetchCurrencies()),
   addInfosDispatch: (infos, currentExpense) => dispatch(addInfos(infos, currentExpense)),
-  fetchExchangesDispatch: (exchangeInfos) => dispatch(fetchExchangeInfos(exchangeInfos)),
 });
 
 const mapStateToProps = (state) => ({
