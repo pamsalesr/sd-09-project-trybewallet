@@ -2,6 +2,7 @@
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  expensesSum: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -9,6 +10,10 @@ const wallet = (state = INITIAL_STATE, action) => {
     ...action.expense,
     exchangeRates: action.data,
   };
+
+  const indexOfTheExpenseId = state.expenses
+    .indexOf(state.expenses
+      .find((expense) => expense.id === action.expenseId));
 
   switch (action.type) {
   case 'ADD_EXPENSE':
@@ -22,6 +27,21 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       currencies: action.data,
+    };
+
+  case 'DELETE_ROW':
+    return {
+      ...state,
+      expenses: [
+        ...state.expenses.slice(0, indexOfTheExpenseId),
+        ...state.expenses.slice(indexOfTheExpenseId + 1, state.expenses.length),
+      ],
+    };
+
+  case 'SUM_EXPENSES':
+    return {
+      ...state,
+      expensesSum: action.expensesSum,
     };
 
   default:

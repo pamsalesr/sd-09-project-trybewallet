@@ -12,9 +12,19 @@ export const addExpenseAction = (expense, data) => ({
   data,
 });
 
+export const deleteRowAction = (expenseId) => ({
+  type: 'DELETE_ROW',
+  expenseId,
+});
+
 const receiveCurrenciesAction = (data) => ({
   type: 'RECEIVE_CURRENCIES',
   data,
+});
+
+export const sumExpensesAction = (expensesSum) => ({
+  type: 'SUM_EXPENSES',
+  expensesSum,
 });
 
 export function getUpdatedCurrenciesThunk(currentExpense) {

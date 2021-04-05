@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Inputs from '../components/Inputs';
-import { getUpdatedCurrenciesThunk } from '../actions';
+import { getUpdatedCurrenciesThunk, sumExpensesAction } from '../actions';
 import Table from '../components/Table';
 
 class Wallet extends React.Component {
@@ -11,7 +11,6 @@ class Wallet extends React.Component {
     super();
 
     this.state = {
-      expensesSum: 0,
       currencies: [],
       currentExpense: {
         id: 0,
@@ -64,7 +63,7 @@ class Wallet extends React.Component {
   }
 
   sumExpenses() {
-    const { expenses } = this.props;
+    const { expenses, sumExpenses } = this.props;
 
     const expensesSum = expenses
       .map((expense) => {
@@ -78,20 +77,13 @@ class Wallet extends React.Component {
       })
       .reduce((acc, current) => acc + current, 0);
 
-    this.setState({
-      expensesSum,
-    });
+    sumExpenses(expensesSum);
   }
 
-  handleClick(currentExpense, getUpdatedCurrencies) {
-    getUpdatedCurrencies(currentExpense);
+  async handleClick(currentExpense, getUpdatedCurrencies) {
+    await getUpdatedCurrencies(currentExpense);
 
-    const interval = 5000;
-    setTimeout(() => {
-      this.sumExpenses();
-    }, interval);
-
-    // this.sumExpenses();
+    this.sumExpenses();
     this.setState((previousState) => ({
       currentExpense: {
         id: previousState.currentExpense.id + 1,
@@ -105,9 +97,9 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { currencies, currentExpense, expensesSum } = this.state;
+    const { currencies, currentExpense } = this.state;
     const { currency, description, method, tag, value } = currentExpense;
-    const { email, getUpdatedCurrencies } = this.props;
+    const { email, getUpdatedCurrencies, expensesSum } = this.props;
 
     return (
       <div>
@@ -131,7 +123,7 @@ class Wallet extends React.Component {
             />
           </section>
           <section id="table-section">
-            <Table />
+            <Table expensesSum={ expensesSum } />
           </section>
         </main>
       </div>
@@ -142,10 +134,12 @@ class Wallet extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
+  expensesSum: state.wallet.expensesSum,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUpdatedCurrencies: (expense) => dispatch(getUpdatedCurrenciesThunk(expense)),
+  sumExpenses: (expensesSum) => dispatch(sumExpensesAction(expensesSum)),
 });
 
 Wallet.propTypes = {

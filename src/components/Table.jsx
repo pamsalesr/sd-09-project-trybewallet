@@ -1,9 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteRowAction, sumExpensesAction } from '../actions';
 
 class Table extends React.Component {
-  createTableRow(expenses) {
+  constructor(props) {
+    super(props);
+
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    this.updateExpensesSum();
+  }
+
+  updateExpensesSum() {
+    const { sumExpenses, expenses } = this.props;
+
+    const expensesSum = expenses
+      .map((expense) => {
+        const currentCurrency = expense.currency;
+        const currentExchangeRate = Object.entries(expense.exchangeRates)
+          .find((currency) => currency[0] === currentCurrency)[1].ask;
+
+        const valueToBRL = (parseInt(expense.value, 10) * currentExchangeRate);
+
+        return parseFloat(valueToBRL.toFixed(2));
+      })
+      .reduce((acc, current) => acc + current, 0);
+
+    console.log(expensesSum);
+
+    sumExpenses(expensesSum);
+  }
+
+  handleDeleteClick(expenseId, deleteRow) {
+    deleteRow(expenseId);
+  }
+
+  createTableRow(expenses, deleteRow) {
     return (
       expenses.map((expense) => {
         const currentCurrency = expense.currency;
@@ -30,7 +65,13 @@ class Table extends React.Component {
             <td>Real</td>
             <td>
               <button type="button">Editar</button>
-              <button type="button">Excluir</button>
+              <button
+                type="button"
+                data-testid="delete-btn"
+                onClick={ () => this.handleDeleteClick(expense.id, deleteRow) }
+              >
+                Excluir
+              </button>
             </td>
           </tr>
         );
@@ -39,7 +80,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, deleteRow } = this.props;
 
     return (
       <table>
@@ -61,13 +102,18 @@ class Table extends React.Component {
         </thead>
         <tbody>
           {
-            this.createTableRow(expenses)
+            this.createTableRow(expenses, deleteRow)
           }
         </tbody>
       </table>
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteRow: (expenseId) => dispatch(deleteRowAction(expenseId)),
+  sumExpenses: (expensesSum) => dispatch(sumExpensesAction(expensesSum)),
+});
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
@@ -77,4 +123,4 @@ Table.propTypes = {
   expenses: PropTypes.arrayOf({}),
 }.isRequired;
 
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
