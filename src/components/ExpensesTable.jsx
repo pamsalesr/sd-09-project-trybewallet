@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateExpenses, updateTotalValue } from '../actions';
 
 class ExpensesTable extends React.Component {
   deleteExpense(expenseID) {
-    const { expenses, updateExpansesDispatcher, updateTotalDispatcher} = this.props;
+    const { expenses, updateExpansesDispatcher, updateTotalDispatcher } = this.props;
     const updatedExpenses = expenses
       .filter((expense) => expense.id !== expenseID);
     updateExpansesDispatcher(updatedExpenses);
@@ -75,5 +76,11 @@ const mapDispatchToProps = (dispatch) => ({
   updateExpansesDispatcher: (expenses) => dispatch(updateExpenses(expenses)),
   updateTotalDispatcher: (total) => dispatch(updateTotalValue(total)),
 });
+
+ExpensesTable.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updateExpansesDispatcher: PropTypes.func.isRequired,
+  updateTotalDispatcher: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
