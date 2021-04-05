@@ -55,8 +55,8 @@ class Login extends React.Component {
     const { isLoggedInDispatcher, addUserDispatcher } = this.props;
     if (users.some((user) => (user.user === email && user.pass === password))) {
       this.setState({ redirect: true });
-      addUserDispatcher(email);
       isLoggedInDispatcher();
+      addUserDispatcher(email);
     } else {
       this.setState({ disableButton: true });
     }
