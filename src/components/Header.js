@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './header.css';
+import logo from '../pages/echangeImg.jpg';
 
 class Header extends Component {
   constructor(props) {
@@ -20,12 +22,19 @@ class Header extends Component {
   render() {
     const { email } = this.props;
     return (
-      <header>
-        <p data-testid="email-field">
-          { `Hello user ${email}` }
-        </p>
-        <p data-testid="total-field">{ this.totalExpenses() }</p>
-        <p data-testid="header-currency-field">BRL in your account</p>
+      <header className="header">
+        <img src={ logo } alt="logo" className="logo" />
+        <div className="right">
+          <p data-testid="email-field">
+            { `Bem Vindo ${email}` }
+          </p>
+          <p
+            data-testid="total-field"
+          >
+            { `Total of Expenses $${this.totalExpenses()} `}
+          </p>
+          <p data-testid="header-currency-field">Currency converted to BRL</p>
+        </div>
       </header>
     );
   }
