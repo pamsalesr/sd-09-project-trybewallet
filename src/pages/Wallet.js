@@ -1,8 +1,9 @@
 import React from 'react';
+import WalletExpenses from '../components/walletExpenses';
 
 class Wallet extends React.Component {
   render() {
-    return <div>TrybeWallet</div>;
+    return <WalletExpenses />;
   }
 }
 
