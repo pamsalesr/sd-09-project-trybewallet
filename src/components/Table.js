@@ -46,6 +46,7 @@ class Table extends Component {
               <td>Real</td>
               <td>
                 <button
+                  className="YButton"
                   type="button"
                   data-testid="edit-btn"
                   onClick={ () => propEditExpense(true, id) }
@@ -53,6 +54,7 @@ class Table extends Component {
                   Editar
                 </button>
                 <button
+                  className="RButton"
                   type="button"
                   data-testid="delete-btn"
                   onClick={ () => propDelExpense(id) }
@@ -68,7 +70,7 @@ class Table extends Component {
 
   render() {
     return (
-      <table>
+      <table className="expenses-table">
         { this.tableHead() }
         { this.tableBody() }
       </table>

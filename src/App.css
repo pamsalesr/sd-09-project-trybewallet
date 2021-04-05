@@ -14,17 +14,6 @@
   }
 }
 
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
-  display: flex;
-  flex-direction: row;
-  font-size: calc(10px + 2vmin);
-  justify-content: space-around;
-  min-height: 50px;
-}
-
 .App-link {
   color: #61dafb;
 }

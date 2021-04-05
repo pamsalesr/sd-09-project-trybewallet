@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions';
+import '../CSS/login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -30,31 +31,35 @@ class Login extends React.Component {
     const { email, disableButton } = this.state;
     const { submit } = this.props;
     return (
-      <div>
-        <div><h1>TrybeWallet</h1></div>
-        <input
-          data-testid="email-input"
-          type="text"
-          placeholder="e-mail"
-          name="email"
-          onChange={ this.handleChange }
-        />
-        <input
-          data-testid="password-input"
-          type="password"
-          placeholder="password"
-          name="password"
-          onChange={ this.handleChange }
-        />
-        <Link to="/carteira">
-          <button
-            type="button"
-            disabled={ disableButton }
-            onClick={ () => submit(email) }
-          >
-            Entrar
-          </button>
-        </Link>
+      <div className="main-box">
+        <div className>
+          <div className="login-box">
+            <div className="login-header"><h1>TrybeWallet</h1></div>
+            <input
+              data-testid="email-input"
+              type="text"
+              placeholder="e-mail"
+              name="email"
+              onChange={ this.handleChange }
+            />
+            <input
+              data-testid="password-input"
+              type="password"
+              placeholder="password"
+              name="password"
+              onChange={ this.handleChange }
+            />
+            <Link to="/carteira">
+              <button
+                type="button"
+                disabled={ disableButton }
+                onClick={ () => submit(email) }
+              >
+                Entrar
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

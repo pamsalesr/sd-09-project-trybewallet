@@ -5,7 +5,6 @@ import { addExpense, delExpense, editExpense, setEditExpense, updateCurrencies }
   from '../actions';
 import fetchCurrencies from '../service/apiCoin';
 import Table from '../components/Table';
-import '../App.css';
 import '../CSS/wallet.css';
 
 class Wallet extends React.Component {
@@ -48,13 +47,13 @@ class Wallet extends React.Component {
     return (
       <header className="App-header">
         <span data-testid="email-field">
-          {email}
+          {`User: ${email}`}
         </span>
         <span data-testid="total-field">
-          {`gastos: $ ${this.totalSpending()}`}
+          {`Gastos: $ ${this.totalSpending()}`}
         </span>
         <span data-testid="header-currency-field">
-          moeda: BRL
+          Moeda: BRL
         </span>
       </header>
     );
@@ -190,14 +189,14 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { currencies, expenses } = this.props;
+    const { expenses } = this.props;
     return (
       <div>
         { this.walletHeader() }
-        <form className="add-expenses input-space">
+        <form className="form-table">
           { this.spendingValue() }
           { this.spendingDescription() }
-          { currencies && this.spendingCurrency() }
+          { this.spendingCurrency() }
           { this.spendingMethod() }
           { this.spendingCategory() }
           { this.addOrEdit() }
