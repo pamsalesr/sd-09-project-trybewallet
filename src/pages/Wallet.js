@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AddExpense from './AddExpense';
-import { fetchCurrencies, createExpense, deleteExpense } from '../actions';
+import { fetchCurrencies, createExpense, deleteExpense, updateExpense } from '../actions';
 import ShowExpenses from './ShowExpenses';
+import EditExpense from './EditExpense';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -18,11 +19,14 @@ class Wallet extends React.Component {
       tag: 'Alimentação',
       expense: {},
       expenses: [],
+      isEditing: false,
     };
     this.handleInputEvents = this.handleInputEvents.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
     this.createLocalExpense = this.createLocalExpense.bind(this);
     this.removeExpense = this.removeExpense.bind(this);
+    this.enableEditExpenseMode = this.enableEditExpenseMode.bind(this);
+    this.getTotalExpenseValue = this.getTotalExpenseValue.bind(this);
   }
 
   componentDidMount() {
@@ -30,23 +34,18 @@ class Wallet extends React.Component {
     getCurrencies();
   }
 
-  createLocalExpense() {
-    const { value, description, currency, method, tag } = this.state;
-    const { wallet } = this.props;
-    const { currencies } = wallet;
-    const exchangeRates = currencies[0];
-    const { expenses } = wallet;
-    const id = expenses.length;
-    const expense = {
-      id,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates,
-    };
-    this.setState({ expense });
+  getTotalExpenseValue({ expenses }) {
+    let totalExpenses = 0;
+    if (expenses.length > 0) {
+      expenses.forEach((expense) => {
+        const exchangeRates = Object.values(expense.exchangeRates);
+        const currentAsk = exchangeRates
+          .find((rate) => rate.code === expense.currency).ask;
+        const totalExpense = (parseFloat(expense.value) * parseFloat(currentAsk));
+        totalExpenses += totalExpense;
+      });
+    }
+    return totalExpenses;
   }
 
   handleInputEvents({ target }) {
@@ -59,11 +58,11 @@ class Wallet extends React.Component {
   }
 
   saveExpense() {
-    const { newExpenseDispatch, getCurrencies } = this.props;
-    getCurrencies();
-    const { expense } = this.state;
-    const form = document.getElementById('add-expense');
-    if (expense) { newExpenseDispatch(expense); }
+    const {
+      newExpenseDispatch,
+      editExpenseDispatch,
+    } = this.props;
+    const { expense, isEditing } = this.state;
     this.setState({
       value: '',
       description: '',
@@ -71,8 +70,16 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
       expense: {},
+      isEditing: false,
     });
-    form.reset();
+    if (expense && isEditing) {
+      const { wallet } = this.props;
+      const { expenses } = wallet;
+      const index = expenses.indexOf(expenses.find((expens) => expens.id === expense.id));
+      editExpenseDispatch(expense, index);
+    } else {
+      newExpenseDispatch(expense);
+    }
   }
 
   removeExpense({ target }) {
@@ -84,48 +91,110 @@ class Wallet extends React.Component {
     deleteExpenseDispatch(expenseIndex);
   }
 
-  render() {
-    const { user, wallet } = this.props;
+  createLocalExpense() {
+    const { value, description, currency, method, tag, isEditing } = this.state;
+    const { wallet } = this.props;
+    const { currencies } = wallet;
+    const exchangeRates = currencies[0];
     const { expenses } = wallet;
-    let totalExpenses = 0;
-    if (expenses.length > 0) {
-      expenses.forEach((expense) => {
-        const exchangeRates = Object.values(expense.exchangeRates);
-        const currentAsk = exchangeRates
-          .find((rate) => rate.code === expense.currency).ask;
-        const totalExpense = (parseFloat(expense.value) * parseFloat(currentAsk));
-        totalExpenses += totalExpense;
-      });
+    let { id } = this.state;
+    let expense = {};
+    if (isEditing) {
+      expense.id = expenses.find((expens) => expens.id === id).id;
+      expense = {
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates,
+      };
+    } else {
+      id = expenses.length;
+      expense = {
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates,
+      };
     }
+    this.setState({ expense });
+  }
+
+  enableEditExpenseMode({ target }) {
+    let { id } = target;
+    const { wallet } = this.props;
+    const { expenses } = wallet;
+    id = parseInt(id, 10);
+    const expense = expenses.find((expens) => expens.id === id);
+    this.setState({
+      isEditing: true,
+      id,
+      expense,
+      currency: expense.currency,
+      value: expense.value,
+      description: expense.description,
+      tag: expense.tag,
+      method: expense.method,
+    });
+  }
+
+  renderHeader(totalExpenses, user) {
+    return (
+      <header>
+        <h1>TrybeWallet</h1>
+        <span data-testid="email-field">
+          Email:
+          { user.email }
+        </span>
+        <span data-testid="total-field">
+          Total:
+          { totalExpenses.toFixed(2) || 0}
+        </span>
+        <span data-testid="header-currency-field">BRL</span>
+      </header>
+    );
+  }
+
+  render() {
+    const { isEditing, id } = this.state;
+    const { user, wallet } = this.props;
+    const totalExpenses = wallet.expenses !== undefined
+      ? this.getTotalExpenseValue(wallet) : 0;
     return ((
       <section className="general">
-        <header>
-          <h1>TrybeWallet</h1>
-          <span data-testid="email-field">
-            Email:
-            { user.email }
-          </span>
-          <span data-testid="total-field">
-            Total:
-            { totalExpenses.toFixed(2) || 0}
-          </span>
-          <span data-testid="header-currency-field">BRL</span>
-        </header>
+        { this.renderHeader(totalExpenses, user) }
         {
           wallet.isFetching
             ? <div><h2 className="secondary-heading">Loading...</h2></div>
             : (
               <section className="data">
-                <AddExpense
-                  onChange={ this.handleInputEvents }
-                  onClick={ this.saveExpense }
-                />
+                {isEditing
+                  ? (
+                    <EditExpense
+                      onChange={ this.handleInputEvents }
+                      onClick={ this.saveExpense }
+                      id={ id }
+                    />)
+                  : (
+                    <AddExpense
+                      onChange={ this.handleInputEvents }
+                      saveExpense={ this.saveExpense }
+                      state={ this.state }
+                    />
+                  )}
               </section>
             )
         }
-        <ShowExpenses onclickDelete={ this.removeExpense } />
-      </section>
-    )
+        <ShowExpenses
+          onClickDelete={ this.removeExpense }
+          onClickEdit={ this.enableEditExpenseMode }
+        />
+      </section>)
     );
   }
 }
@@ -135,6 +204,7 @@ Wallet.propTypes = {
   }).isRequired,
   newExpenseDispatch: PropTypes.func.isRequired,
   deleteExpenseDispatch: PropTypes.func.isRequired,
+  editExpenseDispatch: PropTypes.func.isRequired,
   getCurrencies: PropTypes.func.isRequired,
   wallet: PropTypes.shape().isRequired,
 };
@@ -146,5 +216,6 @@ const mapDispatchToProps = (dispatch) => ({
   getCurrencies: () => dispatch(fetchCurrencies()),
   newExpenseDispatch: (expense) => dispatch(createExpense(expense)),
   deleteExpenseDispatch: (index) => dispatch(deleteExpense(index)),
+  editExpenseDispatch: (expense, index) => dispatch(updateExpense(expense, index)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

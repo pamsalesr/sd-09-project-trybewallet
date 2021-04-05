@@ -14,7 +14,8 @@ export const getExpense = (id) => ({ type: RETRIEVE_EXPENSE, id });
 
 export const createExpense = (expense) => ({ type: CREATE_EXPENSE, expense });
 
-export const updateExpense = (expense) => ({ type: UPDATE_EXPENSE, expense });
+export const updateExpense = (expense, index) => (
+  { type: UPDATE_EXPENSE, expense, index });
 
 export const deleteExpense = (index) => ({ type: DELETE_EXPENSE, index });
 

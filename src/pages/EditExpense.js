@@ -1,7 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import currenciesAPI from '../services';
+
+const tagSelectArray = [
+  'Alimentação',
+  'Lazer',
+  'Trabalho',
+  'Transporte',
+  'Saúde'];
+const payMethodSelectArray = [
+  'Dinheiro',
+  'Cartão de débito',
+  'Cartão de crédito'];
 
 class AddExpense extends React.Component {
   constructor(props) {
@@ -10,19 +20,12 @@ class AddExpense extends React.Component {
     this.renderCurrencySelect = this.renderCurrencySelect.bind(this);
     this.renderTagSelect = this.renderTagSelect.bind(this);
     this.renderPayMethodSelect = this.renderPayMethodSelect.bind(this);
-    this.cleanInputs = this.cleanInputs.bind(this);
-  }
-
-  cleanInputs() {
-    const { saveExpense } = this.props;
-    document.getElementById('value').value = '';
-    document.getElementById('description').value = '';
-    currenciesAPI();
-    saveExpense();
   }
 
   renderInputs() {
-    const { onChange, state } = this.props;
+    const { onClick, onChange, wallet, id } = this.props;
+    const { expenses } = wallet;
+    const expense = expenses.find((expens) => expens.id === id);
     return (
       <div>
         <form id="add-expense">
@@ -30,9 +33,7 @@ class AddExpense extends React.Component {
             type="text"
             id="value"
             name="value"
-            required
-            placeholder="$0.00"
-            defaultValue={ state.value }
+            defaultValue={ expense.value }
             data-testid="value-input"
             onChange={ onChange }
           />
@@ -40,57 +41,52 @@ class AddExpense extends React.Component {
             type="text"
             id="description"
             name="description"
-            placeholder="New Headphone"
-            required
-            defaultValue={ state.description }
+            defaultValue={ expense.description }
             data-testid="description-input"
             size="50"
             onChange={ onChange }
           />
-          { this.renderCurrencySelect() }
-          { this.renderPayMethodSelect() }
-          { this.renderTagSelect() }
-          <button type="button" onClick={ this.cleanInputs }>Adicionar despesa</button>
+          { this.renderCurrencySelect(expense) }
+          { this.renderPayMethodSelect(expense) }
+          { this.renderTagSelect(expense) }
+          <button id="save-edit" type="button" onClick={ onClick }>Editar despesa</button>
         </form>
       </div>
     );
   }
 
-  renderPayMethodSelect() {
+  renderPayMethodSelect(expense) {
     const { onChange } = this.props;
     return (
       <select
+        id="method"
         name="method"
         data-testid="method-input"
         onChange={ onChange }
-        defaultValue="Dinheiro"
+        defaultValue={ expense.method }
       >
-        <option>Dinheiro</option>
-        <option>Cartão de débito</option>
-        <option>Cartão de crédito</option>
+        { payMethodSelectArray
+          .map((method) => (<option key={ Math.random() }>{ method }</option>))}
       </select>
     );
   }
 
-  renderTagSelect() {
+  renderTagSelect(expense) {
     const { onChange } = this.props;
     return (
       <select
-        defaultValue="Alimentação"
         name="tag"
         data-testid="tag-input"
         onChange={ onChange }
+        defaultValue={ expense.tag }
       >
-        <option>Alimentação</option>
-        <option>Lazer</option>
-        <option>Trabalho</option>
-        <option>Transporte</option>
-        <option>Saúde</option>
+        { tagSelectArray
+          .map((tag) => (<option key={ Math.random() }>{ tag }</option>))}
       </select>
     );
   }
 
-  renderCurrencySelect() {
+  renderCurrencySelect(expense) {
     const { wallet, onChange } = this.props;
     let { currencies } = wallet;
     currencies = Object
@@ -98,7 +94,7 @@ class AddExpense extends React.Component {
       .filter((currency) => (currency !== 'USDT'));
     return (
       <select
-        defaultValue="USD"
+        defaultValue={ expense.currency }
         name="currency"
         data-testid="currency-input"
         onChange={ onChange }
@@ -126,10 +122,10 @@ class AddExpense extends React.Component {
   }
 }
 AddExpense.propTypes = {
-  saveExpense: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   wallet: PropTypes.shape().isRequired,
   onChange: PropTypes.func.isRequired,
-  state: PropTypes.shape().isRequired,
+  id: PropTypes.number.isRequired,
 };
 const mapStateToProps = (state) => ({
   wallet: state.wallet,

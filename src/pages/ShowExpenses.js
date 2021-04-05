@@ -11,12 +11,12 @@ class ShowExpenses extends React.Component {
 
   renderExpenseData(expense) {
     const { exchangeRates } = expense;
-    const { onclickDelete } = this.props;
+    const { onClickDelete, onClickEdit } = this.props;
     const { ask, name } = Object.values(exchangeRates)
       .find((rate) => rate.code === expense.currency);
     const convertedValue = parseFloat(expense.value) * parseFloat(ask);
     return (
-      <tr key={ expense.value + Math.sqrt(expense.convertedValue) }>
+      <tr key={ expense.value + Math.sqrt(Math.random()) }>
         <td role="cell">{expense.description}</td>
         <td role="cell">{expense.tag}</td>
         <td role="cell">{expense.method}</td>
@@ -27,13 +27,19 @@ class ShowExpenses extends React.Component {
         <td role="cell">Real</td>
         <td role="cell">
           <input
-            onClick={ onclickDelete }
+            onClick={ onClickDelete }
             id={ expense.id }
             data-testid="delete-btn"
             type="button"
             value="X"
           />
-          <input id={ expense.id } type="button" value="E" />
+          <input
+            onClick={ onClickEdit }
+            id={ expense.id }
+            data-testid="edit-btn"
+            type="button"
+            value="E"
+          />
         </td>
       </tr>
     );
@@ -93,7 +99,8 @@ class ShowExpenses extends React.Component {
 }
 ShowExpenses.propTypes = {
   wallet: PropTypes.shape().isRequired,
-  onclickDelete: PropTypes.func.isRequired,
+  onClickDelete: PropTypes.func.isRequired,
+  onClickEdit: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   wallet: state.wallet,

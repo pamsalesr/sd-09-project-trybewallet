@@ -11,25 +11,16 @@ export const RETRIEVE_EXPENSE = 'RETRIEVE_EXPENSE';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 
-function updateExpense(expenses, newExpense) {
-  expenses.forEach((expense) => {
-    if (expense.id === newExpense.id) {
-      expense.value = newExpense.value;
-    }
-  });
-  return expenses;
-}
-
 function walletReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case CREATE_EXPENSE:
     return { ...state,
       expenses: [...state.expenses, action.expense] };
   case UPDATE_EXPENSE:
-    state = {
-      ...state, ...state.wallet, expenses: updateExpense(state.expenses, action.expense),
-    };
-    return state;
+    return { ...state,
+      expenses: [...state.expenses.slice(0, action.index),
+        ...state.expenses
+          .slice(action.index + 1, state.expenses.length), action.expense] };
   case DELETE_EXPENSE:
     return { ...state,
       expenses: [...state.expenses
