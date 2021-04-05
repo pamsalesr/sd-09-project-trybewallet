@@ -37,9 +37,15 @@ class Login extends React.Component {
   }
 
   isEmail(email) {
-    // eslint-disable-next-line max-len
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    const atSymbol = email.indexOf('@');
+    if (atSymbol < 1) return false;
+
+    const dot = email.indexOf('.');
+    if (dot <= atSymbol + 2) return false;
+
+    if (dot === email.length - 1) return false;
+
+    return true;
   }
 
   isPassword(password) {
