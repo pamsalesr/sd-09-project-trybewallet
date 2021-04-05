@@ -1,9 +1,10 @@
 // Coloque aqui suas actions
-import { REQUEST_LOGIN } from './actionTypes';
+import { SAVE_USER_DATA } from './actionTypes';
 
-const requestLogin = () => ({
-  type: REQUEST_LOGIN,
-  user: '',
-  password: '',
-  authorizedLogin: false,
+const saveUserData = (user) => ({
+  type: SAVE_USER_DATA,
+  email: user.email,
+  password: user.password,
 });
+
+export default saveUserData;

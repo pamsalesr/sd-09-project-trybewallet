@@ -1,1 +1,1 @@
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const SAVE_USER_DATA = 'SAVE_USER-DATA';

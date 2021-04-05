@@ -1,20 +1,20 @@
 // Esse reducer será responsável por tratar as informações da pessoa usuária
-import { REQUEST_LOGIN } from '../actions/actionTypes';
+import { SAVE_USER_DATA } from '../actions/actionTypes';
 
 const INITIAL_USER_STATE = {
   user: {
-    email: 'yoda@starwars.com',
-    password: '123456',
-    authorizedLogin: false,
+    email: '',
+    password: '',
   },
 };
 
 const user = (state = INITIAL_USER_STATE, action) => {
   switch (action.type) {
-    case REQUEST_LOGIN:
+    case SAVE_USER_DATA:
       return {
         ...state,
-        authorizedLogin: action.requestLogin,
+        email: action.email,
+        password: action.password,
       }
     default:
       return state;
