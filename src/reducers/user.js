@@ -1,16 +1,14 @@
-import { SAVE_USER_EMAIL } from '../actions';
-
 const INITIAL_STATE = {
   email: '',
 };
 
-function user(state = INITIAL_STATE, action) {
+const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case SAVE_USER_EMAIL:
-    return { ...state, email: action.email };
+  case 'USER_EMAIL_DISPACH':
+    return { email: action.userEmail };
   default:
     return state;
   }
-}
+};
 
 export default user;
