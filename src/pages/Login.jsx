@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleEmail } from '../actions';
+import './Login.css';
+import trybeImage from './trybeWalletImage.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -40,42 +42,47 @@ class Login extends React.Component {
     const { disableButton, userEmail } = this.state;
     const { emailDispatcher } = this.props;
     return (
-      <form>
-        <fieldset>
-          <label htmlFor="user-email-input">
-            Email:
-            <input
-              id="user-email-input"
-              data-testid="email-input"
-              type="email"
-              name="userEmail"
-              // value={ userEmail }
-              onChange={ ({ target }) => this.handleUserInputs(target) }
-            />
-          </label>
+      <main>
+        <form className="form-login">
+          <fieldset className="fieldset-login">
+            <img src={ trybeImage } alt="trybe" width="200" />
+            <label htmlFor="user-email-input" className="label-login">
+              Email:
+              <br />
+              <input
+                id="user-email-input"
+                data-testid="email-input"
+                type="email"
+                name="userEmail"
+                // value={ userEmail }
+                onChange={ ({ target }) => this.handleUserInputs(target) }
+              />
+            </label>
 
-          <label htmlFor="user-password-input">
-            Senha:
-            <input
-              id="user-password-input"
-              data-testid="password-input"
-              type="password"
-              name="userPassword"
-              // value={ userPassword }
-              onChange={ ({ target }) => this.handleUserInputs(target) }
-            />
-          </label>
-          <Link to="/carteira">
-            <button
-              type="button"
-              disabled={ disableButton }
-              onClick={ () => emailDispatcher(userEmail) }
-            >
-              Entrar
-            </button>
-          </Link>
-        </fieldset>
-      </form>
+            <label htmlFor="user-password-input">
+              Senha:
+              <br />
+              <input
+                id="user-password-input"
+                data-testid="password-input"
+                type="password"
+                name="userPassword"
+                // value={ userPassword }
+                onChange={ ({ target }) => this.handleUserInputs(target) }
+              />
+            </label>
+            <Link to="/carteira" className="button">
+              <button
+                type="button"
+                disabled={ disableButton }
+                onClick={ () => emailDispatcher(userEmail) }
+              >
+                Entrar
+              </button>
+            </Link>
+          </fieldset>
+        </form>
+      </main>
     );
   }
 }

@@ -1,0 +1,50 @@
+main {
+  margin: auto;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.fieldset-login {
+  align-items: center;
+  border: 1px solid green;
+  border-radius: 20px;
+  box-shadow: 0 0 20px green;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-login {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%)
+}
+
+.label-login {
+  margin-bottom: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  background-color: rgb(128, 197, 143);
+  padding: 10px;
+}
+
+button:hover {
+  background-color: rgb(101, 155, 113);
+
+}
+
+button:disabled {
+  background-color: rgb(194, 194, 194);
+  color: #fff;
+  cursor: not-allowed;
+}
+
+a.button {
+  margin: 10px;
+}
