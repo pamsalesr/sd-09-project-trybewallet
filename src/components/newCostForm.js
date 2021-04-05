@@ -2,12 +2,20 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import { connect } from 'react-redux';
 
+const initialState = {
+  value: 0,
+  coin: 'BRL',
+  methodPayment: 'Dinheiro',
+  description: '',
+  costCenter: 'Alimentação',
+};
+
 class NewCostForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      ...initialState,
       coins: [
-        'BRL',
         'USD',
         'CAD',
         'EUR',
@@ -29,6 +37,14 @@ class NewCostForm extends React.Component {
     this.methodPaymentInput = this.methodPaymentInput.bind(this);
     this.descriptionCostInput = this.descriptionCostInput.bind(this);
     this.costCenterInput = this.costCenterInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
   }
 
   valueInput() {
@@ -39,7 +55,7 @@ class NewCostForm extends React.Component {
           type="number"
           name="value"
           data-testid="value-input"
-          onChange=""
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -51,8 +67,9 @@ class NewCostForm extends React.Component {
       <label htmlFor="select-currency">
         Moeda
         <select
-          name="select-currency"
+          name="coin"
           data-testid="currency-input"
+          onChange={ this.handleChange }
         >
           {
             coins.map((coin) => (
@@ -74,16 +91,20 @@ class NewCostForm extends React.Component {
   }
 
   methodPaymentInput() {
+    const { methodPayment } = this.state;
     return (
-      <label htmlFor="method-payment">
+      <label htmlFor="methodPayment">
         Método de Pagamento
         <select
-          name="method-payment"
+          name="methodPayment"
           data-testid="method-input"
+          onChange={ this.handleChange }
+          value={ methodPayment }
+          id="methodPayment"
         >
-          <option value="money">Dinheiro</option>
-          <option value="debit">Cartão de crédito</option>
-          <option value="credit">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
       </label>
     );
@@ -91,13 +112,13 @@ class NewCostForm extends React.Component {
 
   descriptionCostInput() {
     return (
-      <label htmlFor="value">
+      <label htmlFor="description">
         Descrição
         <input
           type="text"
-          name="value"
+          name="description"
           data-testid="description-input"
-          onChange=""
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -105,11 +126,12 @@ class NewCostForm extends React.Component {
 
   costCenterInput() {
     return (
-      <label htmlFor="cost-center">
+      <label htmlFor="costCenter">
         Despesa
         <select
-          name="cost-center"
+          name="costCenter"
           data-testid="tag-input"
+          onChange={ this.handleChange }
         >
           <option value="food">Alimentação</option>
           <option value="recreation">Lazer</option>

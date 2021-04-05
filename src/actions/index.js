@@ -5,6 +5,7 @@ import {
   REQUEST_COIN,
   RECEIVE_COIN,
   ERROR_FETCH,
+  EDIT_COST,
 } from './ActionsDescribe';
 import fetchToCoinApi from '../helpers/fetchApi';
 
@@ -34,6 +35,11 @@ export const deletCost = (cost) => ({
 
 export const addCost = (cost) => ({
   type: ADD_COST,
+  cost,
+});
+
+export const editCost = (cost) => ({
+  type: EDIT_COST,
   cost,
 });
 
