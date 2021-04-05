@@ -18,7 +18,11 @@ class ExpensesTable extends React.Component {
             .toFixed(2)}
         </td>
         <td>Real</td>
-        <td>Excluir</td>
+        <td>
+          <button type="button" data-testid="delete-btn">
+            Excluir
+          </button>
+        </td>
       </tr>));
   }
 
