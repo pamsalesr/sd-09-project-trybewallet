@@ -52,12 +52,6 @@ input {
   padding: 5px;
 }
 
-input[ placeholder ] {
-  font-size: 0.7em;
-  padding: 8px 15px;
-  text-align: center;
-}
-
 img {
   height: 150px;
   margin-bottom: 15px;
