@@ -6,7 +6,6 @@ const INITIAL_STATE = { email: '' };
 const actionUser = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_EMAIL:
-    console.log('teste');
     return {
       ...state, email: action.payload,
     };

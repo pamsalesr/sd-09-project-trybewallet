@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import { actionUser } from '../store/actions';
+import { actionUser } from '../actions';
 
 const minPasswordLength = 6;
 
@@ -78,7 +78,6 @@ class Login extends React.Component {
             onClick={ () => addEmail(email) }
           >
             Entrar
-
           </button>
         </Link>
       </div>
