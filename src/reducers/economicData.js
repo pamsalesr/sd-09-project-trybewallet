@@ -9,17 +9,18 @@ const INITIAL_STATE = {
 };
 
 const economicData = (state = INITIAL_STATE, action) => {
+  // console.log('Action economicData recebida: ', action.type);
   switch (action.type) {
+  case REQUEST_ECONOMIC_DATA:
+    return {
+      ...state,
+      isFetching: true,
+    };
   case REQUEST_ECONOMIC_DATA_SUCCESS:
     return {
       ...state,
       data: [...state.data, action.data],
       isFetching: false,
-    };
-  case REQUEST_ECONOMIC_DATA:
-    return {
-      ...state,
-      isFetching: true,
     };
   default:
     return state;

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
 };
 
 const expenses = (state = INITIAL_STATE, action) => {
+  // console.log('Action expenses recebida: ', action.type);
   switch (action.type) {
   case ADD_EXPENSES:
     return { ...state, expenses: [...state.expenses, action.expenses] };
