@@ -58,16 +58,16 @@ class ReleaseTable extends React.Component {
           {
             costs.map((cost) => {
               const {
-                id, value, coin, methodPayment, description,
-                costCenter,
-                exchange,
+                id, value, currency, method, description,
+                tag,
+                exchangeRates,
               } = cost;
-              const { name, ask } = exchange[coin];
+              const { name, ask } = exchangeRates[currency];
               return (
                 <tr key={ id }>
                   <td>{ description }</td>
-                  <td>{ costCenter }</td>
-                  <td>{ methodPayment }</td>
+                  <td>{ tag }</td>
+                  <td>{ method }</td>
                   <td>{ value }</td>
                   <td>{ name }</td>
                   <td>{ parseFloat(ask).toFixed(2) }</td>

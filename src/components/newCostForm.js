@@ -4,26 +4,11 @@ import { connect } from 'react-redux';
 import { addCost, currenciesFetch } from '../actions/index';
 
 const initialState = {
-  value: 0,
-  coin: 'USD',
-  methodPayment: 'Dinheiro',
+  value: '',
   description: '',
-  costCenter: 'Alimentação',
-  coins: [
-    'USD',
-    'CAD',
-    'EUR',
-    'GBP',
-    'ARS',
-    'BTC',
-    'LTC',
-    'JPY',
-    'CHF',
-    'AUD',
-    'CNY',
-    'ILS',
-    'ETH',
-    'XRP'],
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
 };
 
 class NewCostForm extends React.Component {
@@ -51,16 +36,16 @@ class NewCostForm extends React.Component {
 
   async handleClick() {
     const { costs, addExpense, fetchToApi } = this.props;
-    const exchange = await fetchToApi();
-    const { value, coin, methodPayment, description, costCenter } = this.state;
+    const exchangeRates = await fetchToApi();
+    const { value, currency, method, description, tag } = this.state;
     const expense = {
-      id: (costs.length === 0 ? 1 : (costs[costs.length - 1].id + 1)),
+      id: (costs.length === 0 ? 0 : costs[costs.length - 1].id + 1),
       value,
-      coin,
-      methodPayment,
+      currency,
+      method,
       description,
-      costCenter,
-      exchange: exchange.coins,
+      tag,
+      exchangeRates: exchangeRates.coins,
     };
     addExpense(expense);
 
@@ -70,6 +55,7 @@ class NewCostForm extends React.Component {
   }
 
   valueInput() {
+    const { value } = this.state;
     return (
       <label htmlFor="value">
         Valor
@@ -77,6 +63,7 @@ class NewCostForm extends React.Component {
           type="number"
           name="value"
           data-testid="value-input"
+          value={ value }
           onChange={ this.handleChange }
         />
       </label>
@@ -84,23 +71,35 @@ class NewCostForm extends React.Component {
   }
 
   currencyInput() {
-    const { coins } = this.state;
+    const { currency } = this.state;
+    const coins = [
+      'USD', 'CAD',
+      'EUR', 'GBP',
+      'ARS', 'BTC',
+      'LTC', 'JPY',
+      'CHF', 'AUD',
+      'CNY', 'ILS',
+      'ETH', 'XRP',
+    ];
+
     return (
-      <label htmlFor="select-currency">
-        Moeda
+      <label htmlFor="currency">
+        Moeda:
         <select
-          name="coin"
+          name="currency"
           data-testid="currency-input"
           onChange={ this.handleChange }
+          value={ currency }
+          id="currency"
         >
           {
-            coins.map((coin) => (
+            coins.map((moeda) => (
               <option
-                value={ coin }
-                key={ coin }
-                data-testid={ coin }
+                key={ moeda }
+                value={ moeda }
+                data-testid={ moeda }
               >
-                { coin }
+                { currency }
               </option>
             ))
           }
@@ -110,15 +109,15 @@ class NewCostForm extends React.Component {
   }
 
   methodPaymentInput() {
-    const { methodPayment } = this.state;
+    const { method } = this.state;
     return (
       <label htmlFor="methodPayment">
         Método de Pagamento
         <select
-          name="methodPayment"
+          name="method"
           data-testid="method-input"
           onChange={ this.handleChange }
-          value={ methodPayment }
+          value={ method }
           id="methodPayment"
         >
           <option value="Dinheiro">Dinheiro</option>
@@ -130,6 +129,7 @@ class NewCostForm extends React.Component {
   }
 
   descriptionCostInput() {
+    const { description } = this.state;
     return (
       <label htmlFor="description">
         Descrição
@@ -137,6 +137,7 @@ class NewCostForm extends React.Component {
           type="text"
           name="description"
           data-testid="description-input"
+          value={ description }
           onChange={ this.handleChange }
         />
       </label>
@@ -144,19 +145,22 @@ class NewCostForm extends React.Component {
   }
 
   costCenterInput() {
+    const { tag } = this.state;
     return (
-      <label htmlFor="costCenter">
+      <label htmlFor="tag-input">
         Despesa
         <select
-          name="costCenter"
+          name="tag"
           data-testid="tag-input"
+          value={ tag }
           onChange={ this.handleChange }
+          id="tag-input"
         >
-          <option value="food">Alimentação</option>
-          <option value="recreation">Lazer</option>
-          <option value="health">Saúde</option>
-          <option value="work">Trabalho</option>
-          <option value="transport">Transporte</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
       </label>
     );
@@ -185,7 +189,7 @@ class NewCostForm extends React.Component {
 const mapStateToProps = (state) => ({
   // coins: state.currencies,
   // isFetching: state.isFetching,
-  costs: state.expenses,
+  costs: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
