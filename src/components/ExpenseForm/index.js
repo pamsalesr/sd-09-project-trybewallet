@@ -21,7 +21,6 @@ const tags = [
 ];
 
 class expenseForm extends React.Component {
-
   render() {
     const { editing, expenseDetails: { value = '', description = '' } = {} } = this.props;
     return (

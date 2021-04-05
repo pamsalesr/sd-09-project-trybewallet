@@ -29,16 +29,14 @@ class selectOptions extends React.Component {
           name="currency"
           onChange={ this.handleChange }
         >
-          {coinsArray.map((coin, i) => {
-            return (
-              <option
-                data-testid={ coin }
-                key={ i }
-              >
-                {coin}
-              </option>
-            );
-          })}
+          {coinsArray.map((coin, i) => (
+            <option
+              data-testid={ coin }
+              key={ i }
+            >
+              {coin}
+            </option>
+          ))}
         </select>
       );
     }

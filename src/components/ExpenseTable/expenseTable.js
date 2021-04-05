@@ -9,7 +9,6 @@ const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
   'Editar/Excluir'];
 
 class expenseTable extends React.Component {
-
   createThTag(array) {
     return array.map((item, i) => (
       <th key={ i }>{item}</th>
@@ -33,15 +32,15 @@ class expenseTable extends React.Component {
       const { ask, name } = exchangeRates[currency];
       return (
         <tr role="row" key={ index } className="flex-row">
-          <td role="cell">{description}</td>
-          <td role="cell">{tag}</td>
-          <td role="cell">{method}</td>
-          <td role="cell">{value}</td>
-          <td role="cell">{name}</td>
-          <td role="cell">{Number(ask).toFixed(2)}</td>
-          <td role="cell">{(Number(ask) * value).toFixed(2)}</td>
-          <td role="cell">Real</td>
-          <td role="cell" className="flex-row">
+          <td>{description}</td>
+          <td>{tag}</td>
+          <td>{method}</td>
+          <td>{value}</td>
+          <td>{name}</td>
+          <td>{Number(ask).toFixed(2)}</td>
+          <td>{(Number(ask) * value).toFixed(2)}</td>
+          <td>Real</td>
+          <td className="flex-row">
             <button
               className="center-text"
               data-testid="edit-btn"
@@ -70,7 +69,9 @@ class expenseTable extends React.Component {
     return (
       <table className="flex-column">
         <thead className="flex-row">
-          {this.createThTag(headerTable)}
+          <tr>
+            {this.createThTag(headerTable)}
+          </tr>
         </thead>
         <tbody className="flex-column">
           {expenses && this.createTBodyExpenseTatle(expenses)}
