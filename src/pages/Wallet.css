@@ -72,39 +72,41 @@
 }
 
 .wallet .addExpense {
-  background-color: forestgreen;
-  color: whitesmoke;
-  font-weight: 900;
-}
-
-.wallet .addExpense:hover {
-  background-color: chartreuse;
-}
-
-.wallet .edit {
   background-color: darkcyan;
   color: whitesmoke;
   font-weight: 900;
 }
 
-.wallet .edit:hover {
+.wallet .addExpense:hover {
   background-color: cyan;
 }
 
-.wallet .editExpense {
+.wallet .edit {
   background-color: darkorange;
+  color: whitesmoke;
+  font-weight: 900;
+  width: 4em;
+}
+
+.wallet .edit:hover {
+  background-color: gold;
+}
+
+.wallet .editExpense {
+  background-color: forestgreen;
   color: whitesmoke;
   font-weight: 900;
 }
 
 .wallet .editExpense:hover {
-  background-color: gold;
+  background-color: chartreuse;
 }
 
 .wallet .delete {
   background-color: darkred;
   color: whitesmoke;
   font-weight: 900;
+  width: 4em;
 }
 
 .wallet .delete:hover {

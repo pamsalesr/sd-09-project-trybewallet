@@ -11,8 +11,9 @@ class TableBody extends React.Component {
   }
 
   editExpense(expenseid) {
-    const { updateEdit } = this.props;
-    updateEdit(true, expenseid);
+    const { updateEdit, expenses } = this.props;
+    const expense = expenses.find(({ id }) => id === expenseid);
+    updateEdit(true, expense);
   }
 
   deleteExpense(expenseid) {
@@ -67,7 +68,7 @@ const mapStateToProps = ({ wallet }) => ({ expenses: wallet.expenses });
 
 const mapDispatchToProps = (dispatch) => ({
   updateExpenses: (expenses) => dispatch(setExpenses(expenses)),
-  updateEdit: (condition, id) => dispatch(setEdit(condition, id)),
+  updateEdit: (condition, expense) => dispatch(setEdit(condition, expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableBody);

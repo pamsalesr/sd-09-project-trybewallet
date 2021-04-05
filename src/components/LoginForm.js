@@ -20,8 +20,7 @@ class LoginForm extends React.Component {
     return emailFormat && passwordFormat;
   }
 
-  handleChange({ target }) {
-    const { type, value } = target;
+  handleChange({ target: { type, value } }) {
     this.setState({ [type]: value });
   }
 

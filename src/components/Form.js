@@ -32,8 +32,7 @@ class Form extends React.Component {
     updateCurrencies(Object.keys(data));
   }
 
-  handleChange({ target }) {
-    const { id, value } = target;
+  handleChange({ target: { id, value } }) {
     this.setState({ [id]: value });
   }
 
@@ -46,14 +45,13 @@ class Form extends React.Component {
   }
 
   submitChanges() {
-    const { updateExpenses, updateEdit, expenses, editid } = this.props;
-    const { value, description, currency, method, tag } = this.state;
-    const { id, exchangeRates } = expenses.find((expense) => expense.id === editid);
-    const editExpense = { id, value, description, currency, method, tag, exchangeRates };
-    const expensesList = expenses.map((expense) => (
-      expense.id === editid ? editExpense : expense));
+    const { updateExpenses, updateEdit, expenses, expense } = this.props;
+    const { id, exchangeRates } = expense;
+    const editExpense = { ...this.state, id, exchangeRates };
+    const expensesList = expenses.map((el) => (el.id === id ? editExpense : el));
     updateExpenses(expensesList);
-    updateEdit(false, 0);
+    updateEdit(false, {});
+    this.setState({ value: 0, description: '' });
   }
 
   createInput(label, name, type, value) {
@@ -132,14 +130,14 @@ const mapStateToProps = ({ wallet }) => ({
   currencies: wallet.currencies,
   expenses: wallet.expenses,
   edit: wallet.edit,
-  editid: wallet.editid,
+  expense: wallet.expense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   updateCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
   updateExpenses: (expenses) => dispatch(setExpenses(expenses)),
   submit: (expense) => dispatch(addExpense(expense)),
-  updateEdit: (condition, id) => dispatch(setEdit(condition, id)),
+  updateEdit: (condition, expense) => dispatch(setEdit(condition, expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

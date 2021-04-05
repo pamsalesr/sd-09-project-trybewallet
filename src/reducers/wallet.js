@@ -1,4 +1,4 @@
-const initialState = { currencies: [], expenses: [], edit: false, editid: 0 };
+const initialState = { currencies: [], expenses: [], edit: false, expense: {} };
 
 export default function wallet(state = initialState, action) {
   switch (action.type) {
@@ -9,7 +9,7 @@ export default function wallet(state = initialState, action) {
   case 'ADD_EXPENSE':
     return { ...state, expenses: [...state.expenses, action.expense] };
   case 'SET_EDIT':
-    return { ...state, edit: action.condition, editid: action.id };
+    return { ...state, edit: action.condition, expense: action.expense };
   default:
     return state;
   }
