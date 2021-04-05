@@ -8,7 +8,7 @@ class OutcomeForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -131,7 +131,7 @@ class OutcomeForm extends React.Component {
     };
     newExpense(expenseObject);
     this.setState({
-      value: 0,
+      value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -196,7 +196,7 @@ OutcomeForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setCurrenciesToState: PropTypes.func.isRequired,
   newExpense: PropTypes.func.isRequired,
-  // isFetching: PropTypes.bool.isRequired,
+  getTotal: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

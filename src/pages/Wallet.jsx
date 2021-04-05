@@ -2,14 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import OutcomeForm from '../components/OutcomeForm';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   render() {
     return (
-      <main>
+      <>
         <Header />
         <OutcomeForm />
-      </main>
+        <ExpensesTable />
+      </>
     );
   }
 }
