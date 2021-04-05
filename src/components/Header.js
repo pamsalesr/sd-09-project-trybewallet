@@ -17,6 +17,7 @@ class Header extends React.Component {
     const { userEmail } = this.props;
     return (
       <header>
+        { console.log(userEmail) }
         <span data-testid="email-field">{`Email: ${userEmail} | `}</span>
         <span data-testid="total-field">
           {`Gasto Total: R$ ${this.totalExpenses()} | `}
@@ -37,4 +38,4 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps)(Header);
