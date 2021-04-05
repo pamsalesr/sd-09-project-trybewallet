@@ -1,11 +1,15 @@
-const userReducer = (user = '', action) => {
+const INITIAL_STATE = {
+  email: '',
+};
+
+const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'EMAIL_REGISTERED':
     return {
-      user: action.email,
+      email: action.email,
     };
   default:
-    return user;
+    return state;
   }
 };
 
