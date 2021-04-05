@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setExpenses } from '../actions';
+import { setExpenses, editExpenses } from '../actions';
+import './expenseList.css';
 
 class ExpensesList extends Component {
   constructor(props) {
     super(props);
     this.btnDelete = this.btnDelete.bind(this);
-
-    // this.btnEdit = this.btnEdit.bind(this);
+    this.btnEdit = this.btnEdit.bind(this);
   }
 
   btnDelete(expenseid) {
@@ -17,18 +17,21 @@ class ExpensesList extends Component {
     expensesList(filter);
   }
 
-  // btnEdit(expenseID) {
-  //   return expenseID;
-  // }
+  btnEdit(expenseid) {
+    const { editExpense, expenses } = this.props;
+    const expense = expenses.find(({ id }) => id === expenseid);
+
+    editExpense(true, expense);
+  }
 
   render() {
     const { expenses } = this.props;
-    // const edit = this.btnEdit;
+    const edit = this.btnEdit;
     const btn = this.btnDelete;
     return (
       <table>
         <thead>
-          <tr>
+          <tr className="tr">
             <th>Descrição</th>
             <th>Tag</th>
             <th>Método de pagamento</th>
@@ -44,7 +47,7 @@ class ExpensesList extends Component {
           {expenses.map((
             { id, value, description, currency, method, tag, exchangeRates }, index,
           ) => (
-            <tr key={ index }>
+            <tr key={ index } className="tr">
               <td>{ description }</td>
               <td>{ tag }</td>
               <td>{ method }</td>
@@ -57,7 +60,7 @@ class ExpensesList extends Component {
                 <button data-testid="delete-btn" type="button" onClick={ () => btn(id) }>
                   Excluir
                 </button>
-                <button data-testid="edit-btn" type="button">
+                <button data-testid="edit-btn" type="button" onClick={ () => edit(id) }>
                   Editar
                 </button>
               </td>
@@ -71,10 +74,12 @@ class ExpensesList extends Component {
 
 ExpensesList.propTypes = {
   expensesList: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
   expenses: PropTypes.shape({
     map: PropTypes.func.isRequired,
     filter: PropTypes.func.isRequired,
     forEach: PropTypes.func.isRequired,
+    find: PropTypes.func.isRequired,
   }).isRequired,
 };
 
@@ -82,6 +87,7 @@ const mapStateToProps = (state) => ({ expenses: state.wallet.expenses });
 
 const mapDispatchToProps = (dispatch) => ({
   expensesList: (expenses) => dispatch(setExpenses(expenses)),
+  editExpense: (eventEdit, expense) => dispatch(editExpenses(eventEdit, expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesList);

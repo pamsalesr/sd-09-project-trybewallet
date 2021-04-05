@@ -11,13 +11,18 @@ export const setCurrencies = (currencies) => (
 );
 
 export const ADD_EXPENSES = 'ADD_EXPENSES';
-export const addExpenses = (expenses) => (
-  { type: ADD_EXPENSES, expenses }
+export const addExpenses = (expense) => (
+  { type: ADD_EXPENSES, expense }
 );
 
 export const SET_EXPENSES = 'SET_EXPENSES';
 export const setExpenses = (expenses) => (
   { type: SET_EXPENSES, expenses }
+);
+
+export const EDIT_EXPENSES = 'EDIT_EXPENSES';
+export const editExpenses = (eventEdit, expense) => (
+  { type: EDIT_EXPENSES, eventEdit, expense }
 );
 
 export const thunk = () => (
