@@ -7,7 +7,7 @@ class WalletInputs extends Component {
     super();
 
     this.state = {
-      value: 0,
+      // value: 0,
     };
 
     this.valueField = this.valueField.bind(this);
