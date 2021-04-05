@@ -29,6 +29,7 @@ class WalletInputs extends Component {
     this.requestCurrencyApi = this.requestCurrencyApi.bind(this);
     this.currencyAbbreviation = this.currencyAbbreviation.bind(this);
     this.saveGlobal = this.saveGlobal.bind(this);
+    this.totalExpenses = this.totalExpenses.bind(this);
   }
 
   componentDidMount() {
@@ -68,7 +69,7 @@ class WalletInputs extends Component {
     this.setState({
       total: totalSum,
     });
-    console.log('L71', this.state.total);
+    // console.log('L71', this.state.total);
   }
 
   async saveGlobal() {
@@ -82,6 +83,7 @@ class WalletInputs extends Component {
       currency,
       method,
       tag,
+      total,
     } = this.state;
 
     await this.requestCurrencyApi();
@@ -94,6 +96,7 @@ class WalletInputs extends Component {
       method,
       tag,
       exchangeRates,
+      total,
     };
 
     await dispatchExpenseInfo(stateObj);
