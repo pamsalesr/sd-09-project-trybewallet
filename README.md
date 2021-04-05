@@ -90,7 +90,7 @@ Através dessa aplicação, será possível realizar as operações básicas de 
   - Projeto individual.
 
   - Serão dois dias de projeto.
-  
+
   - Data de entrega para avaliação final do projeto: `06/04/2021 - 14:00h`.
 
 ---
@@ -169,7 +169,7 @@ Outra coisa importante: devido a estrutura que o avaliador utiliza para realizar
 
 ## Linter
 
-Para garantir a qualidade do código, vamos utilizar neste projeto o linter ESLint. Assim o código estará alinhado com as boas práticas de desenvolvimento, sendo mais legível e de fácil manutenção! Para rodar o *linter* localmente no projeto, execute o comando abaixo: 
+Para garantir a qualidade do código, vamos utilizar neste projeto o linter ESLint. Assim o código estará alinhado com as boas práticas de desenvolvimento, sendo mais legível e de fácil manutenção! Para rodar o *linter* localmente no projeto, execute o comando abaixo:
 
 `npm run lint`
 
@@ -344,7 +344,7 @@ Crie uma página para gerenciar a carteira de gastos em diversas moedas, e que t
   * Um campo que mostre qual câmbio está sendo utilizado, que será neste caso será 'BRL'.
 
     * Adicione o atributo `data-testid="header-currency-field"`.
-  
+
     O que será verificado:
   ```
   - Um elemento que exiba o email do usuário que fez login.
@@ -376,8 +376,8 @@ Crie uma página para gerenciar a carteira de gastos em diversas moedas, e que t
 
       * O endpoint utilizado deve ser: https://economia.awesomeapi.com.br/json/all .
 
-      * Remova das informações trazidas pela API a opção 'USDT' (Dólar Turismo). 
-    
+      * Remova das informações trazidas pela API a opção 'USDT' (Dólar Turismo).
+
   * Um campo para adicionar qual método de pagamento será utilizado.
 
     * Adicione o atributo `data-testid="method-input"`.
@@ -395,7 +395,7 @@ Crie uma página para gerenciar a carteira de gastos em diversas moedas, e que t
   * Um botão com o texto \'Adicionar despesa\' que salva as informações da despesa no estado global e atualiza a soma de despesas no header.
 
     * Desenvolva a funcionalidade do botão "Adicionar despesa" de modo que ao clicar no botão, as seguintes ações sejam executadas:
-    
+
     * Os valores dos campos devem ser salvos no estado da aplicação, na chave ***expenses***, dentro de um array contendo todos gastos que serão adicionados:
 
       * O `id` da despesa **deve** ser um número sequencial, começando em 0. Ou seja: a primeira despesa terá id 0, a segunda terá id 1, a terceira id 2, e assim por diante.
@@ -531,7 +531,7 @@ Crie uma página para gerenciar a carteira de gastos em diversas moedas, e que t
     * Atenção também às casas decimais dos campos. Como são valores contábeis, eles devem apresentar duas casas após a vírgula. Arredonde sua resposta somente na hora de renderizar o resultado, e para os cálculos utilize sempre os valores vindos da API (utilize o campo `ask` que vem da API).
 
     * Utilize sempre o formato `0.00` (número - ponto - duas casas decimais)
-    
+
 O que será verificado:
 ```
 - A tabela deve possuir um cabeçalho com os campos Descrição, Tag, Método de pagamento, Valor, Moeda, Câmbio utilizado, Valor convertido e Moeda de conversão.
