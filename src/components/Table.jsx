@@ -29,8 +29,6 @@ class Table extends React.Component {
       })
       .reduce((acc, current) => acc + current, 0);
 
-    console.log(expensesSum);
-
     sumExpenses(expensesSum);
   }
 
