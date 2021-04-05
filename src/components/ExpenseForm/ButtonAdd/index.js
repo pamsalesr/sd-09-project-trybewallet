@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { currentPrice, addSaveUserExpense } from '../../../actions';
+import '../ExpenseForm.css';
 
 class buttonAdd extends React.Component {
   constructor(props) {
@@ -9,15 +10,17 @@ class buttonAdd extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
+  async handleClick() {
     const { propaddSaveUserExpense,
       coins,
       expenseDetails,
       propCurrentPrice,
+      idEdit,
+      editing,
     } = this.props;
-    propCurrentPrice(); // Chama a api e atualiza valores na store.
+    await propCurrentPrice(); // Chama a api e atualiza valores na store.
     if (coins) {
-      const chooseCoinAndCoins = [];
+      const chooseCoinAndCoins = [idEdit, editing];
       chooseCoinAndCoins.push(Object.entries(coins)
         .find((coin) => expenseDetails.currency === coin[0])[1].ask);
       chooseCoinAndCoins.push(coins);
@@ -26,13 +29,14 @@ class buttonAdd extends React.Component {
   }
 
   render() {
-    const { name, title } = this.props;
+    const { name, title, dataTestid } = this.props;
     return (
       <div>
         <button
           name={ name }
           type="button"
           onClick={ this.handleClick }
+          data-testid={ dataTestid }
         >
           {title}
         </button>
@@ -49,9 +53,12 @@ buttonAdd.propTypes = {
   propaddSaveUserExpense: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ wallet: { currencies, expenseDetails } }) => ({
-  coins: currencies,
+const mapStateToProps = ({ wallet:
+  { data, expenseDetails, idEdit, editing } }) => ({
+  coins: data,
   expenseDetails,
+  idEdit,
+  editing,
 });
 
 const mapDispatchToProps = (dispatch) => ({

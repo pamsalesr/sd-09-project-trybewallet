@@ -5,7 +5,7 @@ import Inputs from './Inputs';
 import SelectOptions from './Select/SelectOptions';
 import HandleSelect from './Select/HandleSelect';
 import ButtonAdd from './ButtonAdd';
-import '../components.css';
+import './ExpenseForm.css';
 
 const payWith = [
   'Dinheiro',
@@ -21,19 +21,22 @@ const tags = [
 ];
 
 class expenseForm extends React.Component {
+
   render() {
-    const { expenseDetails: { value = '', description = '' } = {} } = this.props;
+    const { editing, expenseDetails: { value = '', description = '' } = {} } = this.props;
     return (
       <div className="form-group">
         <Inputs
           value={ value }
           name="value"
           dataTestid="value-input"
+          label="Valor"
         />
         <Inputs
           value={ description }
           name="description"
           dataTestid="description-input"
+          label="Descrição"
         />
         <SelectOptions />
         <HandleSelect
@@ -50,7 +53,10 @@ class expenseForm extends React.Component {
           array={ tags }
           id="idTag"
         />
-        <ButtonAdd title="Adicionar despesa" />
+        <ButtonAdd
+          dataTestid={ editing ? 'edit-btn' : 'add-btn' }
+          title={ !editing ? 'Adicionar despesa' : 'Editar despesa' }
+        />
       </div>
     );
   }
@@ -61,8 +67,9 @@ expenseForm.propTypes = {
   description: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ wallet: { expenseDetails } }) => ({
+const mapStateToProps = ({ wallet: { editing, expenseDetails } }) => ({
   expenseDetails,
+  editing,
 });
 
 export default connect(mapStateToProps)(expenseForm);

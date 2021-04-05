@@ -5,12 +5,11 @@ import './header.css';
 
 class Header extends React.Component {
   render() {
-    let totalExpenses = 0;
     const { email, expenses } = this.props;
-    totalExpenses = expenses.reduce((acc, coin) => (
+    const totalExpenses = expenses.reduce((acc, { exchangeRates, currency, value }) => (
       parseFloat(acc)
-      + (parseFloat(coin.exchangeRates[coin.currency].ask)
-      * parseFloat(coin.value))), 0)
+      + (parseFloat(exchangeRates[currency].ask)
+      * parseFloat(value))), 0)
       .toFixed(2);
 
     return (

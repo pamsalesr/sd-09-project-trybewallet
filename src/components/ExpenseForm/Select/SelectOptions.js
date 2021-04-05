@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUserExpense } from '../../../actions';
+import '../ExpenseForm.css';
 
 class selectOptions extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class selectOptions extends React.Component {
 
   render() {
     const { coins } = this.props;
+    const coinsArray = Array.isArray(coins) ? coins : Object.keys(coins);
     if (coins) {
       return (
         <select
@@ -27,18 +29,15 @@ class selectOptions extends React.Component {
           name="currency"
           onChange={ this.handleChange }
         >
-          {Object.keys(coins).map((coin, i) => {
-            if (coin !== 'USDT') {
-              return (
-                <option
-                  data-testid={ coin }
-                  key={ i }
-                >
-                  {coin}
-                </option>
-              );
-            }
-            return '';
+          {coinsArray.map((coin, i) => {
+            return (
+              <option
+                data-testid={ coin }
+                key={ i }
+              >
+                {coin}
+              </option>
+            );
           })}
         </select>
       );

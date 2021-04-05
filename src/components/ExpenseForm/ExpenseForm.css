@@ -1,0 +1,15 @@
+* {
+  color: rgb(31, 23, 23);
+}
+
+.form-group {
+  align-items: flex-end;
+  background-color: rgb(93, 163, 99);
+  border: 2px solid rgb(7, 88, 14);
+  border-radius: 3px;
+  display: flex;
+}
+
+.padding {
+  padding: 10px;
+}
