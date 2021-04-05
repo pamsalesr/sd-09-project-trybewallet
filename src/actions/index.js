@@ -3,6 +3,8 @@ export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const FETCHING_CURRENCIES = 'FETCHING_CURRENCIES';
 export const SET_NEW_EXPENSE = 'SET_NEW_EXPENSE';
 export const GET_TOTAL_VALUE = 'GET_TOTAL_VALUE';
+export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
+export const UPDATE_TOTAL_VALUE = 'UPDATE_TOTAL_VALUE';
 
 export const handleEmail = (email) => ({
   type: HANDLE_EMAIL,
@@ -26,6 +28,16 @@ export const setNewExpense = ({ ...args }) => ({
 export const getTotalValue = (expenseValue) => ({
   type: GET_TOTAL_VALUE,
   expenseValue,
+});
+
+export const updateExpenses = (updatedExpenses) => ({
+  type: UPDATE_EXPENSES,
+  updatedExpenses,
+});
+
+export const updateTotalValue = (expenses) => ({
+  type: UPDATE_TOTAL_VALUE,
+  expenses,
 });
 
 export function fetchCurrencies() {

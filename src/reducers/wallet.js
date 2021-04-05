@@ -4,6 +4,8 @@ import {
   FETCHING_CURRENCIES,
   SET_NEW_EXPENSE,
   GET_TOTAL_VALUE,
+  UPDATE_EXPENSES,
+  UPDATE_TOTAL_VALUE,
 } from '../actions';
 
 const INITIAL_WALLET_STATE = {
@@ -36,6 +38,16 @@ const walletReducer = (state = INITIAL_WALLET_STATE, action) => {
     return {
       ...state,
       totalValue: state.totalValue + action.expenseValue,
+    };
+  case UPDATE_EXPENSES:
+    return {
+      ...state,
+      expenses: action.updatedExpenses,
+    };
+  case UPDATE_TOTAL_VALUE:
+    return {
+      ...state,
+      totalValue: action.expenses,
     };
   default:
     return state;
