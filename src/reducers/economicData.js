@@ -13,7 +13,7 @@ const economicData = (state = INITIAL_STATE, action) => {
   case REQUEST_ECONOMIC_DATA_SUCCESS:
     return {
       ...state,
-      data,
+      data: [...state.data, action.data],
       isFetching: false,
     };
   case REQUEST_ECONOMIC_DATA:
