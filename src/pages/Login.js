@@ -49,7 +49,6 @@ class Login extends React.Component {
             itemID="email"
             type="email"
             name="email"
-            id="email-input"
             onChange={ this.handleChange }
             required
           />
@@ -63,7 +62,6 @@ class Login extends React.Component {
             itemID="password"
             type="password"
             name="password"
-            id="password-input"
             onChange={ this.handleChange }
             required
           />
@@ -71,7 +69,6 @@ class Login extends React.Component {
         <Link to="/carteira">
           <button
             type="button"
-            id="login-button"
             onClick={ () => addEmail(email) }
             disabled={ disabled }
           >
