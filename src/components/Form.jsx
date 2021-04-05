@@ -74,13 +74,13 @@ class Form extends React.Component {
           onChange={ ({ target }) => this.handleInputs(target) }
           value={ currency }
         >
-          {currencies.map((currency) => (
+          {currencies.map((cu) => (
             <option
-              data-testid={ currency }
-              key={ currency }
-              value={ currency }
+              data-testid={ cu }
+              key={ cu }
+              value={ cu }
             >
-              { currency }
+              { cu }
             </option>
           ))}
         </select>
