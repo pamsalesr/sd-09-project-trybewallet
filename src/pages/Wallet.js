@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
-import { currenciesObj, addExpense, delExpense, editExpense } from '../actions';
+import { currenciesObj, addExpense, delExpense, editExpense, setEditExpense }
+  from '../actions';
 import Table from '../components/Table';
 import '../App.css';
 import '../CSS/wallet.css';
@@ -151,11 +152,12 @@ class Wallet extends React.Component {
 
   submit() {
     const {
-      propCurrenciesObj, propAddExpense, propEditExpense, currencies, status, id,
+      propCurrenciesObj, propAddExpense, propEditExpense, propSetEditExpense,
+      currencies, status, id,
     } = this.props;
     if (status) {
-      const editExp = { ...this.state, id };
-      propAddExpense({ ...editExp, exchangeRates: currencies });
+      const editExp = { ...this.state, id, exchangeRates: currencies };
+      propSetEditExpense(editExp);
       propEditExpense(false, '');
     } else {
       propCurrenciesObj();
@@ -207,11 +209,16 @@ const mapDispatchToProps = (dispatch) => ({
   propAddExpense: (data) => dispatch(addExpense(data)),
   propDelExpense: (data) => dispatch(delExpense(data)),
   propEditExpense: (status, id) => dispatch(editExpense(status, id)),
+  propSetEditExpense: (data) => dispatch(setEditExpense(data)),
 });
 
 Wallet.propTypes = {
   email: Proptypes.string,
   propCurrenciesObj: Proptypes.func,
+  propAddExpense: Proptypes.func,
+  propDelExpense: Proptypes.func,
+  propEditExpense: Proptypes.func,
+  propSetEditExpense: Proptypes.func,
   currencies: Proptypes.arrayOf(Proptypes.object),
 }.isRequired;
 

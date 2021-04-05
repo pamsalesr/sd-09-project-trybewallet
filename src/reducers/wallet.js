@@ -8,13 +8,18 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return { error: action.error };
   case 'ADD_EXPENSE':
     return { ...state,
-      expenses: [...state.expenses
-        .filter((expense) => expense.id !== action.data.id), action.data] };
+      expenses: [...state.expenses, action.data] };
   case 'DELETE_EXPENSE':
     return { ...state,
       expenses: [...state.expenses.filter((expense) => action.data !== expense.id)] };
   case 'EDIT_EXPENSE':
     return { ...state, edit: { status: action.status, id: action.id } };
+  case 'SET_EDIT':
+    return { ...state,
+      expenses: [...state.expenses.map((expense) => (expense.id === action.data.id
+        ? action.data
+        : expense
+      ))] };
   default:
     return state;
   }
