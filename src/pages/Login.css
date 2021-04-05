@@ -11,15 +11,15 @@ fieldset {
   box-shadow: 0 0 20px green;
   display: flex;
   flex-direction: column;
-  width: 100%;
   margin: 0 20px;
+  width: 100%;
 }
 
 form {
   left: 50%;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%) translateX(-50%)
+  transform: translateY(-50%) translateX(-50%);
 }
 
 label {
@@ -30,10 +30,10 @@ button {
   border: none;
   border-radius: 7px;
   color: white;
-  cursor: pointer;
   background-color: rgb(128, 197, 143);
-  padding: 12px;
+  cursor: pointer;
   margin: 15px;
+  padding: 12px;
 }
 
 button:hover {
@@ -43,24 +43,24 @@ button:hover {
 
 button:disabled {
   background-color: rgb(194, 194, 194);
-  color: #fff;
+  color: white;
   cursor: not-allowed;
 }
 
 input {
-  padding: 5px;
   margin: 0 5px;
+  padding: 5px;
 }
 
-input[placeholder] {
+/* input[ placeholder ] {
   font-size: 0.7em;
   padding: 8px 15px;
   text-align: center;
-}
+} */
 
 img {
-  width: 250px;
   height: 150px;
-  object-fit: cover;
+  width: 250px;
   margin-bottom: 15px;
+  object-fit: cover;
 }
