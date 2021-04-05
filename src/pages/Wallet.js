@@ -4,19 +4,14 @@ import PropTypes from 'prop-types';
 
 class Wallet extends React.Component {
   render() {
-    const { user, expenses, currency } = this.props;
+    const { user } = this.props;
     return (
       <div>
         <header>
           <h1>Wallet</h1>
           <h4 data-testid="email-field">{user}</h4>
-          <span data-testid="total-field">
-            Despesa Total:
-            {' '}
-            {`${expenses}`}
-          </span>
-          {' '}
-          <span data-testid="header-currency-field">{currency}</span>
+          <h4 data-testid="total-field">Despesa Total: 0</h4>
+          <h4 data-testid="header-currency-field">BRL</h4>
         </header>
       </div>
     );
@@ -25,14 +20,10 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   user: state.user.email,
-  expenses: state.wallet.expenses,
-  currency: state.wallet.currencies,
 });
 
 Wallet.propTypes = {
   user: PropTypes.string.isRequired,
-  expenses: PropTypes.number.isRequired,
-  currency: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Wallet);
