@@ -31,7 +31,7 @@ Wallet.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  coins: state.coinBase,
+  coins: state.currencies,
   isFethingStatus: state.isFetching,
 });
 

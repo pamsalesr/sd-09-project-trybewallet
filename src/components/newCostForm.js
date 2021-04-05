@@ -1,8 +1,28 @@
 import React from 'react';
+// import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
 
 class NewCostForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      coins: [
+        'BRL',
+        'USD',
+        'CAD',
+        'EUR',
+        'GBP',
+        'ARS',
+        'BTC',
+        'LTC',
+        'JPY',
+        'CHF',
+        'AUD',
+        'CNY',
+        'ILS',
+        'ETH',
+        'XRP'],
+    };
 
     this.valueInput = this.valueInput.bind(this);
     this.currencyInput = this.currencyInput.bind(this);
@@ -26,16 +46,28 @@ class NewCostForm extends React.Component {
   }
 
   currencyInput() {
+    const { coins } = this.state;
     return (
       <label htmlFor="select-currency">
         Moeda
         <select
           name="select-currency"
-          data-testid="header-currency-field"
+          data-testid="currency-input"
         >
-          <option value="BRL" data-testid="BRL">BRL</option>
+          {
+            coins.map((coin) => (
+              <option
+                value={ coin }
+                key={ coin }
+                data-testid={ coin }
+              >
+                { coin }
+              </option>
+            ))
+          }
+          {/* <option value="BRL" data-testid="BRL">BRL</option>
           <option value="USD">USD</option>
-          <option value="TEST">TEST</option>
+          <option value="TEST">TEST</option> */}
         </select>
       </label>
     );
@@ -102,11 +134,23 @@ class NewCostForm extends React.Component {
           type="button"
           onClick=""
         >
-          Pesquisar
+          Adicionar despesa
         </button>
       </form>
     );
   }
 }
+
+// const mapStateToProps = (state) => ({
+//   coins: state.currencies,
+//   isFetching: state.isFetching,
+// });
+
+// NewCostForm.propTypes = {
+//   coins: PropTypes.arrayOf(PropTypes.string).isRequired,
+//   isFetching: PropTypes.bool.isRequired,
+// };
+
+// export default connect(mapStateToProps)(NewCostForm);
 
 export default NewCostForm;
