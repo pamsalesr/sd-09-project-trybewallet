@@ -11,23 +11,17 @@ export function addUser(email, password, button, shouldRedirect) {
   };
 }
 
-export function addCurrency(currencies) {
-  return {
-    type: Type.ADD_CURRENCY,
-    currencies,
-  };
-}
+// export function addCurrency(currencies) {
+//   return {
+//     type: Type.ADD_CURRENCY,
+//     currencies,
+//   };
+// }
 
 export function addExpense(expense) {
   return {
     type: Type.ADD_EXPENSE,
-    id: expense.id,
-    value: expense.value,
-    description: expense.description,
-    currency: expense.currency,
-    method: expense.method,
-    tag: expense.tag,
-    exchangeRates: expense.exchangeRates,
+    expense,
   };
 }
 
@@ -56,7 +50,6 @@ const receiveCurrencyFailure = (error) => ({
 export function fetchCurrency() {
   return (dispatch) => {
     dispatch(requestCurrency());
-    getCurrencyPrice().then((teste) => { console.log(teste) });
     return getCurrencyPrice()
       .then(
         (data) => dispatch(receiveCurrencySuccsess(data)),

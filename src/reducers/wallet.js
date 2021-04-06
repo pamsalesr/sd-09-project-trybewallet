@@ -1,10 +1,11 @@
 import * as Type from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
-  currencies: [],
+  currencies: {},
   expenses: [],
   isFatching: false,
   error: '',
+  lastId: -1,
 
 };
 
@@ -37,16 +38,11 @@ function walletReducer(state = INITIAL_STATE, action) {
 
   case Type.ADD_EXPENSE: {
     return {
+      ...state,
+      lastId: action.expense.id,
       expenses: [
-        ...state.wallet.expenses, {
-          id: action.id,
-          value: action.value,
-          description: action.description,
-          currency: action.currency,
-          method: action.method,
-          tag: action.tag,
-          exchangeRates: action.exchangeRates,
-        },
+        ...state.expenses,
+        action.expense,
       ],
     };
   }
