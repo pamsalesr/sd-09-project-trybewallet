@@ -23,10 +23,10 @@ export const fetchCurrenciesError = (error) => ({
   error,
 });
 
-export const fetchCurrencyRate = () => ({
-  type: FETCH_CURRENCY_RATE,
-  currencies,
-});
+// export const fetchCurrencyRate = () => ({
+//   type: FETCH_CURRENCY_RATE,
+//   currencies,
+// });
 
 const url = 'https://economia.awesomeapi.com.br/json/all';
 
