@@ -6,26 +6,22 @@ import { login } from '../actions';
 class Login extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: '',
       password: '',
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.validSubmit = this.validSubmit.bind(this);
     this.eventClick = this.eventClick.bind(this);
   }
 
-  handleChange(event) {
-    const { target } = event;
+  handleChange({ target }) {
     const { name, value } = target;
     this.setState({
       [name]: value,
     });
   }
 
-  // Validation script by Layo
   eventClick() {
     const { history, getEmail } = this.props;
     const { email } = this.state;
@@ -47,32 +43,28 @@ class Login extends React.Component {
     const { password, email } = this.state;
     return this.isValidEmail(email) && this.isValidPassword(password);
   }
-  // ----
 
   render() {
     const { email, password } = this.state;
     return (
       <div>
         <form>
-          <label htmlFor="user-email">
+          <label htmlFor="email">
             E-mail:
             <input
               data-testid="email-input"
-              placeholder="Digite seu email"
-              id="user-email"
-              type="text"
+              id="email"
               name="email"
               value={ email }
               onChange={ this.handleChange }
             />
           </label>
-          <label htmlFor="user-password">
+          <label htmlFor="password">
             Senha:
             <input
               data-testid="password-input"
-              placeholder="Digite sua senha"
-              id="user-password"
               type="password"
+              id="password"
               name="password"
               value={ password }
               onChange={ this.handleChange }
