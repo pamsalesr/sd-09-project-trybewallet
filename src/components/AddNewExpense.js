@@ -55,39 +55,91 @@ class AddNewExpense extends React.Component {
     });
   }
 
+  currencyInput(currency, currencyList) {
+    return (
+      <label htmlFor="currency-input">
+        Moeda:
+        <select
+          name="currency"
+          value={ currency }
+          data-testid="currency-input"
+          onChange={ ({ target }) => this.handleInputs(target) }
+        >
+          { Object.keys(currencyList)
+            .filter((coin) => coin !== 'USDT')
+            .map((coin) => (
+              <option key={ coin } value={ coin } data-testid={ coin }>
+                { coin }
+              </option>
+            ))}
+        </select>
+      </label>
+    );
+  }
+
+  paymentInput(method) {
+    return (
+      <label htmlFor="method-input">
+        Método de pagamento:
+        <select
+          name="method"
+          value={ method }
+          data-testid="method-input"
+          onChange={ ({ target }) => this.handleInputs(target) }
+        >
+          <option>Selecione</option>
+          <option>Dinheiro</option>
+          <option>Cartão de crédito</option>
+          <option>Cartão de débito</option>
+        </select>
+      </label>
+    );
+  }
+
+  tagInput(tag) {
+    return (
+      <label htmlFor="tag-input">
+        Tag:
+        <select
+          name="tag"
+          value={ tag }
+          data-testid="tag-input"
+          onChange={ ({ target }) => this.handleInputs(target) }
+        >
+          <option>Selecione</option>
+          <option>Alimentação</option>
+          <option>Lazer</option>
+          <option>Trabalho</option>
+          <option>Transporte</option>
+          <option>Saúde</option>
+        </select>
+      </label>
+    );
+  }
+
+  valueInput(value) {
+    return (
+      <label htmlFor="value-input">
+        Valor:
+        <input
+          type="number"
+          name="value"
+          value={ value }
+          data-testid="value-input"
+          onChange={ ({ target }) => this.handleInputs(target) }
+        />
+      </label>
+    );
+  }
+
   render() {
     const { currencyList } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
         <form>
-          <label htmlFor="value-input">
-            Valor:
-            <input
-              type="number"
-              name="value"
-              value={ value }
-              data-testid="value-input"
-              onChange={ ({ target }) => this.handleInputs(target) }
-            />
-          </label>
-          <label htmlFor="currency-input">
-            Moeda:
-            <select
-              name="currency"
-              value={ currency }
-              data-testid="currency-input"
-              onChange={ ({ target }) => this.handleInputs(target) }
-            >
-              { Object.keys(currencyList)
-                .filter((coin) => coin !== 'USDT')
-                .map((coin) => (
-                  <option key={ coin } value={ coin } data-testid={ coin }>
-                    { coin }
-                  </option>
-                ))}
-            </select>
-          </label>
+          { this.valueInput(value) }
+          { this.currencyInput(currency, currencyList) }
           <label htmlFor="description-input">
             Descrição:
             <input
@@ -98,36 +150,8 @@ class AddNewExpense extends React.Component {
               onChange={ ({ target }) => this.handleInputs(target) }
             />
           </label>
-          <label htmlFor="method-input">
-            Método de pagamento:
-            <select
-              name="method"
-              value={ method }
-              data-testid="method-input"
-              onChange={ ({ target }) => this.handleInputs(target) }
-            >
-              <option>Selecione</option>
-              <option>Dinheiro</option>
-              <option>Cartão de crédito</option>
-              <option>Cartão de débito</option>
-            </select>
-          </label>
-          <label htmlFor="tag-input">
-            Tag:
-            <select
-              name="tag"
-              value={ tag }
-              data-testid="tag-input"
-              onChange={ ({ target }) => this.handleInputs(target) }
-            >
-              <option>Selecione</option>
-              <option>Alimentação</option>
-              <option>Lazer</option>
-              <option>Trabalho</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
-            </select>
-          </label>
+          { this.paymentInput(method) }
+          { this.tagInput(tag) }
           <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
         </form>
       </div>
