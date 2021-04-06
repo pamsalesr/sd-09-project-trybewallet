@@ -5,6 +5,22 @@ import { Link } from 'react-router-dom';
 import logoTrybe from '../logoTrybe.png';
 
 class WalletHeader extends Component {
+  constructor() {
+    super();
+
+    this.totalExpenses = this.totalExpenses.bind(this);
+  }
+
+  // Valeu pessoal do discord :)
+  totalExpenses() {
+    const { expenses } = this.props;
+    let total = 0;
+    expenses.forEach(({ value, exchangeRates, currency }) => {
+      total += (value * exchangeRates[currency].ask).toFixed(2);
+    });
+    return total;
+  }
+
   render() {
     const { email } = this.props;
     return (
@@ -17,7 +33,7 @@ class WalletHeader extends Component {
         <span data-testid="email-field">{ email }</span>
 
         <span>Despesa total:</span>
-        <span data-testid="total-field">0</span>
+        <span data-testid="total-field">{ this.totalExpenses() }</span>
         <span data-testid="header-currency-field">BRL</span>
       </>
     );
@@ -26,10 +42,12 @@ class WalletHeader extends Component {
 
 WalletHeader.propTypes = {
   email: PropTypes.string.isRequired,
+  expenses: PropTypes.arrayOf(Object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(WalletHeader);

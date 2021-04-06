@@ -63,12 +63,14 @@ class WalletInputs extends Component {
 
   totalExpenses() {
     const { expenses } = this.props;
+    const initialValue = 0;
     const totalSum = expenses.reduce((acc, curr) => (
       (Number(curr.exchangeRates[curr.currency].ask * Number(curr.value)) + acc)
-    ), 0);
+    ), initialValue);
     this.setState({
       total: totalSum,
     });
+    return initialValue;
     // console.log('L71', this.state.total);
   }
 
@@ -76,16 +78,17 @@ class WalletInputs extends Component {
     const { dispatchExpenseInfo } = this.props;
 
     const {
-      exchangeRates,
       id,
       value,
-      description,
       currency,
       method,
       tag,
+      description,
+      exchangeRates,
       total,
     } = this.state;
 
+    await this.totalExpenses();
     await this.requestCurrencyApi();
 
     const stateObj = {
@@ -100,7 +103,6 @@ class WalletInputs extends Component {
     };
 
     await dispatchExpenseInfo(stateObj);
-    await this.totalExpenses();
 
     this.setState({
       id: id + 1,
@@ -114,6 +116,7 @@ class WalletInputs extends Component {
         Valor:
         <input
           data-testid="value-input"
+          name="value"
           id="value"
           type="number"
           value={ value }
@@ -130,7 +133,8 @@ class WalletInputs extends Component {
         <input
           data-testid="description-input"
           id="description"
-          type="tetxt"
+          name="description"
+          type="text"
           onChange={ (event) => this.handleChange(event) }
         />
       </label>
@@ -204,7 +208,7 @@ class WalletInputs extends Component {
     return (
       <button
         type="button"
-        onClick={ () => this.saveGlobal }
+        onClick={ () => this.saveGlobal() }
       >
         Adicionar despesa
       </button>
