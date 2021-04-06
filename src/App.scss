@@ -29,6 +29,29 @@
   color: #61dafb;
 }
 
+.btn {
+  border: none;
+  border-radius: 20%;
+  margin: 0 2px;
+  padding: 1em 1.5em;
+}
+
+.edit {
+  background-color: rgb(243, 189, 89);
+}
+
+.edit:hover {
+  background-color: rgb(177, 137, 64);
+}
+
+.delete {
+  background-color: rgb(255, 64, 64);
+}
+
+.delete:hover {
+  background-color: rgb(185, 47, 47);
+}
+
 .link {
   height: 20px;
   margin: 1em auto 0;

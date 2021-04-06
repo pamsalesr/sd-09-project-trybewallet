@@ -12,9 +12,9 @@ class Wallet extends React.Component {
     super(props);
     this.state = {
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       value: 0,
       selectedCurrency: 'BRL',
       loading: true,
@@ -49,13 +49,13 @@ class Wallet extends React.Component {
 
   async saveCurrenciesAndExpenses() {
     const { value, description, currency, method, tag } = this.state;
-    let { expenses } = this.props;
+    const { expenses } = this.props;
     const { walletToStore } = this.props;
     const exchangeRates = await fetchCurrencies();
     const currencies = Object.keys(exchangeRates)
       .filter((currencyTag) => currencyTag !== 'USDT');
-    if (description === '') {
-      expenses = [];
+    if (description === '' || value === 0) {
+      console.log('Adicione uma descrição e um valor');
     } else {
       expenses.push({
         id: expenses.length, value, description, currency, method, tag, exchangeRates,
@@ -207,9 +207,7 @@ class Wallet extends React.Component {
           </div>
         </header>
         { loading ? <p>Carregando...</p> : this.renderForm() }
-        <RenderExpenses
-          expenses={ expenses }
-        />
+        <RenderExpenses />
       </div>
     );
   }
