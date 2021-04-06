@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { AiFillCloseCircle, AiFillEdit } from 'react-icons/ai';
 import { setExpenses, editExpenses } from '../actions';
 import './expenseList.css';
 
@@ -57,11 +58,11 @@ class ExpensesList extends Component {
               <td>{ (value * exchangeRates[currency].ask).toFixed(2)}</td>
               <td>Real</td>
               <td>
-                <button data-testid="delete-btn" type="button" onClick={ () => btn(id) }>
-                  Excluir
-                </button>
                 <button data-testid="edit-btn" type="button" onClick={ () => edit(id) }>
-                  Editar
+                  <AiFillEdit className="edit" />
+                </button>
+                <button data-testid="delete-btn" type="button" onClick={ () => btn(id) }>
+                  <AiFillCloseCircle className="del" />
                 </button>
               </td>
             </tr>

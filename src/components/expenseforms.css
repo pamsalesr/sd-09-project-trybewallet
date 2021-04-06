@@ -1,7 +1,7 @@
 .backgroundForms{
   background-color: #001127eb;
     color: navajowhite;
-    filter: drop-shadow(0px -3px 0px rgb(0, 0, 99));
+    filter: opacity(0.9);
 }
 
 .expenseForms{
@@ -44,4 +44,12 @@ input:hover, select:hover{
   50% { border-bottom-color: white;  }
   75% { border-bottom-color: lightblue;  }
   100% { border-bottom-color: #2f5ae0;  }
+}
+
+.btnForms {
+border-radius: 10px;
+background: none;
+color: navajowhite;
+height: 5vh;
+box-shadow: 0px 1px 1px 1px, 0px -1px 1px 1px;
 }

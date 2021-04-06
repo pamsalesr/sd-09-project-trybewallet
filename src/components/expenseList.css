@@ -8,11 +8,38 @@
 }
 
 .trTD{
-  background-color: #01175a;
+  background-color: #cbd8ff2e;
+  background-size: cover;
+  filter: saturate(0.6);
+  color: white;
+}
+
+
+.trTD:nth-child(even) {
+  background-color: #003ffc18;
   background-size: cover;
 }
 
-.trTD:nth-child(even) {
-  background-color: #003ffc69;
-  background-size: cover;
+.trTD button {
+  background-color: transparent;
+  border: none;
+  transition: 0.6s;
 }
+
+.edit {
+  font-size: xx-large;
+  color: rgb(151, 252, 0);
+  transition: 0.6s;
+  cursor: pointer;
+}
+
+.del {
+  font-size: xx-large;
+  color: rgb(253, 31, 31);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.edit:hover, .del:hover {
+  box-shadow: white 2px 2px 1px 0px;
+ }

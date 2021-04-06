@@ -150,6 +150,7 @@ class ExpenseForms extends Component {
   createButton(label, event) {
     return (
       <button
+        className="btnForms"
         type="button"
         onClick={ event }
       >
