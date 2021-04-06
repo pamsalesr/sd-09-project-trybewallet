@@ -49,7 +49,6 @@ class WalletForm extends Component {
   computeValue(total, value) {
     const { currency, exchangeRates } = this.state;
     return total + parseFloat(value) * parseFloat(exchangeRates[currency].ask);
-
   }
 
   buttonAdd() {
@@ -78,7 +77,6 @@ class WalletForm extends Component {
         [name]: value,
         exchangeRates: currencies,
       });
-
     }
   }
 
@@ -108,6 +106,11 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   addCurrency: PropTypes.func.isRequired,
   addExpense: PropTypes.func.isRequired,
+  addTotals: PropTypes.func.isRequired,
+  totals: PropTypes.shape({
+    total: PropTypes.number,
+    currency: PropTypes.string,
+  }).isRequired,
   wallet: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
