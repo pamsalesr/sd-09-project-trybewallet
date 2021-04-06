@@ -30,10 +30,6 @@ class Form extends React.Component {
     currenciesRates(currencies);
   }
 
-  async fetchCurrency() {
-    const currencies = await fetchApi();
-  }
-
   handleChange({ target }) {
     const { id, value } = target
     this.setState ({ [id]: value })
@@ -107,8 +103,8 @@ class Form extends React.Component {
           onChange={ this.handleChange }
         >
           <option key="money" value="Dinheiro">Dinheiro</option>
-          <option key="credit-card" value="Crédito">Cartão de Crédito</option>
-          <option key="debit-card" value="Débito">Cartão de Débito</option>
+          <option key="credit-card" value="Cartão de Crédito">Cartão de Crédito</option>
+          <option key="debit-card" value="Cartão de Débito">Cartão de Débito</option>
         </select>
       </label>
     );
@@ -123,11 +119,11 @@ class Form extends React.Component {
           id="tag"
           onChange={ this.handleChange }
         >
-          <option key="food" value="food">Alimentação</option>
-          <option key="fun" value="fun">Lazer</option>
-          <option key="work" value="work">Trabalho</option>
-          <option key="transport" value="transport" >Transporte</option>
-          <option key="health" value="health">Saúde</option>
+          <option key="food" value="Alimentação">Alimentação</option>
+          <option key="fun" value="Lazer">Lazer</option>
+          <option key="work" value="Trabalho">Trabalho</option>
+          <option key="transport" value="Transporte" >Transporte</option>
+          <option key="health" value="Saúde">Saúde</option>
         </select>
       </label>
     );
