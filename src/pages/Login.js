@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import userAction from '../actions';
+import { userAction } from '../actions/index';
 
 class Login extends Component {
   constructor(props) {
@@ -28,6 +28,7 @@ class Login extends Component {
     const PASS_LENGTH = 6;
     const regexCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
     this.setState({
+
       isValid: regexCheck.test(email) && password.length >= PASS_LENGTH,
     });
   }
