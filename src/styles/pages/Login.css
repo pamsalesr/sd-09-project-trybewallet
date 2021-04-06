@@ -44,10 +44,6 @@
   width: 60px;
 }
 
-.login-form > button:hover {
-  cursor: pointer;
-}
-
 .login-form > button:disabled {
   opacity: 0.5;
 }

@@ -33,7 +33,3 @@
   color: white;
   height: 40px;
 }
-
-.expense-form > div > button:hover {
-  cursor: pointer;
-}
