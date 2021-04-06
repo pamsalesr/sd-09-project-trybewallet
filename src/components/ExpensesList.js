@@ -47,7 +47,7 @@ class ExpensesList extends Component {
           {expenses.map((
             { id, value, description, currency, method, tag, exchangeRates }, index,
           ) => (
-            <tr key={ index } className="tr">
+            <tr key={ index } className="tr trTD">
               <td>{ description }</td>
               <td>{ tag }</td>
               <td>{ method }</td>

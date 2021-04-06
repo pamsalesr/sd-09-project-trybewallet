@@ -1,5 +1,18 @@
 .tr {
+  color: rgb(204, 173, 126);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
+  align-items: center;
+  border: 1px solid
+}
+
+.trTD{
+  background-color: #01175a;
+  background-size: cover;
+}
+
+.trTD:nth-child(even) {
+  background-color: #003ffc69;
+  background-size: cover;
 }
