@@ -181,7 +181,6 @@ Expenses.propTypes = {
   sendInput: PropTypes.func.isRequired,
   editOption: PropTypes.bool.isRequired,
   finishEditExpense: PropTypes.func.isRequired,
-  editId: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Expenses);
