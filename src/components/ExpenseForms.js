@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { setCurrencies, addExpenses, editExpenses, setExpenses } from '../actions';
 import fetchCurrency from '../services/currencyApi';
 import ExpensesList from './ExpensesList';
+import './expenseforms.css';
 
 class ExpenseForms extends Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class ExpenseForms extends Component {
   inputNumber(value) {
     return (
       <input
+        className="number"
         type="number"
         data-testid="value-input"
         onChange={ this.handleChange }
@@ -105,6 +107,7 @@ class ExpenseForms extends Component {
   inputText() {
     return (
       <input
+        placeholder="Describe activity"
         type="text"
         data-testid="description-input"
         onChange={ this.handleChange }
@@ -159,8 +162,8 @@ class ExpenseForms extends Component {
     const { currencies, eventEdit } = this.props;
     const { value } = this.state;
     return (
-      <div>
-        <forms>
+      <div className="backgroundForms">
+        <forms className="expenseForms">
           {this.inputNumber(value)}
           {this.inputText()}
           {this.selectMethod()}
