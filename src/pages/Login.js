@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MdAccountCircle } from 'react-icons/md';
 
-import saveUserData from '../actions';
+import { saveUserData } from '../actions';
 import './Login.css';
 
 class Login extends React.Component {

@@ -1,14 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Form from '../components/Form';
 import Header from '../components/Header';
 import ExpenseTable from '../components/ExpenseTable';
-
-import { getCurrencyTypes } from '../services/awesomeApi';
+import { fetchCurrencyTypes } from '../actions';
 
 class Wallet extends React.Component {
+  componentDidMount() {
+    const { getCurrencyTypes } = this.props;
+    getCurrencyTypes();
+  }
+
   render() {
-    console.log(getCurrencyTypes());
     return (
       <div>
         <Header />
@@ -19,4 +24,12 @@ class Wallet extends React.Component {
   }
 }
 
-export default Wallet;
+const mapDispatchToProps = (dispatch) => ({
+  getCurrencyTypes: () => dispatch(fetchCurrencyTypes()),
+});
+
+Wallet.propTypes = {
+  getCurrencyTypes: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Wallet);

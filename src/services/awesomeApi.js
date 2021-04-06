@@ -8,7 +8,7 @@ const filterCurrencyTypes = (currencyTypes) => {
   return result;
 };
 
-export const getCurrencyTypes = async () => {
+const getCurrencyTypes = async () => {
   const awesomeApiEndPoint = 'https://economia.awesomeapi.com.br/json/all';
   try {
     const response = await fetch(awesomeApiEndPoint);
@@ -18,3 +18,5 @@ export const getCurrencyTypes = async () => {
     console.log(error);
   }
 };
+
+export default getCurrencyTypes;

@@ -31,10 +31,8 @@ class Header extends React.Component {
 }; */
 
 /* Header.propTypes = {
-  wallet: 
+  wallet:
 }; */
-
-const currencyTypes = ['USD', 'CAD', 'EUR', 'GBP', 'ARS', 'BTC', 'LTC', 'JPY', 'CHF', 'AUD', 'CNY', 'ILS', 'ETH', 'XRP'];
 
 export default Header;
 // export default connect(mapStateToProps)(Header);
