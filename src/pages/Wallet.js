@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
+import Form from './Form';
 
 class Wallet extends React.Component {
   render() {
@@ -10,6 +11,7 @@ class Wallet extends React.Component {
         <h4 data-testid="email-field">{ email }</h4>
         <h3 data-testid="total-field">0</h3>
         <h3 data-testid="header-currency-field">BRL</h3>
+        <Form />
       </header>
     );
   }
