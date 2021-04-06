@@ -3,6 +3,7 @@ import { ADD_EXPENSE, FETCH_CURRENCIES } from '../actions';
 const INITIAL_STATE = {
   currenciesList: {},
   expenses: [],
+  total: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {

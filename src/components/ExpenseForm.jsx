@@ -56,6 +56,7 @@ class ExpenseForm extends React.Component {
       exchangeRates: currenciesList,
     };
 
+
     dispatchNewExpense(newExpense);
     this.setState(NEW_STATE);
   }
@@ -120,7 +121,7 @@ class ExpenseForm extends React.Component {
         Valor:
         <input
           data-testid="value-input"
-          type="text"
+          type="number"
           name="value"
           value={ value }
           onChange={ this.handleInputs }

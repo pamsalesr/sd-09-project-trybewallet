@@ -3,6 +3,7 @@ import fetchAllCurrencyData from '../services/cambio';
 export const LOGIN = 'LOGIN';
 export const FETCH_CURRENCIES = 'FETCH_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const TOTAL_VALUE = 'TOTAL_VALUE';
 
 export const userEmail = (email) => ({
   type: LOGIN,
