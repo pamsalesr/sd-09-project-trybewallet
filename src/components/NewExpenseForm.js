@@ -6,7 +6,7 @@ import {
   PAYMENT_METHODS,
   EXPENSES_TAGS,
 } from '../services';
-import { addExpenseAction } from '../actions';
+import { addExpenseAction, saveExpenseAction } from '../actions';
 
 const INITIAL_STATE = {
   value: '0',
@@ -22,22 +22,41 @@ class NewExpenseForm extends React.Component {
     this.state = {
       currencies: [],
       newExpense: { ...INITIAL_STATE },
+      isInEditionMode: false,
     };
 
     this.updateCurrencies = this.updateCurrencies.bind(this);
     this.renderCurrenciesSelection = this.renderCurrenciesSelection.bind(this);
     this.onChangeField = this.onChangeField.bind(this);
     this.saveNewExpense = this.saveNewExpense.bind(this);
+    this.setEditionMode = this.setEditionMode.bind(this);
   }
 
   componentDidMount() {
     this.updateCurrencies();
   }
 
+  componentDidUpdate() {
+    const { isInEditionMode } = this.state;
+    if (!isInEditionMode) {
+      this.setEditionMode();
+    }
+  }
+
   onChangeField({ target: { name, value } }) {
     this.setState(
       ({ newExpense }) => ({ newExpense: { ...newExpense, [name]: value } }),
     );
+  }
+
+  setEditionMode() {
+    const { editedExpense } = this.props;
+    if (editedExpense) {
+      this.setState({
+        newExpense: editedExpense,
+        isInEditionMode: true,
+      });
+    }
   }
 
   async updateCurrencies() {
@@ -54,10 +73,14 @@ class NewExpenseForm extends React.Component {
   }
 
   async saveNewExpense() {
-    const { saveExpense } = this.props;
+    const { addExpense, saveExpense, editedExpense } = this.props;
     const { newExpense } = this.state;
-    saveExpense({ ...newExpense, exchangeRates: await fetchCurrencies() });
-    this.setState({ newExpense: INITIAL_STATE });
+    if (editedExpense) {
+      saveExpense({ ...newExpense, exchangeRates: await fetchCurrencies() });
+    } else {
+      addExpense({ ...newExpense, exchangeRates: await fetchCurrencies() });
+    }
+    this.setState({ newExpense: INITIAL_STATE, isInEditionMode: false });
   }
 
   renderCurrenciesSelection(value) {
@@ -115,13 +138,16 @@ class NewExpenseForm extends React.Component {
   }
 
   render() {
-    const { newExpense: {
-      value,
-      description,
-      currency,
-      method,
-      tag,
-    } } = this.state;
+    const {
+      newExpense: {
+        value,
+        description,
+        currency,
+        method,
+        tag,
+      },
+      isInEditionMode,
+    } = this.state;
 
     return (
       <section>
@@ -146,19 +172,35 @@ class NewExpenseForm extends React.Component {
           type="button"
           onClick={ this.saveNewExpense }
         >
-          Adicionar despesa
+          { isInEditionMode
+            ? 'Editar despesa'
+            : 'Adicionar despesa' }
         </button>
       </section>
     );
   }
 }
 
+const mapStateToProps = (
+  { wallet: { editedExpense } },
+) => ({ editedExpense });
+
 const mapDispatchToProps = (dispatch) => ({
-  saveExpense: (expense) => dispatch(addExpenseAction(expense)),
+  addExpense: (expense) => dispatch(addExpenseAction(expense)),
+  saveExpense: (expense) => dispatch(saveExpenseAction(expense)),
 });
 
-export default connect(null, mapDispatchToProps)(NewExpenseForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewExpenseForm);
 
 NewExpenseForm.propTypes = {
+  addExpense: PropTypes.func.isRequired,
   saveExpense: PropTypes.func.isRequired,
+  editedExpense: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object,
+  ]),
+};
+
+NewExpenseForm.defaultProps = {
+  editedExpense: false,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeExpenseAction } from '../actions';
+import { removeExpenseAction, editExpenseAction } from '../actions';
 
 class ExpensesTable extends React.Component {
   static getTotalValue({ value, exchangeRates, currency }) {
@@ -55,7 +55,7 @@ class ExpensesTable extends React.Component {
   }
 
   renderBody() {
-    const { expenses, removeExpense } = this.props;
+    const { expenses, removeExpense, editExpense } = this.props;
     const cellsPropNames = [
       'description',
       'tag',
@@ -83,6 +83,13 @@ class ExpensesTable extends React.Component {
               >
                 X
               </button>
+              <button
+                type="button"
+                data-testid="edit-btn"
+                onClick={ () => editExpense(expense) }
+              >
+                Editar
+              </button>
             </td>
           </tr>
         )) }
@@ -106,6 +113,7 @@ const mapStateToProps = (
 
 const mapDispatchToProps = (dispatch) => ({
   removeExpense: (expense) => dispatch(removeExpenseAction(expense)),
+  editExpense: (expense) => dispatch(editExpenseAction(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
@@ -113,6 +121,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
   removeExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 ExpensesTable.defaultProps = {
