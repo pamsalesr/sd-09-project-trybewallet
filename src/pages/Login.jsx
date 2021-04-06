@@ -45,11 +45,12 @@ class Login extends React.Component {
       <main>
         <form className="form-login">
           <fieldset className="fieldset-login">
-            <img src={ trybeImage } alt="trybe" width="200" />
+            <img src={ trybeImage } alt="trybe" width="300" />
             <label htmlFor="user-email-input" className="label-login">
               Email:
               <br />
               <input
+                className="input-login"
                 id="user-email-input"
                 data-testid="email-input"
                 type="email"
@@ -59,10 +60,11 @@ class Login extends React.Component {
               />
             </label>
 
-            <label htmlFor="user-password-input">
+            <label htmlFor="user-password-input" className="label-login">
               Senha:
               <br />
               <input
+                className="input-login"
                 id="user-password-input"
                 data-testid="password-input"
                 type="password"
@@ -73,6 +75,7 @@ class Login extends React.Component {
             </label>
             <Link to="/carteira" className="button">
               <button
+                className="login-button"
                 type="button"
                 disabled={ disableButton }
                 onClick={ () => emailDispatcher(userEmail) }

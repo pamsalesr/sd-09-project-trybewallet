@@ -5,6 +5,8 @@ export const SET_NEW_EXPENSE = 'SET_NEW_EXPENSE';
 export const GET_TOTAL_VALUE = 'GET_TOTAL_VALUE';
 export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
 export const UPDATE_TOTAL_VALUE = 'UPDATE_TOTAL_VALUE';
+export const SET_EDITABLE_EXPENSE = 'SET_EDITABLE_EXPENSE';
+export const SET_EDITABLE_OFF = 'SET_EDITABLE_OFF';
 
 export const handleEmail = (email) => ({
   type: HANDLE_EMAIL,
@@ -40,6 +42,15 @@ export const updateTotalValue = (expenses) => ({
   expenses,
 });
 
+export const setEditableExpense = (object) => ({
+  type: SET_EDITABLE_EXPENSE,
+  object,
+});
+
+export const setEditableOff = () => ({
+  type: SET_EDITABLE_OFF,
+});
+
 export function fetchCurrencies() {
   return async (dispatch) => {
     dispatch(fetchingCurrencies());
@@ -47,7 +58,7 @@ export function fetchCurrencies() {
       const endPoint = 'https://economia.awesomeapi.com.br/json/all';
       const response = await fetch(endPoint);
       const object = await response.json();
-      delete object.USDT;
+      Reflect.deleteProperty(object, 'USDT');
       const currenciesNamesArray = Object.keys(object);
       return dispatch(setCurrencies(currenciesNamesArray));
     } catch (error) {
@@ -55,10 +66,3 @@ export function fetchCurrencies() {
     }
   };
 }
-
-// export function fetchBeforeAddAnExpense(args) {
-//   return async (dispatch) => {
-//     fetchCurrencies();
-//     return dispatch(setNewExpense({ ...args }));
-//   };
-// }

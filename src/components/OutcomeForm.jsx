@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencies, setNewExpense, getTotalValue } from '../actions';
+import { fetchCurrencies,
+  setNewExpense,
+  getTotalValue,
+  setEditableOff,
+  updateExpenses,
+} from '../actions';
 import getCurrencies from '../fetchCurrencies';
 
 class OutcomeForm extends React.Component {
@@ -21,11 +26,17 @@ class OutcomeForm extends React.Component {
     this.createPaymentMethod = this.createPaymentMethod.bind(this);
     this.createTagInput = this.createTagInput.bind(this);
     this.createAddExpenseButton = this.createAddExpenseButton.bind(this);
+    this.setEditableExpanseState = this.setEditableExpanseState.bind(this);
   }
 
   componentDidMount() {
     const { setCurrenciesToState } = this.props;
     setCurrenciesToState();
+  }
+
+  setEditableExpanseState() {
+    const { editableExpenseState } = this.props;
+    this.setState({ ...editableExpenseState });
   }
 
   createCurrencyOptions() {
@@ -36,7 +47,7 @@ class OutcomeForm extends React.Component {
         <select
           id="currency"
           data-testid="currency-input"
-          // name="currency"
+          name="currency"
           onChange={ this.handleUserInputs }
         >
           {currencies.map((currency) => (
@@ -52,8 +63,8 @@ class OutcomeForm extends React.Component {
       </label>);
   }
 
-  handleUserInputs({ target: { id, value } }) {
-    this.setState({ [id]: value });
+  handleUserInputs({ target: { name, value } }) {
+    this.setState({ [name]: value });
   }
 
   createInputFields(...args) {
@@ -81,7 +92,7 @@ class OutcomeForm extends React.Component {
         <select
           id="method"
           data-testid="method-input"
-          // name="method"
+          name="method"
           value={ method }
           onChange={ this.handleUserInputs }
         >
@@ -101,7 +112,7 @@ class OutcomeForm extends React.Component {
         <select
           id="tag"
           data-testid="tag-input"
-          // name="tag"
+          name="tag"
           value={ tag }
           onChange={ this.handleUserInputs }
         >
@@ -116,8 +127,20 @@ class OutcomeForm extends React.Component {
   }
 
   async handleClick() {
-    const { value, description, currency, method, tag } = this.state;
-    const { expenses, newExpense, getTotal } = this.props;
+    const { value, description, currency, method, tag, id } = this.state;
+    const { expenses, newExpense, getTotal,
+      isButtonEditable, updateExpensesToState } = this.props;
+    if (isButtonEditable) {
+      console.log('cai no if de fora');
+      const updated = expenses.map((expense) => {
+        if (expense.id === id) {
+          return this.state;
+        }
+        return expense;
+      });
+      console.log(updated);
+      return updateExpensesToState(updated);
+    }
     const updatedCurrencies = await getCurrencies();
     const atualCurrency = updatedCurrencies[currency];
     const expenseObject = {
@@ -141,21 +164,27 @@ class OutcomeForm extends React.Component {
   }
 
   createAddExpenseButton() {
+    const { isButtonEditable } = this.props;
     return (
       <button
         id="add-expense-button"
         type="button"
         onClick={ this.handleClick }
       >
-        Adicionar despesa
+        {!isButtonEditable ? 'Adicionar despesa' : 'Editar despesa'}
       </button>
     );
   }
 
   render() {
-    // const { isFetching } = this.props;
-    const { value } = this.state;
-    // console.log('isFetching: ', isFetching);
+    const { isEditable, setOff } = this.props;
+    const { value, description } = this.state;
+
+    if (isEditable) {
+      this.setEditableExpanseState();
+      setOff();
+    }
+
     return (
       <form>
         <fieldset>
@@ -167,7 +196,7 @@ class OutcomeForm extends React.Component {
           { this.createInputFields(
             'Descrição: ', 'description',
             'description-input', 'text',
-            'description',
+            'description', description,
           ) }
           {this.createCurrencyOptions()}
           {this.createPaymentMethod()}
@@ -184,12 +213,17 @@ const mapStateToProps = (state) => ({
   isFetching: state.wallet.isFetching,
   expenses: state.wallet.expenses,
   totalValue: state.wallet.totalValue,
+  isEditable: state.wallet.isEditable,
+  isButtonEditable: state.wallet.isButtonEditable,
+  editableExpenseState: state.wallet.editableExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrenciesToState: () => dispatch(fetchCurrencies()),
   newExpense: (expenseObj) => dispatch(setNewExpense(expenseObj)),
   getTotal: (value) => dispatch(getTotalValue(value)),
+  setOff: () => dispatch(setEditableOff()),
+  updateExpensesToState: (object) => dispatch(updateExpenses(object)),
 });
 
 OutcomeForm.propTypes = {
@@ -198,6 +232,11 @@ OutcomeForm.propTypes = {
   newExpense: PropTypes.func.isRequired,
   getTotal: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isButtonEditable: PropTypes.bool.isRequired,
+  isEditable: PropTypes.bool.isRequired,
+  setOff: PropTypes.func.isRequired,
+  editableExpenseState: PropTypes.shape({}).isRequired,
+  updateExpensesToState: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OutcomeForm);

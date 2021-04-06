@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateExpenses, updateTotalValue } from '../actions';
+import { updateExpenses, updateTotalValue, setEditableExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
   deleteExpense(expenseID) {
@@ -12,8 +12,18 @@ class ExpensesTable extends React.Component {
     const totalValue = updatedExpenses
       .reduce((total, expense) => total + (
         expense.value * parseFloat(expense.exchangeRates[expense.currency].ask)), 0);
-    console.log(totalValue);
     updateTotalDispatcher(totalValue);
+  }
+
+  // editableExpenseState(object) {
+  //   const expenseObj = { ...object };
+
+  // }
+
+  editExpense(expense) {
+    const { setEditable } = this.props;
+    // const getEditableExpense = expenses.filter((expense) => expense.id === expenseID);
+    setEditable(expense);
   }
 
   renderTableBody() {
@@ -33,6 +43,13 @@ class ExpensesTable extends React.Component {
         <td>Real</td>
         <td>
           <button
+            data-testid="edit-btn"
+            type="button"
+            onClick={ () => this.editExpense(expense) }
+          >
+            Editar
+          </button>
+          <button
             data-testid="delete-btn"
             type="button"
             onClick={ () => this.deleteExpense(expense.id) }
@@ -46,7 +63,7 @@ class ExpensesTable extends React.Component {
 
   render() {
     return (
-      <table>
+      <table width="100%">
         <thead>
           <tr>
             <th>Descrição</th>
@@ -75,12 +92,17 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateExpansesDispatcher: (expenses) => dispatch(updateExpenses(expenses)),
   updateTotalDispatcher: (total) => dispatch(updateTotalValue(total)),
+  setEditable: (object) => dispatch(setEditableExpense(object)),
 });
 
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateExpansesDispatcher: PropTypes.func.isRequired,
   updateTotalDispatcher: PropTypes.func.isRequired,
+};
+
+ExpensesTable.propTypes = {
+  setEditable: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

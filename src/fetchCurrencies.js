@@ -3,7 +3,7 @@ async function getCurrencies() {
     const endPoint = 'https://economia.awesomeapi.com.br/json/all';
     const response = await fetch(endPoint);
     const object = await response.json();
-    delete object.USDT;
+    Reflect.deleteProperty(object, 'USDT');
     return object;
   } catch (error) {
     console.log(error);
