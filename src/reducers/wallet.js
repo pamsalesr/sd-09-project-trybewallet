@@ -1,9 +1,12 @@
-import { ADD_EXPENSE, REQUEST_API } from '../actions/actionTypes';
+import { ADD_EXPENSE,
+  DELETE_EXPENSE,
+  REQUEST_API,
+  UPDATE_TOTAL } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  // total: 0,
+  total: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -15,7 +18,14 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ADD_EXPENSE:
     return ({ ...state,
       expenses: [...state.expenses, action.expense],
-      // total: parseFloat(state.total) + parseFloat(action.expense.value),
+    });
+  case DELETE_EXPENSE:
+    return ({ ...state,
+      expenses: [...action.newExpenses],
+    });
+  case UPDATE_TOTAL:
+    return ({ ...state,
+      total: action.value,
     });
   default:
     return state;

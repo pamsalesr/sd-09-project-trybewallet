@@ -1,4 +1,4 @@
-import { ADD_EXPENSE, REQUEST_API } from './actionTypes';
+import { ADD_EXPENSE, REQUEST_API, DELETE_EXPENSE, UPDATE_TOTAL } from './actionTypes';
 import requestCurrency from '../services/requestCurrencyAPI';
 
 export const addExpense = (expense) => ({
@@ -9,6 +9,16 @@ export const addExpense = (expense) => ({
 export const saveCurrencies = (currencies) => ({
   type: REQUEST_API,
   currencies,
+});
+
+export const deleteExpense = (newExpenses) => ({
+  type: DELETE_EXPENSE,
+  newExpenses,
+});
+
+export const updateTotal = (value) => ({
+  type: UPDATE_TOTAL,
+  value,
 });
 
 export function getCurrencies() {

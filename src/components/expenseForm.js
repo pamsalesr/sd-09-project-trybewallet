@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExpense, getCurrencies } from '../actions';
+import { addExpense, getCurrencies, updateTotal } from '../actions';
 
 class expenseForm extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class expenseForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.getCurrencies = this.getCurrencies.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.updateTotal = this.updateTotal.bind(this);
   }
 
   async getCurrencies() {
@@ -35,6 +36,14 @@ class expenseForm extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  updateTotal(expense) {
+    const { dispatchTotal, total } = this.props;
+    const { value, exchangeRates, currency } = expense;
+    let newTotal = total;
+    newTotal += (value * exchangeRates[currency].ask);
+    dispatchTotal(newTotal);
   }
 
   async handleClick() {
@@ -52,6 +61,7 @@ class expenseForm extends React.Component {
     };
 
     dispatchExpense(expense);
+    this.updateTotal(expense);
 
     this.setState({
       value: '',
@@ -190,18 +200,22 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   currenciesList: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  total: state.wallet.total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expense) => dispatch(addExpense(expense)),
   dispatchCurrencies: () => dispatch(getCurrencies()),
+  dispatchTotal: (value) => dispatch(updateTotal(value)),
 });
 
 expenseForm.propTypes = {
   dispatchExpense: PropTypes.func.isRequired,
   dispatchCurrencies: PropTypes.func.isRequired,
+  dispatchTotal: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(Object).isRequired,
-  currenciesList: PropTypes.objectOf(String).isRequired,
+  currenciesList: PropTypes.arrayOf(Object).isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(expenseForm);
