@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { func, string, objectOf, arrayOf } from 'prop-types';
 import fetchApi from '../services/api';
 import { handleExchangeRates, handleAddExpense, handleConvertExpense } from '../actions';
-import { } from 'prop-types';
 
 class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      description:'',
+      description: '',
       value: 0,
       tag: 'food',
       method: 'Dinheiro',
@@ -31,8 +31,8 @@ class Form extends React.Component {
   }
 
   handleChange({ target }) {
-    const { id, value } = target
-    this.setState ({ [id]: value })
+    const { id, value } = target;
+    this.setState({ [id]: value });
   }
 
   valueInput() {
@@ -45,14 +45,14 @@ class Form extends React.Component {
           data-testid="value-input"
           id="value"
           onChange={ this.handleChange }
-          value= { value }
+          value={ value }
         />
       </label>
     );
   }
 
   descriptionInput() {
-    const { description } = this.state
+    const { description } = this.state;
     return (
       <label htmlFor="description">
         Descrição
@@ -61,7 +61,7 @@ class Form extends React.Component {
           data-testid="description-input"
           id="description"
           onChange={ this.handleChange }
-          value = { description }
+          value={ description }
         />
       </label>
     );
@@ -76,7 +76,7 @@ class Form extends React.Component {
           type="text"
           data-testid="currency-input"
           id="currency"
-          onChange={this.handleChange}
+          onChange={ this.handleChange }
         >
           {Object.keys(currRates).map((curr) => (
             <option
@@ -122,7 +122,7 @@ class Form extends React.Component {
           <option key="food" value="Alimentação">Alimentação</option>
           <option key="fun" value="Lazer">Lazer</option>
           <option key="work" value="Trabalho">Trabalho</option>
-          <option key="transport" value="Transporte" >Transporte</option>
+          <option key="transport" value="Transporte">Transporte</option>
           <option key="health" value="Saúde">Saúde</option>
         </select>
       </label>
@@ -131,7 +131,7 @@ class Form extends React.Component {
 
   async createExpense() {
     const currencies = await fetchApi();
-    const { expensesMap, addExpenses, convertExp } = this.props
+    const { expensesMap, addExpenses, convertExp } = this.props;
     const { currency, value, description, method, tag } = this.state;
     const expense = {
       id: expensesMap.length,
@@ -141,14 +141,14 @@ class Form extends React.Component {
       method,
       tag,
       exchangeRates: currencies,
-    }
+    };
     addExpenses(expense);
-    const expenseRealPrice = parseFloat(currencies[currency].ask)*expense.value;
+    const expenseRealPrice = parseFloat(currencies[currency].ask) * expense.value;
     console.log(expenseRealPrice);
     convertExp(expenseRealPrice);
     this.setState((state) => ({
       ...state,
-      description:'',
+      description: '',
       value: 0,
     }));
   }
@@ -163,7 +163,7 @@ class Form extends React.Component {
         { this.categoryOptions() }
         <button
           type="button"
-          onClick={this.createExpense}
+          onClick={ this.createExpense }
         >
           Adicionar despesa
         </button>
@@ -183,4 +183,13 @@ const mapStateToProps = (state) => ({
   expensesMap: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps,mapDispatchToProp)(Form);
+Form.propTypes = {
+  currenciesRates: func,
+  addExpenses: func,
+  convertExp: func,
+  currRates: objectOf(object),
+  expensesMap: arrayOf(string),
+
+}.isRequired;
+
+export default connect(mapStateToProps, mapDispatchToProp)(Form);
