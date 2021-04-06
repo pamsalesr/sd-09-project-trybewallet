@@ -1,4 +1,6 @@
 import React from 'react';
+// import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
 import { MdMonetizationOn } from 'react-icons/md';
 
 import './Header.css';
@@ -6,21 +8,33 @@ import './Header.css';
 class Header extends React.Component {
   render() {
     return (
-      <div className="header">
+      <header className="header">
         <MdMonetizationOn size={ 50 } />
         <div className="user">
-          <div data-testid="email-field">
+          <div>
             Email:
-            <span>yoda@starwars.com</span>
+            <span data-testid="email-field">yoda@starwars.com</span>
           </div>
-          <div data-testid="total-field">
+          <div>
             Dispesa Total:
-            <span>R$ 50,00 BRL</span>
+            <span data-testid="total-field">R$ 50,00 </span>
+            <span data-testid="header-currency-field">BRL</span>
           </div>
         </div>
-      </div>
+      </header>
     );
   }
 }
 
+/* const mapDispatchToProps = (state) => {
+
+}; */
+
+/* Header.propTypes = {
+  wallet: 
+}; */
+
+const currencyTypes = ['USD', 'CAD', 'EUR', 'GBP', 'ARS', 'BTC', 'LTC', 'JPY', 'CHF', 'AUD', 'CNY', 'ILS', 'ETH', 'XRP'];
+
 export default Header;
+// export default connect(mapStateToProps)(Header);

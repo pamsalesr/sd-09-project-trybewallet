@@ -14,10 +14,10 @@ class TableContent extends React.Component {
         <td>32.00</td>
         <td>Reais</td>
         <td>
-          <button type="button" className="edit-btn btn">
+          <button type="button" className="edit-btn btn" data-testid="edit-btn">
             <RiEdit2Fill color="rgb(255, 255, 255)" />
           </button>
-          <button type="button" className="remove-btn btn">
+          <button type="button" className="remove-btn btn" data-testid="delete-btn">
             <RiDeleteBin2Fill color="rgb(255, 255, 255)" />
           </button>
         </td>

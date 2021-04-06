@@ -19,8 +19,8 @@ class Form extends React.Component {
         <div>
           <label htmlFor="currency">
             Moeda
-            <select name="currency" id="currency">
-              <option value="brl">BRL</option>
+            <select name="currency" id="currency" data-testid="currency-input">
+              <option value="brl" data-testid="BRL">BRL</option>
             </select>
           </label>
         </div>

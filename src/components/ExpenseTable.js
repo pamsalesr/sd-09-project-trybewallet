@@ -9,14 +9,14 @@ class ExpenseTable extends React.Component {
       <table>
         <thead>
           <tr>
-            <th>Descricao</th>
+            <th>Descrição</th>
             <th>Tag</th>
-            <th>Metodo de pagamento</th>
+            <th>Método de pagamento</th>
             <th>Valor</th>
             <th>Moeda</th>
-            <th>Cambio utilizado</th>
+            <th>Câmbio utilizado</th>
             <th>Valor convertido</th>
-            <th>Moeda de conversao</th>
+            <th>Moeda de conversão</th>
             <th>Editar/Excluir</th>
           </tr>
         </thead>
