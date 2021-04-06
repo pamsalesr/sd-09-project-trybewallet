@@ -1,9 +1,18 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-function App() {
-  return <div>Hello, TrybeWallet! Lets Go!</div>;
+import Login from './pages/Login';
+
+import './styles/global.css';
+
+class App extends React.Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/" component={ Login } />
+      </Switch>
+    );
+  }
 }
 
 export default App;
-
-// testing git flow
