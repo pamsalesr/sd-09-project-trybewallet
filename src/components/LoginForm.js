@@ -74,7 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   setEmail: (email) => dispatch(saveEmail(email)),
 });
 
-LoginForms.propTypes = {
+LoginForm.propTypes = {
   setEmail: PropTypes.func.isRequired,
 };
 
