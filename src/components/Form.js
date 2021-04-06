@@ -14,14 +14,17 @@ class Form extends React.Component {
     this.createInput = this.createInput.bind(this);
     this.createDropdown = this.createDropdown.bind(this);
 
-    this.state = {
-      id: 0,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-    };
+    if (props.edit) this.state = props.expense;
+    else {
+      this.state = {
+        id: 0,
+        value: 0,
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+      };
+    }
   }
 
   componentDidMount() { this.fetchCurrencies(); }
@@ -47,7 +50,7 @@ class Form extends React.Component {
   submitChanges() {
     const { updateExpenses, updateEdit, expenses, expense } = this.props;
     const { id, exchangeRates } = expense;
-    const editExpense = { ...this.state, id, exchangeRates };
+    const editExpense = { ...this.state, exchangeRates };
     const expensesList = expenses.map((el) => (el.id === id ? editExpense : el));
     updateExpenses(expensesList);
     updateEdit(false, {});
@@ -126,12 +129,8 @@ Form.propTypes = {
   submit: func,
 }.isRequired;
 
-const mapStateToProps = ({ wallet }) => ({
-  currencies: wallet.currencies,
-  expenses: wallet.expenses,
-  edit: wallet.edit,
-  expense: wallet.expense,
-});
+const mapStateToProps = ({ wallet: { currencies, expenses, edit, expense } }) => (
+  { currencies, expenses, edit, expense });
 
 const mapDispatchToProps = (dispatch) => ({
   updateCurrencies: (currencies) => dispatch(setCurrencies(currencies)),

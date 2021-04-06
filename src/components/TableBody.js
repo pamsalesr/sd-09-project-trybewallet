@@ -37,6 +37,7 @@ class TableBody extends React.Component {
 
   render() {
     const { expenses } = this.props;
+    const userCurrency = 'Real';
     return (
       <tbody className="wallet-table-body">
         {expenses.map((
@@ -50,7 +51,7 @@ class TableBody extends React.Component {
             <td>{ exchangeRates[currency].name }</td>
             <td>{ parseFloat(exchangeRates[currency].ask).toFixed(2)}</td>
             <td>{ (value * exchangeRates[currency].ask).toFixed(2)}</td>
-            <td>Real</td>
+            <td>{ userCurrency }</td>
             <td>
               { this.createButton('editar', 'edit', () => this.editExpense(id))}
               { this.createButton('deletar', 'delete', () => this.deleteExpense(id))}
@@ -64,7 +65,7 @@ class TableBody extends React.Component {
 
 TableBody.propTypes = { expenses: arrayOf(), updateExpenses: func }.isRequired;
 
-const mapStateToProps = ({ wallet }) => ({ expenses: wallet.expenses });
+const mapStateToProps = ({ wallet: { expenses } }) => ({ expenses });
 
 const mapDispatchToProps = (dispatch) => ({
   updateExpenses: (expenses) => dispatch(setExpenses(expenses)),

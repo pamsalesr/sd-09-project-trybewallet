@@ -17,7 +17,7 @@ class TableHead extends React.Component {
       <thead className="wallet-table-head">
         <tr className="wallet-table-head-row">
           {Object.values(fields).map((fieldName) => (
-            <td key={ fieldName }>{ fieldName }</td>
+            <th key={ fieldName }>{ fieldName }</th>
           ))}
         </tr>
       </thead>

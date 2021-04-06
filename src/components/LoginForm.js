@@ -10,6 +10,7 @@ class LoginForm extends React.Component {
     this.checkFormats = this.checkFormats.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.createInput = this.createInput.bind(this);
     this.state = { email: '', password: '', shouldRedirect: false };
   }
 
@@ -31,25 +32,26 @@ class LoginForm extends React.Component {
     this.setState({ shouldRedirect: true });
   }
 
+  createInput(type) {
+    return (
+      <input
+        data-testid={ `${type}-input` }
+        type={ type }
+        placeholder={ type }
+        onChange={ this.handleChange }
+        required
+      />
+    );
+  }
+
   render() {
     const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/carteira" />;
     return (
       <section className="login-form">
-        <input
-          data-testid="email-input"
-          type="email"
-          placeholder="email"
-          onChange={ this.handleChange }
-          required
-        />
-        <input
-          data-testid="password-input"
-          type="password"
-          placeholder="password"
-          onChange={ this.handleChange }
-          required
-        />
+        { this.createInput('email') }
+        { this.createInput('password') }
+
         <button
           type="submit"
           onClick={ this.handleSubmit }
