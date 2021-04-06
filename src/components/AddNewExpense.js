@@ -60,6 +60,7 @@ class AddNewExpense extends React.Component {
       <label htmlFor="currency-input">
         Moeda:
         <select
+          defaultValue="USD"
           name="currency"
           value={ currency }
           data-testid="currency-input"

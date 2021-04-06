@@ -1,7 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class ExpenseTable extends React.Component {
+  tableBody(expenses) {
+    return expenses.map((expense) => (
+      <tr key={ expense.id }>
+        <td>{expense.description}</td>
+        <td>{expense.tag}</td>
+        <td>{expense.method}</td>
+        <td>{expense.value}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Real</td>
+        <td>
+          <button type="button" data-testid="delete-btn">Excluir</button>
+        </td>
+      </tr>));
+  }
   render() {
+    const { expenses } = this.props;
     return (
       <table width="100%">
         <thead>
@@ -18,11 +37,19 @@ class ExpenseTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          Os gastos devem aparecer aqui
+          { this.tableBody(expenses) }
         </tbody>
       </table>
     );
   }
 }
 
-export default ExpenseTable;
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
+
+ExpenseTable.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
+
+export default connect(mapStateToProps)(ExpenseTable);
