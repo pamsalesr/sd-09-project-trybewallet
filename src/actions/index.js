@@ -9,17 +9,12 @@ export const userEmail = (email) => ({
   email,
 });
 
-export const getCurrencyAction = (currency) => ({
+export const getCurrencyAction = (currencies) => ({
   type: GET_CURRENCY_ACTION,
-  currency,
+  currencies,
 });
 
 export const setExpensesAction = (expenses) => ({
   type: SET_EXPENSES_ACTION,
   expenses,
-});
-
-export const setTotalExpensesAction = (totalExpenses) => ({
-  type: SET_TOTAL_EXPENSES,
-  totalExpenses,
 });

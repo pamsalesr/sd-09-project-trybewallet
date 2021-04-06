@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   getCurrencyAction,
   setExpensesAction,
-  setTotalExpensesAction,
 } from '../actions/index';
 
 // Requisito resolvido com auxílio de revisão de colegas.
@@ -15,17 +14,17 @@ class WalletForm extends React.Component {
     this.state = {
       value: '',
       description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      currency: '',
+      method: '',
+      tag: '',
     };
 
     this.fetchCurrency = this.fetchCurrency.bind(this);
     this.setOptionsCurrency = this.setOptionsCurrency.bind(this);
     this.setOptionsTag = this.setOptionsTag.bind(this);
+    this.setOptionsPayment = this.setOptionsPayment.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.sumExpenses = this.sumExpenses.bind(this);
   }
 
   componentDidMount() {
@@ -33,12 +32,12 @@ class WalletForm extends React.Component {
   }
 
   setOptionsCurrency() {
-    const { currency } = this.props;
-    if (!currency) {
+    const { currencies } = this.props;
+    if (!currencies) {
       return [];
     }
-    const currencyArray = Object.keys(currency).map(
-      (currentValue) => currency[currentValue],
+    const currencyArray = Object.keys(currencies).map(
+      (currentValue) => currencies[currentValue],
     );
     return (
       <select onChange={ this.handleChange } name="currency">
@@ -59,8 +58,9 @@ class WalletForm extends React.Component {
     return (
       <select
         data-testid="tag-input"
-        id="tag-input"
+        onChange={ this.handleChange }
         name="tag"
+        id="tag-input"
       >
         <option value="Alimentação">Alimentação</option>
         <option value="Lazer">Lazer</option>
@@ -77,6 +77,7 @@ class WalletForm extends React.Component {
         data-testid="method-input"
         id="method-input"
         name="method"
+        onChange={ this.handleChange }
       >
         <option value="Dinheiro">Dinheiro</option>
         <option value="Cartão de crédito">Cartão de crédito</option>
@@ -90,9 +91,26 @@ class WalletForm extends React.Component {
   }
 
   async handleClick() {
-    const { setExpensesDispatcher } = this.props;
-    setExpensesDispatcher(this.state);
-    this.sumExpenses();
+    await this.fetchCurrency();
+    const { value, description, currency, tag, method } = this.state;
+    const { setExpensesDispatcher, currencies, expenses } = this.props;
+    const expense = {
+      id: expenses.length,
+      value,
+      description,
+      currency,
+      tag,
+      method,
+      exchangeRates: currencies,
+    };
+    setExpensesDispatcher(expense);
+    this.setState({
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+    });
   }
 
   async fetchCurrency() {
@@ -102,29 +120,11 @@ class WalletForm extends React.Component {
       const response = await fetch(endpoint);
       const responseJson = await response.json();
       delete responseJson.USDT;
-      return getCurrencyDispatcher(responseJson);
+      await getCurrencyDispatcher(responseJson);
+      return responseJson;
     } catch (error) {
       console.log(error);
     }
-  }
-
-  async sumExpenses() {
-    const { setTotalExpensesDispatcher } = this.props;
-    const currencies = await this.fetchCurrency();
-    const currencyArray = Object.keys(currencies).map(
-      (currentValue) => currencies[currentValue],
-    );
-    const { expenses } = this.props;
-    let total = 0;
-    let convertion = 0;
-    expenses.forEach((currentValue) => {
-      const currentCurrency = currencyArray.find(
-        (element) => element.code === currentValue.currency,
-      );
-      total += currentValue.value * currentCurrency.ask;
-      convertion = total.toFixed(2);
-    });
-    setTotalExpensesDispatcher(convertion);
   }
 
   render() {
@@ -156,14 +156,16 @@ class WalletForm extends React.Component {
           {this.setOptionsCurrency()}
         </label>
         <label htmlFor="method-input">
-          Método de Pagamento:
-          {this.setOptionsPayment()}
+          Método de pagamento:
+          { this.setOptionsPayment() }
         </label>
         <label htmlFor="tag-input">
           Tag:
           {this.setOptionsTag()}
         </label>
-        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
+        <button type="button" onClick={ this.handleClick }>
+          Adicionar despesa:
+        </button>
       </form>
     );
   }
@@ -176,11 +178,10 @@ WalletForm.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   getCurrencyDispatcher: (responseJson) => dispatch(getCurrencyAction(responseJson)),
   setExpensesDispatcher: (expenses) => dispatch(setExpensesAction(expenses)),
-  setTotalExpensesDispatcher: (expenses) => dispatch(setTotalExpensesAction(expenses)),
 });
 
 const mapStatetoProps = (state) => ({
-  currency: state.wallet.currency,
+  currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
 });
 
