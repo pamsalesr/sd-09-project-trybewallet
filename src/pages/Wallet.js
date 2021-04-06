@@ -11,7 +11,7 @@ class Wallet extends React.Component {
     this.state = {
       description: '',
       value: 0,
-      tag: 'food',
+      tag: 'Alimentação',
       method: 'Dinheiro',
       currency: 'USD',
       id: '',
@@ -58,7 +58,7 @@ class Wallet extends React.Component {
     const { description } = this.state;
     return (
       <label htmlFor="description">
-        Descrição
+        Descriçao
         <input
           type="text"
           data-testid="description-input"
