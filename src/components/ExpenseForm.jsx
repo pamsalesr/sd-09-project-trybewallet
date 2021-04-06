@@ -56,7 +56,6 @@ class ExpenseForm extends React.Component {
       exchangeRates: currenciesList,
     };
 
-
     dispatchNewExpense(newExpense);
     this.setState(NEW_STATE);
   }
