@@ -9,15 +9,31 @@ class Login extends React.Component {
     super();
     this.state = {
       email: String(),
+      password: String(),
+      disabled: true,
     };
     this.changeInput = this.changeInput.bind(this);
     this.submitUser = this.submitUser.bind(this);
+    this.validateUser = this.validateUser.bind(this);
+  }
+
+  validateUser({ email, password }) {
+    this.setState({
+      disabled: true,
+    });
+    const emailValidation = new RegExp(/^[\w\d]+@[\w]+\.[\w]{2,3}/g);
+    const passwordValidation = new RegExp(/^.{6,}/g);
+    if (emailValidation.test(email) && passwordValidation.test(password)) {
+      this.setState({
+        disabled: false,
+      });
+    }
   }
 
   changeInput({ target: { name, value } }) {
     this.setState({
       [name]: value,
-    });
+    }, () => this.validateUser(this.state));
   }
 
   submitUser() {
@@ -26,7 +42,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email } = this.state;
+    const { email, disabled, password } = this.state;
     return (
       <div>
         <div>
@@ -45,25 +61,26 @@ class Login extends React.Component {
         <div>
           <label htmlFor="userPassword">
             <input
-              name="userPassword"
+              name="password"
+              value={ password }
               placeholder="password"
               type="password"
               data-testid="password-input"
+              onChange={ this.changeInput }
             />
           </label>
         </div>
-        { email
-        && (
-          <div>
-            <Link to="/carteira">
-              <button
-                type="button"
-                onClick={ () => this.submitUser() }
-              >
-                Entrar
-              </button>
-            </Link>
-          </div>) }
+        <div>
+          <Link to="/carteira">
+            <button
+              type="button"
+              disabled={ disabled }
+              onClick={ () => this.submitUser() }
+            >
+              Entrar
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
