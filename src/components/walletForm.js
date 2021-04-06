@@ -26,6 +26,7 @@ class WalletForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.buttonAdd = this.buttonAdd.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.computeValue = this.computeValue.bind(this);
   }
 
   componentDidMount() {
@@ -45,17 +46,24 @@ class WalletForm extends Component {
     });
   }
 
+  computeValue(total, value) {
+    const { currency, exchangeRates } = this.state;
+    return total + parseFloat(value) * parseFloat(exchangeRates[currency].ask);
+
+  }
+
   buttonAdd() {
-    const { addExpense, wallet } = this.props;
+    const { addExpense, addTotals, totals, wallet } = this.props;
     const { lastId } = wallet;
+    const { total, currency } = totals;
     const { value, description } = this.state;
 
     if (value !== 0 && description !== '') {
       this.setState({
         id: lastId + 1,
       });
-
       addExpense(this.state);
+      addTotals(this.computeValue(total, value), currency);
       this.clearState();
     }
   }
@@ -70,6 +78,7 @@ class WalletForm extends Component {
         [name]: value,
         exchangeRates: currencies,
       });
+
     }
   }
 
@@ -109,6 +118,7 @@ WalletForm.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   addCurrency: () => dispatch(fetchCurrency()),
   addExpense: (expense) => dispatch(Actions.addExpense(expense)),
+  addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
 });
 
 const mapStateToProps = (state) => (state);
