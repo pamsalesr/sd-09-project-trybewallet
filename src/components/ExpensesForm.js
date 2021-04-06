@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrency, fetchExchangeRate } from '../actions';
+import { fetchCurrency, addExpense } from '../actions';
 import './ExpensesForm.css';
 
 const INITIAL_STATE = {
@@ -10,8 +10,6 @@ const INITIAL_STATE = {
   paymentSelect: 'Dinheiro',
   tagSelect: 'Alimentação',
   descriptionInput: '',
-  currencies: [],
-  fetched: false,
   index: 0,
 };
 
@@ -19,28 +17,27 @@ class ExpensesForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE };
+    this.state = INITIAL_STATE;
 
     this.handleChange = this.handleChange.bind(this);
-    this.getCurrencies = this.getCurrencies.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetchExchangeRates = this.fetchExchangeRates.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { fetchCurrencies } = this.props;
-    await fetchCurrencies();
-    this.getCurrencies();
+    fetchCurrencies();
   }
 
-  getCurrencies() {
-    const { currencies } = this.props;
-    this.setState({
-      currencies: [...currencies],
-      fetched: true,
-    });
+  async fetchExchangeRates() {
+    const rates = await fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json());
+
+    return rates;
   }
 
   handleSubmit() {
-    const { fetchRate } = this.props;
+    const { addExpenseToStore } = this.props;
     const {
       valueInput,
       currencySelect,
@@ -49,20 +46,24 @@ class ExpensesForm extends Component {
       descriptionInput,
       index,
     } = this.state;
-    fetchRate({
-      id: index,
-      value: valueInput,
-      description: descriptionInput,
-      currency: currencySelect,
-      method: paymentSelect,
-      tag: tagSelect,
+
+    this.fetchExchangeRates().then((rates) => {
+      const expenses = {
+        id: index,
+        value: valueInput,
+        description: descriptionInput,
+        currency: currencySelect,
+        method: paymentSelect,
+        tag: tagSelect,
+        exchangeRates: rates,
+      };
+      addExpenseToStore(expenses);
     });
     this.setState((state) => ({
       ...INITIAL_STATE,
+      valueInput: 0,
       index: state.index + 1,
-    }), () => {
-      this.getCurrencies();
-    });
+    }));
   }
 
   handleChange({ target }) {
@@ -91,7 +92,8 @@ class ExpensesForm extends Component {
   }
 
   renderCurrencySelect() {
-    const { currencies, currencySelect } = this.state;
+    const { currencies } = this.props;
+    const { currencySelect } = this.state;
     return (
       <label htmlFor="expenses-currency-select">
         Moeda:
@@ -181,10 +183,8 @@ class ExpensesForm extends Component {
   }
 
   render() {
-    const {
-      fetched,
-    } = this.state;
-    if (!fetched) {
+    const { isFetching } = this.props;
+    if (isFetching) {
       return (
         <h3>Carregando valores...</h3>
       );
@@ -198,7 +198,7 @@ class ExpensesForm extends Component {
         { this.renderDescriptionInput() }
         <button
           type="button"
-          onClick={ () => this.handleSubmit() }
+          onClick={ this.handleSubmit }
           className="add-btn"
         >
           Adicionar despesa
@@ -210,17 +210,23 @@ class ExpensesForm extends Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  isFetching: state.wallet.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrencies: () => dispatch(fetchCurrency()),
-  fetchRate: (expenses) => dispatch(fetchExchangeRate(expenses)),
+  addExpenseToStore: (expenses) => dispatch(addExpense(expenses)),
 });
 
 ExpensesForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   fetchCurrencies: PropTypes.func.isRequired,
-  fetchRate: PropTypes.func.isRequired,
+  addExpenseToStore: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+};
+
+ExpensesForm.defaultProps = {
+  isFetching: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

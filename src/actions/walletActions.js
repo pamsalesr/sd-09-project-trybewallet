@@ -2,9 +2,10 @@ import {
   CURRENCY_REQUEST,
   CURRENCY_REQUEST_SUCCESS,
   CURRENCY_REQUEST_FAILURE,
-  EXCHANGE_RATE_REQUEST,
+  // EXCHANGE_RATE_REQUEST,
   DELETE_EXPENSE,
   EDIT_EXPENSE,
+  ADD_EXPENSE,
 } from './actionTypes';
 
 const currencyRequest = () => ({
@@ -21,11 +22,11 @@ const currencyRequestFailure = (error) => ({
   error,
 });
 
-const exchangeRateRequest = (expenses, data) => ({
-  type: EXCHANGE_RATE_REQUEST,
-  expenses,
-  data,
-});
+// const exchangeRateRequest = (expenses, data) => ({
+//   type: EXCHANGE_RATE_REQUEST,
+//   expenses,
+//   data,
+// });
 
 export const fetchCurrency = () => (
   async (dispatch) => {
@@ -40,18 +41,23 @@ export const fetchCurrency = () => (
   }
 );
 
-export const fetchExchangeRate = (expenses) => (
-  async (dispatch) => {
-    dispatch(currencyRequest());
-    try {
-      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-      const responseObject = await response.json();
-      dispatch(exchangeRateRequest(expenses, responseObject));
-    } catch (error) {
-      dispatch(currencyRequestFailure(error));
-    }
-  }
-);
+export const addExpense = (expense) => ({
+  type: ADD_EXPENSE,
+  expense,
+});
+
+// export const fetchExchangeRate = (expenses) => (
+//   async (dispatch) => {
+//     dispatch(currencyRequest());
+//     try {
+//       const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+//       const responseObject = await response.json();
+//       dispatch(exchangeRateRequest(expenses, responseObject));
+//     } catch (error) {
+//       dispatch(currencyRequestFailure(error));
+//     }
+//   }
+// );
 
 export const deleteExpense = (expense) => ({
   type: DELETE_EXPENSE,

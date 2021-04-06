@@ -2,15 +2,17 @@
 import userLogin from './userAction';
 import {
   fetchCurrency,
-  fetchExchangeRate,
+  // fetchExchangeRate,
   deleteExpense,
   editExpense,
+  addExpense,
 } from './walletActions';
 
 export {
   userLogin,
   fetchCurrency,
-  fetchExchangeRate,
+  // fetchExchangeRate,
   deleteExpense,
   editExpense,
+  addExpense,
 };

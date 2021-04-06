@@ -72,6 +72,7 @@ class ExpensesTable extends Component {
             data-testid="delete-btn"
             type="button"
             onClick={ () => deleteExp(expense.id) }
+            className="delete-btn"
           >
             Excluir
           </button>

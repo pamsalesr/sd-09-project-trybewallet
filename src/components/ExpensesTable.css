@@ -1,4 +1,54 @@
-table , .edit-form {
-  margin: 1.5em auto;
-  width: 80%;
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th , td {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+  text-align: center;
+}
+
+tr:nth-child( even ) {
+  background-color: #f2f2f2;
+}
+
+th {
+  background-color: #036b52;
+  color: white;
+  padding: 1.5em;
+}
+
+button {
+  border: none;
+  font-weight: 800;
+  margin: 0.25em;
+  padding: 1em;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+}
+
+.edit-form {
+  align-items: center;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+select {
+  border: none;
+}
+
+input {
+  border: none;
+  padding: 1em;
+}
+
+.edit-from input , .edit-form select {
+  padding: 1em;
 }

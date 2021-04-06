@@ -3,9 +3,10 @@ import {
   CURRENCY_REQUEST,
   CURRENCY_REQUEST_SUCCESS,
   CURRENCY_REQUEST_FAILURE,
-  EXCHANGE_RATE_REQUEST,
+  // EXCHANGE_RATE_REQUEST,
   DELETE_EXPENSE,
   EDIT_EXPENSE,
+  ADD_EXPENSE,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -34,15 +35,20 @@ const wallet = (state = INITIAL_STATE, action) => {
       error: action.error,
       isFetching: false,
     };
-  case EXCHANGE_RATE_REQUEST:
+  case ADD_EXPENSE:
     return {
       ...state,
-      expenses: [...state.expenses, {
-        ...action.expenses,
-        exchangeRates: { ...action.data },
-      }],
-      isFetching: false,
+      expenses: [...state.expenses, action.expense],
     };
+  // case EXCHANGE_RATE_REQUEST:
+  //   return {
+  //     ...state,
+  //     expenses: [...state.expenses, {
+  //       ...action.expenses,
+  //       exchangeRates: { ...action.data },
+  //     }],
+  //     isFetching: false,
+  //   };
   case DELETE_EXPENSE:
     return {
       ...state,
