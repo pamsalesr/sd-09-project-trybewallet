@@ -18,9 +18,9 @@ function walletReducer(state = INITIAL_STATE, action) {
       expenses: [...state.expenses, action.expense] };
   case UPDATE_EXPENSE:
     return { ...state,
-      expenses: [...state.expenses.slice(0, action.index),
+      expenses: [...state.expenses.slice(0, action.index), action.expense,
         ...state.expenses
-          .slice(action.index + 1, state.expenses.length), action.expense] };
+          .slice(action.index + 1, state.expenses.length)] };
   case DELETE_EXPENSE:
     return { ...state,
       expenses: [...state.expenses

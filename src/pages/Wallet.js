@@ -11,14 +11,12 @@ class Wallet extends React.Component {
     super(props);
     this.state = {
       exchangeRates: {},
-      id: 0,
       value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
       expense: {},
-      expenses: [],
       isEditing: false,
     };
     this.handleInputEvents = this.handleInputEvents.bind(this);
@@ -36,7 +34,7 @@ class Wallet extends React.Component {
 
   getTotalExpenseValue({ expenses }) {
     let totalExpenses = 0;
-    if (expenses.length > 0) {
+    if (expenses && expenses.length > 0) {
       expenses.forEach((expense) => {
         const exchangeRates = Object.values(expense.exchangeRates);
         const currentAsk = exchangeRates
@@ -63,6 +61,14 @@ class Wallet extends React.Component {
       editExpenseDispatch,
     } = this.props;
     const { expense, isEditing } = this.state;
+    if (expense && isEditing) {
+      const { wallet } = this.props;
+      const { expenses } = wallet;
+      const index = expenses.indexOf(expenses.find((expens) => expens.id === expense.id));
+      editExpenseDispatch(expense, index);
+    } else {
+      newExpenseDispatch(expense);
+    }
     this.setState({
       value: '',
       description: '',
@@ -72,14 +78,6 @@ class Wallet extends React.Component {
       expense: {},
       isEditing: false,
     });
-    if (expense && isEditing) {
-      const { wallet } = this.props;
-      const { expenses } = wallet;
-      const index = expenses.indexOf(expenses.find((expens) => expens.id === expense.id));
-      editExpenseDispatch(expense, index);
-    } else {
-      newExpenseDispatch(expense);
-    }
   }
 
   removeExpense({ target }) {
@@ -95,12 +93,13 @@ class Wallet extends React.Component {
     const { value, description, currency, method, tag, isEditing } = this.state;
     const { wallet } = this.props;
     const { currencies } = wallet;
-    const exchangeRates = currencies[0];
+    let exchangeRates = currencies[0];
     const { expenses } = wallet;
     let { id } = this.state;
     let expense = {};
     if (isEditing) {
-      expense.id = expenses.find((expens) => expens.id === id).id;
+      // expense.id = expenses.find((expens) => expens.id === id).id;
+      exchangeRates = expenses.find((expens) => expens.id === id).exchangeRates;
       expense = {
         id,
         value,
@@ -140,6 +139,7 @@ class Wallet extends React.Component {
       description: expense.description,
       tag: expense.tag,
       method: expense.method,
+      exchangeRates: expense.exchangeRates,
     });
   }
 

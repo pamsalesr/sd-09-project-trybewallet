@@ -70,7 +70,6 @@ describe('7 - Crie um botão para editar uma despesa da tabela contendo as segui
           exchangeRates: mockData,
         },
       ];
-  
       expect(store.getState().wallet.expenses).toStrictEqual(newExpenses);
     });
   });
