@@ -2,7 +2,7 @@ export const SIGNIN = '@TRYBEWALLET/LOGIN';
 export const SAVE_CURRENCIES = '@TRYBEWALLET/SAVE_CURRENCIES';
 export const SAVE_EXPENSES = '@TRYBEWALLET/SAVE_EXPENSE';
 
-export const signin = (email) => ({
+export const saveEmail = (email) => ({
   type: SIGNIN,
   payload: email,
 });

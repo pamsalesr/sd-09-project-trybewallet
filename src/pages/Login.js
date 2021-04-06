@@ -1,106 +1,81 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { signin } from '../actions';
-import './Login.css';
+import { saveEmail } from '../actions';
 
-class Login extends React.Component {
+class LoginForms extends React.Component {
   constructor(props) {
     super(props);
-
-    this.isEmail = this.isEmail.bind(this);
-    this.isPassword = this.isPassword.bind(this);
-    this.updateState = this.updateState.bind(this);
-    this.updateStatus = this.updateStatus.bind(this);
-
+    this.handleChange = this.handleChange.bind(this);
+    this.statusCheck = this.statusCheck.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       email: '',
       password: '',
-      disable: true,
     };
   }
 
-  componentDidUpdate() {
-    const { email, password, disable } = this.state;
-    if (disable) {
-      if (this.isEmail(email) && this.isPassword(password)) {
-        return this.updateStatus(false);
-      }
-    } else if (!this.isEmail(email) || !this.isPassword(password)) {
-      return this.updateStatus(true);
-    }
+  handleChange({ target }) {
+    const { id, value } = target;
+    this.setState({
+      [id]: value,
+    });
   }
 
-  updateStatus(bool) {
-    this.setState((state) => ({ ...state, disable: bool }));
+  statusCheck() {
+    const { email, password } = this.state;
+
+    const emailFormat = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/.test(email);
+    const passwordFormat = /[\w\D]{6}/g.test(password);
+
+    return !(emailFormat && passwordFormat);
   }
 
-  isEmail(email) {
-    const atSymbol = email.indexOf('@');
-    if (atSymbol < 1) return false;
-
-    const dot = email.indexOf('.');
-    if (dot <= atSymbol + 2) return false;
-
-    if (dot === email.length - 1) return false;
-
-    return true;
-  }
-
-  isPassword(password) {
-    const MAX = 6;
-    if (password.length >= MAX) return true;
-    return false;
-  }
-
-  updateState(event) {
-    const { name, value } = event.target;
-    this.setState((state) => ({ ...state, [name]: value }));
+  handleSubmit() {
+    const { setEmail } = this.props;
+    const { email } = this.state;
+    setEmail(email);
   }
 
   render() {
-    const { disable, email } = this.state;
-    const { signIn } = this.props;
     return (
-      <div className="container-center">
-        <div className="wrapper-login">
-          <h1>SIGNIN</h1>
+      <form>
+        <label htmlFor="email">
           <input
-            name="email"
-            type="text"
+            id="email"
             data-testid="email-input"
-            placeholder="Email"
-            onChange={ this.updateState }
+            onChange={ this.handleChange }
           />
+        </label>
+        <label htmlFor="password">
           <input
-            name="password"
             type="password"
+            id="password"
             data-testid="password-input"
-            placeholder="Senha"
-            onChange={ this.updateState }
+            onChange={ this.handleChange }
           />
-          <Link to="/carteira">
-            <button
-              disabled={ disable }
-              onClick={ () => signIn(email) }
-              type="button"
-            >
-              Entrar
-            </button>
-          </Link>
-        </div>
-      </div>
+        </label>
+        <Link to="/carteira">
+          <button
+            type="button"
+            disabled={ this.statusCheck() }
+            onClick={ this.handleSubmit }
+          >
+            Entrar
+          </button>
+        </Link>
+      </form>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  signIn: (value) => dispatch(signin(value)),
+  setEmail: (email) => dispatch(saveEmail(email)),
 });
 
-Login.propTypes = {
-  signIn: PropTypes.func.isRequired,
+LoginForms.propTypes = {
+  setEmail: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(LoginForms);
