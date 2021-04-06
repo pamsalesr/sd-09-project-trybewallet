@@ -30,14 +30,14 @@
   width: 150px;
 }
 
-.edit-expense-btn {
+.edit-btn {
   background-color: orange;
   border-radius: 2px;
   color: white;
   font-weight: 700;
 }
 
-.delete-expense-btn {
+.delete-btn {
   background-color: red;
   border-radius: 2px;
   color: white;

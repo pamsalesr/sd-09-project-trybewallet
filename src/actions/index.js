@@ -1,6 +1,6 @@
 export const LOGGED_IN = 'LOGGED_IN';
 export const SUBMIT_EXPENSE = 'SUBMIT_EXPENSE';
-export const LOAD_CURRENCIES = 'LOAD_CURRENCIES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const loggedInAction = (email) => ({
   type: LOGGED_IN,
@@ -26,7 +26,7 @@ export const submitExpense = ({
   exchangeRates,
 });
 
-export const loadCurrencies = (currencies) => ({
-  type: LOAD_CURRENCIES,
-  currencies,
+export const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  expenses,
 });

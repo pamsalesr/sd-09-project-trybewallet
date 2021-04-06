@@ -1,7 +1,6 @@
-import { LOAD_CURRENCIES, SUBMIT_EXPENSE } from '../actions';
+import { DELETE_EXPENSE, SUBMIT_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
-  currencies: [],
   expenses: [],
 };
 
@@ -18,8 +17,8 @@ const wallet = (state = INITIAL_STATE, action) => {
         tag: action.tag,
         exchangeRates: action.exchangeRates,
       }] };
-  case LOAD_CURRENCIES:
-    return { ...state, currencies: [...action.currencies] };
+  case DELETE_EXPENSE:
+    return { ...state, expenses: [...action.expenses] };
   default:
     return state;
   }
