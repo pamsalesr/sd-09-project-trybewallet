@@ -19,8 +19,12 @@ class Form extends Component {
   }
 
   componentDidMount() {
+    this.requestCurrencies();
+  }
+
+  async requestCurrencies() {
     const { dispatchFetchCurrencies } = this.props;
-    dispatchFetchCurrencies();
+    await dispatchFetchCurrencies();
   }
 
   handleChange({ target }) {
@@ -31,11 +35,13 @@ class Form extends Component {
     });
   }
 
-  createExpense(currencies) {
-    const { expenses } = this.props;
+  createExpense() {
+    this.requestCurrencies();
+
+    const { expenses, currencies, dispatchAddExpenses } = this.props;
     const { value, currency, method, tag, description } = this.state;
 
-    return {
+    const expense = {
       id: expenses.length,
       value,
       currency,
@@ -44,6 +50,16 @@ class Form extends Component {
       description,
       exchangeRates: currencies,
     };
+
+    dispatchAddExpenses(expense);
+
+    this.setState({
+      value: 0,
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      description: '',
+    });
   }
 
   renderCurrenciesSelect(currencies) {
@@ -51,6 +67,7 @@ class Form extends Component {
     return (
       <select
         data-testid="currency-input"
+        id="currency-input"
         value={ currency }
         name="currency"
         onChange={ this.handleChange }
@@ -73,6 +90,7 @@ class Form extends Component {
     return (
       <select
         data-testid="method-input"
+        id="method-input"
         value={ method }
         name="method"
         onChange={ this.handleChange }
@@ -89,6 +107,7 @@ class Form extends Component {
     return (
       <select
         data-testid="tag-input"
+        id="tag-input"
         value={ tag }
         name="tag"
         onChange={ this.handleChange }
@@ -104,7 +123,7 @@ class Form extends Component {
 
   render() {
     const { value, description } = this.state;
-    const { currencies, dispatchAddExpenses } = this.props;
+    const { currencies } = this.props;
 
     return (
       <form>
@@ -142,7 +161,7 @@ class Form extends Component {
         </label>
         <button
           type="button"
-          onClick={ () => dispatchAddExpenses(this.createExpense(currencies)) }
+          onClick={ () => this.createExpense() }
         >
           Adicionar despesa
         </button>
