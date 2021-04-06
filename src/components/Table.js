@@ -8,7 +8,7 @@ class Table extends Component {
     const { expenses, dispatchEditExpenses } = this.props;
 
     const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
-    
+
     dispatchEditExpenses(updatedExpenses);
   }
 
@@ -33,20 +33,20 @@ class Table extends Component {
           {expenses.map((expense) => {
             const exchangeRates = expense.exchangeRates[expense.currency];
             return (
-              <tr key={expense.id}>
-                <td>{expense.description}</td>
-                <td>{expense.tag}</td>
-                <td>{expense.method}</td>
-                <td>{expense.value}</td>
-                <td>{exchangeRates.name}</td>
-                <td>{parseFloat(exchangeRates.ask).toFixed(2)}</td>
-                <td>{(expense.value * exchangeRates.ask).toFixed(2)}</td>
+              <tr key={ expense.id }>
+                <td>{ expense.description }</td>
+                <td>{ expense.tag }</td>
+                <td>{ expense.method }</td>
+                <td>{ expense.value }</td>
+                <td>{ exchangeRates.name }</td>
+                <td>{ parseFloat(exchangeRates.ask).toFixed(2) }</td>
+                <td>{ (expense.value * exchangeRates.ask).toFixed(2) }</td>
                 <td>Real</td>
                 <button type="button">Editar</button>
                 <button
                   data-testid="delete-btn"
                   type="button"
-                  onClick={() => this.deleteExpense(expense.id)}
+                  onClick={ () => this.deleteExpense(expense.id) }
                 >
                   Excluir
                 </button>
