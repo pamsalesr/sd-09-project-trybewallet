@@ -3,11 +3,13 @@ import {
   FETCHING_CURRENCIES,
   FETCH_CURRENCIES_SUCCESS,
   FETCH_CURRENCIES_ERROR,
+  ADD_EXPENSE_TO_STORE,
 } from '../actions';
 
 const INITIAL_STATE = {
   expenses: [],
   currencies: [],
+  fullCurrencies: [],
   error: '',
 };
 
@@ -23,6 +25,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       currencies: [...Object.keys(action.currencies)
         .filter((currency) => currency !== 'USDT')],
+      fullCurrencies: action.currencies,
     };
 
   case FETCH_CURRENCIES_ERROR:
@@ -30,6 +33,13 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       error: action.error,
     };
+
+  case ADD_EXPENSE_TO_STORE:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.expense],
+    };
+
   default:
     return state;
   }

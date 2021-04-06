@@ -3,6 +3,7 @@ export const LOGIN = 'LOGIN';
 export const FETCHING_CURRENCIES = 'FETCHING_CURRENCIES';
 export const FETCH_CURRENCIES_SUCCESS = 'FETCH_CURRENCIES_SUCCESS';
 export const FETCH_CURRENCIES_ERROR = 'FETCH_CURRENCIES_ERROR';
+export const ADD_EXPENSE_TO_STORE = 'ADD_EXPENSE_TO_STORE';
 
 export const userAction = (userLogin) => ({
   type: LOGIN,
@@ -23,10 +24,10 @@ export const fetchCurrenciesError = (error) => ({
   error,
 });
 
-// export const fetchCurrencyRate = () => ({
-//   type: FETCH_CURRENCY_RATE,
-//   currencies,
-// });
+export const addExpenseToStore = (expense) => ({
+  type: ADD_EXPENSE_TO_STORE,
+  expense,
+});
 
 const url = 'https://economia.awesomeapi.com.br/json/all';
 

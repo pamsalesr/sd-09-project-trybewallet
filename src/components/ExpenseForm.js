@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies } from '../actions';
+import { fetchCurrencies, addExpenseToStore } from '../actions';
+
+const INITIAL_STATE = {
+  value: 0,
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
 
 class ExpenseForm extends Component {
   constructor() {
     super();
     this.state = {
-      value: '',
+      id: 0,
+      value: 0,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -15,6 +24,7 @@ class ExpenseForm extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +35,35 @@ class ExpenseForm extends Component {
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({ [name]: value });
+  }
+
+  async fetchExchangeRates() {
+    const url = 'https://economia.awesomeapi.com.br/json/all';
+    const myRates = await fetch(url).then((response) => response.json());
+
+    return myRates;
+  }
+
+  async handleClick() {
+    const { value, description, method, tag, currency, id } = this.state;
+    const { addExpense } = this.props;
+
+    this.fetchExchangeRates().then((response) => {
+      const expenses = {
+        id,
+        value,
+        description,
+        method,
+        tag,
+        currency,
+        exchangeRates: response,
+      };
+      addExpense(expenses);
+      this.setState((state) => ({
+        ...INITIAL_STATE,
+        id: state.id + 1,
+      }));
+    });
   }
 
   renderValueInputField() {
@@ -82,7 +121,7 @@ class ExpenseForm extends Component {
             >
               {myCurrency}
             </option>
-          )) }
+          ))}
         </select>
       </label>
     );
@@ -141,6 +180,7 @@ class ExpenseForm extends Component {
         { this.renderTagField() }
         <button
           type="button"
+          onClick={ this.handleClick }
         >
           Adicionar despesa
         </button>
@@ -151,15 +191,19 @@ class ExpenseForm extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrenciesFromAPI: () => dispatch(fetchCurrencies()),
+  addExpense: (expense) => dispatch(addExpenseToStore(expense)),
 });
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  fullCurrencies: state.wallet.fullCurrencies,
 });
 
 ExpenseForm.propTypes = {
   fetchCurrenciesFromAPI: PropTypes.func.isRequired,
-  currencies: PropTypes.objectOf().isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  addExpense: PropTypes.func.isRequired,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
