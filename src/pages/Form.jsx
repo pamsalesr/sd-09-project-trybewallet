@@ -40,6 +40,7 @@ class Form extends React.Component {
   }
 
   valueInput() {
+    const { value } = this.state;
     return (
       <label htmlFor="value">
         Valor:
@@ -48,12 +49,14 @@ class Form extends React.Component {
           data-testid="value-input"
           id="value"
           onChange={ this.handleChange }
+          value= { value }
         />
       </label>
     );
   }
 
   descriptionInput() {
+    const { description } = this.state
     return (
       <label htmlFor="description">
         Descrição
@@ -62,6 +65,7 @@ class Form extends React.Component {
           data-testid="description-input"
           id="description"
           onChange={ this.handleChange }
+          value = { description }
         />
       </label>
     );
@@ -146,6 +150,11 @@ class Form extends React.Component {
     const expenseRealPrice = parseFloat(currencies[currency].ask)*expense.value;
     console.log(expenseRealPrice);
     convertExp(expenseRealPrice);
+    this.setState((state) => ({
+      ...state,
+      description:'',
+      value: 0,
+    }));
   }
 
   render() {
