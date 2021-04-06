@@ -1,7 +1,36 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchCurrency } from '../actions';
 
 class ExpenseForm extends React.Component {
+  componentDidMount() {
+    this.fetchCurrency();
+  }
+
+  async fetchCurrency() {
+    const { getCurrency } = this.props;
+    await getCurrency();
+  }
+
+  renderSelectCurrency(currencies) {
+    // console.log(Object.keys(currencies))
+    return (
+      <select name="moeda" id="moeda" data-testid="currency-input">
+        {Object.keys(currencies).map((currency) => (
+          <option
+            key={ currency }
+            value={ currency }
+            data-testid={ currency }
+          >
+            { currency }
+          </option>
+        ))}
+      </select>
+    );
+  }
+
   render() {
+    const { currencies } = this.props;
     return (
       <form>
         <label htmlFor="despesa">
@@ -14,9 +43,7 @@ class ExpenseForm extends React.Component {
         </label>
         <label htmlFor="moeda">
           Moeda
-          <select name="moeda" id="moeda" data-testid="currency-input">
-            <option value="USD">USD</option>
-          </select>
+          { this.renderSelectCurrency(currencies) }
         </label>
         <label htmlFor="pagamento">
           Método de pagamento
@@ -41,4 +68,12 @@ class ExpenseForm extends React.Component {
   }
 }
 
-export default ExpenseForm;
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCurrency: () => dispatch(fetchCurrency()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
