@@ -11,16 +11,22 @@ class Header extends React.Component {
   totalExpenses() {
     const { expenses } = this.props;
     if (expenses.length === 0) return 0;
+    const sum = (result, number) => {
+      const { currency } = number;
+      const exchangeRate = number.exchangeRates[currency];
+      return (result + (parseFloat(number.value) * exchangeRate.ask));
+    };
+    const totalExpense = expenses.reduce(sum, 0);
+    return totalExpense;
   }
 
   render() {
     const { userEmail } = this.props;
     return (
       <header>
-        { console.log(userEmail) }
         <span data-testid="email-field">{`Email: ${userEmail} | `}</span>
         <span data-testid="total-field">
-          {`Gasto Total: R$ ${this.totalExpenses()} | `}
+          {`Despesa Total: R$ ${this.totalExpenses()} | `}
         </span>
         <span data-testid="header-currency-field">BRL</span>
       </header>
