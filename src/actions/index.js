@@ -1,7 +1,7 @@
 export const CHANGE_EMAIL_LOGIN = 'CHANGE_EMAIL_LOGIN';
 export const UPDATE_EXCHANGE_RATES = 'UPDATE_EXCHANGE_RATES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
-export const CONVERT_EXPENSE = 'CONVERT_EXPENSE';
+// export const CONVERT_EXPENSE = 'CONVERT_EXPENSE';
 
 export const handleEmail = (emailLogin) => ({
   type: CHANGE_EMAIL_LOGIN,
@@ -18,7 +18,7 @@ export const handleAddExpense = (expense) => ({
   expense,
 });
 
-export const handleConvertExpense = (convertedExp) => ({
-  type: CONVERT_EXPENSE,
-  convertedExp,
-});
+// export const handleConvertExpense = (convertedExp) => ({
+//   type: CONVERT_EXPENSE,
+//   convertedExp,
+// });
