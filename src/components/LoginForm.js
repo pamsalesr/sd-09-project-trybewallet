@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveEmail } from '../actions';
 
-class LoginForms extends React.Component {
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -78,4 +78,4 @@ LoginForms.propTypes = {
   setEmail: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(LoginForms);
+export default connect(null, mapDispatchToProps)(LoginForm);
