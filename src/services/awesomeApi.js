@@ -1,10 +1,10 @@
 const filterCurrencyTypes = (currencyTypes) => {
   const filtered = [];
   Object.keys(currencyTypes).forEach((currency) => {
-    filtered.push({ [currency]: currencyTypes[currency] });
+    filtered.push(currencyTypes[currency]);
   });
-  const result = filtered.filter((value) => (
-    Object.keys(value) != 'USDT' && Object.keys(value) != 'DOGE'));
+  const result = filtered.filter((value) => (value.codein !== 'BRLT'))
+    .filter((value) => (value.code !== 'DOGE'));
   return result;
 };
 
