@@ -4,7 +4,7 @@ main {
   width: 100%;
 }
 
-fieldset {
+.login-fieldset {
   align-items: center;
   border: 1px solid green;
   border-radius: 20px;
@@ -15,7 +15,7 @@ fieldset {
   width: 100%;
 }
 
-form {
+.login-form {
   left: 50%;
   position: absolute;
   top: 50%;
@@ -26,7 +26,7 @@ label {
   margin-bottom: 10px;
 }
 
-button {
+.button {
   background-color: rgb(128, 197, 143);
   border: none;
   border-radius: 7px;
@@ -36,18 +36,18 @@ button {
   padding: 12px;
 }
 
-button:hover {
+.button:hover {
   background-color: rgb(101, 155, 113);
 
 }
 
-button:disabled {
+.button:disabled {
   background-color: rgb(194, 194, 194);
   color: white;
   cursor: not-allowed;
 }
 
-input {
+.login-input {
   margin: 0 5px;
   padding: 5px;
 }

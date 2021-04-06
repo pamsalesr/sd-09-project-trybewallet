@@ -2,6 +2,8 @@ export const HANDLE_EMAIL = 'HANDLE_EMAIL';
 export const HANDLE_CURRENCIES = 'HANDLE_CURRENCIES';
 export const HANDLE_INPUTS = 'HANDLE_INPUTS';
 export const HANDLE_TOTAL = 'HANDLE_TOTAL';
+export const HANDLE_DELETE = 'HANDLE_DELETE';
+export const HANDLE_NEW_TOTAL = 'HANDLE_NEW_TOTAL';
 
 export const handleEmail = (email) => ({
   type: HANDLE_EMAIL,
@@ -21,6 +23,16 @@ export const handleInputs = (obj) => ({
 export const handleTotal = (value) => ({
   type: HANDLE_TOTAL,
   value,
+});
+
+export const handleDelete = (expense) => ({
+  type: HANDLE_DELETE,
+  expense,
+});
+
+export const handleNewTotal = (newTotal) => ({
+  type: HANDLE_NEW_TOTAL,
+  newTotal,
 });
 
 export function fetchCurrencies() {

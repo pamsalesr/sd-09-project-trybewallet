@@ -1,4 +1,10 @@
-import { HANDLE_CURRENCIES, HANDLE_INPUTS, HANDLE_TOTAL } from '../actions';
+import {
+  HANDLE_CURRENCIES,
+  HANDLE_INPUTS,
+  HANDLE_TOTAL,
+  HANDLE_DELETE,
+  HANDLE_NEW_TOTAL,
+} from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -24,6 +30,18 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       total: state.total + action.value,
+    };
+
+  case HANDLE_DELETE:
+    return {
+      ...state,
+      expenses: action.expense,
+    };
+
+  case HANDLE_NEW_TOTAL:
+    return {
+      ...state,
+      total: action.newTotal,
     };
 
   default:

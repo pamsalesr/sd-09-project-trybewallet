@@ -41,8 +41,8 @@ class Login extends React.Component {
     const { emailDispatcher } = this.props;
     return (
       <main>
-        <form>
-          <fieldset>
+        <form className="login-form">
+          <fieldset className="login-fieldset">
             <img src={ trybe } alt="trybe" width="200" />
             <label htmlFor="email-input">
               Email:
@@ -50,13 +50,13 @@ class Login extends React.Component {
                 id="email-input"
                 type="email"
                 name="email"
+                className="login-input"
                 required
                 data-testid="email-input"
                 placeholder="Enter your email address"
                 onChange={ ({ target }) => this.handleInputs(target) }
               />
             </label>
-
             <label htmlFor="password-input">
               Password:
               <input
@@ -64,17 +64,18 @@ class Login extends React.Component {
                 type="password"
                 name="password"
                 required
+                className="login-input"
                 minLength="6"
                 data-testid="password-input"
                 placeholder="Enter your password"
                 onChange={ ({ target }) => this.handleInputs(target) }
               />
             </label>
-
             <Link to="/carteira">
               <button
                 type="button"
                 disabled={ disabled }
+                className="button"
                 onClick={ () => emailDispatcher(email) }
               >
                 Entrar
