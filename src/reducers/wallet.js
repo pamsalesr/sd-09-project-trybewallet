@@ -1,22 +1,22 @@
-import { ADD_CURRENCY } from '../actions';
+import { ADD_EXPENSES, RECEIVE_CURRENCIES } from '../actions';
 
-const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-  },
-};
+const INITIAL_STATE = { currencies: [], expenses: [] };
 
-const wallet = (state = INITIAL_STATE, action) => {
+const walletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case ADD_CURRENCY:
+  case ADD_EXPENSES:
     return {
-      ...state.wallet,
-      currencies: action.currencies,
+      ...state,
+      expenses: [...state.expenses, action.data],
+    };
+  case RECEIVE_CURRENCIES:
+    return {
+      ...state,
+      currencies: action.data,
     };
   default:
     return state;
   }
 };
 
-export default wallet;
+export default walletReducer;

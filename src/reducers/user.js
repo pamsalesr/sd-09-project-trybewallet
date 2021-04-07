@@ -1,13 +1,7 @@
 import { IS_LOGGED_IN, ADD_USER } from '../actions';
 
 const INITIAL_USER_STATE = {
-  user: {
-    email: '',
-  },
-  /* wallet: {
-    currencies: [],
-    expenses: [],
-  }, */
+  email: '',
   isLoggedIn: false,
 };
 
@@ -20,8 +14,8 @@ const userReducer = (state = INITIAL_USER_STATE, action) => {
     };
   case ADD_USER:
     return {
-      ...state.user,
-      email: action.user,
+      ...state,
+      email: action.email,
     };
   default:
     return state;
