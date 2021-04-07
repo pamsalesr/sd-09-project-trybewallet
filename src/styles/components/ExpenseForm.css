@@ -6,6 +6,14 @@
   height: 100px;
 }
 
+.edit-expense-form-container {
+  background-color: rgb(76, 145, 106);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 100px;
+}
+
 .expense-form {
   align-items: center;
   display: flex;
@@ -27,8 +35,15 @@
   margin-left: 10px;
 }
 
-.expense-form > div > button {
+.expense-form > div > .add-btn {
   background-color: green;
+  border-radius: 5px;
+  color: white;
+  height: 40px;
+}
+
+.expense-form > div > .edit-btn {
+  background-color: rgb(25, 29, 36);
   border-radius: 5px;
   color: white;
   height: 40px;
