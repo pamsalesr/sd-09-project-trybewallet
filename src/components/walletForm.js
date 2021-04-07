@@ -60,7 +60,6 @@ class WalletForm extends Component {
     const { value, description } = this.state;
 
     if (value !== 0 && description !== '') {
-
       this.setState({
         id: lastId + 1,
       });
