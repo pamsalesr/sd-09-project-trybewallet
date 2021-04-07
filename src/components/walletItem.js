@@ -15,7 +15,11 @@ class WalletItem extends Component {
     const { addTotals, upgradeExpenses, wallet, totals } = this.props;
     const { total, currency } = totals;
     const { expenses } = wallet;
-    addTotals(total - value, currency);
+    let returnValue = total - value;
+    if (returnValue < 0.001) {
+      returnValue = 0;
+    }
+    addTotals(returnValue, currency);
     upgradeExpenses(expenses.filter((expense) => expense.id !== id));
   }
 
