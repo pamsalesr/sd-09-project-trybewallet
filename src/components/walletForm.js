@@ -7,6 +7,7 @@ import InputDescription from './inputDescription';
 import InputCurrency from './imputCurrency';
 import InputMethod from './inputMethod';
 import InputTag from './inputTag';
+import ListWallet from './listWallet';
 import * as Actions from '../actions';
 
 class WalletForm extends Component {
@@ -18,8 +19,8 @@ class WalletForm extends Component {
       value: 0,
       description: '',
       currency: 'USD',
-      method: 'money',
-      tag: 'food',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       exchangeRates: {},
     };
 
@@ -40,8 +41,8 @@ class WalletForm extends Component {
       value: 0,
       description: '',
       currency: 'USD',
-      method: 'money',
-      tag: 'food',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       exchangeRates: {},
     });
   }
@@ -52,7 +53,8 @@ class WalletForm extends Component {
   }
 
   buttonAdd() {
-    const { addExpense, addTotals, totals, wallet } = this.props;
+    const { addCurrency, addExpense, addTotals, totals, wallet } = this.props;
+    addCurrency();
     const { lastId } = wallet;
     const { total, currency } = totals;
     const { value, description } = this.state;
@@ -98,6 +100,7 @@ class WalletForm extends Component {
         >
           Adicionar despesa
         </button>
+        <ListWallet />
       </div>
     );
   }

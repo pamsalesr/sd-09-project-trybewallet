@@ -15,10 +15,11 @@ class InputMethod extends Component {
             type="text"
             value={ fieldValue }
             onChange={ fieldFunction }
+            defaultValue="Dinheiro"
           >
-            <option value="money" id="money">Dinheiro</option>
-            <option value="credit" id="credit">Cartao de Crédito</option>
-            <option value="debit" id="debit">Cartão de Débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
           </select>
         </label>
       </div>

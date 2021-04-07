@@ -15,12 +15,13 @@ class InputTag extends Component {
             type="text"
             value={ fieldValue }
             onChange={ fieldFunction }
+            defaultValue="Alimentação"
           >
-            <option value="food" id="food">Alimentação</option>
-            <option dvalue="recreation" id="recreation">Lazer</option>
-            <option value="work" id="work">Trabalho</option>
-            <option value="transport" id="transport">Transporte</option>
-            <option value="health" id="health">Saúde</option>
+            <option value="Alimentação">Alimentação</option>
+            <option dvalue="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="tTransporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
           </select>
         </label>
       </div>
