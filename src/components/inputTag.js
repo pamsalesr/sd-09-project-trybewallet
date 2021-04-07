@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './inputTag.css';
 
 class InputTag extends Component {
   render() {

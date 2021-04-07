@@ -4,7 +4,7 @@ import './listWallet.css';
 
 class WalletItem extends Component {
   render() {
-    const { description, tag, method, value, currencyName, exchange,
+    const { description, tag, method, currency, value, currencyName, exchange,
       convertValue } = this.props;
 
     return (
@@ -12,10 +12,11 @@ class WalletItem extends Component {
         <span className="description">{ description }</span>
         <span className="tag">{ tag }</span>
         <span className="method">{ method }</span>
-        <span className="value">{ value }</span>
+        <span className="sign">{ currency }</span>
+        <span className="value">{ parseFloat(value).toFixed(2) }</span>
         <span className="currency">{ currencyName }</span>
-        <span className="exchange">{ exchange }</span>
-        <span className="convert-value">{ convertValue }</span>
+        <span className="exchange">{ parseFloat(exchange).toFixed(2) }</span>
+        <span className="convert-value">{ parseFloat(convertValue).toFixed(2) }</span>
         <span className="convert-currency">Real</span>
         <button
           type="button"

@@ -5,11 +5,11 @@ import WalletItem from './walletItem';
 import './listWallet.css';
 
 class ListWallet extends Component {
+
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
-    // Object.values(currencies).map((teste) => console.log(teste.name));
-    // console.log(Object.keys(currencies));
+
     return (
       <div>
         <span className="description">Descrição</span>
@@ -23,15 +23,17 @@ class ListWallet extends Component {
         <span className="edit-exclude">Editar/Excluir</span>
         {
           expenses.map((expense) => (
+
             <WalletItem
               description={ expense.description }
               tag={ expense.tag }
               method={ expense.method }
               currency={ expense.currency }
-              value={ parseFloat(expense.value).toFixed(2) }
-              currencyName="nome da moeda"
-              exchange={ parseFloat('0.00').toFixed(2) }
-              convertValue={ parseFloat(expense.value).toFixed(2) }
+              value={ expense.value }
+              currencyName={ expense.exchangeRates[expense.currency].name }
+              exchange={ expense.exchangeRates[expense.currency].ask }
+              convertValue={expense.exchangeRates[expense.currency].ask
+                * expense.value }
               key={ expense.id }
             />
           ))

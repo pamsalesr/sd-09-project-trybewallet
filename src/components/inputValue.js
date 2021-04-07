@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './inputValue.css';
 
 class InputValue extends Component {
   render() {

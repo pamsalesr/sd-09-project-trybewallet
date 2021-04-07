@@ -1,5 +1,6 @@
 * {
   font-size: 15px;
+  color: black;
 }
 
 .description {
@@ -55,3 +56,11 @@
   text-align: center;
   width: 100px;
 }
+
+.sign {
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  width: 10px;
+}
+

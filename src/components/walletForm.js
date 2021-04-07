@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { fetchCurrency } from '../actions';
 import InputValue from './inputValue';
 import InputDescription from './inputDescription';
-import InputCurrency from './imputCurrency';
+import InputCurrency from './inputCurrency';
 import InputMethod from './inputMethod';
 import InputTag from './inputTag';
 import ListWallet from './listWallet';
 import * as Actions from '../actions';
+import './walletForm.css';
 
 class WalletForm extends Component {
   constructor(props) {
@@ -86,21 +87,25 @@ class WalletForm extends Component {
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
-        <InputValue fieldValue={ value } fieldFunction={ this.handleChange } />
-        <InputDescription
-          fieldValue={ description }
-          fieldFunction={ this.handleChange }
-        />
-        <InputCurrency fieldValue={ currency } fieldFunction={ this.handleChange } />
-        <InputMethod fieldValue={ method } fieldFunction={ this.handleChange } />
-        <InputTag fieldValue={ tag } fieldFunction={ this.handleChange } />
-        <button
-          type="button"
-          onClick={ this.buttonAdd }
-        >
-          Adicionar despesa
-        </button>
-        <ListWallet />
+        <div className="wallet-form">
+          <InputValue fieldValue={ value } fieldFunction={ this.handleChange } />
+          <InputDescription
+            fieldValue={ description }
+            fieldFunction={ this.handleChange }
+          />
+          <InputCurrency fieldValue={ currency } fieldFunction={ this.handleChange } />
+          <InputMethod fieldValue={ method } fieldFunction={ this.handleChange } />
+          <InputTag fieldValue={ tag } fieldFunction={ this.handleChange } />
+          <button
+            type="button"
+            onClick={ this.buttonAdd }
+          >
+            Adicionar despesa
+          </button>
+        </div>
+        <div>
+          <ListWallet />
+        </div>
       </div>
     );
   }
