@@ -5,7 +5,6 @@ import WalletItem from './walletItem';
 import './listWallet.css';
 
 class ListWallet extends Component {
-
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
@@ -41,7 +40,7 @@ class ListWallet extends Component {
                     value={ expense.value }
                     currencyName={ expense.exchangeRates[expense.currency].name }
                     exchange={ expense.exchangeRates[expense.currency].ask }
-                    convertValue={expense.exchangeRates[expense.currency].ask
+                    convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
                     key={ expense.id }
                   />
