@@ -53,7 +53,7 @@ class WalletForm extends Component {
   }
 
   buttonAdd() {
-    const { addCurrency, addExpense, addTotals, totals} = this.props;
+    const { addCurrency, addExpense, addTotals, totals } = this.props;
     addCurrency();
     const { total, currency } = totals;
     const { id, value, description } = this.state;
@@ -61,7 +61,6 @@ class WalletForm extends Component {
       this.setState({
         id: id + 1,
       });
-
       addExpense(this.state);
       addTotals(this.computeValue(total, value), currency);
       this.clearState();
