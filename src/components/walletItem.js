@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as Actions from '../actions';
 import './listWallet.css';
 
 class WalletItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.deleteExpense = this.deleteExpense.bind(this);
-  }
-
-  deleteExpense(id, value) {
-    const { addTotals, upgradeExpenses, wallet, totals } = this.props;
-    const { total, currency } = totals;
-    const { expenses } = wallet;
-    addTotals(total - value, currency);
-    upgradeExpenses(expenses.filter((expense) => expense.id !== id));
-  }
-
   render() {
-    const { id, description, tag, method, currency, value, currencyName, exchange,
-      convertValue } = this.props;
+    const { description, tag, method, currency, value, currencyName, exchange,
+      convertValue, deleteFunction } = this.props;
     return (
       <div>
         <td className="description">{ description }</td>
@@ -36,14 +20,13 @@ class WalletItem extends Component {
         <button
           type="button"
           data-testid="delete-btn"
-          onClick={ () => this.deleteExpense(id, value * exchange) }
+          onClick={ deleteFunction }
         >
           Excluir
         </button>
         <button
           type="button"
           data-testid="edit-btn"
-          // onClick={ this.buttonAdd }
         >
           Editar
         </button>
@@ -61,14 +44,7 @@ WalletItem.propTypes = ({
   currencyName: PropTypes.string,
   exchange: PropTypes.number,
   convertValue: PropTypes.number,
-  id: PropTypes.number,
+  deleteFunction: PropTypes.func,
 }).isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
-  addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
-});
-
-const mapStateToProps = (state) => (state);
-
-export default connect(mapStateToProps, mapDispatchToProps)(WalletItem);
+export default WalletItem;

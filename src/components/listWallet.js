@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WalletItem from './walletItem';
+import * as Actions from '../actions';
 import './listWallet.css';
 
 class ListWallet extends Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteExpense = this.deleteExpense.bind(this);
+  }
+
+  deleteExpense(id, value) {
+    const { addTotals, upgradeExpenses, wallet, totals } = this.props;
+    const { total, currency } = totals;
+    const { expenses } = wallet;
+    addTotals(total - value, currency);
+    upgradeExpenses(expenses.filter((expense) => expense.id !== id));
+  }
+
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
@@ -42,7 +57,9 @@ class ListWallet extends Component {
                     exchange={ expense.exchangeRates[expense.currency].ask }
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
-                    id={ expense.id }
+                    deleteFunction={ () => this.deleteExpense(expense.id,
+                      parseFloat(expense.value)
+                       * parseFloat(expense.exchangeRates[expense.currency].ask)) }
                     key={ expense.id }
                   />
                 ))
@@ -56,13 +73,24 @@ class ListWallet extends Component {
 }
 
 ListWallet.propTypes = {
+  addTotals: PropTypes.func.isRequired,
+  upgradeExpenses: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
     lastId: PropTypes.number,
   }).isRequired,
+  totals: PropTypes.shape({
+    total: PropTypes.number,
+    currency: PropTypes.string,
+  }).isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
+  addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
+});
 
 const mapStateToProps = (state) => (state);
 
-export default connect(mapStateToProps)(ListWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(ListWallet);
