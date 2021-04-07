@@ -2,7 +2,7 @@ import '../styles/Wallet.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
-import { addExpenses, receiveCurrencies } from '../actions';
+import { addExpenses, receiveCurrencies, remExpenses } from '../actions';
 import getAPI from '../services/currencyAPI';
 
 class Wallet extends React.Component {
@@ -58,7 +58,7 @@ class Wallet extends React.Component {
   }
 
   insertExpenses() {
-    const { expenses } = this.props;
+    const { expenses, remExpenseDispatcher } = this.props;
     return expenses.map((element) => {
       console.log(element);
       const info = element.exchangeRates[element.currency];
@@ -80,7 +80,7 @@ class Wallet extends React.Component {
               id="delete-btn"
               data-testid="delete-btn"
               type="button"
-              onClick={ () => document.getElementById(element.id).remove() }
+              onClick={ () => remExpenseDispatcher(element.id) }
             >
               Deletar
             </button>
@@ -217,12 +217,14 @@ const mapStateToProps = ({ user: { email }, wallet: { currencies, expenses } }) 
 const mapDispatchToProps = (dispatch) => ({
   addExpensesDispatcher: (data) => dispatch(addExpenses(data)),
   getCurrencyDispatch: (data) => dispatch(receiveCurrencies(data)),
+  remExpenseDispatcher: (id) => dispatch(remExpenses(id)),
 });
 
 Wallet.propTypes = {
   email: string,
   addExpensesDispatcher: func,
   getCurrencyDispatch: func,
+  remExpenseDispatcher: func,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
