@@ -5,7 +5,7 @@ import { func, string } from 'prop-types';
 import { addExpenses, receiveCurrencies } from '../actions';
 import getAPI from '../services/currencyAPI';
 
-class FormWallet extends React.Component {
+class Wallet extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,9 +22,8 @@ class FormWallet extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.inCurrency = this.inCurrency.bind(this);
-    this.inHeader = this.inHeader.bind(this);
     this.inMethod = this.inMethod.bind(this);
-    this.inTable = this.inTable.bind(this);
+    this.insertExpenses = this.insertExpenses.bind(this);
     this.inTag = this.inTag.bind(this);
     this.inTh = this.inTh.bind(this);
     this.newInput = this.newInput.bind(this);
@@ -50,39 +49,45 @@ class FormWallet extends React.Component {
     return (result).toFixed(2);
   }
 
-  inHeader() {
-    const { email } = this.props;
-    return (
-      <header className="header">
-        <h1 className="title">TRYBE</h1>
-        <p data-testid="email-field">
-          { `Email: ${email}` }
-        </p>
-        <p data-testid="total-field">
-          { `Despesa Total: R$ ${this.totalExpenses()}` }
-        </p>
-        <p data-testid="header-currency-field">BRL</p>
-      </header>
-    );
-  }
-
-  inTable() {
-    const { inTh } = this;
-    return (
-      <table className="table">
-        <tr className="th">
-          { inTh() }
-        </tr>
-      </table>
-    );
-  }
-
   inTh() {
     const header = [
       'Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda',
       'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão', 'Editar/Excluir',
     ];
     return header.map((element, index) => <th key={ index }>{ element }</th>);
+  }
+
+  insertExpenses() {
+    const { expenses } = this.props;
+    return expenses.map((element) => {
+      console.log(element);
+      const info = element.exchangeRates[element.currency];
+      return (
+        <tr id={ element.id } key={ element.id }>
+          <td>{ element.description }</td>
+          <td>{ element.tag }</td>
+          <td>{ element.method }</td>
+          <td>{ element.value }</td>
+          <td>{ info.name }</td>
+          <td>{ parseFloat(info.ask).toFixed(2) }</td>
+          <td>{ (element.value * info.ask).toFixed(2) }</td>
+          <td>Real</td>
+          <td>
+            <button data-testid="edit-btn" type="button" onClick="">
+              Editar
+            </button>
+            <button
+              id="delete-btn"
+              data-testid="delete-btn"
+              type="button"
+              onClick={ () => document.getElementById(element.id).remove() }
+            >
+              Deletar
+            </button>
+          </td>
+        </tr>
+      );
+    });
   }
 
   async handleClick() {
@@ -161,10 +166,21 @@ class FormWallet extends React.Component {
 
   render() {
     const { description, value, currency, method, tag } = this.state;
-    const { newInput, newSelect, inCurrency, inMethod, inTag, handleClick } = this;
+    const { newInput, newSelect, inCurrency, inMethod,
+      insertExpenses, inTag, handleClick, inTh, totalExpenses } = this;
+    const { email } = this.props;
     return (
       <div className="body">
-        { this.inHeader() }
+        <header className="header">
+          <h1 className="title">TRYBE</h1>
+          <p data-testid="email-field">
+            { `Email: ${email}` }
+          </p>
+          <p data-testid="total-field">
+            { `Despesa Total: R$ ${totalExpenses()}` }
+          </p>
+          <p data-testid="header-currency-field">BRL</p>
+        </header>
         <form className="form">
           { newInput('value', value, 'value-input', 'Valor: ', 'number') }
           { newSelect('currency-input', 'Moeda: ', 'currency', currency, inCurrency()) }
@@ -181,7 +197,12 @@ class FormWallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
-        { this.inTable() }
+        <table id="table" className="table">
+          <tr className="th">
+            { inTh() }
+          </tr>
+          { insertExpenses() }
+        </table>
       </div>
     );
   }
@@ -198,10 +219,10 @@ const mapDispatchToProps = (dispatch) => ({
   getCurrencyDispatch: (data) => dispatch(receiveCurrencies(data)),
 });
 
-FormWallet.propTypes = {
+Wallet.propTypes = {
   email: string,
   addExpensesDispatcher: func,
   getCurrencyDispatch: func,
 }.isRequired;
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
