@@ -12,15 +12,15 @@ class Wallet extends React.Component {
     super();
     this.fetchApi = this.fetchApi.bind(this);
     this.walletHeader = this.walletHeader.bind(this);
+    this.totalSpending = this.totalSpending.bind(this);
     this.spendingValue = this.spendingValue.bind(this);
     this.spendingDescription = this.spendingDescription.bind(this);
     this.spendingCurrency = this.spendingCurrency.bind(this);
     this.spendingMethod = this.spendingMethod.bind(this);
     this.spendingCategory = this.spendingCategory.bind(this);
-    this.totalSpending = this.totalSpending.bind(this);
     this.addOrEdit = this.addOrEdit.bind(this);
-    this.submit = this.submit.bind(this);
     this.formMode = this.formMode.bind(this);
+    this.submit = this.submit.bind(this);
     this.state = {
       id: 0, description: '', method: '', tag: '', value: 0, currency: 'USD' };
   }
@@ -166,8 +166,8 @@ class Wallet extends React.Component {
 
   addOrEdit() {
     const { status } = this.props;
-    if (status) {
-      return (
+    return status
+      ? (
         <button
           data-testid="edit-btn"
           type="button"
@@ -176,25 +176,23 @@ class Wallet extends React.Component {
         >
           Editar despesa
         </button>
+      )
+      : (
+        <button type="button" className="GButton" onClick={ this.submit }>
+          Adicionar despesa
+        </button>
       );
-    } return (
-      <button type="button" onClick={ this.submit } className="GButton">
-        Adicionar despesa
-      </button>
-    );
   }
 
   formMode() {
     const { status } = this.props;
-    if (status) {
-      return 'edit-table';
-    } return 'form-table';
+    return status ? 'edit-table' : 'form-table';
   }
 
   render() {
     const { expenses } = this.props;
     return (
-      <div>
+      <>
         { this.walletHeader() }
         <form className={ this.formMode() }>
           { this.spendingValue() }
@@ -205,7 +203,7 @@ class Wallet extends React.Component {
           { this.addOrEdit() }
         </form>
         <Table expenses={ expenses } />
-      </div>
+      </>
     );
   }
 }
