@@ -12,10 +12,30 @@ class Wallet extends React.Component {
     this.renderExpenseAmount = this.renderExpenseAmount.bind(this);
     this.renderExpenseDescription = this.renderExpenseDescription.bind(this);
     this.renderSelectCurrency = this.renderSelectCurrency.bind(this);
+    this.renderMethodPayment = this.renderMethodPayment.bind(this);
+    this.renderRecreation = this.renderRecreation.bind(this);
 
     this.state = {
       // email: '',
+      currency: ['BRL', 'USD'],
     };
+  }
+
+  componentDidMount() {
+    this.currencyApi();
+  }
+
+  async currencyApi() {
+    try {
+      const result = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const response = await result.json();
+      delete response.USDT;
+      const currencyArray = Object.keys(response);
+      this.setState({ currency: currencyArray });
+      // console.log(currencyArray);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   renderEmailUser(value) {
@@ -83,25 +103,52 @@ class Wallet extends React.Component {
   }
 
   renderSelectCurrency() {
+    const { currency } = this.state;
     return (
       <div>
-        <label htmlFor="currencyInput" data-testid="currency-input">
+        <label htmlFor="currencyInput">
           Selecionar Moeda:
-          {/* falta pegar por requisição */}
-          <select id="currencyInput">
-            <option value="USD" data-testid="USD">USD</option>
-            <option value="CAD" data-testid="CAD">CAD</option>
-            <option value="EUR" data-testid="EUR">EUR</option>
-            <option value="GBP" data-testid="ARS">ARS</option>
-            <option value="BTC" data-testid="BTC">BTC</option>
-            <option value="LTC" data-testid="LTC">LTC</option>
-            <option value="JPY" data-testid="JPY">JPY</option>
-            <option value="CHF" data-testid="CHF">CHF</option>
-            <option value="AUD" data-testid="AUD">AUD</option>
-            <option value="CNY" data-testid="CNY">CNY</option>
-            <option value="ILS" data-testid="ILS">ILS</option>
-            <option value="ETH" data-testid="ETH">ETH</option>
-            <option value="XRP" data-testid="XRP">XRP</option>
+          <select data-testid="currency-input">
+            { currency
+              .map(
+                (curr) => (
+                  <option key={ curr } data-testid={ curr }>
+                    { curr }
+                  </option>
+                ),
+              )}
+          </select>
+        </label>
+      </div>
+    );
+  }
+
+  renderMethodPayment() {
+    return (
+      <div>
+        <label htmlFor="method-payment">
+          Método De Pagamento:
+          <select name="method-payment" id="method-payment" data-testid="method-input">
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+          </select>
+        </label>
+      </div>
+    );
+  }
+
+  renderRecreation() {
+    return (
+      <div>
+        <label htmlFor="tag-input">
+          Categoria:
+          <select name="tag-input" id="tag-input" data-testid="tag-input">
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
           </select>
         </label>
       </div>
@@ -110,6 +157,7 @@ class Wallet extends React.Component {
 
   render() {
     const { value } = this.state;
+    // console.log(this.state)
     return (
       <div>
         <header>
@@ -123,8 +171,14 @@ class Wallet extends React.Component {
             { this.renderExpenseAmount() }
             { this.renderExpenseDescription() }
             { this.renderSelectCurrency() }
+            { this.renderMethodPayment() }
+            { this.renderRecreation() }
+            <button type="button" id="button-expense">Adicionar despesa</button>
           </form>
         </section>
+        <body>
+          <button type="button" data-testid="delete-btn">Excluir</button>
+        </body>
       </div>
     );
   }
