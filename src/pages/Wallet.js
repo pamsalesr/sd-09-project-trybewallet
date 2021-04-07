@@ -20,8 +20,9 @@ class Wallet extends React.Component {
     this.totalSpending = this.totalSpending.bind(this);
     this.addOrEdit = this.addOrEdit.bind(this);
     this.submit = this.submit.bind(this);
+    this.formMode = this.formMode.bind(this);
     this.state = {
-      id: 0, currency: 'USD', value: 0, description: '', method: '', tag: '' };
+      id: 0, description: '', method: '', tag: '', value: 0, currency: 'USD' };
   }
 
   componentDidMount() {
@@ -30,31 +31,22 @@ class Wallet extends React.Component {
 
   async fetchApi() {
     const { propUpdateCurrencies } = this.props;
-    const data = await fetchCurrencies();
-    propUpdateCurrencies(Object.keys(data));
+    propUpdateCurrencies(Object.keys(await fetchCurrencies()));
   }
 
   totalSpending() {
     const { expenses } = this.props;
-    const total = expenses.reduce((acc, curr) => (
-      acc + (parseFloat(curr.value)
-        * parseFloat(curr.exchangeRates[curr.currency].ask))), 0);
-    return total.toFixed(2);
+    return expenses.reduce((acc, curr) => (
+      acc + ((curr.value) * (curr.exchangeRates[curr.currency].ask))), 0).toFixed(2);
   }
 
   walletHeader() {
     const { email } = this.props;
     return (
-      <header className="App-header">
-        <span data-testid="email-field">
-          {`User: ${email}`}
-        </span>
-        <span data-testid="total-field">
-          {`Gastos: $ ${this.totalSpending()}`}
-        </span>
-        <span data-testid="header-currency-field">
-          Moeda: BRL
-        </span>
+      <header className="app-header">
+        <span data-testid="email-field">{`User: ${email}`}</span>
+        <span data-testid="total-field">{`Gastos: $ ${this.totalSpending()}`}</span>
+        <span data-testid="header-currency-field">Moeda: BRL</span>
       </header>
     );
   }
@@ -107,10 +99,9 @@ class Wallet extends React.Component {
             this.setState({ currency: value });
           } }
         >
-          {currencies
-            .map((curr) => (curr !== 'USDT'
-              ? <option data-testid={ curr } key={ curr } value={ curr }>{curr}</option>
-              : null))}
+          {currencies.map((curr) => (
+            <option data-testid={ curr } key={ curr } value={ curr }>{curr}</option>
+          ))}
         </select>
       </label>
     );
@@ -164,9 +155,9 @@ class Wallet extends React.Component {
     } = this.props;
     if (status) {
       const { exchangeRates } = expenses.find((expense) => expense.id === id);
-      const editExp = { ...this.state, id, exchangeRates };
-      propSetEditExpense(editExp);
+      propSetEditExpense({ ...this.state, id, exchangeRates });
       propEditExpense(false, '');
+      this.setState({ value: 0 });
     } else {
       propAddExpense({ ...this.state, exchangeRates: await fetchCurrencies() });
       this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
@@ -177,15 +168,27 @@ class Wallet extends React.Component {
     const { status } = this.props;
     if (status) {
       return (
-        <button data-testid="edit-btn" type="button" onClick={ this.submit }>
+        <button
+          data-testid="edit-btn"
+          type="button"
+          className="YButton"
+          onClick={ this.submit }
+        >
           Editar despesa
         </button>
       );
     } return (
-      <button type="button" onClick={ this.submit }>
+      <button type="button" onClick={ this.submit } className="GButton">
         Adicionar despesa
       </button>
     );
+  }
+
+  formMode() {
+    const { status } = this.props;
+    if (status) {
+      return 'edit-table';
+    } return 'form-table';
   }
 
   render() {
@@ -193,7 +196,7 @@ class Wallet extends React.Component {
     return (
       <div>
         { this.walletHeader() }
-        <form className="form-table">
+        <form className={ this.formMode() }>
           { this.spendingValue() }
           { this.spendingDescription() }
           { this.spendingCurrency() }

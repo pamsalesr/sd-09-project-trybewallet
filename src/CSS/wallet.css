@@ -2,7 +2,7 @@ html {
   background-color: #6c7a89;
 }
 
-.App-header {
+.app-header {
   align-items: center;
   background-color: #6c7a89;
   color: whitesmoke;
@@ -22,6 +22,15 @@ html {
   padding: 10px;
 }
 
+.edit-table {
+  align-items: center;
+  background-color: #20db99;
+  color: #282c34;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
 label {
   text-align: center;
 }
@@ -31,6 +40,11 @@ input {
 }
 
 .form-table input , select , button {
+  background-color: whitesmoke;
+  border-radius: 5px;
+}
+
+.edit-table input , select , button {
   background-color: whitesmoke;
   border-radius: 5px;
 }
@@ -54,6 +68,10 @@ input {
 
 .button-box {
   display: flex;
+}
+
+.GButton {
+  background-color: #20db99;
 }
 
 .YButton {
