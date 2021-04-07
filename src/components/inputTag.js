@@ -8,7 +8,7 @@ class InputTag extends Component {
     return (
       <div className="class-tag">
         <label htmlFor="form-tag">
-          Tag
+          Tag&nbsp;&nbsp;
           <select
             data-testid="tag-input"
             id="form-tag"

@@ -11,7 +11,7 @@ class InputCurrency extends Component {
     return (
       <div className="class-currency">
         <label htmlFor="form-currency">
-          Moeda
+          Moeda&nbsp;&nbsp;
           <select
             data-testid="currency-input"
             id="form-currency"
