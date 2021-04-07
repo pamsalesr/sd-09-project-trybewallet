@@ -30,7 +30,7 @@ class ListWallet extends Component {
               currency={ expense.currency }
               value={ parseFloat(expense.value).toFixed(2) }
               currencyName="nome da moeda"
-              exchange={parseFloat('0.00').toFixed(2) }
+              exchange={ parseFloat('0.00').toFixed(2) }
               convertValue={ parseFloat(expense.value).toFixed(2) }
               key={ expense.id }
             />
