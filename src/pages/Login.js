@@ -11,6 +11,7 @@ class Login extends React.Component {
     this.state = {
       invalidPass: false,
       invalidEmail: false,
+      buttonDisabled: true,
       loggedIn: false,
       email: '',
       password: '',
@@ -26,34 +27,34 @@ class Login extends React.Component {
   }
 
   validateFields() {
-    const { email } = this.state;
+    const { email, password } = this.state;
     const rgxEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    const minimumPasswordLength = 6;
-    const password = document.querySelector('#input-senha');
+    const rgxPass = /\d{6,}/;
 
     if (email.match(rgxEmail)) {
-      this.setState({ invalidEmail: false });
+      this.setState({ invalidEmail: false }, () => { this.loginEnabled(); });
     } else {
-      this.setState({ invalidEmail: true });
+      this.setState({ invalidEmail: true }, () => { this.loginEnabled(); });
     }
 
-    if (password.value.length >= minimumPasswordLength) {
-      this.setState({ invalidPass: false });
+    if (password.match(rgxPass)) {
+      this.setState({ invalidPass: false }, () => { this.loginEnabled(); });
     } else {
-      this.setState({ invalidPass: true });
+      this.setState({ invalidPass: true }, () => { this.loginEnabled(); });
     }
   }
 
   loginEnabled() {
     const { email, password, invalidPass, invalidEmail } = this.state;
     if (email === '' && password === '') {
-      return true;
+      return this.setState({ buttonDisabled: true });
     }
-    return (invalidPass || invalidEmail);
+
+    this.setState({ buttonDisabled: invalidPass || invalidEmail });
   }
 
   render() {
-    const { invalidEmail, invalidPass, loggedIn, email } = this.state;
+    const { invalidEmail, invalidPass, loggedIn, email, buttonDisabled } = this.state;
     const { login } = this.props;
     return (
       loggedIn ? <Redirect to="/carteira" />
@@ -69,7 +70,8 @@ class Login extends React.Component {
                   name="user"
                   onChange={ (event) => {
                     this.validateFields();
-                    this.setState({ email: event.target.value });
+                    this.setState({ email: event.target.value },
+                      () => { this.validateFields(); });
                   } }
                 />
                 {invalidEmail && <span className="invalid">Insira um email valido</span>}
@@ -83,7 +85,8 @@ class Login extends React.Component {
                   name="password"
                   onChange={ (event) => {
                     this.validateFields();
-                    this.setState({ password: event.target.value });
+                    this.setState({ password: event.target.value },
+                      () => { this.validateFields(); });
                   } }
                 />
                 {invalidPass
@@ -91,7 +94,7 @@ class Login extends React.Component {
               </label>
               <button
                 type="button"
-                disabled={ this.loginEnabled() }
+                disabled={ buttonDisabled }
                 onClick={ () => { this.setLogOn(); login({ email }); } }
               >
                 Entrar

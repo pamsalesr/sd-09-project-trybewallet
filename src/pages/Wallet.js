@@ -6,12 +6,28 @@ import WalletTable from './components/WalletTable';
 import './Wallet.css';
 
 class Wallet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      onExpenseEdit: false,
+      editedExpense: {},
+    };
+
+    this.setEditionModeOn = this.setEditionModeOn.bind(this);
+  }
+
+  setEditionModeOn(obj = {}) {
+    this.setState({ onExpenseEdit: true });
+    this.setState({ editedExpense: obj });
+  }
+
   render() {
+    const { onExpenseEdit, editedExpense } = this.state;
     return (
       <main className="main-wallet">
         <WalletHeader />
-        <WalletForm />
-        <WalletTable />
+        <WalletForm editMode={ onExpenseEdit } editedExpense={ editedExpense } />
+        <WalletTable editExpense={ this.setEditionModeOn } />
       </main>
     );
   }

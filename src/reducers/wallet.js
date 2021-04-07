@@ -3,6 +3,7 @@ import {
   ADD_EXPENSE,
   UPDATE_TOTAL_EXPENSE,
   DELETE_EXPENSE,
+  EDIT_EXPENSE,
 } from '../actions';
 
 const initialState = {
@@ -32,6 +33,15 @@ function wallet(state = initialState, actions) {
     return {
       ...state,
       expenses: [
+        ...state.expenses
+          .filter((expense) => String(expense.id) !== String(actions.id)),
+      ],
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      expenses: [
+        actions.expense,
         ...state.expenses
           .filter((expense) => String(expense.id) !== String(actions.id)),
       ],

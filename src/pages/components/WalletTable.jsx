@@ -11,17 +11,25 @@ class WalletTable extends Component {
     this.renderTableRows = this.renderTableRows.bind(this);
     this.reduceTotal = this.reduceTotal.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
+    this.editExpense = this.editExpense.bind(this);
     this.deleteExpenseUpdateTotal = this.deleteExpenseUpdateTotal.bind(this);
   }
 
   deleteExpenseUpdateTotal(e) {
-    const { id } = e.target;
+    const { value } = e.target;
     const { expenses, removeExpense, updateNewTotal } = this.props;
-    const [deleted] = expenses.filter((expense) => String(expense.id) === id);
+    const [deleted] = expenses.filter((expense) => String(expense.id) === value);
     const newTotal = this.updateTotal(deleted);
 
-    removeExpense(id);
+    removeExpense(value);
     updateNewTotal(newTotal);
+  }
+
+  editExpense(e) {
+    const { value } = e.target;
+    const { editExpense, expenses } = this.props;
+    const [clickedExpense] = expenses.filter(({ id }) => value === String(id));
+    editExpense(clickedExpense);
   }
 
   updateTotal(deletedItem) {
@@ -56,14 +64,21 @@ class WalletTable extends Component {
         <td>Real</td>
         <td>
           <button
-            id={ item.id }
+            value={ item.id }
             type="button"
             data-testid="delete-btn"
             onClick={ (e) => this.deleteExpenseUpdateTotal(e) }
           >
             Delete
           </button>
-          <button type="button" data-testid="edit-btn">Editar</button>
+          <button
+            value={ item.id }
+            type="button"
+            data-testid="edit-btn"
+            onClick={ (e) => this.editExpense(e) }
+          >
+            Editar
+          </button>
         </td>
       </tr>
     ));
@@ -106,6 +121,7 @@ WalletTable.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
   removeExpense: PropTypes.func.isRequired,
   updateNewTotal: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletTable);
