@@ -5,6 +5,7 @@ import {
   FAILED_REQUEST,
   ADD_EXPENSES_STATE,
 } from '../actions';
+import { convertValue } from '../services';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE_WALLET = {
@@ -24,7 +25,7 @@ function wallet(state = INITIAL_STATE_WALLET, action) {
 
     return {
       ...state,
-      totalPrice: Math.round((totalPrice) * 100) / 100,
+      totalPrice: convertValue(totalPrice),
     };
   }
   case REQUEST_CURRENCIES:

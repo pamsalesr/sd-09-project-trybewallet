@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrencies, addExpensesState, addTotalPriceState } from '../actions';
-import actualCurrencies from '../services/currenciesData';
+import { getCurrencies, convertValue } from '../services';
 
 class ExpensesForm extends React.Component {
   constructor(props) {
@@ -47,10 +47,10 @@ class ExpensesForm extends React.Component {
   async insertExpenses() {
     const { size, value, description, currency, method, tag } = this.state;
     const { addExpensesDispatcher, addTotalPriceDispatcher } = this.props;
-    const currenciesData = await actualCurrencies();
+    const currenciesData = await getCurrencies();
 
     const total = value * currenciesData[currency].ask;
-    const totalPrice = Math.round((total) * 100) / 100;
+    const totalPrice = convertValue(total);
 
     const obj = {
       id: size,
