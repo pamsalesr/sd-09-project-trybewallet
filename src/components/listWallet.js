@@ -42,6 +42,7 @@ class ListWallet extends Component {
                     exchange={ expense.exchangeRates[expense.currency].ask }
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
+                    id={ expense.id }
                     key={ expense.id }
                   />
                 ))

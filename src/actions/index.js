@@ -25,6 +25,13 @@ export function addExpense(expense) {
   };
 }
 
+export function upgradeExpenses(expenses) {
+  return {
+    type: Type.UPGRADE_EXPENSES,
+    expenses,
+  };
+}
+
 export function addTotals(total, currency) {
   return {
     type: Type.ADD_TOTALS,

@@ -47,6 +47,12 @@ function walletReducer(state = INITIAL_STATE, action) {
     };
   }
 
+  case Type.UPGRADE_EXPENSES: {
+    return {
+      ...state,
+      expenses: action.expenses,
+    };
+  }
   default:
     return state;
   }

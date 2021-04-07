@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as Actions from '../actions';
 import './listWallet.css';
 
 class WalletItem extends Component {
-  render() {
-    const { description, tag, method, currency, value, currencyName, exchange,
-      convertValue } = this.props;
+  constructor(props) {
+    super(props);
 
+    this.deleteExpense = this.deleteExpense.bind(this);
+  }
+
+  deleteExpense(id) {
+    const { upgradeExpenses, wallet } = this.props;
+    const { expenses } = wallet;
+    const newExpenses = expenses.filter((expense) => expense.id !== id);
+    upgradeExpenses(newExpenses);
+  }
+
+  render() {
+    const { id, description, tag, method, currency, value, currencyName, exchange,
+      convertValue } = this.props;
     return (
       <div>
         <td className="description">{ description }</td>
@@ -21,7 +35,7 @@ class WalletItem extends Component {
         <button
           type="button"
           data-testid="delete-btn"
-          // onClick={ this.buttonAdd }
+          onClick={ () => this.deleteExpense(id) }
         >
           Excluir
         </button>
@@ -49,4 +63,10 @@ WalletItem.propTypes = ({
   convertValue: PropTypes.number,
 }).isRequired;
 
-export default WalletItem;
+const mapDispatchToProps = (dispatch) => ({
+  upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
+});
+
+const mapStateToProps = (state) => (state);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WalletItem);
