@@ -8,7 +8,7 @@ class InputMethod extends Component {
     return (
       <div className="class-method">
         <label htmlFor="form-method">
-          Método de Pagamento&nbsp;&nbsp;
+          método de Pagamento&nbsp;&nbsp;
           <select
             data-testid="method-input"
             id="form-method"

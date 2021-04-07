@@ -11,11 +11,12 @@ class WalletItem extends Component {
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
-  deleteExpense(id) {
-    const { upgradeExpenses, wallet } = this.props;
+  deleteExpense(id, value) {
+    const { addTotals, upgradeExpenses, wallet, totals } = this.props;
+    const { total, currency } = totals;
     const { expenses } = wallet;
-    const newExpenses = expenses.filter((expense) => expense.id !== id);
-    upgradeExpenses(newExpenses);
+    addTotals(total - value, currency);
+    upgradeExpenses(expenses.filter((expense) => expense.id !== id));
   }
 
   render() {
@@ -27,7 +28,7 @@ class WalletItem extends Component {
         <td className="tag">{ tag }</td>
         <td className="method">{ method }</td>
         <td className="sign">{ currency }</td>
-        <td className="value">{ parseFloat(value).toFixed(2) }</td>
+        <td className="value">{ value }</td>
         <td className="currency">{ currencyName }</td>
         <td className="exchange">{ parseFloat(exchange).toFixed(2) }</td>
         <td className="convert-value">{ parseFloat(convertValue).toFixed(2) }</td>
@@ -35,7 +36,7 @@ class WalletItem extends Component {
         <button
           type="button"
           data-testid="delete-btn"
-          onClick={ () => this.deleteExpense(id) }
+          onClick={ () => this.deleteExpense(id, value * exchange) }
         >
           Excluir
         </button>
@@ -61,10 +62,12 @@ WalletItem.propTypes = ({
   currencyName: PropTypes.string,
   exchange: PropTypes.number,
   convertValue: PropTypes.number,
+  id: PropTypes.number,
 }).isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
+  addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
 });
 
 const mapStateToProps = (state) => (state);

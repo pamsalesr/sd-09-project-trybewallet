@@ -10,7 +10,7 @@ class InputValue extends Component {
         <label
           htmlFor="form-value"
         >
-          Valor&nbsp;&nbsp;
+          valor&nbsp;&nbsp;
           <input
             data-testid="value-input"
             name="value"

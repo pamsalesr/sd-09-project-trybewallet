@@ -8,7 +8,7 @@ class InputDescription extends Component {
     return (
       <div className="class-description">
         <label htmlFor="form-description">
-          Descrição&nbsp;&nbsp;
+          descrição&nbsp;&nbsp;
           <input
             data-testid="description-input"
             name="description"
