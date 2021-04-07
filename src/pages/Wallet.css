@@ -1,0 +1,26 @@
+h1 {
+  display: inline-block;
+  font-size: 25px;
+}
+
+.user-email {
+  display: inline-block;
+  font-size: 17px;
+  margin-left: 400px;
+  width: 150px;
+}
+
+.totals-total  {
+  display: inline-block;
+  font-size: 17px;
+  margin-left: 350px;
+  width: 250;
+}
+
+
+.totals-currency  {
+  display: inline-block;
+  font-size: 17px;
+  margin-left: 50px;
+  width: 30px;
+}

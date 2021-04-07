@@ -19,9 +19,9 @@ class InputTag extends Component {
             defaultValue="Alimentação"
           >
             <option value="Alimentação">Alimentação</option>
-            <option dvalue="Lazer">Lazer</option>
+            <option value="Lazer">Lazer</option>
             <option value="Trabalho">Trabalho</option>
-            <option value="tTransporte">Transporte</option>
+            <option value="Transporte">Transporte</option>
             <option value="Saúde">Saúde</option>
           </select>
         </label>

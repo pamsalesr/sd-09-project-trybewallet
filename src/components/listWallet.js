@@ -12,32 +12,44 @@ class ListWallet extends Component {
 
     return (
       <div>
-        <span className="description">Descrição</span>
-        <span className="tag">Tag</span>
-        <span className="method">Método de pagamento</span>
-        <span className="value">Valor</span>
-        <span className="currency">Moeda</span>
-        <span className="exchange">Câmbio utilizado</span>
-        <span className="convert-value">Valor convertido</span>
-        <span className="convert-currency">Moeda de conversão</span>
-        <span className="edit-exclude">Editar/Excluir</span>
-        {
-          expenses.map((expense) => (
-
-            <WalletItem
-              description={ expense.description }
-              tag={ expense.tag }
-              method={ expense.method }
-              currency={ expense.currency }
-              value={ expense.value }
-              currencyName={ expense.exchangeRates[expense.currency].name }
-              exchange={ expense.exchangeRates[expense.currency].ask }
-              convertValue={expense.exchangeRates[expense.currency].ask
-                * expense.value }
-              key={ expense.id }
-            />
-          ))
-        }
+        <div>
+          <p> </p>
+        </div>
+        <table border="0">
+          <thead>
+            <tr>
+              <th className="description">Descrição</th>
+              <th className="tag">Tag</th>
+              <th className="method">Método de pagamento</th>
+              <th className="value">Valor</th>
+              <th className="currency">Moeda</th>
+              <th className="exchange">Câmbio utilizado</th>
+              <th className="convert-value">Valor convertido</th>
+              <th className="convert-currency">Moeda de conversão</th>
+              <th className="edit-exclude">Editar/Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {
+                expenses.map((expense) => (
+                  <WalletItem
+                    description={ expense.description }
+                    tag={ expense.tag }
+                    method={ expense.method }
+                    currency={ expense.currency }
+                    value={ expense.value }
+                    currencyName={ expense.exchangeRates[expense.currency].name }
+                    exchange={ expense.exchangeRates[expense.currency].ask }
+                    convertValue={expense.exchangeRates[expense.currency].ask
+                      * expense.value }
+                    key={ expense.id }
+                  />
+                ))
+              }
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }

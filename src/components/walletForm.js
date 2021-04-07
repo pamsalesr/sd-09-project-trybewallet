@@ -7,7 +7,6 @@ import InputDescription from './inputDescription';
 import InputCurrency from './inputCurrency';
 import InputMethod from './inputMethod';
 import InputTag from './inputTag';
-import ListWallet from './listWallet';
 import * as Actions from '../actions';
 import './walletForm.css';
 
@@ -16,7 +15,7 @@ class WalletForm extends Component {
     super(props);
 
     this.state = {
-      id: 0,
+      id: 1,
       value: 0,
       description: '',
       currency: 'USD',
@@ -61,6 +60,7 @@ class WalletForm extends Component {
     const { value, description } = this.state;
 
     if (value !== 0 && description !== '') {
+
       this.setState({
         id: lastId + 1,
       });
@@ -102,9 +102,6 @@ class WalletForm extends Component {
           >
             Adicionar despesa
           </button>
-        </div>
-        <div>
-          <ListWallet />
         </div>
       </div>
     );

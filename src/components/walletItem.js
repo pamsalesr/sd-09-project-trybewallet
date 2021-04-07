@@ -9,15 +9,15 @@ class WalletItem extends Component {
 
     return (
       <div>
-        <span className="description">{ description }</span>
-        <span className="tag">{ tag }</span>
-        <span className="method">{ method }</span>
-        <span className="sign">{ currency }</span>
-        <span className="value">{ parseFloat(value).toFixed(2) }</span>
-        <span className="currency">{ currencyName }</span>
-        <span className="exchange">{ parseFloat(exchange).toFixed(2) }</span>
-        <span className="convert-value">{ parseFloat(convertValue).toFixed(2) }</span>
-        <span className="convert-currency">Real</span>
+        <td className="description">{ description }</td>
+        <td className="tag">{ tag }</td>
+        <td className="method">{ method }</td>
+        <td className="sign">{ currency }</td>
+        <td className="value">{ parseFloat(value).toFixed(2) }</td>
+        <td className="currency">{ currencyName }</td>
+        <td className="exchange">{ parseFloat(exchange).toFixed(2) }</td>
+        <td className="convert-value">{ parseFloat(convertValue).toFixed(2) }</td>
+        <td className="convert-currency">Real</td>
         <button
           type="button"
           data-testid="delete-btn"
