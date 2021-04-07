@@ -9,7 +9,7 @@ function totalsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case Type.ADD_TOTALS:
     return {
-      total: Math.floor(action.total),
+      total: action.total,
       currency: action.currency,
     };
   default:
