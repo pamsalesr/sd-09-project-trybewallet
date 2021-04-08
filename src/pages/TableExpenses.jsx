@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { arrayOf } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
+import { handleDelExpense } from '../actions';
 
 class TableExpenses extends React.Component {
   constructor(props) {
     super(props);
     this.generateExpenseResume = this.generateExpenseResume.bind(this);
+    this.deleteExpense = this.deleteExpense.bind(this);
   }
 
   generateExpenseResume() {
@@ -14,7 +16,7 @@ class TableExpenses extends React.Component {
       expenses.map((
         { value, description, currency, method, tag, exchangeRates }, index,
       ) => (
-        <tr key={ index }>
+        <tr key={ index } name={ index }>
           <td>{ description }</td>
           <td>{ tag }</td>
           <td>{ method }</td>
@@ -23,10 +25,26 @@ class TableExpenses extends React.Component {
           <td>{ Math.round(100 * exchangeRates[currency].ask) / 100 }</td>
           <td>{ Math.round(value * 100 * (exchangeRates[currency].ask)) / 100 }</td>
           <td>Real</td>
-          <td><button type="button" data-testid="delete-btn">deletar</button></td>
+          <td>
+            <button
+              type="button"
+              data-testid="delete-btn"
+              name={ index }
+              onClick={ ({ target }) => this.deleteExpense(target) }
+            >
+              deletar
+            </button>
+          </td>
         </tr>
       ))
     );
+  }
+
+  deleteExpense(target) {
+    const { expenses, delExpense } = this.props;
+    const newExpenses = expenses
+      .filter((object) => (object.id !== parseFloat(target.name)));
+    delExpense(newExpenses);
   }
 
   render() {
@@ -51,9 +69,16 @@ class TableExpenses extends React.Component {
   }
 }
 
-TableExpenses.propTypes = { expenses: arrayOf().isRequired };
+TableExpenses.propTypes = {
+  expenses: arrayOf(),
+  delExpense: func,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses });
 
-export default connect(mapStateToProps)(TableExpenses);
+const mapDispatchToProp = (dispatch) => ({
+  delExpense: (expense) => dispatch(handleDelExpense(expense)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProp)(TableExpenses);

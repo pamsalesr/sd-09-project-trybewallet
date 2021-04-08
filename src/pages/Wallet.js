@@ -4,6 +4,7 @@ import { func, string, objectOf, arrayOf, object } from 'prop-types';
 import fetchApi from '../services/api';
 import { handleExchangeRates, handleAddExpense } from '../actions';
 import TableExpenses from './TableExpenses';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -169,8 +170,10 @@ class Wallet extends React.Component {
     return (
       <header>
         <h4 data-testid="email-field">{ email }</h4>
-        <h3 data-testid="total-field">{ this.totalExpenses() }</h3>
-        <h3 data-testid="header-currency-field">BRL</h3>
+        <div className="totalExpensesBRL">
+          <h3 data-testid="total-field">{ this.totalExpenses() }</h3>
+          <h3 data-testid="header-currency-field">BRL</h3>
+        </div>
       </header>
     );
   }

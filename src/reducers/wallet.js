@@ -1,4 +1,4 @@
-import { UPDATE_EXCHANGE_RATES, ADD_EXPENSE } from '../actions';
+import { UPDATE_EXCHANGE_RATES, ADD_EXPENSE, DEL_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   expenses: [],
@@ -17,11 +17,11 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: [...state.expenses, action.expense],
     });
-  // case CONVERT_EXPENSE:
-  //   return ({
-  //     ...state,
-  //     convertedExp: [...state.convertedExp, action.convertedExp],
-  //   });
+  case DEL_EXPENSE:
+    return ({
+      ...state,
+      expenses: action.expense,
+    });
   default:
     return state;
   }

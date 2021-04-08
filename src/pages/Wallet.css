@@ -1,0 +1,33 @@
+* {
+  margin: 1px;
+}
+
+h3 {
+  color: white
+}
+
+form {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-around;
+  margin: 25px 0;
+}
+header {
+  background-color: rgb(97, 3, 105);
+  display: flex;
+  justify-content: space-around;
+}
+
+td {
+  text-align: center;
+}
+th {
+  background-color:  rgb(97, 3, 105);
+  color: white;
+  padding: 20px;
+}
+
+/* porque nao fica na mesma linha? */
+.totalExpensesBRL { 
+  display: inline;
+}

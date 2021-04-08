@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { func } from 'prop-types';
 import { handleEmail } from '../actions';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -48,10 +49,10 @@ class Login extends React.Component {
     const { desactivatedButton, redirect } = this.state;
     if (redirect) return (<Redirect to="/carteira" />);
     return (
-      <div>
-        <h4>Login</h4>
-        <form>
-          <label htmlFor="email-input">
+      <div className="form-login">
+        <h2>Login</h2>
+        <form className="fieldset-login">
+          <label htmlFor="email-input" className="label-login">
             E-mail:
             <input
               id="email-input"
