@@ -2,8 +2,40 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { convertValue } from '../services';
+import {
+  deleteExpensesState,
+  removeTotalPriceState,
+} from '../actions';
 
 class ExpensesTable extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteData = this.deleteData.bind(this);
+  }
+
+  deleteData(position) {
+    const {
+      expensesState,
+      deleteExpensesDispatcher,
+      removeTotalPriceDispatcher,
+    } = this.props;
+    const array = [...expensesState];
+    let totalPrice = 0;
+
+    array.splice(position, 1);
+
+    array.forEach((expense) => {
+      const { value, currency, exchangeRates } = expense;
+      totalPrice = convertValue(
+        totalPrice + (value * exchangeRates[currency].ask),
+      );
+    });
+
+    deleteExpensesDispatcher(array);
+    removeTotalPriceDispatcher(totalPrice);
+  }
+
   render() {
     const { expensesState } = this.props;
 
@@ -24,21 +56,27 @@ class ExpensesTable extends React.Component {
         </thead>
         <tbody>
           {expensesState.map((expenses) => {
-            const { id, value, currency, method, tag, description, exchangeRates } = expenses;
-            const exchangeRatesSelected = exchangeRates[currency];
+            const { exchangeRates } = expenses;
+            const { name, ask } = exchangeRates[expenses.currency];
             return (
-              <tr key={ id }>
-                <td>{ description }</td>
-                <td>{tag}</td>
-                <td>{method}</td>
-                <td>{value}</td>
-                <td>{exchangeRatesSelected.name}</td>
-                <td>{convertValue(exchangeRatesSelected.ask)}</td>
-                <td>{convertValue(value * exchangeRatesSelected.ask)}</td>
+              <tr key={ expenses.id }>
+                <td>{ expenses.description }</td>
+                <td>{ expenses.tag }</td>
+                <td>{ expenses.method }</td>
+                <td>{ expenses.value }</td>
+                <td>{ name }</td>
+                <td>{ convertValue(ask) }</td>
+                <td>{ convertValue(expenses.value * ask) }</td>
                 <td>Real</td>
                 <td>
-                  <button type="button">Editar</button>
-                  <button type="button">Excluir</button>
+                  {/* <button type="button">Editar</button> */}
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => this.deleteData(expenses.id) }
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             );
@@ -49,12 +87,17 @@ class ExpensesTable extends React.Component {
   }
 }
 
-// ExpensesTable.propTypes = {
-//   expensesState: PropTypes.string,
-// }.isRequired;
+ExpensesTable.propTypes = {
+  expensesState: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   expensesState: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(ExpensesTable);
+const mapDispatchToProps = (dispatch) => ({
+  deleteExpensesDispatcher: (array) => dispatch(deleteExpensesState(array)),
+  removeTotalPriceDispatcher: (totalPrice) => dispatch(removeTotalPriceState(totalPrice)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

@@ -1,15 +1,13 @@
 import {
-  ADD_TOTAL_PRICE,
   REQUEST_CURRENCIES,
   RECEIVE_CURRENCIES,
   FAILED_REQUEST,
   ADD_EXPENSES_STATE,
+  DELETE_EXPENSES_STATE,
 } from '../actions';
-import { convertValue } from '../services';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE_WALLET = {
-  totalPrice: 0,
   currencies: [],
   expenses: [],
   isFetching: false,
@@ -18,16 +16,6 @@ const INITIAL_STATE_WALLET = {
 
 function wallet(state = INITIAL_STATE_WALLET, action) {
   switch (action.type) {
-  case ADD_TOTAL_PRICE: {
-    const totalPriceState = state.totalPrice;
-    const totalPriceAction = action.totalPrice;
-    const totalPrice = totalPriceState + totalPriceAction;
-
-    return {
-      ...state,
-      totalPrice: convertValue(totalPrice),
-    };
-  }
   case REQUEST_CURRENCIES:
     return {
       ...state,
@@ -49,6 +37,11 @@ function wallet(state = INITIAL_STATE_WALLET, action) {
     return {
       ...state,
       expenses: [...state.expenses, action.expenses],
+    };
+  case DELETE_EXPENSES_STATE:
+    return {
+      ...state,
+      expenses: action.expenses,
     };
   default:
     return state;
