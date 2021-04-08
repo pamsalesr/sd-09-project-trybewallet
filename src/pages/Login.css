@@ -3,6 +3,7 @@
   min-height: 100vh;
   width: 100%;
 }
+
 .fieldset-login {
   align-items: center;
   border: 3px solid rgb(121, 72, 201);
@@ -12,6 +13,7 @@
   padding: 30px;
   width: 100%;
 }
+
 div.form-login {
   left: 50%;
   position: absolute;
