@@ -21,7 +21,6 @@ class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  
   onChangeEmail(e) {
     const { value } = e.target;
     this.setState({
@@ -29,7 +28,7 @@ class Login extends React.Component {
       isValidEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
     });
   }
-  
+
   onChangePassword(e) {
     const { value } = e.target;
     const minNum = 6;

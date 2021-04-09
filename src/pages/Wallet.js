@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import get from '../services/api';
 import { walletThunk } from '../actions';
@@ -29,8 +29,9 @@ class Wallet extends Component {
   }
 
   render() {
-    <>
-    </>;
+    <div>
+      <h2>Wallet Page</h2>
+    </div>
   }
 }
 
