@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { saveEmail } from '../actions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -39,11 +39,14 @@ class Wallet extends React.Component {
   }
 
   renderEmailUser(value) {
+    const { userLogin } = this.props;
     return (
       <div>
-        <p> Email: </p>
+        <span>Email: </span>
+        <p data-testid="email-field">
+          { userLogin }
+        </p>
         <field
-          data-testid="email-field"
           value={ value }
         />
       </div>
@@ -56,8 +59,9 @@ class Wallet extends React.Component {
     }
     return (
       <div>
+        <span> Despesa Total: R$ </span>
         <field data-testid="header-currency-field">
-          Despesa Total: R$
+          BRL
           <input
             data-testid="total-field"
             placeholder="0"
@@ -157,6 +161,7 @@ class Wallet extends React.Component {
 
   render() {
     const { value } = this.state;
+    // const { user } = this.props;
     // console.log(this.state)
     return (
       <div>
@@ -183,5 +188,12 @@ class Wallet extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  userLogin: state.user.email,
+});
 
-export default (Wallet);
+Wallet.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps)(Wallet);
