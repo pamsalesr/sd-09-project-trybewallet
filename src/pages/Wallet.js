@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import get from '../services/api';
 import { walletThunk } from '../actions';
 import Table from '../components/Table';
+import Wallet2 from './Wallet2';
 
 class Wallet extends Component {
   constructor() {
@@ -97,7 +98,7 @@ class Wallet extends Component {
               onChange={ (e) => this.handleInputChange(e.target) }
             />
           </label>
-
+          <Wallet2 />
           <button
             type="button"
             onClick={ () => this.storeExp() }
