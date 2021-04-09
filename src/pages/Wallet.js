@@ -29,9 +29,11 @@ class Wallet extends Component {
   }
 
   render() {
-    <div>
-      <h2>Wallet Page</h2>
-    </div>
+    return (
+      <div>
+        <h2>Wallet Page</h2>
+      </div>
+    );
   }
 }
 
