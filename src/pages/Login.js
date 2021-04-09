@@ -27,10 +27,10 @@ class Login extends React.Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.inputValidation();
     this.setState({
       [name]: value,
     });
+    this.inputValidation();
   }
 
   inputValidation() {

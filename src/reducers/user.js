@@ -2,7 +2,7 @@ import { SAVE_EMAIL, SAVE_PASSWORD } from '../actions';
 
 const LOGIN_INITIAL_STATE = {
   email: '',
-  password: 0,
+  password: '',
 };
 
 const userReducer = (state = LOGIN_INITIAL_STATE, action) => {
