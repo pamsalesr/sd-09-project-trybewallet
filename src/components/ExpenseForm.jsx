@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchCurrencies, saveExpenses } from '../actions';
 import apiCurrencies from '../services/APIcurrencies';
@@ -186,5 +187,14 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchExpenses: (expenses) => dispatch(saveExpenses(expenses)),
   dispatchfetch: (value) => dispatch(fetchCurrencies(value)),
 });
+
+ExpenseForm.propTypes = {
+  dispatchfetch: PropTypes.func.isRequired,
+  currency: PropTypes.arrayOf(PropTypes.string),
+  dispatchExpenses: PropTypes.func.isRequired,
+};
+ExpenseForm.defaultProps = {
+  currency: [],
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
