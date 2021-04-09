@@ -8,6 +8,7 @@ export default class LoginForm extends Component {
     this.state = {
       email: '',
       password: '',
+      disabled: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -19,10 +20,18 @@ export default class LoginForm extends Component {
     this.setState({ [name]: value });
   }
 
+  validateFields() {
+    const { email, password, disabled } = this.state;
+    const minLength = 6;
+    if (password.length >= minLength && email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
+      this.setState({ disabled: false });
+    }
+  }
+
   //  https://dev.to/ebraimcarvalho/a-simple-way-to-redirect-react-router-dom-5hnn
   async redirectToWallet() {
     const { history } = this.props;
-    history.push('/carteira');
+    return history.push('/carteira');
   }
 
   render() {
@@ -52,7 +61,7 @@ export default class LoginForm extends Component {
             required
           />
           <button
-            type="button"
+            type="submit"
             disabled={ email === '' || password === '' }
             onClick={ this.redirectToWallet }
           >
