@@ -4,9 +4,9 @@ const INICIAL_STATE = {
 };
 
 const user = (state = INICIAL_STATE, action) => {
-  switch(action.type) {
-  case '':
-    return { };
+  switch (action.type) {
+  case 'USER_EMAIL_DISPATCH':
+    return { ...state, email: action.email };
   default:
     return state;
   }

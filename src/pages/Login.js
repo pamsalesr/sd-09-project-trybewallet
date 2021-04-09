@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import userEmailDispatch from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,9 +18,13 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.inputValidation = this.inputValidation.bind(this);
     this.handleButton = this.handleButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
+    this.setState({
+      buttonValidation: true,
+    });
     this.setState({
       [target.name]: target.value,
     });
@@ -27,8 +33,8 @@ class Login extends React.Component {
   }
 
   inputValidation({ name, value }) {
-    const emailRegex = new RegExp(/^[\w]+@[a-z]+.\w{2,3}/g);
-    const senhaRegex = new RegExp(/^[\w]{6,}/g);
+    const emailRegex = new RegExp(/^[\w]+@[a-z]+.\w{2,3}$/g);
+    const senhaRegex = new RegExp(/^[\w]{5,}/g);
     if (name === 'email') {
       this.setState({
         emailValidation: emailRegex.test(value),
@@ -50,35 +56,43 @@ class Login extends React.Component {
     }
   }
 
+  handleClick() {
+    const { emailDispatch } = this.props;
+    const { email } = this.state;
+    emailDispatch(email);
+    console.log(emailDispatch);
+  }
+
   render() {
     const { email, senha, buttonValidation } = this.state;
     return (
       <div>
-        Login
-        <form>
-          <label htmlFor="email">
-            E-mail
-            <input
-              value={ email }
-              name="email"
-              onChange={ this.handleChange }
-              data-testid="email-input"
-              required
-            />
-          </label>
-          <label htmlFor="senha">
-            Password
-            <input
-              value={ senha }
-              name="senha"
-              onChange={ this.handleChange }
-              data-testid="password-input"
-              required
-            />
-          </label>
-        </form>
+        <label htmlFor="email">
+          E-mail
+          <input
+            value={ email }
+            name="email"
+            onChange={ this.handleChange }
+            data-testid="email-input"
+            required
+          />
+        </label>
+        <label htmlFor="senha">
+          Password
+          <input
+            value={ senha }
+            name="senha"
+            onChange={ this.handleChange }
+            data-testid="password-input"
+            required
+          />
+        </label>
         <Link to="/carteira">
-          <button disabled={ buttonValidation } type="submit">
+          <button
+            onClick={ this.handleClick }
+            disabled={ buttonValidation }
+            type="button"
+          >
             Entrar
           </button>
         </Link>
@@ -87,4 +101,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  emailDispatch: (email) => dispatch(userEmailDispatch(email)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
