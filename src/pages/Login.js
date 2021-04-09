@@ -21,6 +21,24 @@ class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  
+  onChangeEmail(e) {
+    const { value } = e.target;
+    this.setState({
+      email: value,
+      isValidEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+    });
+  }
+  
+  onChangePassword(e) {
+    const { value } = e.target;
+    const minNum = 6;
+    this.setState({
+      pass: value,
+      isValidPassword: value.length >= minNum,
+    });
+  }
+
   handleChange({ target }) {
     const { name } = target;
     this.setState({
@@ -34,23 +52,6 @@ class Login extends React.Component {
       this.setState({
         disable: pass.length > min && regex.test(email),
       });
-    });
-  }
-
-  onChangeEmail(e) {
-    const { value } = e.target;
-    this.setState({
-      email: value,
-      isValidEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-    });
-  }
-
-  onChangePassword(e) {
-    const { value } = e.target;
-    const minNum = 6;
-    this.setState({
-      pass: value,
-      isValidPassword: value.length >= minNum,
     });
   }
 

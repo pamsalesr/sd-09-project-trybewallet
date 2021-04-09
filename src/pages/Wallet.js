@@ -11,17 +11,17 @@ class Wallet extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.storeExp = this.storeExp.bind(this);
     this.totalExp = this.totalExp.bind(this);
-    this.state = {
-      currencies: [],
-      expenses: {
-        id: 0,
-        value: 0,
-        description: '',
-        currency: '',
-        method: '',
-        tag: '',
-      },
-    };
+    // this.state = {
+    //   currencies: [],
+    //   expenses: {
+    //     id: 0,
+    //     value: 0,
+    //     description: '',
+    //     currency: '',
+    //     method: '',
+    //     tag: '',
+    //   },
+    // };
   }
 
   componentDidMount() {
@@ -30,7 +30,7 @@ class Wallet extends Component {
 
   render() {
     <>
-    </>
+    </>;
   }
 }
 
@@ -43,10 +43,10 @@ const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (expenses) => dispatch(walletThunk(expenses)),
 });
 
-Wallet.propTypes = {
-  email: PropTypes.string.isRequired,
-  saveExpenses: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+// Wallet.propTypes = {
+//   email: PropTypes.string.isRequired,
+//   saveExpenses: PropTypes.func.isRequired,
+//   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
