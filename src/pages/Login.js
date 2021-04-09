@@ -15,27 +15,27 @@ class Login extends React.Component {
       isValidPassword: '',
     };
 
-    // this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // handleChange({ target }) {
-  //   const { name } = target;
-  //   this.setState({
-  //     [name]: target.value,
-  //   },
-  //   () => {
-  //     const { email, pass } = this.state;
-  //     const min = 5;
-  //     const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/;
+  handleChange({ target }) {
+    const { name } = target;
+    this.setState({
+      [name]: target.value,
+    },
+    () => {
+      const { email, pass } = this.state;
+      const min = 5;
+      const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/;
 
-  //     this.setState({
-  //       disable: pass.length > min && regex.test(email),
-  //     });
-  //   });
-  // }
+      this.setState({
+        disable: pass.length > min && regex.test(email),
+      });
+    });
+  }
 
   onChangeEmail(e) {
     const { value } = e.target;
