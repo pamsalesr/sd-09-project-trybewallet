@@ -11,7 +11,7 @@ class ExpenseForm extends React.Component {
     this.state = {
       id: 0,
       currency: 'USD',
-      value: 0,
+      value: '',
       description: '',
       method: 'Dinheiro',
       tag: 'Alimentação',
@@ -21,7 +21,6 @@ class ExpenseForm extends React.Component {
     this.creatorPaymentSelect = this.creatorPaymentSelect.bind(this);
     this.creatorTagSelect = this.creatorTagSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // this.getCurrencies = this.getCurrencies.bind(this);
     this.addExpenses = this.addExpenses.bind(this);
   }
 
@@ -29,11 +28,6 @@ class ExpenseForm extends React.Component {
     const { dispatchfetch } = this.props;
     dispatchfetch();
   }
-
-  // async getCurrencies() {
-  //   const { dispatchfetch } = this.props;
-  //   this.setState({ currency: dispatchfetch });
-  // }
 
   handleChange({ target }) {
     const { name, value } = target;
@@ -47,7 +41,7 @@ class ExpenseForm extends React.Component {
     return (
       <div>
         <label htmlFor="currency-input">
-          Moeda
+          Moeda:
           <select
             name="currency"
             id="currency-input"
@@ -73,7 +67,7 @@ class ExpenseForm extends React.Component {
     const { method } = this.state;
     return (
       <label htmlFor="method-input">
-        Metodo de Pagamento
+        Metodo de Pagamento:
         <select
           value={ method }
           name="method"
@@ -93,7 +87,7 @@ class ExpenseForm extends React.Component {
     const { tag } = this.state;
     return (
       <label htmlFor="tag-input">
-        Tag
+        Tag:
         <select
           value={ tag }
           name="tag"
@@ -128,7 +122,7 @@ class ExpenseForm extends React.Component {
     dispatchExpenses(expense);
     this.setState({
       currency: 'USD',
-      value: 0,
+      value: '',
       description: '',
       method: 'Dinheiro',
       tag: 'Alimentação',
@@ -150,6 +144,7 @@ class ExpenseForm extends React.Component {
             type="number"
             data-testid="value-input"
             onChange={ this.handleChange }
+            placeholder="0,00"
           />
         </label>
         <label
@@ -163,6 +158,7 @@ class ExpenseForm extends React.Component {
             type="text"
             data-testid="description-input"
             onChange={ this.handleChange }
+            placeholder="Despesas"
           />
         </label>
         { this.creatorCurrencySelect() }

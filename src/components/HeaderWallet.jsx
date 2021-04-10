@@ -11,11 +11,11 @@ class HeaderWallet extends React.Component {
 
   sumExpenses() {
     const { expenses } = this.props;
-    let sum = 0;
-    expenses.forEach((element) => {
-      sum += element.value * element.exchangeRates[element.currency].ask;
-    });
-    return sum.toFixed(2);
+    const total = expenses.reduce((acc, expense) => {
+      const { value, currency, exchangeRates } = expense;
+      return acc + ((parseFloat(value)) * (parseFloat(exchangeRates[currency].ask)));
+    }, 0);
+    return total.toFixed(2);
   }
 
   render() {
@@ -26,7 +26,7 @@ class HeaderWallet extends React.Component {
           <strong>Email:</strong>
           <span data-testid="email-field">{ email }</span>
           <strong>Despesa Total:</strong>
-          <span data-testid="total-field">{this.sumExpenses()}</span>
+          <span data-testid="total-field">{`R$ ${this.sumExpenses()}`}</span>
           <span data-testid="header-currency-field">BRL</span>
         </div>
       </header>
