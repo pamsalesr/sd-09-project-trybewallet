@@ -4,8 +4,16 @@ import Form from '../components/ExpenseForm';
 import Table from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
+  getExpenseValue(expenses) {
+    const expenseValue = expenses.reduce((total, { currency, value, exchangeRates }) => {
+      total += value * exchangeRates[currency].ask;
+      return total;
+    }, 0);
+    return expenseValue.toFixed(2);
+  }
+
   render() {
-    const { emailDispatch } = this.props;
+    const { emailDispatch, expenses } = this.props;
     return (
       <div>
         <header>
@@ -16,7 +24,8 @@ class Wallet extends React.Component {
             </div>
 
             <div data-testid="total-field">
-              Despesa Total: 0
+              Despesa Total:
+              { this.getExpenseValue(expenses) }
               <div data-testid="header-currency-field">
                 BRL
               </div>
@@ -25,7 +34,6 @@ class Wallet extends React.Component {
         </header>
         <section>
           <Form />
-          <button type="button">Adicionar despesa</button>
         </section>
         <section>
           <Table />
@@ -37,6 +45,7 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   emailDispatch: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps, null)(Wallet);
