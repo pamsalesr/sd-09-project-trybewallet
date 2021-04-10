@@ -1,5 +1,5 @@
 import {
-  REQUEST_CURRENCIES_SUCCESS, SAVE_EXPENSES, CURRENCIES,
+  REQUEST_CURRENCIES_SUCCESS, SAVE_EXPENSES, CURRENCIES, DELETE_EXPENSE,
 } from '../actions';
 
 const INITIAL_STATE_WALLET = {
@@ -19,12 +19,19 @@ const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
       ...state, expenses: [...state.expenses, action.expenses],
     };
 
+  case DELETE_EXPENSE:
+    return ({
+      ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== action.id),
+    });
+
   case REQUEST_CURRENCIES_SUCCESS:
     return {
       ...state,
       currencies: action.currencies,
       isFetching: action.isFetching,
     };
+
   default:
     return state;
   }

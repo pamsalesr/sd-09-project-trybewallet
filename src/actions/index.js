@@ -7,6 +7,7 @@ export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_ERROR = 'REQUEST_CURRENCIES_ERROR';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const saveEmail = (email) => ({
   type: SAVE_EMAIL,
@@ -28,10 +29,11 @@ export const saveExpenses = (expenses) => ({
   expenses,
 });
 
-// export const requestCurrencies = () => ({
-//   type: REQUEST_CURRENCIES,
-//   isFetching: true,
-// });
+export const deletExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
+
+});
 
 export const requestCurrenciesSuccess = (currencies) => ({
   type: REQUEST_CURRENCIES_SUCCESS,
@@ -39,19 +41,10 @@ export const requestCurrenciesSuccess = (currencies) => ({
   isFetching: false,
 });
 
-// export const requestCurrenciesError = (error) => ({
-//   type: REQUEST_CURRENCIES_ERROR,
-//   error,
-//   isFetching: false,
-// });
-
 export const fetchCurrencies = () => (dispatch) => {
   // dispatch(requestCurrencies());
   apiCurrencies()
     .then((currenciesResponse) => dispatch(
       requestCurrenciesSuccess(Object.keys(currenciesResponse)),
     ));
-  // .catch((error) => dispatch(
-  //   requestCurrenciesError(error),
-  // ));
 };
