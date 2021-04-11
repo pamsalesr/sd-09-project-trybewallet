@@ -12,12 +12,18 @@ class ListWallet extends Component {
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
-  deleteExpense(id, value) {
+  deleteExpense(id) {
     const { addTotals, upgradeExpenses, wallet, totals } = this.props;
-    const { total, currency } = totals;
+    const { currency } = totals;
     const { expenses } = wallet;
-    addTotals(total - value, currency);
-    upgradeExpenses(expenses.filter((expense) => expense.id !== id));
+    const expensesTemp = expenses.filter((expense) => expense.id !== id)
+    const total = expensesTemp.reduce((totalValue, expense) => {
+      totalValue += expense.exchangeRates[expense.currency].ask * expense.value;
+      return totalValue;
+    }, 0);
+    addTotals(total, currency);
+
+    upgradeExpenses(expensesTemp);
   }
 
   render() {
@@ -57,9 +63,7 @@ class ListWallet extends Component {
                     exchange={ expense.exchangeRates[expense.currency].ask }
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
-                    deleteFunction={ () => this.deleteExpense(expense.id,
-                      parseFloat(expense.value)
-                       * parseFloat(expense.exchangeRates[expense.currency].ask)) }
+                    deleteFunction={ () => this.deleteExpense(expense.id) }
                     key={ expense.id }
                   />
                 ))
