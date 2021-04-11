@@ -5,7 +5,7 @@ import './listWallet.css';
 class WalletItem extends Component {
   render() {
     const { description, tag, method, currency, value, currencyName, exchange,
-      convertValue, deleteFunction } = this.props;
+      convertValue, deleteFunction, editFunction } = this.props;
     return (
       <div>
         <td className="description">{ description }</td>
@@ -19,16 +19,17 @@ class WalletItem extends Component {
         <td className="convert-currency">Real</td>
         <button
           type="button"
+          data-testid="edit-btn"
+          onClick={ editFunction }
+        >
+          Editar
+        </button>
+        <button
+          type="button"
           data-testid="delete-btn"
           onClick={ deleteFunction }
         >
           Excluir
-        </button>
-        <button
-          type="button"
-          data-testid="edit-btn"
-        >
-          Editar
         </button>
       </div>
     );
@@ -45,6 +46,7 @@ WalletItem.propTypes = ({
   exchange: PropTypes.number,
   convertValue: PropTypes.number,
   deleteFunction: PropTypes.func,
+  editFunction: PropTypes.func,
 }).isRequired;
 
 export default WalletItem;

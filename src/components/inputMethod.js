@@ -4,7 +4,7 @@ import './inputMethod.css';
 
 class InputMethod extends Component {
   render() {
-    const { fieldFunction, fieldValue } = this.props;
+    const { fieldFunction, fieldValue, fieldDefault } = this.props;
     return (
       <div className="class-method">
         <label htmlFor="form-method">
@@ -16,7 +16,7 @@ class InputMethod extends Component {
             type="text"
             value={ fieldValue }
             onChange={ fieldFunction }
-            defaultValue="Dinheiro"
+            defaultValue={ fieldDefault }
           >
             <option value="Dinheiro">Dinheiro</option>
             <option value="Cartão de crédito">Cartão de crédito</option>
@@ -31,6 +31,7 @@ class InputMethod extends Component {
 InputMethod.propTypes = {
   fieldValue: PropTypes.string.isRequired,
   fieldFunction: PropTypes.func.isRequired,
+  fieldDefault: PropTypes.string.isRequired,
 };
 
 export default InputMethod;

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   isFatching: false,
   error: '',
   lastId: -1,
+  edit: -1,
 
 };
 
@@ -16,26 +17,22 @@ function walletReducer(state = INITIAL_STATE, action) {
       ...state,
       isFatching: true,
     };
-
   case Type.RECEIVE_CURRENCY_SUCCESS:
     return {
       ...state,
       currencies: action.currencies,
       isFatching: false,
     };
-
   case Type.RECEIVE_CURRENCY_FAILURE:
     return {
       ...state,
       error: action.error,
       isFatching: false,
     };
-
   case Type.ADD_CURRENCY:
     return {
       currencies: action.currency,
     };
-
   case Type.ADD_EXPENSE: {
     return {
       ...state,
@@ -46,7 +43,12 @@ function walletReducer(state = INITIAL_STATE, action) {
       ],
     };
   }
-
+  case Type.EDIT_EXPENSE: {
+    return {
+      ...state,
+      edit: action.id,
+    };
+  }
   case Type.UPGRADE_EXPENSES: {
     return {
       ...state,

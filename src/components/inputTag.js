@@ -4,7 +4,7 @@ import './inputTag.css';
 
 class InputTag extends Component {
   render() {
-    const { fieldFunction, fieldValue } = this.props;
+    const { fieldFunction, fieldValue, fieldDefault } = this.props;
     return (
       <div className="class-tag">
         <label htmlFor="form-tag">
@@ -16,7 +16,7 @@ class InputTag extends Component {
             type="text"
             value={ fieldValue }
             onChange={ fieldFunction }
-            defaultValue="Alimentação"
+            defaultValue={ fieldDefault }
           >
             <option value="Alimentação">Alimentação</option>
             <option value="Lazer">Lazer</option>
@@ -33,6 +33,7 @@ class InputTag extends Component {
 InputTag.propTypes = {
   fieldValue: PropTypes.string.isRequired,
   fieldFunction: PropTypes.func.isRequired,
+  fieldDefault: PropTypes.string.isRequired,
 };
 
 export default InputTag;

@@ -40,6 +40,13 @@ export function addTotals(total, currency) {
   };
 }
 
+export function editExpense(id) {
+  return {
+    type: Type.EDIT_EXPENSE,
+    id,
+  };
+}
+
 const requestCurrency = () => ({
   type: Type.REQUEST_CURRENCY,
 });

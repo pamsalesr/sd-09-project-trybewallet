@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WalletItem from './walletItem';
+import WalletForm from './walletForm';
 import * as Actions from '../actions';
 import './listWallet.css';
 
@@ -10,6 +12,12 @@ class ListWallet extends Component {
     super(props);
 
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
+  }
+
+  editExpense(id) {
+    const { editExpense } = this.props;
+    editExpense(id);
   }
 
   deleteExpense(id) {
@@ -22,19 +30,19 @@ class ListWallet extends Component {
       return totalValue;
     }, 0);
     addTotals(total, currency);
-
     upgradeExpenses(expensesTemp);
   }
 
   render() {
     const { wallet } = this.props;
-    const { expenses } = wallet;
+    const { edit, expenses } = wallet;
+    const yesEdit = -1;
+    // if (edit > yesEdit) return (<Redirect to="/carteira" />);
+    if (edit > yesEdit) return (<WalletForm />);
 
     return (
       <div>
-        <div>
-          <p> </p>
-        </div>
+        <p> </p>
         <table border="0">
           <thead>
             <tr>
@@ -64,6 +72,7 @@ class ListWallet extends Component {
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
                     deleteFunction={ () => this.deleteExpense(expense.id) }
+                    editFunction={ () => this.editExpense(expense.id) }
                     key={ expense.id }
                   />
                 ))
@@ -79,10 +88,12 @@ class ListWallet extends Component {
 ListWallet.propTypes = {
   addTotals: PropTypes.func.isRequired,
   upgradeExpenses: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
     lastId: PropTypes.number,
+    edit: PropTypes.number,
   }).isRequired,
   totals: PropTypes.shape({
     total: PropTypes.number,
@@ -93,6 +104,7 @@ ListWallet.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
   addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
+  editExpense: (id) => dispatch(Actions.editExpense(id)),
 });
 
 const mapStateToProps = (state) => (state);
