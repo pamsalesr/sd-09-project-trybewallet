@@ -1,9 +1,21 @@
 // Coloque aqui suas actions
-function addEmail(email) {
+export function addEmail(email) {
   return {
     type: 'addUser',
     email,
   };
 }
 
-export default addEmail;
+export function addDespesa(despesa) {
+  return {
+    type: 'addDespesa',
+    despesa,
+  };
+}
+
+export function addExpense(expense) {
+  return {
+    type: 'addExpense',
+    expense,
+  };
+}
