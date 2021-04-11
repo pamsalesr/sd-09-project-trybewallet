@@ -16,7 +16,7 @@ class ListWallet extends Component {
     const { addTotals, upgradeExpenses, wallet, totals } = this.props;
     const { currency } = totals;
     const { expenses } = wallet;
-    const expensesTemp = expenses.filter((expense) => expense.id !== id)
+    const expensesTemp = expenses.filter((expense) => expense.id !== id);
     const total = expensesTemp.reduce((totalValue, expense) => {
       totalValue += expense.exchangeRates[expense.currency].ask * expense.value;
       return totalValue;
