@@ -12,30 +12,35 @@ export default class LoginForm extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.validateFields = this.validateFields.bind(this);
     this.redirectToWallet = this.redirectToWallet.bind(this);
   }
 
   handleChange(event) {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+    this.validateFields();
   }
 
   validateFields() {
-    const { email, password, disabled } = this.state;
-    const minLength = 6;
-    if (password.length >= minLength && email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
+    const { email, password } = this.state;
+    const minLength = 5;
+    if (email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g) && password.length >= minLength) {
       this.setState({ disabled: false });
+      console.log(email, password);
+    } else {
+      this.setState({ disabled: true });
     }
   }
 
   //  https://dev.to/ebraimcarvalho/a-simple-way-to-redirect-react-router-dom-5hnn
-  async redirectToWallet() {
+  redirectToWallet() {
     const { history } = this.props;
     return history.push('/carteira');
   }
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, disabled } = this.state;
 
     return (
       <main className="login-container">
@@ -55,14 +60,13 @@ export default class LoginForm extends Component {
             data-testid="password-input"
             name="password"
             value={ password }
-            minLength="6"
             placeholder="Crie sua senha"
             onChange={ this.handleChange }
             required
           />
           <button
             type="submit"
-            disabled={ email === '' || password === '' }
+            disabled={ disabled }
             onClick={ this.redirectToWallet }
           >
             Entrar
