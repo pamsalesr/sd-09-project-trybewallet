@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.new-input {
+  background-color: rgb(51, 51, 51);
+  display: flex;
+  justify-content: center;
+  height: 80px;
+}
+
+.new-input button {
+  background-color: #9ae6ca;
+}
+
+.table {
+  border: 2px solid black;
+  display:flex;
+  flex-direction: column;
+  font-size: 20px;
+  justify-content: space-around;
+}
+
+.table th, tr {
+  background-color: #9ae6ca;
+  border: 2px solid black;
+  margin: 5px;
+  padding: 10px;
+}

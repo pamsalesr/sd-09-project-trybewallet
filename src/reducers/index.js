@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { LOGIN, EXPENSE, CURRENCY } from '../actions';
+import { LOGIN, EXPENSE, CURRENCY, DELETE_EXPENSE } from '../actions';
 
 const initialState = {
   user: {
@@ -33,6 +33,11 @@ const walletReducer = (state = initialState.wallet, action) => {
     return {
       ...state,
       expenses: [...state.expenses.concat(action.expense)],
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      expenses: state.expenses.filter((item) => item.id !== action.expenseId),
     };
   default: return state;
   }

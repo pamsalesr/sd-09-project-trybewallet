@@ -61,6 +61,7 @@ class Login extends React.Component {
           id="user-email"
           name="email"
           type="email"
+          placeholder="email@email.com"
           onChange={ (event) => this.handleChange(event) }
         />
         <input
@@ -68,6 +69,7 @@ class Login extends React.Component {
           id="user-password"
           name="password"
           type="password"
+          placeholder="senha"
           onChange={ (event) => this.handleChange(event) }
         />
         <Link to="/carteira" onClick={ () => execLogin(user.email) }>
