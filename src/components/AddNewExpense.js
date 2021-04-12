@@ -143,7 +143,7 @@ class AddNewExpense extends React.Component {
     const { currencyList } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
-      <form>
+      <div>
         { this.valueInput(value) }
         { this.currencyInput(currency, currencyList) }
         <label htmlFor="description-input">
@@ -159,7 +159,7 @@ class AddNewExpense extends React.Component {
         { this.paymentInput(method) }
         { this.tagInput(tag) }
         <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
-      </form>
+      </div>
     );
   }
 }
@@ -181,7 +181,7 @@ AddNewExpense.defaultProps = {
 };
 
 AddNewExpense.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   currencyList: PropTypes.objectOf(PropTypes.string),
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,

@@ -24,14 +24,14 @@ class Header extends React.Component {
   }
 }
 
-// Header.defaultProps = {
-//   email: 'alguem@email.com',
-//   totalPrice: 0,
-// };
+Header.defaultProps = {
+  email: 'alguem@email.com',
+  totalPrice: 0,
+};
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
-  totalPrice: PropTypes.number.isRequired,
+  email: PropTypes.string,
+  totalPrice: PropTypes.number,
 };
 
 const mapStateToProps = (state) => ({
