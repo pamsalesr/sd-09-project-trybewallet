@@ -34,7 +34,6 @@ function wallet(state = INITIAL_STATE, action) {
       ...state,
       expenses: action.expense,
     };
-
   case HANDLE_NEW_TOTAL:
     return {
       ...state,
