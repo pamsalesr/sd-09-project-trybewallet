@@ -176,13 +176,9 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchTotalPrice: (value) => dispatch(handleTotalPrice(value)),
 });
 
-AddNewExpense.defaultProps = {
-  currencyList: { '': '' },
-};
-
 AddNewExpense.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
-  currencyList: PropTypes.objectOf(PropTypes.string),
+  currencyList: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,
   dispatchTotalPrice: PropTypes.func.isRequired,

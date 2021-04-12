@@ -4,6 +4,8 @@ export const LOGIN_INFORMATION = 'LOGIN_INFORMATION';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const TOTAL_PRICE = 'TOTAL_PRICE';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const HANDLE_NEW_TOTAL = 'HANDLE_NEW_TOTAL';
 
 export function saveLoginInformation(email) {
   return {
@@ -33,3 +35,13 @@ export function getCurrency() {
     return dispatch(saveCurrencies(currencyList));
   };
 }
+
+export const deleteExpense = (expense) => ({
+  type: DELETE_EXPENSE,
+  expense,
+});
+
+export const handleNewTotal = (newTotal) => ({
+  type: HANDLE_NEW_TOTAL,
+  newTotal,
+});
