@@ -1,7 +1,8 @@
 import React from 'react';
 import PropsTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Forms from '../componets/formWalet';
+import FormsWalet from '../componets/formWalet';
+import Table from '../componets/table';
 
 class Wallet extends React.Component {
   render() {
@@ -17,7 +18,8 @@ class Wallet extends React.Component {
           <p data-testid="total-field">{num}</p>
           <p data-testid="header-currency-field">BRL</p>
         </header>
-        <Forms />
+        <FormsWalet />
+        <Table />
       </div>
     );
   }
