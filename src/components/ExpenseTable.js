@@ -13,7 +13,8 @@ class ExpenseTable extends React.Component {
         <td>{expense.exchangeRates[expense.currency].name}</td>
         <td>{parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
         <td>
-          {(parseFloat(expense.exchangeRates[expense.currency].ask) * expense.value).toFixed(2)}
+          {(parseFloat(expense.exchangeRates[expense.currency].ask) * expense.value)
+            .toFixed(2)}
         </td>
         <td>Real</td>
         <td>
