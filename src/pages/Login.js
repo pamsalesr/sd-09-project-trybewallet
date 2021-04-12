@@ -12,19 +12,13 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.userDataValidation = this.userDataValidation.bind(this);
-    this.dispatchEmail = this.dispatchEmail.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       userEmail: '',
       userPassword: '',
       isDisabled: true,
     };
-  }
-
-  dispatchEmail() {
-    const { userEmail } = this.state;
-    const { savesUserEmail } = this.props;
-    savesUserEmail(userEmail);
   }
 
   userDataValidation() {
@@ -38,17 +32,23 @@ class Login extends React.Component {
     });
   }
 
+  handleClick() {
+    const { userEmail } = this.state;
+    const { savesUserEmail } = this.props;
+    savesUserEmail(userEmail);
+  }
+
   handleChange({ target }) {
-    const { userDataValidation } = this;
+    // const { userDataValidation } = this;
     const { name, value } = target;
     this.setState({
       [name]: value,
     });
-    userDataValidation();
+    // userDataValidation();
   }
 
   render() {
-    const { handleChange, dispatchEmail } = this;
+    const { handleChange, handleClick, userDataValidation } = this;
     const { userEmail, userPassword, isDisabled } = this.state;
     return (
       <section name="login">
@@ -67,12 +67,13 @@ class Login extends React.Component {
           placeholder="Senha"
           value={ userPassword }
           onChange={ (e) => handleChange(e) }
+          onKeyUp={ () => userDataValidation() }
         />
         <Link to="/carteira">
           <button
             type="button"
             disabled={ isDisabled }
-            onClick={ () => dispatchEmail() }
+            onClick={ () => handleClick() }
           >
             Entrar
           </button>
