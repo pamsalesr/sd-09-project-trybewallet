@@ -21,15 +21,14 @@ class Login extends React.Component {
   onChange(event) {
     const { target: { name, value }, target } = event;
     const { valid } = this.state;
-    let wait = true;
+    const validValue = target.checkValidity();
     this.setState({
       [name]: value,
       valid: {
         ...valid,
-        [name]: target.checkValidity(),
+        [name]: validValue,
       },
-    }, () => { wait = false; });
-    while (wait);
+    });
   }
 
   onSubmit(target) {
@@ -44,7 +43,7 @@ class Login extends React.Component {
     const { email, password, redirect, valid } = this.state;
     return ((!redirect)
       ? (
-        <form onSubmit={ this.onSubmit.bind(this) } onInvalid={ () => null }>
+        <form onSubmit={ this.onSubmit.bind(this) }>
           <label htmlFor="email">
             Digite seu email
             <input
@@ -53,6 +52,7 @@ class Login extends React.Component {
               data-testid="email-input"
               value={ email }
               onChange={ this.onChange.bind(this) }
+              onKeyUp={ this.onChange.bind(this) }
               type="email"
               required
             />
@@ -65,6 +65,7 @@ class Login extends React.Component {
               data-testid="password-input"
               value={ password }
               onChange={ this.onChange.bind(this) }
+              onKeyUp={ this.onChange.bind(this) }
               type="password"
               minLength={ 6 }
             />
