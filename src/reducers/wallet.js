@@ -21,7 +21,7 @@ function wallet(state = INITIAL_STATE, action) {
   case TOTAL_PRICE:
     return {
       ...state,
-      totalPrice: state.totalPrice + action.totalPrice,
+      totalPrice: state.totalPrice + action.value,
     };
   default:
     return state;

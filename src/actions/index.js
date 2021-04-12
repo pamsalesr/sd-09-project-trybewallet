@@ -17,15 +17,10 @@ export const addExpenses = (expensesObj) => ({
   expensesObj,
 });
 
-export const handleTotalPrice = (totalPrice) => ({
+export const handleTotalPrice = (value) => ({
   type: 'TOTAL_PRICE',
-  totalPrice,
+  value,
 });
-
-// const addExpenses = (expense) => ({
-//   type: ADD_EXPENSES,
-//   expense,
-// });
 
 const saveCurrencies = (currencyList) => ({
   type: GET_CURRENCIES,

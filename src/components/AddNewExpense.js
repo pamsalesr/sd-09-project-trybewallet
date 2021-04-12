@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCurrency, addExpenses, handleTotalPrice } from '../actions';
+import requestCurrency from '../services/awesomeApi';
 
 class AddNewExpense extends React.Component {
   constructor() {
@@ -11,9 +12,9 @@ class AddNewExpense extends React.Component {
     this.state = {
       value: '',
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
     };
   }
 
@@ -27,9 +28,9 @@ class AddNewExpense extends React.Component {
   }
 
   async handleClick() {
-    const rates = await this.getCurrency();
+    const rates = await requestCurrency();
     const { value, description, currency, method, tag } = this.state;
-    const { expenses, dispatchExpenses } = this.props;
+    const { expenses, dispatchExpenses, dispatchTotalPrice } = this.props;
     const expensesObj = {
       id: expenses.length,
       value,
@@ -40,6 +41,7 @@ class AddNewExpense extends React.Component {
       exchangeRates: rates,
     };
     dispatchExpenses(expensesObj);
+    dispatchTotalPrice(parseFloat(value) * parseFloat(rates[currency].ask));
     this.setState({
       value: '',
       description: '',
@@ -64,6 +66,7 @@ class AddNewExpense extends React.Component {
           name="currency"
           value={ currency }
           data-testid="currency-input"
+          id="currency-input"
           onChange={ ({ target }) => this.handleInputs(target) }
         >
           { Object.keys(currencyList)
@@ -86,6 +89,7 @@ class AddNewExpense extends React.Component {
           name="method"
           value={ method }
           data-testid="method-input"
+          id="method-input"
           onChange={ ({ target }) => this.handleInputs(target) }
         >
           <option>Selecione</option>
@@ -105,6 +109,7 @@ class AddNewExpense extends React.Component {
           name="tag"
           value={ tag }
           data-testid="tag-input"
+          id="tag-input"
           onChange={ ({ target }) => this.handleInputs(target) }
         >
           <option>Selecione</option>
@@ -127,6 +132,7 @@ class AddNewExpense extends React.Component {
           name="value"
           value={ value }
           data-testid="value-input"
+          id="value-input"
           onChange={ ({ target }) => this.handleInputs(target) }
         />
       </label>
@@ -167,7 +173,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchCurrencyToProps: () => dispatch(getCurrency()),
   dispatchExpenses: (expensesObj) => dispatch(addExpenses(expensesObj)),
-  dispatchTotalPrice: () => dispatch(handleTotalPrice()),
+  dispatchTotalPrice: (value) => dispatch(handleTotalPrice(value)),
 });
 
 AddNewExpense.defaultProps = {
@@ -175,10 +181,11 @@ AddNewExpense.defaultProps = {
 };
 
 AddNewExpense.propTypes = {
-  expenses: PropTypes.arrayOf(String).isRequired,
-  currencyList: PropTypes.objectOf(String),
+  expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currencyList: PropTypes.objectOf(PropTypes.string),
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,
+  dispatchTotalPrice: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewExpense);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   render() {
@@ -14,24 +14,29 @@ class Header extends React.Component {
           </p>
         </div>
         <div className="header-total">
-          <p data-testid="total-field">
+          <span data-testid="total-field">
             {!totalPrice ? 0 : totalPrice}
-            <span data-testid="header-currency-field">BRL</span>
-          </p>
+          </span>
+          <span data-testid="header-currency-field">BRL</span>
         </div>
       </header>
     );
   }
 }
 
-Header.defaultProps = {
-  email: 'alguem@email.com',
-  totalPrice: 0,
-};
+// Header.defaultProps = {
+//   email: 'alguem@email.com',
+//   totalPrice: 0,
+// };
 
 Header.propTypes = {
-  email: PropTypes.string,
-  totalPrice: PropTypes.number,
+  email: PropTypes.string.isRequired,
+  totalPrice: PropTypes.number.isRequired,
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+  totalPrice: state.wallet.totalPrice,
+});
+
+export default connect(mapStateToProps)(Header);
