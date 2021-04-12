@@ -10,7 +10,6 @@ export function saveLoginInformation(email, validation) {
   return {
     type: 'LOGIN_INFORMATION',
     email,
-    validation,
   };
 }
 

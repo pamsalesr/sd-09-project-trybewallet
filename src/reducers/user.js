@@ -3,7 +3,6 @@ import { LOGIN_INFORMATION } from '../actions';
 const INITIAL_STATE = {
   user: {
     email: '',
-    validation: false,
   },
 };
 
@@ -13,7 +12,6 @@ function user(state = INITIAL_STATE, action) {
     return {
       ...state,
       email: action.email,
-      validation: action.validation,
     };
   default:
     return state;

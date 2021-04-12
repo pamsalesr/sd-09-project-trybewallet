@@ -137,25 +137,23 @@ class AddNewExpense extends React.Component {
     const { currencyList } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
-      <div>
-        <form>
-          { this.valueInput(value) }
-          { this.currencyInput(currency, currencyList) }
-          <label htmlFor="description-input">
-            Descrição:
-            <input
-              type="text"
-              name="description"
-              value={ description }
-              data-testid="description-input"
-              onChange={ ({ target }) => this.handleInputs(target) }
-            />
-          </label>
-          { this.paymentInput(method) }
-          { this.tagInput(tag) }
-          <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
-        </form>
-      </div>
+      <form>
+        { this.valueInput(value) }
+        { this.currencyInput(currency, currencyList) }
+        <label htmlFor="description-input">
+          Descrição:
+          <input
+            type="text"
+            name="description"
+            value={ description }
+            data-testid="description-input"
+            onChange={ ({ target }) => this.handleInputs(target) }
+          />
+        </label>
+        { this.paymentInput(method) }
+        { this.tagInput(tag) }
+        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
+      </form>
     );
   }
 }
@@ -177,7 +175,7 @@ AddNewExpense.defaultProps = {
 };
 
 AddNewExpense.propTypes = {
-  expenses: PropTypes.string.isRequired,
+  expenses: PropTypes.array.isRequired,
   currencyList: PropTypes.objectOf(String),
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,
