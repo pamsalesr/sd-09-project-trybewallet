@@ -1,7 +1,6 @@
 import React from 'react';
+
 class Wallet extends React.Component {
-
-
   render() {
     return (
       <>
@@ -11,4 +10,4 @@ class Wallet extends React.Component {
   }
 }
 
-export default Wallet
+export default Wallet;

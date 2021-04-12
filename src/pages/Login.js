@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  savesUserEmail as savesUserEmailAction
-} from '../actions';
 import { Link } from 'react-router-dom';
+import {
+  savesUserEmail as savesUserEmailAction,
+} from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -31,13 +31,14 @@ class Login extends React.Component {
     const { userEmail, userPassword } = this.state;
     const emailValidation = /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/;
     const minLength = 6;
-    let disabled = !(emailValidation.test(userEmail) && userPassword.length >= minLength);
+    const disabled = !(emailValidation.test(userEmail)
+    && userPassword.length >= minLength);
     this.setState({
       isDisabled: disabled,
     });
   }
 
-  handleChange({target}) {
+  handleChange({ target }) {
     const { userDataValidation } = this;
     const { name, value } = target;
     this.setState({
@@ -49,39 +50,44 @@ class Login extends React.Component {
   render() {
     const { handleChange, dispatchEmail } = this;
     const { userEmail, userPassword, isDisabled } = this.state;
-    return(
+    return (
       <section name="login">
         <input
           data-testid="email-input"
           type="email"
           name="userEmail"
           placeholder="E-mail"
-          value={userEmail}
-          onChange={(e) => handleChange(e)}
+          value={ userEmail }
+          onChange={ (e) => handleChange(e) }
         />
         <input
           data-testid="password-input"
           type="password"
           name="userPassword"
           placeholder="Senha"
-          value={userPassword}
-          onChange={(e) => handleChange(e)}
+          value={ userPassword }
+          onChange={ (e) => handleChange(e) }
         />
         <Link to="/carteira">
           <button
-            disabled={isDisabled}
-            onClick={() => dispatchEmail()}
+            type="button"
+            disabled={ isDisabled }
+            onClick={ () => dispatchEmail() }
           >
             Entrar
           </button>
         </Link>
       </section>
-    )
+    );
   }
 }
 
+Login.propTypes = {
+  savesUserEmail: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
-  savesUserEmail: (userData) => (dispatch(savesUserEmailAction(userData)))
+  savesUserEmail: (userData) => (dispatch(savesUserEmailAction(userData))),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
