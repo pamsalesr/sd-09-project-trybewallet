@@ -10,9 +10,11 @@ class ExpenseTable extends React.Component {
         <td>{expense.tag}</td>
         <td>{expense.method}</td>
         <td>{expense.value}</td>
-        <td />
-        <td />
-        <td />
+        <td>{expense.exchangeRates[expense.currency].name}</td>
+        <td>{parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
+        <td>
+          {(parseFloat(expense.exchangeRates[expense.currency].ask) * expense.value).toFixed(2)}
+        </td>
         <td>Real</td>
         <td>
           <button type="button" data-testid="delete-btn">Excluir</button>
