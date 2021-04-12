@@ -12,6 +12,12 @@ export const addExpense = (expense, exchangeRates) => ({
   exchangeRates,
 });
 
+export const delExpense = (id, total) => ({
+  type: 'DEL_EXPENSE',
+  id,
+  total,
+});
+
 export const fetchCurrencyCotation = async (dispatch) => {
   const currencyCotation = await getCurrencyCotation();
   dispatch(addExpense(currencyCotation));

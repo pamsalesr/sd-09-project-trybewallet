@@ -6,7 +6,7 @@ class Header extends Component {
   totalExpenses() {
     const { walletExpenses } = this.props;
     // logica de soma de todas as despesas
-    return walletExpenses;
+    return walletExpenses || 0;
   }
 
   render() {
@@ -15,7 +15,7 @@ class Header extends Component {
       <div>
         <h2>TrybeWallet</h2>
         <span data-testid="email-field">{ userEmail }</span>
-        <span data-testid="total-field">{ this.totalExpenses() || 0 }</span>
+        <span data-testid="total-field">{ this.totalExpenses().toFixed(2) }</span>
         <span data-testid="header-currency-field">BRL</span>
       </div>
     );
