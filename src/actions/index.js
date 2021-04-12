@@ -19,3 +19,16 @@ export function addExpense(expense) {
     expense,
   };
 }
+
+export function addNewExpenses(newExpenses) {
+  return {
+    type: 'newExpenses',
+    newExpenses,
+  };
+}
+export function removeDespesa(despesa) {
+  return {
+    type: 'removeDespesa',
+    despesa,
+  };
+}

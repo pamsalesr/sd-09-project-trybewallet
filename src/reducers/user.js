@@ -12,6 +12,11 @@ const user = (state = value, action) => {
       ...state,
       despesa: state.despesa + action.despesa,
     };
+  case 'removeDespesa':
+    return {
+      ...state,
+      despesa: action.despesa,
+    };
   default:
     return state;
   }

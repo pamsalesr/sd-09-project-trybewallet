@@ -8,7 +8,7 @@ class Wallet extends React.Component {
   render() {
     const { email, despesa } = this.props;
     let num = '';
-    if (despesa > 0) num = despesa;
+    if (despesa > 0) num = parseFloat(despesa).toFixed(2);
     else num = 0;
     return (
       <div>

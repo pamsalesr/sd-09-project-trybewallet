@@ -6,6 +6,10 @@ const Wallet = (state = value, action) => {
     return {
       expenses: [...state.expenses, action.expense],
     };
+  case 'newExpenses':
+    return {
+      expenses: action.newExpenses,
+    };
   default:
     return state;
   }
