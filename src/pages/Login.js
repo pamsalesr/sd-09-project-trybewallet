@@ -34,7 +34,7 @@ class Login extends React.Component {
       disabled: !emailIsValid || !passwordIsValid,
     }));
   }
-  
+
   render() {
     const { email, password, disabled } = this.state;
     const { userDispatch } = this.props;

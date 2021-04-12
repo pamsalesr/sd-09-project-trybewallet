@@ -175,7 +175,7 @@ AddNewExpense.defaultProps = {
 };
 
 AddNewExpense.propTypes = {
-  expenses: PropTypes.array.isRequired,
+  expenses: PropTypes.arrayOf(String).isRequired,
   currencyList: PropTypes.objectOf(String),
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,

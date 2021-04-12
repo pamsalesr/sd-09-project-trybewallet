@@ -10,15 +10,16 @@ class ExpenseTable extends React.Component {
         <td>{expense.tag}</td>
         <td>{expense.method}</td>
         <td>{expense.value}</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td />
+        <td />
+        <td />
         <td>Real</td>
         <td>
           <button type="button" data-testid="delete-btn">Excluir</button>
         </td>
       </tr>));
   }
+
   render() {
     const { expenses } = this.props;
     return (
@@ -50,6 +51,6 @@ const mapStateToProps = (state) => ({
 
 ExpenseTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
+};
 
 export default connect(mapStateToProps)(ExpenseTable);

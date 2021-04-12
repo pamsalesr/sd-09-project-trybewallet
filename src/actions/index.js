@@ -4,9 +4,8 @@ export const LOGIN_INFORMATION = 'LOGIN_INFORMATION';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const TOTAL_PRICE = 'TOTAL_PRICE';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
-// export const ADD_EXPENSES = 'ADD_EXPENSES';
 
-export function saveLoginInformation(email, validation) {
+export function saveLoginInformation(email) {
   return {
     type: 'LOGIN_INFORMATION',
     email,
