@@ -1,21 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moneyData from '../services/api';
+// import moneyData, { moneyCodes } from '../services/api';
 // import { moneyCodes } from '../services/api';
 
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      money: moneyData(),
+      money: null,
     };
     this.expenseForm = this.expenseForm.bind(this);
   }
 
   componentDidMount() {
-    const { money } = this.state;
-    console.log(money);
+    fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((response) => {
+        const keys = Object.keys(response);
+        const allKeys = keys.filter((coin) => coin !== 'USDT');
+        const allMoney = allKeys.map((key) => response[key]);
+        return allMoney;
+      })
+      .then((allMoney) => this.setState({ money: allMoney }));
   }
 
   expenseForm(money) {
@@ -53,6 +60,7 @@ class Wallet extends React.Component {
   render() {
     const { email, totalExpenses, totalCurrency } = this.props;
     const { money } = this.state;
+    console.log(this.props);
     return (
       <div>
         { money ? (

@@ -1,17 +1,17 @@
 export const USER_DATA = 'USER_DATA';
 
 const initialState = {
-  user: {
-    email: '',
-  },
+  email: '',
 };
 
 function user(state = initialState, action) {
   switch (action.type) {
   case USER_DATA:
-    state = { email: action.email };
+    state = { ...state,
+      email: action.email };
     return state;
   default:
+    // console.log(state);
     return state;
   }
 }
