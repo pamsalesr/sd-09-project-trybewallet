@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getUserEmail } from '../actions';
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
   constructor() {
     super();
 
@@ -35,6 +37,9 @@ export default class LoginForm extends Component {
 
   //  https://dev.to/ebraimcarvalho/a-simple-way-to-redirect-react-router-dom-5hnn
   redirectToWallet() {
+    const { userEmailDispatcher } = this.props;
+    const { email } = this.state;
+    userEmailDispatcher(email);
     const { history } = this.props;
     return history.push('/carteira');
   }
@@ -65,7 +70,7 @@ export default class LoginForm extends Component {
             required
           />
           <button
-            type="submit"
+            type="button"
             disabled={ disabled }
             onClick={ this.redirectToWallet }
           >
@@ -80,5 +85,12 @@ export default class LoginForm extends Component {
 LoginForm.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
-};
+  }),
+  userEmailDispatcher: PropTypes.string,
+}.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  userEmailDispatcher: () => dispatch(getUserEmail()),
+});
+
+export default connect(null, mapDispatchToProps)(LoginForm);
