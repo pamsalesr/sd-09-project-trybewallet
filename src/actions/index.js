@@ -12,7 +12,7 @@ export const ADD_SPENDING_SUCCESS = 'ADD_SPENDING_SUCESS';
 
 export const addSpendingSucess = (input, fetchData) => ({
   type: ADD_SPENDING_SUCCESS,
-  input,
+  ...input,
   fetchData,
 });
 

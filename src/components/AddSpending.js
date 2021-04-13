@@ -15,7 +15,7 @@ class Spending extends React.Component {
         method: 'Dinheiro',
         description: '',
         tag: '',
-        value: '',
+        value: '0',
       },
     };
   }
@@ -23,10 +23,12 @@ class Spending extends React.Component {
   componentDidMount() {
     fetch('https://economia.awesomeapi.com.br/json/all')
       .then((response) => response.json())
-      .then((data) => this.setState({
-        currencyAPI: data,
-        loading: false,
-      }));
+      .then((data) => {
+        this.setState({
+          currencyAPI: data,
+          loading: false,
+        });
+      });
   }
 
   onSelect(event) {
@@ -55,12 +57,23 @@ class Spending extends React.Component {
     event.preventDefault();
     const { dispatchSpending } = this.props;
     const { input } = this.state;
-    dispatchSpending(input);
+    dispatchSpending({
+      input,
+    });
+    this.setState({
+      input: {
+        currency: 'USD',
+        method: 'Dinheiro',
+        description: '',
+        tag: '',
+        value: '0',
+      },
+    });
   }
 
   arrayToOpts(arr) {
     return (arr.map((opt, index) => (
-      <option key={ index } value={ opt }>
+      <option key={ index } value={ opt } name={ opt } data-testid={ opt }>
         { opt }
       </option>
     )));
@@ -71,21 +84,16 @@ class Spending extends React.Component {
     return (
       <select
         name="currency"
+        id="currency"
         data-testid="currency-input"
         onChange={ this.onSelect.bind(this) }
         value={ currency }
       >
-        { Object.entries(currencyAPI).map(
-          ([key], index) => (
-            (key === 'USDT') ? null
-              : (
-                <option key={ index } value={ key } data-testid={ key }>
-                  { key }
-                </option>
-              )
-          ),
-        ) }
-      </select>);
+        {
+          this.arrayToOpts(Object.keys(currencyAPI).filter((key) => (key !== 'USDT')))
+        }
+      </select>
+    );
   }
 
   paymentOptions() {
@@ -93,6 +101,7 @@ class Spending extends React.Component {
     return (
       <select
         name="method"
+        id="method"
         data-testid="method-input"
         onChange={ this.onSelect.bind(this) }
         value={ method }
@@ -109,6 +118,7 @@ class Spending extends React.Component {
     return (
       <select
         name="tag"
+        id="tag"
         data-testid="tag-input"
         onChange={ this.onSelect.bind(this) }
         value={ tag }
@@ -121,7 +131,7 @@ class Spending extends React.Component {
   }
 
   renderSelf() {
-    const { value, description } = this.state;
+    const { input: { value, description } } = this.state;
     return (
       <form onSubmit={ this.onSubmit.bind(this) }>
         <label htmlFor="value">
@@ -130,6 +140,10 @@ class Spending extends React.Component {
             name="value"
             data-testid="value-input"
             type="number"
+            id="value"
+            step="0.01"
+            min="0"
+            required
             onChange={ this.onChange.bind(this) }
             value={ value }
           />
@@ -140,23 +154,21 @@ class Spending extends React.Component {
             name="description"
             data-testid="description-input"
             type="text"
+            id="description"
             onChange={ this.onChange.bind(this) }
             value={ description }
           />
         </label>
-        <label htmlFor="currency">
-          Moeda
-          { this.currencyOptions.bind(this).call() }
-        </label>
+        { this.currencyOptions.bind(this)() }
         <label htmlFor="method">
           Método de pagamento
-          { this.paymentOptions.bind(this).call() }
+          { this.paymentOptions.bind(this)() }
         </label>
         <label htmlFor="tag">
           Categoria
-          { this.tagOptions.bind(this).call() }
+          { this.tagOptions.bind(this)() }
         </label>
-        <button type="submit">Adicionar despesa</button>
+        <button data-testid="" type="submit">Adicionar despesa</button>
       </form>
     );
   }
@@ -164,7 +176,7 @@ class Spending extends React.Component {
   render() {
     const { loading } = this.state;
     return ((loading) ? <p>Api is loading</p>
-      : this.renderSelf.bind(this).call());
+      : this.renderSelf.bind(this)());
   }
 }
 
