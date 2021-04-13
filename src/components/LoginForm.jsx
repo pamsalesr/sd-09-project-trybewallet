@@ -93,7 +93,7 @@ LoginForm.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  userEmailDispatcher: () => dispatch(getUserEmail()),
+  userEmailDispatcher: (email) => dispatch(getUserEmail(email)),
 });
 
 export default connect(null, mapDispatchToProps)(LoginForm);
