@@ -102,7 +102,13 @@ class Expenses extends Component {
         >
           <option>Selecione uma moeda</option>
           { filteredCurrencies.map((curr) => (
-            <option key={ `${curr} ${curr.length}` } data-testid={ curr }>{ curr }</option>)) }
+            <option
+              key={ `${curr} ${curr.length}` }
+              data-testid={ curr }
+            >
+              {curr}
+            </option>
+          )) }
         </select>
       </div>
     );
