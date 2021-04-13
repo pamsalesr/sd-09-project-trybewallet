@@ -32,10 +32,10 @@ class Login extends React.Component {
     });
   }
 
-  onSubmit(target) {
+  onSubmit(event) {
     const { email, password } = this.state;
     const { saveInfo } = this.props;
-    target.preventDefault();
+    event.preventDefault();
     saveInfo({ email, password });
     this.setState({ redirect: true });
   }

@@ -1,13 +1,22 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import { addSpending } from '../actions';
 
 class Spending extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currencyAPI: null,
       loading: true,
-      selectedCurrency: null,
+      input: {
+        currency: 'USD',
+        method: 'Dinheiro',
+        description: '',
+        tag: '',
+        value: '',
+      },
     };
   }
 
@@ -20,106 +29,140 @@ class Spending extends React.Component {
       }));
   }
 
-  currencySelector() {
-    const { currencyAPI } = this.state;
+  onSelect(event) {
+    const { target } = event;
+    const { input } = this.state;
+    this.setState({
+      input: {
+        ...input,
+        [target.name]: target.options[target.selectedIndex].value,
+      },
+    });
+  }
+
+  onChange(event) {
+    const { target } = event;
+    const { input } = this.state;
+    this.setState({
+      input: {
+        ...input,
+        [target.name]: target.value,
+      },
+    });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    const { dispatchSpending } = this.props;
+    const { input } = this.state;
+    dispatchSpending(input);
+  }
+
+  currencyOptions() {
+    const { currencyAPI, input: { currency } } = this.state;
     return (
-      <>
+      <select
+        name="currency"
+        data-testid="currency-input"
+        onChange={ this.onSelect.bind(this) }
+        value={ currency }
+      >
         { Object.entries(currencyAPI).map(
           ([key], index) => (
             (key === 'USDT') ? null
               : (
-                <option
-                  key={ index }
-                  value={ key }
-                >
+                <option key={ index } value={ key }>
                   { key }
                 </option>
               )
           ),
         ) }
-      </>);
+      </select>);
   }
 
-  selectCurrency(event) {
-    const { target } = event;
-    this.setState({
-      selectedCurrency: target.options[target.selectedIndex].value,
-    });
-  }
-
-  paymentMethod() {
+  paymentOptions() {
+    const { input: { method } } = this.state;
     return (
-      ['Dinheiro', 'Cartão de crédito', 'Cartão de débito']
-        .map((opt, index) => (
-          <option key={ index }>
-            { opt }
-          </option>
-        ))
+      <select
+        name="method"
+        data-testid="method-input"
+        onChange={ this.onSelect.bind(this) }
+        value={ method }
+      >
+        {
+          ['Dinheiro', 'Cartão de crédito', 'Cartão de débito']
+            .map((opt, index) => (
+              <option key={ index } value={ opt }>
+                { opt }
+              </option>
+            ))
+        }
+      </select>
+    );
+  }
+
+  renderSelf() {
+    const { value, description } = this.state;
+    return (
+      <form onSubmit={ this.onSubmit.bind(this) }>
+        <label htmlFor="value">
+          Valor gasto
+          <input
+            name="value"
+            data-testid="value-input"
+            type="number"
+            onChange={ this.onChange.bind(this) }
+            value={ value }
+          />
+        </label>
+        <label htmlFor="description">
+          Descrição
+          <input
+            name="description"
+            data-testid="description-input"
+            type="text"
+            onChange={ this.onChange.bind(this) }
+            value={ description }
+          />
+        </label>
+        <label htmlFor="currency">
+          Moeda
+          { this.currencyOptions.bind(this).call() }
+        </label>
+        <label htmlFor="method">
+          Método de pagamento
+          { this.paymentOptions.bind(this).call() }
+        </label>
+        <label htmlFor="tag">
+          Categoria
+          <input
+            name="tag"
+            data-testid="tag-input"
+            onChange={ this.onChange.bind(this) }
+          />
+        </label>
+        <button type="submit">Adicionar despesa</button>
+      </form>
     );
   }
 
   render() {
-    // const {} = this.props;
-    const { loading, selectedCurrency } = this.state;
-    console.log(selectedCurrency);
+    const { loading } = this.state;
     return ((loading) ? <p>Api is loading</p>
-      : (
-        <form>
-          <label htmlFor="value">
-            Valor gasto
-            <input
-              name="value"
-              data-testid="value-input"
-              type="number"
-            />
-          </label>
-          <label htmlFor="desc">
-            Descrição
-            <input
-              name="desc"
-              data-testid="description-input"
-              type="text"
-            />
-          </label>
-          <label htmlFor="currency">
-            Moeda
-            <select
-              name="currency"
-              data-testid="currency-input"
-              onChange={ this.selectCurrency.bind(this) }
-            >
-              { this.currencySelector.bind(this).call() }
-            </select>
-          </label>
-          <label htmlFor="method">
-            Método de pagamento
-            <select name="method" data-testid="method-input">
-              { this.paymentMethod.bind(this).call() }
-            </select>
-          </label>
-          <label htmlFor="tag">
-            Categoria
-            <input
-              name="tag"
-              data-testid="tag-input"
-            />
-          </label>
-        </form>
-      )
-    );
+      : this.renderSelf.bind(this).call());
   }
 }
-
-Spending.propTypes = {
-
-};
 
 Spending.defaultProps = {
 
 };
 
-const mapStateToProps = () => ({
-
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSpending: (input) => dispatch(addSpending(dispatch, input)),
 });
 
-export default connect(mapStateToProps)(Spending);
+Spending.propTypes = {
+  dispatchSpending: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Spending);
