@@ -1,17 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import loginAction from '../actions/index';
+import { loginAction } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.validateEmail = this.validateEmail.bind(this);
-    this.handleChangeEmail = this.handleChangeEmail.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       email: '',
@@ -25,13 +23,21 @@ class Login extends React.Component {
     return re.test(email);
   }
 
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    }, () => {
+      this.handleLogin();
+    });
+  }
+
   handleLogin() {
     const { email, password } = this.state;
-    const validPassword = 6;
-
-    if (this.validateEmail(email) && password.length >= validPassword) {
+    const passwordMin = 6;
+    if (this.validateEmail(email) && password.length >= passwordMin) {
       this.setState({
-        disableBtn: null,
+        disableBtn: false,
       });
     } else {
       this.setState({
@@ -40,49 +46,31 @@ class Login extends React.Component {
     }
   }
 
-  handleChangeEmail({ target }) {
-    this.setState({
-      email: target.value,
-    }, () => {
-      this.handleLogin();
-    });
-  }
-
-  handleChangePassword({ target }) {
-    this.setState({
-      password: target.value,
-    }, () => {
-      this.handleLogin();
-    });
-  }
-
   render() {
     const { disableBtn, email } = this.state;
     const { dispatchEmail } = this.props;
     return (
       <div>
-        <label htmlFor="email">
+        <label htmlFor="email-input">
           Email
-          {' '}
           <input
-            type="email"
             data-testid="email-input"
+            id="email-input"
             name="email"
-            onChange={ this.handleChangeEmail }
+            type="email"
+            onChange={ this.handleChange }
           />
-          {' '}
         </label>
-        <label htmlFor="password">
-          Senha
-          {' '}
+        Senha
+        <label htmlFor="password-input">
           <input
-            type="password"
             data-testid="password-input"
+            id="password-input"
             name="password"
-            onChange={ this.handleChangePassword }
+            type="password"
+            onChange={ this.handleChange }
           />
         </label>
-        {' '}
         <Link to="/carteira">
           <button
             type="button"
@@ -92,8 +80,7 @@ class Login extends React.Component {
             Entrar
           </button>
         </Link>
-      </div>
-    );
+      </div>);
   }
 }
 
