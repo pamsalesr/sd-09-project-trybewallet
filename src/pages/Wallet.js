@@ -5,17 +5,8 @@ import ExpensesForm from '../components/ExpensesForm';
 import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currencyField: 'BRL',
-    };
-  }
-
   render() {
     const { emailState, totalPriceState } = this.props;
-    const { currencyField } = this.state;
     const totalPrice = !totalPriceState ? 0 : totalPriceState;
 
     return (
@@ -26,7 +17,7 @@ class Wallet extends React.Component {
             <li>
               Despesa Total: R$
               <span data-testid="total-field">{` ${totalPrice} `}</span>
-              <span data-testid="header-currency-field">{currencyField}</span>
+              <span data-testid="header-currency-field">BRL</span>
             </li>
           </ul>
         </header>

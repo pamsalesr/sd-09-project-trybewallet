@@ -1,12 +1,13 @@
 import {
   ADD_TOTAL_PRICE,
-  REMOVE_TOTAL_PRICE,
+  CHANGE_TOTAL_PRICE,
 } from '../actions';
-import { convertValue } from '../services';
 
 const INITIAL_PRICE_STATE = {
   totalPrice: 0,
 };
+
+const aroundPriceChange = (value) => (Math.round((value) * 100) / 100);
 
 function price(state = INITIAL_PRICE_STATE, action) {
   switch (action.type) {
@@ -15,14 +16,15 @@ function price(state = INITIAL_PRICE_STATE, action) {
 
     return {
       ...state,
-      totalPrice: convertValue(totalPrice),
+      totalPrice: aroundPriceChange(totalPrice),
     };
   }
-  case REMOVE_TOTAL_PRICE:
+  case CHANGE_TOTAL_PRICE: {
     return {
       ...state,
-      totalPrice: convertValue(action.totalPrice),
+      totalPrice: aroundPriceChange(action.totalPrice),
     };
+  }
   default:
     return state;
   }

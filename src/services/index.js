@@ -1,15 +1,38 @@
-export const getCurrencies = async () => {
-  try {
-    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
-    const response = await fetch(endpoint);
-    const json = await response.json();
+export const aroundPriceChange = (value) => (
+  Math.round(value * 100) / 100
+);
 
-    delete json.USDT;
+export const convertedToExchange = (value, exchange) => (
+  aroundPriceChange(value * exchange)
+);
 
-    return json;
-  } catch (error) {
-    return error;
+export const validateFieldsForm = ({ value, description, currency, method, tag }) => {
+  if (value && description && currency && method && tag) {
+    return false;
   }
+  return true;
 };
 
-export const convertValue = (value) => (Math.round((value) * 100) / 100);
+export const updateTotalPrice = (expense, state, total) => {
+  const {
+    value: valueProps,
+    currency: currencyProps,
+    exchangeRates,
+  } = expense;
+
+  const priceProps = convertedToExchange(
+    valueProps,
+    exchangeRates[currencyProps].ask,
+  );
+
+  const priceState = convertedToExchange(
+    state.value,
+    exchangeRates[state.currency].ask,
+  );
+
+  const totalPrice = aroundPriceChange(
+    (total - priceProps) + priceState,
+  );
+
+  return totalPrice;
+};

@@ -27,6 +27,7 @@ describe('7 - Crie um botão para editar uma despesa da tabela contendo as segui
       const tagInput = await screen.findByTestId('tag-input');
       const descriptionInput = await screen.findByTestId('description-input');
       const editButton = await screen.findByText(/Editar despesa/i);
+      console.log('initial state:', store.getState().wallet.expenses);
   
       userEvent.type(valueInput, '100');
       userEvent.selectOptions(currencyInput, 'CAD');
@@ -41,6 +42,7 @@ describe('7 - Crie um botão para editar uma despesa da tabela contendo as segui
           screen.getByRole('cell', { name: 'Cem dólares canadenses' })
         ).toBeInTheDocument();
       });
+      console.log('edit state:', store.getState().wallet.expenses);
   
       expect(screen.getAllByRole('cell', { name: 'Trabalho' })[0]).toBeInTheDocument();
       expect(screen.getAllByRole('cell', { name: 'Dinheiro' })[0]).toBeInTheDocument();

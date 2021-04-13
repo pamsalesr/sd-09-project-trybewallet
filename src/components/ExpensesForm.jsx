@@ -1,82 +1,139 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies, addExpensesState, addTotalPriceState } from '../actions';
-import { getCurrencies, convertValue } from '../services';
+import {
+  fetchCurrencies,
+  addTotalPriceState,
+  changeTotalPriceState,
+  addExpenseState,
+  updateExpenseState,
+} from '../actions';
+import {
+  convertedToExchange,
+  validateFieldsForm,
+  updateTotalPrice,
+} from '../services';
+
+const INITIAL_STATE = {
+  data: {
+    value: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
+    description: '',
+  },
+  disabled: true,
+  editor: false,
+  idToEdit: 0,
+};
 
 class ExpensesForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      size: 0,
-      value: '',
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      disabled: true,
-    };
+    this.state = INITIAL_STATE;
 
     this.handleChange = this.handleChange.bind(this);
-    this.renderInput = this.renderInput.bind(this);
-    this.insertExpenses = this.insertExpenses.bind(this);
-    this.validateForm = this.validateForm.bind(this);
+    this.insertExpense = this.insertExpense.bind(this);
+    this.isEditableForm = this.isEditableForm.bind(this);
+    this.updateExpense = this.updateExpense.bind(this);
   }
 
   componentDidMount() {
-    const { fetchCurrenciesDispatcher } = this.props;
+    this.fetchCurrencies();
+  }
 
+  componentDidUpdate(prevProps) {
+    const { editorState } = this.props;
+    if (editorState && prevProps.editorState !== editorState) {
+      this.isEditableForm();
+    }
+  }
+
+  async fetchCurrencies() {
+    const { fetchCurrenciesDispatcher } = this.props;
     fetchCurrenciesDispatcher();
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value }, () => this.validateForm());
+    const actualState = this.state;
+    const actualData = actualState.data;
+
+    this.setState(
+      {
+        ...actualState,
+        data: {
+          ...actualData,
+          [name]: value,
+        },
+      },
+      () => this.setState({ disabled: validateFieldsForm(actualData) }),
+    );
   }
 
-  validateForm() {
-    const { value, description, currency, method, tag } = this.state;
+  async insertExpense() {
+    await this.fetchCurrencies();
 
-    if (value && description && currency && method && tag) {
-      this.setState({ disabled: false });
-    } else {
-      this.setState({ disabled: true });
-    }
+    const {
+      addExpensesDispatcher,
+      addTotalPriceDispatcher,
+      currenciesState,
+      expensesState,
+    } = this.props;
+
+    const { data } = this.state;
+
+    await addExpensesDispatcher({
+      ...data,
+      id: expensesState.length,
+      exchangeRates: currenciesState,
+    });
+
+    addTotalPriceDispatcher(
+      convertedToExchange(data.value, currenciesState[data.currency].ask),
+    );
+
+    this.setState({ ...INITIAL_STATE });
   }
 
-  async insertExpenses() {
-    const { size, value, description, currency, method, tag } = this.state;
-    const { addExpensesDispatcher, addTotalPriceDispatcher } = this.props;
-    const currenciesData = await getCurrencies();
+  isEditableForm() {
+    const { expensesState, editorState, idToEditState } = this.props;
+    const actualState = this.state;
 
-    const total = value * currenciesData[currency].ask;
-    const totalPrice = convertValue(total);
-
-    const obj = {
-      id: size,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: currenciesData,
-    };
-
-    this.setState((previousValue) => ({
-      size: previousValue.size + 1,
-      value: '',
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      disabled: true,
-    }));
-
-    addExpensesDispatcher(obj);
-    addTotalPriceDispatcher(totalPrice);
+    this.setState({
+      ...actualState,
+      data: { ...expensesState[idToEditState] },
+      editor: editorState,
+      idToEdit: idToEditState,
+    });
   }
 
-  renderInput(name, text, value) {
+  async updateExpense() {
+    const { data, idToEdit } = this.state;
+    const {
+      updateExpenseDispatcher,
+      changeTotalPriceDispatcher,
+      expensesState,
+      totalPriceState,
+    } = this.props;
+
+    console.log('currency selected:', data.currency);
+
+    const editedExpenses = expensesState.map((expense) => {
+      if (expense.id === idToEdit) {
+        return { ...expense, ...data };
+      }
+      return expense;
+    });
+
+    changeTotalPriceDispatcher(
+      updateTotalPrice(expensesState[idToEdit], data, totalPriceState),
+    );
+    await updateExpenseDispatcher(editedExpenses);
+    this.setState(INITIAL_STATE);
+  }
+
+  renderInputField(name, text, value) {
     return (
       <label htmlFor={ `${name}-form` }>
         <span>{`${text}:`}</span>
@@ -93,7 +150,7 @@ class ExpensesForm extends React.Component {
     );
   }
 
-  renderSelect(name, text, value, array) {
+  renderSelectField(name, text, value, array) {
     return (
       <label htmlFor={ `${name}-form` }>
         <span>{`${text}:`}</span>
@@ -104,12 +161,11 @@ class ExpensesForm extends React.Component {
           value={ value }
           onChange={ this.handleChange }
         >
-          <option>Escolha uma opção</option>
-          {array && (array.map((element) => (
+          {array && array.map((element) => (
             <option value={ element } key={ element } data-testid={ element }>
               {element}
             </option>
-          )))}
+          ))}
         </select>
       </label>
     );
@@ -117,19 +173,39 @@ class ExpensesForm extends React.Component {
 
   render() {
     const { currenciesState } = this.props;
-    const { value, description, currency, method, tag, disabled } = this.state;
+    const {
+      data: { value, currency, method, tag, description },
+      disabled,
+      editor,
+    } = this.state;
     const arrayMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-    const arrayTag = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+    const arrayTag = [
+      'Alimentação',
+      'Lazer',
+      'Trabalho',
+      'Transporte',
+      'Saúde',
+    ];
+    const currencies = Object.keys(currenciesState);
 
     return (
       <form>
-        {this.renderInput('value', 'Valor', value)}
-        {this.renderSelect('currency', 'Moeda', currency, currenciesState)}
-        {this.renderSelect('method', 'Método de Pagamento', method, arrayMethod)}
-        {this.renderSelect('tag', 'Categoria', tag, arrayTag)}
-        {this.renderInput('description', 'Descrição', description)}
-        <button type="button" onClick={ this.insertExpenses } disabled={ disabled }>
-          Adicionar despesa
+        {this.renderInputField('value', 'Valor', value)}
+        {this.renderSelectField('currency', 'Moeda', currency, currencies)}
+        {this.renderSelectField(
+          'method',
+          'Método de Pagamento',
+          method,
+          arrayMethod,
+        )}
+        {this.renderSelectField('tag', 'Categoria', tag, arrayTag)}
+        {this.renderInputField('description', 'Descrição', description)}
+        <button
+          type="button"
+          onClick={ editor ? this.updateExpense : this.insertExpense }
+          disabled={ disabled }
+        >
+          {editor ? 'Editar despesa' : 'Adicionar despesa'}
         </button>
       </form>
     );
@@ -146,12 +222,17 @@ ExpensesForm.propTypes = {
 const mapStateToProps = (state) => ({
   currenciesState: state.wallet.currencies,
   expensesState: state.wallet.expenses,
+  editorState: state.wallet.editor,
+  idToEditState: state.wallet.idToEdit,
+  totalPriceState: state.price.totalPrice,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrenciesDispatcher: () => dispatch(fetchCurrencies()),
-  addExpensesDispatcher: (expenses) => dispatch(addExpensesState(expenses)),
   addTotalPriceDispatcher: (totalPrice) => dispatch(addTotalPriceState(totalPrice)),
+  changeTotalPriceDispatcher: (totalPrice) => dispatch(changeTotalPriceState(totalPrice)),
+  addExpensesDispatcher: (expenses) => dispatch(addExpenseState(expenses)),
+  updateExpenseDispatcher: (expenses) => dispatch(updateExpenseState(expenses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

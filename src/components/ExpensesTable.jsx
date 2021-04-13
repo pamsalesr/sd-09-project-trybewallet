@@ -1,39 +1,62 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { convertValue } from '../services';
 import {
-  deleteExpensesState,
-  removeTotalPriceState,
+  deleteExpenseState,
+  changeTotalPriceState,
+  editExpense,
 } from '../actions';
+import { aroundPriceChange, convertedToExchange } from '../services';
 
 class ExpensesTable extends React.Component {
   constructor(props) {
     super(props);
 
     this.deleteData = this.deleteData.bind(this);
+    this.editData = this.editData.bind(this);
+    this.handleButton = this.handleButton.bind(this);
+  }
+
+  componentDidUpdate(prevState) {
+    console.log('componentDidUpdate', prevState);
   }
 
   deleteData(position) {
     const {
       expensesState,
       deleteExpensesDispatcher,
-      removeTotalPriceDispatcher,
+      changeTotalPriceDispatcher,
     } = this.props;
-    const array = [...expensesState];
+
+    const deleteExpense = expensesState.filter((expense) => (
+      expense.id !== position
+    ));
+    deleteExpensesDispatcher(deleteExpense);
+
     let totalPrice = 0;
-
-    array.splice(position, 1);
-
-    array.forEach((expense) => {
+    deleteExpense.forEach((expense) => {
       const { value, currency, exchangeRates } = expense;
-      totalPrice = convertValue(
-        totalPrice + (value * exchangeRates[currency].ask),
-      );
+      totalPrice += (convertedToExchange(value, exchangeRates[currency].ask));
     });
 
-    deleteExpensesDispatcher(array);
-    removeTotalPriceDispatcher(totalPrice);
+    changeTotalPriceDispatcher(totalPrice);
+  }
+
+  editData(position) {
+    const { editExpenseDispatcher } = this.props;
+    editExpenseDispatcher(true, position);
+  }
+
+  handleButton(testID, callback, text) {
+    return (
+      <button
+        type="button"
+        data-testid={ testID }
+        onClick={ callback }
+      >
+        {text}
+      </button>
+    );
   }
 
   render() {
@@ -55,28 +78,29 @@ class ExpensesTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {expensesState.map((expenses) => {
-            const { exchangeRates } = expenses;
-            const { name, ask } = exchangeRates[expenses.currency];
+          {expensesState.map((expense) => {
+            const { [expense.currency]: { ask, name } } = expense.exchangeRates;
             return (
-              <tr key={ expenses.id }>
-                <td>{ expenses.description }</td>
-                <td>{ expenses.tag }</td>
-                <td>{ expenses.method }</td>
-                <td>{ expenses.value }</td>
+              <tr key={ expense.id }>
+                <td>{ expense.description }</td>
+                <td>{ expense.tag }</td>
+                <td>{ expense.method }</td>
+                <td>{ expense.value }</td>
                 <td>{ name }</td>
-                <td>{ convertValue(ask) }</td>
-                <td>{ convertValue(expenses.value * ask) }</td>
+                <td>{ aroundPriceChange(ask) }</td>
+                <td>{ convertedToExchange(expense.value, ask) }</td>
                 <td>Real</td>
                 <td>
-                  {/* <button type="button">Editar</button> */}
-                  <button
-                    type="button"
-                    data-testid="delete-btn"
-                    onClick={ () => this.deleteData(expenses.id) }
-                  >
-                    Excluir
-                  </button>
+                  {this.handleButton(
+                    'edit-btn',
+                    () => this.editData(expense.id),
+                    'Editar',
+                  )}
+                  {this.handleButton(
+                    'delete-btn',
+                    () => this.deleteData(expense.id),
+                    'Excluir',
+                  )}
                 </td>
               </tr>
             );
@@ -96,8 +120,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteExpensesDispatcher: (array) => dispatch(deleteExpensesState(array)),
-  removeTotalPriceDispatcher: (totalPrice) => dispatch(removeTotalPriceState(totalPrice)),
+  editExpenseDispatcher: (
+    (editor, idToEdit) => dispatch(editExpense(editor, idToEdit))
+  ),
+  deleteExpensesDispatcher: (
+    (expenses) => dispatch(deleteExpenseState(expenses))
+  ),
+  changeTotalPriceDispatcher: (
+    (totalPrice) => dispatch(changeTotalPriceState(totalPrice))
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
