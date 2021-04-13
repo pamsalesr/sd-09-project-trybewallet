@@ -8,8 +8,8 @@ class LoginForm extends Component {
     super();
 
     this.state = {
-      email: '',
-      password: '',
+      emailInput: '',
+      passwordInput: '',
       disabled: true,
     };
 
@@ -25,11 +25,13 @@ class LoginForm extends Component {
   }
 
   validateFields() {
-    const { email, password } = this.state;
-    const minLength = 5;
-    if (email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g) && password.length >= minLength) {
+    const { emailInput, passwordInput } = this.state;
+    const minLength = 6;
+    const emailRgx = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if (
+      emailInput.match(emailRgx) && passwordInput.length >= minLength
+    ) {
       this.setState({ disabled: false });
-      console.log(email, password);
     } else {
       this.setState({ disabled: true });
     }
@@ -38,8 +40,9 @@ class LoginForm extends Component {
   //  https://dev.to/ebraimcarvalho/a-simple-way-to-redirect-react-router-dom-5hnn
   redirectToWallet() {
     const { userEmailDispatcher } = this.props;
-    const { email } = this.state;
-    userEmailDispatcher(email);
+    const { emailInput } = this.state;
+    userEmailDispatcher(emailInput);
+
     const { history } = this.props;
     return history.push('/carteira');
   }
@@ -53,7 +56,7 @@ class LoginForm extends Component {
         <form className="login-fields">
           <input
             type="email"
-            name="email"
+            name="emailInput"
             value={ email }
             data-testid="email-input"
             placeholder="Digite seu e-mail"
@@ -63,7 +66,7 @@ class LoginForm extends Component {
           <input
             type="password"
             data-testid="password-input"
-            name="password"
+            name="passwordInput"
             value={ password }
             placeholder="Crie sua senha"
             onChange={ this.handleChange }
@@ -72,7 +75,7 @@ class LoginForm extends Component {
           <button
             type="button"
             disabled={ disabled }
-            onClick={ this.redirectToWallet }
+            onClick={ () => this.redirectToWallet() }
           >
             Entrar
           </button>
