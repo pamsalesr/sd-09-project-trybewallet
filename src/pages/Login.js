@@ -19,9 +19,10 @@ class Login extends React.Component {
   }
 
   onChange(event) {
+    const SIX = 6;
     const { target: { name, value }, target } = event;
     const { valid } = this.state;
-    const validValue = target.checkValidity();
+    const validValue = (name === 'email') ? target.checkValidity() : value.length >= SIX;
     this.setState({
       [name]: value,
       valid: {
@@ -52,7 +53,6 @@ class Login extends React.Component {
               data-testid="email-input"
               value={ email }
               onChange={ this.onChange.bind(this) }
-              onKeyUp={ this.onChange.bind(this) }
               type="email"
               required
             />
@@ -65,12 +65,15 @@ class Login extends React.Component {
               data-testid="password-input"
               value={ password }
               onChange={ this.onChange.bind(this) }
-              onKeyUp={ this.onChange.bind(this) }
               type="password"
               minLength={ 6 }
+              required
             />
           </label>
-          <button type="submit" disabled={ !valid.password || !valid.email }>
+          <button
+            type="submit"
+            disabled={ !valid.email || !valid.password }
+          >
             Entrar
           </button>
         </form>
