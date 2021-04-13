@@ -58,6 +58,14 @@ class Spending extends React.Component {
     dispatchSpending(input);
   }
 
+  arrayToOpts(arr) {
+    return (arr.map((opt, index) => (
+      <option key={ index } value={ opt }>
+        { opt }
+      </option>
+    )));
+  }
+
   currencyOptions() {
     const { currencyAPI, input: { currency } } = this.state;
     return (
@@ -71,7 +79,7 @@ class Spending extends React.Component {
           ([key], index) => (
             (key === 'USDT') ? null
               : (
-                <option key={ index } value={ key }>
+                <option key={ index } value={ key } data-testid={ key }>
                   { key }
                 </option>
               )
@@ -90,12 +98,23 @@ class Spending extends React.Component {
         value={ method }
       >
         {
-          ['Dinheiro', 'Cartão de crédito', 'Cartão de débito']
-            .map((opt, index) => (
-              <option key={ index } value={ opt }>
-                { opt }
-              </option>
-            ))
+          this.arrayToOpts(['Dinheiro', 'Cartão de crédito', 'Cartão de débito'])
+        }
+      </select>
+    );
+  }
+
+  tagOptions() {
+    const { input: { tag } } = this.state;
+    return (
+      <select
+        name="tag"
+        data-testid="tag-input"
+        onChange={ this.onSelect.bind(this) }
+        value={ tag }
+      >
+        {
+          this.arrayToOpts(['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'])
         }
       </select>
     );
