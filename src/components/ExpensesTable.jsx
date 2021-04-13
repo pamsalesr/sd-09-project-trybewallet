@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import { arrayOf, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { delExpense } from '../actions';
+import { addTotalExpenses, delExpense } from '../actions';
 
 class ExpensesTable extends Component {
   constructor() {
     super();
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.getTotal = this.getTotal.bind(this);
+  }
+
+  getTotal(expenses) {
+    const { updateTotalExpense } = this.props;
+    const total = expenses.reduce((acc, { value, currency, exchangeRates }) => (
+      acc + Number(value * exchangeRates[currency].ask)
+    ), 0);
+    updateTotalExpense(total);
   }
 
   getExpensesInfo(currency, exchangeRates, expenseInfo) {
@@ -15,9 +24,11 @@ class ExpensesTable extends Component {
     return expenseCotation[1][expenseInfo];
   }
 
-  deleteExpense(id, total) {
-    const { removeExpense } = this.props;
-    removeExpense(id, total);
+  deleteExpense(id) {
+    const { expenses, removeExpense } = this.props;
+    const updateExpenses = expenses.filter((exp) => id !== exp.id);
+    removeExpense(updateExpenses);
+    this.getTotal(updateExpenses);
   }
 
   renderTable() {
@@ -26,46 +37,47 @@ class ExpensesTable extends Component {
       'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão', 'Editar/Excluir'];
     return (
       <table>
-        <tr>
-          { labels.map((column) => (
-            <td key={ column }>{column}</td>
-          )) }
-        </tr>
-        { expenses.map(({
-          id, description, tag, method, value, currency, exchangeRates,
-        }) => (
-          <tr key={ id }>
-            <td>{ description }</td>
-            <td>{ tag }</td>
-            <td>{ method }</td>
-            <td>{ value }</td>
-            <td>{ this.getExpensesInfo(currency, exchangeRates, 'name')}</td>
-            <td>
-              {Number(this.getExpensesInfo(currency, exchangeRates, 'ask')).toFixed(2)}
-            </td>
-            <td>
-              {
-                Number(value * this.getExpensesInfo(currency, exchangeRates, 'ask'))
-                  .toFixed(2)
-              }
-            </td>
-            <td>Real</td>
-            <td>
-              <button type="button">Editar</button>
-              <button
-                id={ id }
-                type="button"
-                data-testid="delete-btn"
-                onClick={ () => this.deleteExpense(
-                  id,
-                  -Number(value * this.getExpensesInfo(currency, exchangeRates, 'ask')),
-                ) }
-              >
-                Excluir
-              </button>
-            </td>
+        <thead>
+          <tr>
+            { labels.map((column) => (
+              <th key={ column }>{column}</th>
+            )) }
           </tr>
-        )) }
+        </thead>
+        <tbody>
+          { expenses.map(({
+            id, description, tag, method, value, currency, exchangeRates,
+          }) => (
+            <tr key={ id }>
+              <td>{ description }</td>
+              <td>{ tag }</td>
+              <td>{ method }</td>
+              <td>{ value }</td>
+              <td>{ this.getExpensesInfo(currency, exchangeRates, 'name')}</td>
+              <td>
+                {Number(this.getExpensesInfo(currency, exchangeRates, 'ask')).toFixed(2)}
+              </td>
+              <td>
+                {
+                  Number(value * this.getExpensesInfo(currency, exchangeRates, 'ask'))
+                    .toFixed(2)
+                }
+              </td>
+              <td>Real</td>
+              <td>
+                <button type="button">Editar</button>
+                <button
+                  id={ id }
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.deleteExpense(id) }
+                >
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          )) }
+        </tbody>
       </table>
     );
   }
@@ -82,7 +94,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  removeExpense: (id, total) => dispatch(delExpense(id, total)),
+  removeExpense: (id) => dispatch(delExpense(id)),
+  updateTotalExpense: (total) => dispatch(addTotalExpenses(total)),
 });
 
 ExpensesTable.propTypes = {

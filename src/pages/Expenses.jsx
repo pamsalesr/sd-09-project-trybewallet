@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { func, arrayOf } from 'prop-types';
+import { func, arrayOf, object } from 'prop-types';
 import { addExpense, addTotalExpenses, fetchCurrencies } from '../actions';
 import getCurrencyCotation from '../services/awesomeApi';
 
 const INITIAL_STATE = {
   id: 0,
-  value: Number,
+  value: String(),
   description: '',
   currency: '',
   method: '',
@@ -19,11 +19,20 @@ class Expenses extends Component {
     this.state = INITIAL_STATE;
     this.updateState = this.updateState.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
+    this.getTotal = this.getTotal.bind(this);
   }
 
   componentDidMount() {
     const { getCurrencies } = this.props;
     getCurrencies();
+  }
+
+  getTotal() {
+    const { expenses, updateTotalExpense } = this.props;
+    const total = expenses.reduce((acc, { value, currency, exchangeRates }) => (
+      acc + Number(value * exchangeRates[currency].ask)
+    ), 0);
+    updateTotalExpense(total);
   }
 
   updateState({ target: { name, value } }) {
@@ -32,23 +41,15 @@ class Expenses extends Component {
     });
   }
 
-  totalExpenses({ value, currency }, getExchangeRates) {
-    const { totalExpenses } = this.props;
-    const entries = Object.entries(getExchangeRates);
-    const currentCotation = entries.find((cotation) => cotation[0] === currency);
-    totalExpenses(value * currentCotation[1].ask);
-  }
-
   async handleExpense() {
     const getExchangeRates = await getCurrencyCotation();
-    // console.log(Object.entries(getExchangeRates));
     const { addNewExpense } = this.props;
     addNewExpense(this.state, getExchangeRates);
-    this.totalExpenses(this.state, getExchangeRates);
     this.setState((state) => ({
       ...INITIAL_STATE,
       id: state.id + 1,
     }));
+    this.getTotal();
   }
 
   valueInput() {
@@ -101,7 +102,7 @@ class Expenses extends Component {
         >
           <option>Selecione uma moeda</option>
           { filteredCurrencies.map((curr) => (
-            <option key={ curr } data-testid={ curr }>{ curr }</option>)) }
+            <option key={ `${curr} ${curr.length}` } data-testid={ curr }>{ curr }</option>)) }
         </select>
       </div>
     );
@@ -168,6 +169,7 @@ class Expenses extends Component {
 
 const mapStateToProps = (state) => ({
   filteredCurrencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -175,13 +177,15 @@ const mapDispatchToProps = (dispatch) => ({
   addNewExpense: (expense, getExchangeRates) => dispatch(
     addExpense(expense, getExchangeRates),
   ),
-  totalExpenses: (total) => dispatch(addTotalExpenses(total)),
+  updateTotalExpense: (total) => dispatch(addTotalExpenses(total)),
 });
 
 Expenses.propTypes = {
+  filteredCurrencies: arrayOf(object),
+  expenses: arrayOf(object),
   getCurrencies: func,
   addNewExpense: func,
-  filteredCurrencies: arrayOf({}),
+  updateTotalExpense: func,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Expenses);

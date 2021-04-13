@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 };
 
 const wallet = (state = INITIAL_STATE,
-  { type, expense, currency, exchangeRates, total, id }) => {
+  { type, expense, currency, exchangeRates, total, expenses }) => {
   switch (type) {
   case 'ADD_EXPENSE':
     return {
@@ -15,11 +15,9 @@ const wallet = (state = INITIAL_STATE,
       expenses: [...state.expenses, { ...expense, exchangeRates }],
     };
   case 'DEL_EXPENSE':
-    // console.log(id);
     return {
       ...state,
-      expenses: state.expenses.filter((exp) => id !== exp.id),
-      total: state.total + Number(total.toFixed(2)),
+      expenses,
     };
   case 'REQUEST_CURRENCIES':
     return {
@@ -29,7 +27,7 @@ const wallet = (state = INITIAL_STATE,
   case 'TOTAL_EXPENSES':
     return {
       ...state,
-      total: state.total + Number(total.toFixed(2)),
+      total,
     };
   default:
     return state;

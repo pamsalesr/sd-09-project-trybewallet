@@ -12,10 +12,9 @@ export const addExpense = (expense, exchangeRates) => ({
   exchangeRates,
 });
 
-export const delExpense = (id, total) => ({
+export const delExpense = (expenses) => ({
   type: 'DEL_EXPENSE',
-  id,
-  total,
+  expenses,
 });
 
 export const fetchCurrencyCotation = async (dispatch) => {
