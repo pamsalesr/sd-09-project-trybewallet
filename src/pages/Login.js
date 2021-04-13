@@ -18,15 +18,13 @@ class Login extends React.Component {
 
   handleChange({ target }) {
     const { value, name } = target;
-    this.setState({ [name]: value });
-    this.validateFields();
+    this.setState({ [name]: value }, this.validateFields);
   }
 
   validateFields() {
     const { email, password } = this.state;
-    // console.log(password);
     // /[\S]{6,}/;
-    const passwordMin = 4;
+    const passwordMin = 5;
     const mailCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
     this.setState({
       buttonEnabled: mailCheck.test(email) && password.length > passwordMin,
@@ -43,8 +41,8 @@ class Login extends React.Component {
     localStorage.setItem('state', JSON.stringify(state));
 
     dispatchMail(email);
-    // const { history: { push } } = this.props;
-    // push('/carteira');
+    const { history: { push } } = this.props;
+    push('/carteira');
   }
 
   render() {
