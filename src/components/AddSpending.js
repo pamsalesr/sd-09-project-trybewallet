@@ -154,11 +154,7 @@ class Spending extends React.Component {
         </label>
         <label htmlFor="tag">
           Categoria
-          <input
-            name="tag"
-            data-testid="tag-input"
-            onChange={ this.onChange.bind(this) }
-          />
+          { this.tagOptions.bind(this).call() }
         </label>
         <button type="submit">Adicionar despesa</button>
       </form>
