@@ -7,7 +7,7 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
-  currencyList: {},
+  currencies: [],
   totalPrice: 0,
   expenses: [],
 };
@@ -22,7 +22,7 @@ function wallet(state = INITIAL_STATE, action) {
   case GET_CURRENCIES:
     return {
       ...state,
-      currencyList: action.currencyList,
+      currencies: action.currencies,
     };
   case TOTAL_PRICE:
     return {

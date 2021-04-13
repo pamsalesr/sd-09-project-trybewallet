@@ -2,12 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCurrency, addExpenses, handleTotalPrice } from '../actions';
-import requestCurrency from '../services/awesomeApi';
 
 class AddNewExpense extends React.Component {
   constructor() {
     super();
-    this.getCurrency = this.getCurrency.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
       value: '',
@@ -18,17 +16,22 @@ class AddNewExpense extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    this.getCurrency();
+  componentDidMount() {
+    const { dispatchCurrencyToProps } = this.props;
+    dispatchCurrencyToProps();
+    // this.requestCurrency();
   }
 
-  async getCurrency() {
-    const { dispatchCurrencyToProps } = this.props;
-    await dispatchCurrencyToProps();
+  async requestCurrency() {
+    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
+    const response = await fetch(endpoint);
+    const object = await response.json();
+    delete object.USDT;
+    return object;
   }
 
   async handleClick() {
-    const rates = await requestCurrency();
+    const rates = await this.requestCurrency();
     const { value, description, currency, method, tag } = this.state;
     const { expenses, dispatchExpenses, dispatchTotalPrice } = this.props;
     const expensesObj = {
@@ -57,7 +60,11 @@ class AddNewExpense extends React.Component {
     });
   }
 
-  currencyInput(currency, currencyList) {
+  currencyInput() {
+    const { currencies } = this.props;
+    const { currency } = this.state;
+    // console.log(currencies);
+    // if(currencies.length === 0) return <p>Loading</p>
     return (
       <label htmlFor="currency-input">
         Moeda:
@@ -69,13 +76,11 @@ class AddNewExpense extends React.Component {
           id="currency-input"
           onChange={ ({ target }) => this.handleInputs(target) }
         >
-          { Object.keys(currencyList)
-            .filter((coin) => coin !== 'USDT')
-            .map((coin) => (
-              <option key={ coin } value={ coin } data-testid={ coin }>
-                { coin }
-              </option>
-            ))}
+          { currencies.map((coin) => (
+            <option key={ coin } value={ coin } data-testid={ coin }>
+              { coin }
+            </option>
+          ))}
         </select>
       </label>
     );
@@ -140,12 +145,11 @@ class AddNewExpense extends React.Component {
   }
 
   render() {
-    const { currencyList } = this.props;
-    const { value, description, currency, method, tag } = this.state;
+    const { value, description, method, tag } = this.state;
     return (
       <div>
         { this.valueInput(value) }
-        { this.currencyInput(currency, currencyList) }
+        { this.currencyInput() }
         <label htmlFor="description-input">
           Descrição:
           <input
@@ -166,7 +170,7 @@ class AddNewExpense extends React.Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  currencyList: state.wallet.currencyList,
+  currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
 });
 
@@ -178,7 +182,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 AddNewExpense.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currencyList: PropTypes.objectOf(PropTypes.string).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,
   dispatchTotalPrice: PropTypes.func.isRequired,

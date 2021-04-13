@@ -1,5 +1,3 @@
-import requestCurrency from '../services/awesomeApi';
-
 export const LOGIN_INFORMATION = 'LOGIN_INFORMATION';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const TOTAL_PRICE = 'TOTAL_PRICE';
@@ -24,15 +22,22 @@ export const handleTotalPrice = (value) => ({
   value,
 });
 
-const saveCurrencies = (currencyList) => ({
+const saveCurrencies = (currencies) => ({
   type: GET_CURRENCIES,
-  currencyList,
+  currencies,
 });
 
 export function getCurrency() {
   return async (dispatch) => {
-    const currencyList = await requestCurrency();
-    return dispatch(saveCurrencies(currencyList));
+    try {
+      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const object = await response.json();
+      delete object.USDT;
+      const currencyList = Object.keys(object);
+      return dispatch(saveCurrencies(currencyList));
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
