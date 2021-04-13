@@ -2,10 +2,11 @@
 const INICIAL_STATE = {
   currencies: [],
   expenses: [],
+  total: 0,
 };
 
 const wallet = (state = INICIAL_STATE, action) => {
-  switch(action.type) {
+  switch (action.type) {
   case '':
     return { };
   default:
