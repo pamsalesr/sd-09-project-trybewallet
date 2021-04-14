@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUserEmail } from '../actions';
 
@@ -15,7 +16,6 @@ class LoginForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
-    this.redirectToWallet = this.redirectToWallet.bind(this);
   }
 
   handleChange(event) {
@@ -28,27 +28,16 @@ class LoginForm extends Component {
     const { emailInput, passwordInput } = this.state;
     const minLength = 6;
     const emailRgx = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    if (
-      emailInput.match(emailRgx) && passwordInput.length >= minLength
-    ) {
+    if (emailInput.match(emailRgx) && passwordInput.length >= minLength) {
       this.setState({ disabled: false });
     } else {
       this.setState({ disabled: true });
     }
   }
 
-  //  https://dev.to/ebraimcarvalho/a-simple-way-to-redirect-react-router-dom-5hnn
-  redirectToWallet() {
-    const { userEmailDispatcher } = this.props;
-    const { emailInput } = this.state;
-    userEmailDispatcher(emailInput);
-
-    const { history } = this.props;
-    return history.push('/carteira');
-  }
-
   render() {
-    const { email, password, disabled } = this.state;
+    const { emailInput, passwordInput, disabled } = this.state;
+    const { userEmailDispatcher } = this.props;
 
     return (
       <main className="login-container">
@@ -57,7 +46,7 @@ class LoginForm extends Component {
           <input
             type="email"
             name="emailInput"
-            value={ email }
+            value={ emailInput }
             data-testid="email-input"
             placeholder="Digite seu e-mail"
             onChange={ this.handleChange }
@@ -67,18 +56,20 @@ class LoginForm extends Component {
             type="password"
             data-testid="password-input"
             name="passwordInput"
-            value={ password }
+            value={ passwordInput }
             placeholder="Crie sua senha"
             onChange={ this.handleChange }
             required
           />
-          <button
-            type="button"
-            disabled={ disabled }
-            onClick={ () => this.redirectToWallet() }
-          >
-            Entrar
-          </button>
+          <Link to="/carteira">
+            <button
+              type="button"
+              disabled={ disabled }
+              onClick={ () => userEmailDispatcher(emailInput) }
+            >
+              Entrar
+            </button>
+          </Link>
         </form>
       </main>
     );
