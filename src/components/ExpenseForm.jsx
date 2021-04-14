@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencies, saveExpenses } from '../actions';
+import { fetchCurrencies, editExpense, saveExpenses } from '../actions';
 import apiCurrencies from '../services/APIcurrencies';
 
 class ExpenseForm extends React.Component {
@@ -22,6 +22,8 @@ class ExpenseForm extends React.Component {
     this.creatorTagSelect = this.creatorTagSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addExpenses = this.addExpenses.bind(this);
+    this.creatorButtons = this.creatorButtons.bind(this);
+    this.saveEditExpense = this.saveEditExpense.bind(this);
   }
 
   componentDidMount() {
@@ -129,6 +131,43 @@ class ExpenseForm extends React.Component {
     });
   }
 
+  saveEditExpense() {
+    const { dispatchEditExpense } = this.props;
+    const { id, value, description, currency, method, tag } = this.state;
+    const newObjExpense = {
+      id, value, description, currency, method, tag,
+    };
+    dispatchEditExpense(newObjExpense);
+  }
+
+  creatorButtons() {
+    const { editExpense } = this.props;
+    if (!editExpense) {
+      return (
+        <button
+          type="button"
+          onClick={ () => this.addExpenses() }
+        >
+          Adicionar despesas:
+        </button>
+      );
+    }
+    return (
+      <button
+        type="button"
+        onClick={ () => this.addExpenses() }
+      >
+        Editar Gasto:
+      </button>
+    );
+  }
+
+  // async saveNewExpense() {
+  //   const { dispatchEditExpense } = this.props;
+  //   const { id, value,description, currency, method, tag } = this.estate;
+  //   const exchangeRates = await apiCurrencies();
+  // }
+
   render() {
     const { value, description } = this.state;
     return (
@@ -164,12 +203,7 @@ class ExpenseForm extends React.Component {
         { this.creatorCurrencySelect() }
         { this.creatorPaymentSelect() }
         { this.creatorTagSelect() }
-        <button
-          type="button"
-          onClick={ () => this.addExpenses() }
-        >
-          Adicionar despesas:
-        </button>
+        { this.creatorButtons() }
       </div>
     );
   }
@@ -177,20 +211,25 @@ class ExpenseForm extends React.Component {
 
 const mapStateToProps = (state) => ({
   currency: state.wallet.currencies,
+  expenses: state.wallet.expenses,
+  editExpense: state.wallet.editExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpenses: (expenses) => dispatch(saveExpenses(expenses)),
   dispatchfetch: (value) => dispatch(fetchCurrencies(value)),
+  dispatchEditExpense: (newExpense) => dispatch(editExpense(newExpense)),
 });
 
 ExpenseForm.propTypes = {
   dispatchfetch: PropTypes.func.isRequired,
   currency: PropTypes.arrayOf(PropTypes.string),
   dispatchExpenses: PropTypes.func.isRequired,
+  editExpense: PropTypes.objectOf(PropTypes.string),
 };
 ExpenseForm.defaultProps = {
   currency: [],
+  editExpense: {},
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
