@@ -3,23 +3,19 @@
 import { GET_USER_EMAIL } from '../actions/index';
 
 const INITIAL_USER_EMAIL_STATE = {
-  user: {
-    email: '',
-  },
+  email: '',
 };
 
-const userEmailReducer = (state = INITIAL_USER_EMAIL_STATE, { type, userEmail }) => {
+const user = (state = INITIAL_USER_EMAIL_STATE, { type, userEmail }) => {
   switch (type) {
   case GET_USER_EMAIL:
     return {
       ...state,
-      user: {
-        email: userEmail,
-      },
+      email: userEmail,
     };
   default:
     return state;
   }
 };
 
-export default userEmailReducer;
+export default user;
