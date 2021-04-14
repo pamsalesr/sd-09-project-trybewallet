@@ -105,7 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
   emailDispatch: (email) => dispatch(userEmailDispatch(email)),
 });
 
-Login.prototype = {
+Login.propTypes = {
   emailDispatch: PropTypes.func.isRequired,
 };
 
