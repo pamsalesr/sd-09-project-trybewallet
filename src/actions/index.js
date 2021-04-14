@@ -1,5 +1,6 @@
 const LOGIN = 'LOGIN';
 const EXPENSE = 'EXPENSE';
+const DELETE = 'DELETE';
 
 export const loginAction = (email) => ({
   type: LOGIN,
@@ -9,6 +10,11 @@ export const loginAction = (email) => ({
 export const expenseAction = (expense) => ({
   type: EXPENSE,
   expense,
+});
+
+export const deleteExpenseAction = (newExpenses) => ({
+  type: DELETE,
+  newExpenses,
 });
 
 export async function expenseThunk(

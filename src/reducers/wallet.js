@@ -9,6 +9,11 @@ const walletReducer = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: state.expenses.concat(action.expense),
     };
+  case 'DELETE':
+    return {
+      ...state,
+      expenses: [...action.newExpenses],
+    };
   default:
     return state;
   }
