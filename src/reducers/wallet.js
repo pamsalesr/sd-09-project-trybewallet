@@ -4,6 +4,7 @@ import * as actions from '../actions/index';
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  nextExpenseId: 0,
   fetching: false,
 };
 
@@ -21,11 +22,12 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: [
         ...state.expenses,
         {
-          id: state.expenses.length,
+          id: state.nextExpenseId,
           ...action.input,
           exchangeRates: action.fetchData,
         },
       ],
+      nextExpenseId: state.nextExpenseId + 1,
     };
   default:
     return state;

@@ -132,6 +132,7 @@ class Spending extends React.Component {
 
   renderSelf() {
     const { input: { value, description } } = this.state;
+    const { fetching } = this.props;
     return (
       <form onSubmit={ this.onSubmit.bind(this) }>
         <label htmlFor="value">
@@ -159,24 +160,24 @@ class Spending extends React.Component {
             value={ description }
           />
         </label>
-        { this.currencyOptions.bind(this)() }
+        { this.currencyOptions.bind(this).call() }
         <label htmlFor="method">
           Método de pagamento
-          { this.paymentOptions.bind(this)() }
+          { this.paymentOptions.bind(this).call() }
         </label>
         <label htmlFor="tag">
           Categoria
-          { this.tagOptions.bind(this)() }
+          { this.tagOptions.bind(this).call() }
         </label>
-        <button data-testid="" type="submit">Adicionar despesa</button>
+        <button type="submit" disabled={ fetching }>Adicionar despesa</button>
       </form>
     );
   }
 
   render() {
     const { loading } = this.state;
-    return ((loading) ? <p>Api is loading</p>
-      : this.renderSelf.bind(this)());
+    return (loading) ? <p>Api is loading</p>
+      : this.renderSelf.bind(this).call();
   }
 }
 
@@ -188,8 +189,13 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchSpending: (input) => dispatch(addSpending(dispatch, input)),
 });
 
+const mapStateToProps = (state) => ({
+  fetching: state.wallet.fetching,
+});
+
 Spending.propTypes = {
   dispatchSpending: PropTypes.func.isRequired,
+  fetching: PropTypes.bool.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Spending);
+export default connect(mapStateToProps, mapDispatchToProps)(Spending);
