@@ -1,18 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Wallet extends React.Component {
   // constructor(props){
   //   super(props);
-
-  //   //  start
   // }
 
   headerPage() {
+    const { userEmail } = this.props;
     return (
       <header id="header">
         <div>
           email:
-          <span data-testid="email-field" id="header-email">email do usuario</span>
+          <span data-testid="email-field" id="header-email">{ userEmail }</span>
         </div>
         <div>
           despesa total:
@@ -109,7 +110,6 @@ class Wallet extends React.Component {
       <div>
         <button
           type="submit"
-          data-testid="total-field"
           id="button-expenditure-add"
         >
           Adicionar despesa
@@ -139,4 +139,13 @@ class Wallet extends React.Component {
   }
 }
 
-export default Wallet;
+const mapStateToprops = ({ user, wallet }) => ({
+  userEmail: user.email,
+  consultDespesaTotal: wallet.despesaTotal,
+});
+
+Wallet.propTypes = {
+  userEmail: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToprops)(Wallet);

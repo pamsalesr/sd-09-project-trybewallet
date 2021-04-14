@@ -11,3 +11,11 @@ export const passwordInsert = (password) => ({
   type: PASSWORD_INSERT,
   password,
 });
+
+// Wallet
+
+export const DESPESA_TOTAL = 'DESPESA_TOTAL';
+export const despesaTotalInsert = (despesaTotal) => ({
+  type: DESPESA_TOTAL,
+  despesaTotal,
+});
