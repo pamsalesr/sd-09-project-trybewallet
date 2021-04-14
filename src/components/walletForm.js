@@ -15,13 +15,16 @@ class WalletForm extends Component {
     super(props);
 
     this.state = {
-      id: 0,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      exchangeRates: {},
+      expenseState: {
+        id: 0,
+        value: 0,
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+        exchangeRates: {},
+      },
+      buttonLabel: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,22 +34,38 @@ class WalletForm extends Component {
     this.loadExpense = this.loadExpense.bind(this);
     this.addRegister = this.addRegister.bind(this);
     this.editRegister = this.editRegister.bind(this);
+    this.buttonMakeLabel = this.buttonMakeLabel.bind(this);
   }
 
   componentDidMount() {
-    const { addCurrency } = this.props;
-    addCurrency();
+    const { addCurrency, wallet } = this.props;
+    const { editor } = wallet;
+    this.buttonMakeLabel(editor);
+    if (!editor) {
+      addCurrency();
+    }
   }
 
   componentDidUpdate() {
     const { editExpense, wallet } = this.props;
-    const { edit } = wallet;
-    const noEdit = -1;
-    const yesEdit = -2;
+    const { editor, idToEdit } = wallet;
 
-    if (edit > noEdit) {
-      editExpense(yesEdit);
-      this.loadExpense(edit);
+    if (editor && idToEdit !== -1) {
+      this.buttonMakeLabel(editor);
+      this.loadExpense(idToEdit);
+      editExpense(-1, true);
+    }
+  }
+
+  buttonMakeLabel(editor) {
+    if (editor) {
+      this.setState({
+        buttonLabel: 'Editar despesa',
+      });
+    } else {
+      this.setState({
+        buttonLabel: 'Adicionar despesa',
+      });
     }
   }
 
@@ -56,24 +75,28 @@ class WalletForm extends Component {
     const expense = expenses.find((aux) => aux.id === id);
 
     this.setState({
-      id: expense.id,
-      value: expense.value,
-      description: expense.description,
-      currency: expense.currency,
-      method: expense.method,
-      tag: expense.tag,
-      exchangeRates: expense.exchangeRates,
+      expenseState: {
+        id: expense.id,
+        value: expense.value,
+        description: expense.description,
+        currency: expense.currency,
+        method: expense.method,
+        tag: expense.tag,
+        exchangeRates: expense.exchangeRates,
+      },
     });
   }
 
   clearState() {
     this.setState({
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      exchangeRates: {},
+      expenseState: {
+        value: 0,
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+        exchangeRates: {},
+      },
     });
   }
 
@@ -83,13 +106,12 @@ class WalletForm extends Component {
 
   buttonAdd() {
     const { wallet } = this.props;
-    const { edit } = wallet;
-    const yesEdit = -2;
+    const { editor } = wallet;
 
-    if (edit !== yesEdit) {
-      this.addRegister();
-    } else {
+    if (editor) {
       this.editRegister();
+    } else {
+      this.addRegister();
     }
   }
 
@@ -97,19 +119,23 @@ class WalletForm extends Component {
     const { addCurrency, addExpense, addTotals, totals } = this.props;
     addCurrency();
     const { total, currency: currencyTotal } = totals;
-    const { id, value, description, currency, exchangeRates } = this.state;
+    const { expenseState } = this.state;
+    const { id, value, description, currency, exchangeRates } = expenseState;
     if (value !== 0 && description !== '') {
       this.setState({
-        id: id + 1,
+        expenseState: {
+          id: id + 1,
+        },
       });
-      addExpense(this.state);
+      addExpense(expenseState);
       addTotals(this.computeValue(total, value, currency, exchangeRates), currencyTotal);
       this.clearState();
     }
   }
 
   editRegister() {
-    const { id, value, description } = this.state;
+    const { expenseState } = this.state;
+    const { id, value, description } = expenseState;
     const { wallet, addTotals, totals, upgradeExpenses, editExpense } = this.props;
     const { expenses } = wallet;
     const { currency: currencyTotal } = totals;
@@ -118,7 +144,7 @@ class WalletForm extends Component {
       const newExpenses = [];
       expenses.forEach((expense) => {
         if (expense.id === id) {
-          newExpenses.push(this.state);
+          newExpenses.push(expenseState);
         } else {
           newExpenses.push(expense);
         }
@@ -129,8 +155,7 @@ class WalletForm extends Component {
         return totalValue;
       }, 0);
       addTotals(total, currencyTotal);
-      const noEdit = -1;
-      editExpense(noEdit);
+      editExpense(0, false);
       this.clearState();
     }
   }
@@ -139,25 +164,22 @@ class WalletForm extends Component {
     const { wallet } = this.props;
     const { currencies } = wallet;
     const { name, value } = target;
+    const { expenseState } = this.state;
 
     if (value !== 0 || value !== '') {
       this.setState({
-        [name]: value,
-        exchangeRates: currencies,
+        expenseState: {
+          ...expenseState,
+          [name]: value,
+          exchangeRates: currencies,
+        },
       });
     }
   }
 
   render() {
-    const { value, description, currency, method, tag } = this.state;
-    const { wallet } = this.props;
-    const { edit } = wallet;
-    const yesEdit = -2;
-    let buttonLabel = 'Adicionar despesa';
-
-    if (edit === yesEdit) {
-      buttonLabel = 'Editar despesa';
-    }
+    const { expenseState, buttonLabel } = this.state;
+    const { value, description, currency, method, tag, exchangeRates } = expenseState;
 
     return (
       <div>
@@ -171,6 +193,7 @@ class WalletForm extends Component {
             fieldValue={ currency }
             fieldFunction={ this.handleChange }
             fieldDefault={ currency }
+            exchanges={ exchangeRates }
           />
           <InputMethod
             fieldValue={ method }
@@ -208,7 +231,8 @@ WalletForm.propTypes = {
     currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
     lastId: PropTypes.number,
-    edit: PropTypes.number,
+    idToEdit: PropTypes.number,
+    editor: PropTypes.bool,
   }).isRequired,
 };
 
@@ -216,7 +240,7 @@ const mapDispatchToProps = (dispatch) => ({
   addCurrency: () => dispatch(fetchCurrency()),
   addExpense: (expense) => dispatch(Actions.addExpense(expense)),
   addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
-  editExpense: (id) => dispatch(Actions.editExpense(id)),
+  editExpense: (idToEdit, editor) => dispatch(Actions.editExpense(idToEdit, editor)),
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
 });
 

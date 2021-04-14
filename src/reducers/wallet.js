@@ -6,8 +6,8 @@ const INITIAL_STATE = {
   isFatching: false,
   error: '',
   lastId: -1,
-  edit: -1,
-
+  idToEdit: 0,
+  editor: false,
 };
 
 function walletReducer(state = INITIAL_STATE, action) {
@@ -46,7 +46,8 @@ function walletReducer(state = INITIAL_STATE, action) {
   case Type.EDIT_EXPENSE: {
     return {
       ...state,
-      edit: action.id,
+      idToEdit: action.idToEdit,
+      editor: action.editor,
     };
   }
   case Type.UPGRADE_EXPENSES: {

@@ -5,8 +5,15 @@ import './inputCurrency.css';
 
 class InputCurrency extends Component {
   render() {
-    const { fieldFunction, fieldValue, fieldDefault, wallet } = this.props;
-    const { currencies } = wallet;
+    const { fieldFunction, fieldValue, fieldDefault, wallet, exchanges } = this.props;
+    const { currencies, editor } = wallet;
+    let arrayCurrency;
+
+    if (editor) {
+      arrayCurrency = exchanges;
+    } else {
+      arrayCurrency = currencies;
+    }
 
     return (
       <div className="class-currency">
@@ -21,7 +28,7 @@ class InputCurrency extends Component {
             onChange={ fieldFunction }
             defaultValue={ fieldDefault }
           >
-            { Object.keys(currencies).map((currency) => (
+            { Object.keys(arrayCurrency).map((currency) => (
               <option
                 data-testid={ currency }
                 value={ currency }

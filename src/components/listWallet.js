@@ -11,12 +11,12 @@ class ListWallet extends Component {
     super(props);
 
     this.deleteExpense = this.deleteExpense.bind(this);
-    this.editExpense = this.editExpense.bind(this);
+    this.editExpenseLocal = this.editExpenseLocal.bind(this);
   }
 
-  editExpense(id) {
+  editExpenseLocal(id) {
     const { editExpense } = this.props;
-    editExpense(id);
+    editExpense(id, true);
   }
 
   deleteExpense(id) {
@@ -34,10 +34,8 @@ class ListWallet extends Component {
 
   render() {
     const { wallet } = this.props;
-    const { edit, expenses } = wallet;
-    const yesEdit = -1;
-    // if (edit > yesEdit) return (<Redirect to="/carteira" />);
-    if (edit > yesEdit) return (<WalletForm />);
+    const { editor, expenses } = wallet;
+    // if (editor) return (<WalletForm />);
 
     return (
       <div>
@@ -71,7 +69,7 @@ class ListWallet extends Component {
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
                     deleteFunction={ () => this.deleteExpense(expense.id) }
-                    editFunction={ () => this.editExpense(expense.id) }
+                    editFunction={ () => this.editExpenseLocal(expense.id) }
                     key={ expense.id }
                   />
                 ))
@@ -92,7 +90,7 @@ ListWallet.propTypes = {
     currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
     lastId: PropTypes.number,
-    edit: PropTypes.number,
+    editor: PropTypes.bool,
   }).isRequired,
   totals: PropTypes.shape({
     total: PropTypes.number,
@@ -103,9 +101,11 @@ ListWallet.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
   addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
-  editExpense: (id) => dispatch(Actions.editExpense(id)),
+  editExpense: (idToEdit, editor) => dispatch(Actions.editExpense(idToEdit, editor)),
 });
 
 const mapStateToProps = (state) => (state);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListWallet);
+
+// if (edit > yesEdit) return (<Redirect to="/carteira" />);
