@@ -7,10 +7,10 @@ import { walletThunk } from '../actions';
 class Wallet extends Component {
   constructor() {
     super();
-    this.handleApi = this.handleApi.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.storeExp = this.storeExp.bind(this);
-    this.totalExp = this.totalExp.bind(this);
+    // this.handleApi = this.handleApi.bind(this);
+    // this.handleInputChange = this.handleInputChange.bind(this);
+    // this.storeExp = this.storeExp.bind(this);
+    // this.totalExp = this.totalExp.bind(this);
     // this.state = {
     //   currencies: [],
     //   expenses: {
@@ -24,9 +24,9 @@ class Wallet extends Component {
     // };
   }
 
-  componentDidMount() {
-    this.handleApi();
-  }
+  // componentDidMount() {
+  //   this.handleApi();
+  // }
 
   render() {
     return (
