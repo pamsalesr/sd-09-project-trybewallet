@@ -1,13 +1,14 @@
 import apiCurrencies from '../services/APIcurrencies';
-
-export const SAVE_EMAIL = 'SEVE_EMAIL';
-export const SAVE_PASSWORD = 'SAVEPASSWORD';
-export const CURRENCIES = 'CURRENCIES';
-export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
-export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
-export const REQUEST_CURRENCIES_ERROR = 'REQUEST_CURRENCIES_ERROR';
-export const SAVE_EXPENSES = 'SAVE_EXPENSES';
-export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+import {
+  SAVE_EMAIL,
+  SAVE_PASSWORD,
+  CURRENCIES,
+  SAVE_EXPENSES,
+  DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  SAVE_EDIT_EXPENSE,
+  REQUEST_CURRENCIES_SUCCESS,
+} from './actionsType';
 
 export const saveEmail = (email) => ({
   type: SAVE_EMAIL,
@@ -32,7 +33,16 @@ export const saveExpenses = (expenses) => ({
 export const deletExpense = (id) => ({
   type: DELETE_EXPENSE,
   id,
+});
 
+export const editExpense = (newExpense) => ({
+  type: EDIT_EXPENSE,
+  newExpense,
+});
+
+export const endEdit = (expense) => ({
+  type: SAVE_EDIT_EXPENSE,
+  expense,
 });
 
 export const requestCurrenciesSuccess = (currencies) => ({
@@ -42,7 +52,6 @@ export const requestCurrenciesSuccess = (currencies) => ({
 });
 
 export const fetchCurrencies = () => (dispatch) => {
-  // dispatch(requestCurrencies());
   apiCurrencies()
     .then((currenciesResponse) => dispatch(
       requestCurrenciesSuccess(Object.keys(currenciesResponse)),

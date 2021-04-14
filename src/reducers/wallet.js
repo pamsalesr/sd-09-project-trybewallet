@@ -1,10 +1,17 @@
 import {
-  REQUEST_CURRENCIES_SUCCESS, SAVE_EXPENSES, CURRENCIES, DELETE_EXPENSE,
-} from '../actions';
+  CURRENCIES,
+  SAVE_EXPENSES,
+  DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  SAVE_EDIT_EXPENSE,
+  REQUEST_CURRENCIES_SUCCESS,
+} from '../actions/actionsType';
 
 const INITIAL_STATE_WALLET = {
   currencies: [],
   expenses: [],
+  expenseToEdit: {},
+  editExpense: false,
 };
 
 const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
@@ -20,9 +27,28 @@ const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
     };
 
   case DELETE_EXPENSE:
-    return ({
+    return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.id),
+    };
+
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      expenseToEdit: action.expense,
+      editExpense: true,
+    };
+
+  case SAVE_EDIT_EXPENSE:
+    return ({
+      ...state,
+      expenses: state.expenses.map((newExpense) => {
+        if (newExpense.id === action.newExpense.id) {
+          return ({ ...newExpense, ...action.newExpense });
+        }
+        return newExpense;
+      }),
+    // editExpense: false,
     });
 
   case REQUEST_CURRENCIES_SUCCESS:
