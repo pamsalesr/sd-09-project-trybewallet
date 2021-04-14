@@ -62,17 +62,18 @@ class ExpenseForm extends React.Component {
     expenseDispatch(expense);
     this.setState({
       id: id + 1,
+      value: '',
     });
   }
 
   formsOne() {
-    const { currencies } = this.state;
+    const { currencies, value, description, currency } = this.state;
     return (
       <div>
         <label htmlFor="value-input">
           Despesa:
           <input
-            value="0"
+            value={ value }
             data-testid="value-input"
             type="number"
             id="value-input"
@@ -83,7 +84,7 @@ class ExpenseForm extends React.Component {
         <label htmlFor="description-input">
           Descrição da Despesa:
           <input
-            value="0"
+            value={ description }
             data-testid="description-input"
             type="text"
             id="description-input"
@@ -94,7 +95,7 @@ class ExpenseForm extends React.Component {
         <label htmlFor="currency-input">
           Moeda:
           <select
-            value="0"
+            value={ currency }
             data-testid="currency-input"
             id="currency-input"
             name="currency"
@@ -110,12 +111,13 @@ class ExpenseForm extends React.Component {
   }
 
   formsTwo() {
+    const { method, tag } = this.state;
     return (
       <div>
         <label htmlFor="method-input">
           Método de Pagamento:
           <select
-            value="0"
+            value={ method }
             id="method-input"
             data-testid="method-input"
             name="method"
@@ -129,7 +131,7 @@ class ExpenseForm extends React.Component {
         <label htmlFor="tag-input">
           Categoria:
           <select
-            value="0"
+            value={ tag }
             id="tag-input"
             data-testid="tag-input"
             name="tag"
