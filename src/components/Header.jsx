@@ -10,11 +10,17 @@ class Header extends React.Component {
       <header>
         <h1>Personal Wallet</h1>
         <div>
-          <span data-testid="email-field">Usuário</span>
-          { email }
-          <span data-testid="total-field">Despesas Totais R$:</span>
-          { totalNumber }
-          <span data-testid="header-currency-field">BRL</span>
+          <span data-testid="email-field">
+            Usuário:
+            { email }
+          </span>
+          <span data-testid="total-field">
+            Despesas Totais R$:
+            { totalNumber }
+          </span>
+          <span data-testid="header-currency-field">
+            BRL
+          </span>
         </div>
       </header>
     );
