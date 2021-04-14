@@ -67,11 +67,12 @@ class ExpenseForm extends React.Component {
 
     this.setState({
       id: id + 1,
+      value: '',
     });
   }
 
   forms() {
-    const { currencies } = this.state;
+    const { currencies, value, description, currency } = this.state;
     return (
       <div>
         <label htmlFor="value-input">
@@ -79,8 +80,8 @@ class ExpenseForm extends React.Component {
           <input
             type="number"
             name="value"
+            value={ value }
             data-testid="value-input"
-            value="0"
             onChange={ this.handleChange }
           />
         </label>
@@ -89,7 +90,7 @@ class ExpenseForm extends React.Component {
           <input
             type="text"
             name="description"
-            value="0"
+            value={ description }
             id="description-input"
             data-testid="description-input"
             onChange={ this.handleChange }
@@ -99,9 +100,9 @@ class ExpenseForm extends React.Component {
           Moeda:
           <select
             data-testid="currency-input"
+            value={ currency }
             id="currency-input"
             name="currency"
-            value="0"
             onChange={ this.handleChange }
           >
             {currencies.map((curr) => (
@@ -114,15 +115,16 @@ class ExpenseForm extends React.Component {
   }
 
   forms2() {
+    const { method, tag } = this.state;
     return (
       <div>
         <label htmlFor="method-input">
           Método de pagamento:
           <select
             data-testid="method-input"
+            value={ method }
             id="method-input"
             name="method"
-            value="0"
             onChange={ this.handleChange }
           >
             <option>Dinheiro</option>
@@ -135,8 +137,8 @@ class ExpenseForm extends React.Component {
           <select
             data-testid="tag-input"
             id="tag-input"
+            value={ tag }
             name="tag"
-            value="0"
             onChange={ this.handleChange }
           >
             <option>Alimentação</option>
