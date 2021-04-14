@@ -141,8 +141,8 @@ class ExpenseForm extends React.Component {
   }
 
   creatorButtons() {
-    const { editExpense } = this.props;
-    if (!editExpense) {
+    const { editNewExpense } = this.props;
+    if (!editNewExpense) {
       return (
         <button
           type="button"
@@ -212,7 +212,7 @@ class ExpenseForm extends React.Component {
 const mapStateToProps = (state) => ({
   currency: state.wallet.currencies,
   expenses: state.wallet.expenses,
-  editExpense: state.wallet.editExpense,
+  editNewExpense: state.wallet.editExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -225,11 +225,12 @@ ExpenseForm.propTypes = {
   dispatchfetch: PropTypes.func.isRequired,
   currency: PropTypes.arrayOf(PropTypes.string),
   dispatchExpenses: PropTypes.func.isRequired,
-  editExpense: PropTypes.objectOf(PropTypes.string),
+  dispatchEditExpense: PropTypes.func.isRequired,
+  editNewExpense: PropTypes.objectOf(PropTypes.string),
 };
 ExpenseForm.defaultProps = {
   currency: [],
-  editExpense: {},
+  editNewExpense: {},
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
