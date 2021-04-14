@@ -1,8 +1,12 @@
 const EXPENSE = 'EXPENSE';
+const DELETE = 'DELETE';
 
-const expenseAction = (expense) => ({
+export const expenseAction = (expense) => ({
   type: EXPENSE,
   expense,
 });
 
-export default expenseAction;
+export const deleteExpense = (newExpenses) => ({
+  type: DELETE,
+  newExpenses,
+});
