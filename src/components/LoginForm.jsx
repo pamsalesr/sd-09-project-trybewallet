@@ -18,10 +18,12 @@ class LoginForm extends Component {
     this.validateFields = this.validateFields.bind(this);
   }
 
+  // Obrigada Tiago Granville pela ajuda na sincronicidade do negócio :D
   handleChange(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-    this.validateFields();
+    this.setState({
+      [name]: value,
+    }, () => this.validateFields());
   }
 
   validateFields() {
