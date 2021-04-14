@@ -3,19 +3,18 @@ import React from 'react';
 // import { string } from 'prop-types';
 
 class NewExpenseComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       value: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      //   currency: 'USD',
+      //   method: 'Dinheiro',
+      //   tag: 'Alimentação',
       description: '',
-      edit: {
-        editable: false,
-        id: 0,
-      },
+    //   edit: {
+    //     editable: false,
+    //     id: 0,
+    //   },
     };
   }
 
