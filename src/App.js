@@ -1,4 +1,3 @@
-// Iniciando
 import React from 'react';
 
 function App() {
