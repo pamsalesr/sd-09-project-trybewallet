@@ -33,12 +33,14 @@ class Wallet extends Component {
   }
 
   render() {
+    const { email } = this.props;
+    const { expenses, currencies } = this.state;
     return (
       <div>
         <h2>Wallet Page</h2>
-        <h3 data-testid="email-field">{this.props.email}</h3>
-        <h3 data-testid="total-field">{this.state.expenses.value}</h3>
-        <h3 data-testid="header-currency-field">{this.state.currencies}</h3>
+        <h3 data-testid="email-field">{email}</h3>
+        <h3 data-testid="total-field">{expenses.value}</h3>
+        <h3 data-testid="header-currency-field">{currencies}</h3>
       </div>
     );
   }
@@ -56,7 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
 Wallet.propTypes = {
   email: PropTypes.string.isRequired,
   // saveExpenses: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
