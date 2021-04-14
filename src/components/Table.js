@@ -21,6 +21,7 @@ class Table extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.editClick = this.editClick.bind(this);
     this.renderTable = this.renderTable.bind(this);
+    this.renderTheadTable = this.renderTheadTable.bind(this);
   }
 
   onClick({ target }) {
@@ -51,23 +52,29 @@ class Table extends React.Component {
     }), () => getState(this.state));
   }
 
+  renderTheadTable() {
+    return (
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
+        </tr>
+      </thead>
+    );
+  }
+
   renderTable() {
     const { expenses } = this.props;
     return (
       <table>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-        </thead>
+        { this.renderTheadTable() }
         <tbody>
           {expenses.map((exp) => (
             <tr key={ exp.id }>
@@ -79,7 +86,11 @@ class Table extends React.Component {
               </td>
               <td>{ exp.exchangeRates[exp.currency].name }</td>
               <td>{ parseFloat((exp.exchangeRates[exp.currency].ask)).toFixed(2) }</td>
-              <td>{ parseFloat((exp.value * exp.exchangeRates[exp.currency].ask)).toFixed(2) }</td>
+              <td>
+                {
+                  parseFloat((exp.value * exp.exchangeRates[exp.currency].ask)).toFixed(2)
+                }
+              </td>
               <td>Real</td>
               <Button
                 text="Deletar"
@@ -103,7 +114,7 @@ class Table extends React.Component {
   render() {
     return (
       <div>
-        { this.renderTable() }
+        { this.renderTable()}
       </div>
     );
   }
