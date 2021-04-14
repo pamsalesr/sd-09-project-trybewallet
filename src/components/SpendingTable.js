@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { removeSpending } from '../actions';
+
 const tableInfo = [
   ['Descrição', (x) => x.description],
   ['Tag', (x) => x.tag],
@@ -15,6 +17,7 @@ const tableInfo = [
 
 class SpendingTable extends React.Component {
   infoRow(spendingEntry) {
+    const { deleteIt } = this.props;
     return (
       <tr key={ spendingEntry.id }>
         {
@@ -26,7 +29,15 @@ class SpendingTable extends React.Component {
             </td>
           ))
         }
-        <td />
+        <td>
+          <button
+            type="button"
+            onClick={ deleteIt(spendingEntry.id) }
+            data-testid="delete-btn"
+          >
+            Delete it
+          </button>
+        </td>
       </tr>
     );
   }
@@ -71,6 +82,10 @@ const mapStateToProps = (state) => ({
   spendings: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  deleteIt: (id) => () => dispatch(removeSpending(id)),
+});
+
 SpendingTable.propTypes = {
   spendings: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -93,6 +108,7 @@ SpendingTable.propTypes = {
       create_date: PropTypes.string.isRequired,
     })).isRequired,
   })).isRequired,
+  deleteIt: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(SpendingTable);
+export default connect(mapStateToProps, mapDispatchToProps)(SpendingTable);

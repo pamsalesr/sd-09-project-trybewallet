@@ -26,3 +26,10 @@ export const addSpending = (dispatch, input) => {
     type: ADD_SPENDING,
   };
 };
+
+export const REMOVE_SPENDING = 'REMOVE_SPENDING';
+
+export const removeSpending = (id) => ({
+  type: REMOVE_SPENDING,
+  id,
+});
