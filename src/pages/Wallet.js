@@ -37,10 +37,12 @@ class Wallet extends Component {
     const { expenses, currencies } = this.state;
     return (
       <div>
-        <h2>Wallet Page</h2>
-        <h3 data-testid="email-field">{email}</h3>
-        <h3 data-testid="total-field">{expenses.value}</h3>
-        <h3 data-testid="header-currency-field">{currencies}</h3>
+        <header>
+          <h2>Wallet Page</h2>
+          <h3 data-testid="email-field">{email}</h3>
+          <h3 data-testid="total-field">{expenses.value}</h3>
+          <h3 data-testid="header-currency-field">{currencies}</h3>
+        </header>
       </div>
     );
   }
