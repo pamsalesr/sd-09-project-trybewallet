@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { actionExpense } from '../actions';
@@ -21,10 +22,15 @@ class WalletForms extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((response) => this.currenciesDataToInitials(response));
+  async componentDidMount() {
+    this.currenciesDataToInitials(await this.fetchCurrencyQuotes());
+  }
+
+  async fetchCurrencyQuotes() {
+    const fetchCurrency = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const response = await fetchCurrency.json();
+    console.log(response);
+    return response;
   }
 
   handleChange(event) {
@@ -87,6 +93,7 @@ class WalletForms extends React.Component {
       currency,
       method,
       tag,
+      exchangeRates: this.fetchCurrencyQuotes(),
     };
   }
 
@@ -121,5 +128,12 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
+
+WalletForms.propTypes = {
+  addExpense: PropTypes.func.isRequired,
+  expenses: PropTypes.shape({
+    length: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForms);
