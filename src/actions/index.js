@@ -1,3 +1,5 @@
+import fetchCurrencyApi from '../services/fetchCurrencyApi';
+
 // Coloque aqui suas actions
 const userEmailDispatch = (email) => ({
   email,
