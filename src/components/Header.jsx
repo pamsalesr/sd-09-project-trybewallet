@@ -8,7 +8,6 @@ class Header extends React.Component {
     const totalNumber = Number(total);
     return (
       <header>
-        <h1>Personal Wallet</h1>
         <div>
           <span data-testid="email-field">Usuário</span>
           { email }
