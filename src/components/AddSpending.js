@@ -4,29 +4,34 @@ import { connect } from 'react-redux';
 
 import { addSpending } from '../actions';
 
+const thisInitialState = {
+  currency: 'USD',
+  method: 'Dinheiro',
+  description: '',
+  tag: 'Alimentação',
+  value: '0',
+};
+
 class Spending extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currencyAPI: null,
       loading: true,
-      input: {
-        currency: 'USD',
-        method: 'Dinheiro',
-        description: '',
-        tag: '',
-        value: '0',
-      },
     };
   }
 
   componentDidMount() {
+    const { initialState } = this.props;
     fetch('https://economia.awesomeapi.com.br/json/all')
       .then((response) => response.json())
       .then((data) => {
         this.setState({
           currencyAPI: data,
           loading: false,
+          input: {
+            ...initialState,
+          },
         });
       });
   }
@@ -132,45 +137,50 @@ class Spending extends React.Component {
 
   renderSelf() {
     const { input: { value, description } } = this.state;
-    const { fetching } = this.props;
+    const { fetching, editing } = this.props;
+    const backgroundColor = (editing >= 0) ? 'lime' : 'cyan';
     return (
-      <form onSubmit={ this.onSubmit.bind(this) }>
-        <label htmlFor="value">
-          Valor gasto
-          <input
-            name="value"
-            data-testid="value-input"
-            type="number"
-            id="value"
-            step="0.01"
-            min="0"
-            required
-            onChange={ this.onChange.bind(this) }
-            value={ value }
-          />
-        </label>
-        <label htmlFor="description">
-          Descrição
-          <input
-            name="description"
-            data-testid="description-input"
-            type="text"
-            id="description"
-            onChange={ this.onChange.bind(this) }
-            value={ description }
-          />
-        </label>
-        { this.currencyOptions.bind(this).call() }
-        <label htmlFor="method">
-          Método de pagamento
-          { this.paymentOptions.bind(this).call() }
-        </label>
-        <label htmlFor="tag">
-          Categoria
-          { this.tagOptions.bind(this).call() }
-        </label>
-        <button type="submit" disabled={ fetching }>Adicionar despesa</button>
-      </form>
+      <div style={ { backgroundColor } }>
+        <form onSubmit={ this.onSubmit.bind(this) }>
+          <label htmlFor="value">
+            Valor gasto
+            <input
+              name="value"
+              data-testid="value-input"
+              type="number"
+              id="value"
+              step="0.01"
+              min="0"
+              required
+              onChange={ this.onChange.bind(this) }
+              value={ value }
+            />
+          </label>
+          <label htmlFor="description">
+            Descrição
+            <input
+              name="description"
+              data-testid="description-input"
+              type="text"
+              id="description"
+              onChange={ this.onChange.bind(this) }
+              value={ description }
+            />
+          </label>
+          { this.currencyOptions.bind(this).call() }
+          <label htmlFor="method">
+            Método de pagamento
+            { this.paymentOptions.bind(this).call() }
+          </label>
+          <label htmlFor="tag">
+            Categoria
+            { this.tagOptions.bind(this).call() }
+          </label>
+          <button type="submit" disabled={ fetching }>
+            { (editing >= 0) ? 'Editar despesa' : 'Adicionar despesa' }
+          </button>
+        </form>
+      </div>
     );
   }
 
@@ -192,12 +202,23 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   fetching: state.wallet.fetching,
   editing: state.wallet.editing,
+  key: state.wallet.editing,
+  initialState: (state.wallet.editing >= 0)
+    ? state.wallet.expenses.find((expense) => expense.id === state.wallet.editing)
+    : thisInitialState,
 });
 
 Spending.propTypes = {
   dispatchSpending: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
   editing: PropTypes.number.isRequired,
+  initialState: PropTypes.shape({
+    currency: PropTypes.string.isRequired,
+    method: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Spending);

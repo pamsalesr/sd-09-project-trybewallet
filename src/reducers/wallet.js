@@ -9,6 +9,38 @@ const INITIAL_STATE = {
   editing: -1,
 };
 
+const addSpendingSuccess = (state, action) => {
+  if (state.editing >= 0) {
+    return {
+      ...state,
+      fetching: false,
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === action.id) {
+          return {
+            ...expense,
+            ...action.input,
+          };
+        }
+        return expense;
+      }),
+      editing: -1,
+    };
+  }
+  return {
+    ...state,
+    fetching: false,
+    expenses: [
+      ...state.expenses,
+      {
+        id: state.nextExpenseId,
+        ...action.input,
+        exchangeRates: action.fetchData,
+      },
+    ],
+    nextExpenseId: state.nextExpenseId + 1,
+  };
+};
+
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case actions.ADD_SPENDING:
@@ -17,34 +49,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       fetching: true,
     };
   case actions.ADD_SPENDING_SUCCESS:
-    if (state.editing >= 0) {
-      return {
-        ...state,
-        expenses: state.expenses.map((expense) => {
-          if (expense.id === action.id) {
-            return {
-              ...expense,
-              ...action.input,
-            };
-          }
-          return expense;
-        }),
-        editing: -1,
-      };
-    }
-    return {
-      ...state,
-      fetching: false,
-      expenses: [
-        ...state.expenses,
-        {
-          id: state.nextExpenseId,
-          ...action.input,
-          exchangeRates: action.fetchData,
-        },
-      ],
-      nextExpenseId: state.nextExpenseId + 1,
-    };
+    return addSpendingSuccess(state, action);
   case actions.REMOVE_SPENDING:
     return {
       ...state,
