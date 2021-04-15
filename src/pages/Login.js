@@ -12,12 +12,12 @@ class Login extends React.Component {
       password: '',
       isValid: false,
     };
-    this.checkEmail = this.checkEmail.bind(this);
+    this.validEmail = this.validEmail.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  checkEmail() {
+  validEmail() {
     const MIN_LENGTH = 6;
     const { email, password } = this.state;
     this.setState({
@@ -28,7 +28,7 @@ class Login extends React.Component {
 
   handleChange({ target }) {
     this.setState({ [target.name]: target.value }, () => {
-      this.checkEmail();
+      this.validEmail();
     });
   }
 
@@ -43,8 +43,12 @@ class Login extends React.Component {
   render() {
     const { email, password, isValid } = this.state;
     return (
-      <section>
+      <section className="landing-page">
         <form>
+          <img
+            src="/trybeWallet.png"
+            alt="Trybe Logo"
+          />
           <label htmlFor="email">
             <input
               onChange={ this.handleChange }
