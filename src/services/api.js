@@ -1,5 +1,5 @@
-async function fetchCurrency() {
-  const endpoint = 'https://economia.awesomeapi.com.br/json/all';
+async function fetchExchange(currency = 'all') {
+  const endpoint = `https://economia.awesomeapi.com.br/json/${currency}`;
   try {
     const response = await fetch(endpoint);
     const currencies = await response.json();
@@ -12,4 +12,4 @@ async function fetchCurrency() {
   }
 }
 
-export default fetchCurrency;
+export default fetchExchange;
