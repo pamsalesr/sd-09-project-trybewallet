@@ -1,21 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchCurrencies from '../services/fetchCurrencies';
-import { expenseAction } from '../actions/index';
+import { expenseAction, fetchCurrency } from '../actions/index';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getCurrency = this.getCurrency.bind(this);
     this.forms = this.forms.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.forms2 = this.forms2.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      currencies: '',
       loading: true,
       id: 0,
       value: '',
@@ -23,21 +20,21 @@ class ExpenseForm extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      exchangeRates: '',
     };
   }
 
   componentDidMount() {
-    this.getCurrency();
+    this.func();
   }
 
-  async getCurrency() {
-    const getCurrency = await fetchCurrencies();
-    const currenciesArray = Object.keys(getCurrency);
-    const newCurrencies = currenciesArray.filter((elem) => elem !== 'USDT');
+  async func() {
+    const { dispatchCurrencies } = this.props;
+    await dispatchCurrencies();
+    this.isLoadingFalse();
+  }
+
+  isLoadingFalse() {
     this.setState({
-      currencies: newCurrencies,
-      exchangeRates: getCurrency,
       loading: false,
     });
   }
@@ -50,9 +47,11 @@ class ExpenseForm extends React.Component {
   }
 
   async handleClick() {
-    await this.getCurrency();
+    const { dispatchCurrencies } = this.props;
+    await dispatchCurrencies();
     const { dispatchExpense } = this.props;
-    const { id, value, description, currency, tag, method, exchangeRates } = this.state;
+    const { exchangeRates } = this.props;
+    const { id, value, description, currency, tag, method } = this.state;
     const expense = {
       id,
       value,
@@ -72,7 +71,8 @@ class ExpenseForm extends React.Component {
   }
 
   forms() {
-    const { currencies, value, description, currency } = this.state;
+    const { value, description, currency } = this.state;
+    const { currencies } = this.props;
     return (
       <div>
         <label htmlFor="value-input">
@@ -175,10 +175,19 @@ class ExpenseForm extends React.Component {
 
 ExpenseForm.propTypes = {
   dispatchExpense: PropTypes.func.isRequired,
+  dispatchCurrencies: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  exchangeRates: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expense) => dispatch(expenseAction(expense)),
+  dispatchCurrencies: () => dispatch(fetchCurrency()),
 });
 
-export default connect(null, mapDispatchToProps)(ExpenseForm);
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+  exchangeRates: state.wallet.rates,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
