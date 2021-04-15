@@ -10,7 +10,6 @@ import {
 const INITIAL_STATE_WALLET = {
   currencies: [],
   expenses: [],
-  expenseToEdit: {},
   editExpense: false,
 };
 
@@ -42,13 +41,13 @@ const walletReducer = (state = INITIAL_STATE_WALLET, action) => {
   case SAVE_EDIT_EXPENSE:
     return ({
       ...state,
-      expenses: state.expenses.map((newExpense) => {
-        if (newExpense.id === action.newExpense.id) {
-          return ({ ...newExpense, ...action.newExpense });
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === action.expense.id) {
+          return ({ ...expense, ...action.expense });
         }
-        return newExpense;
+        return expense;
       }),
-    // editExpense: false,
+      editExpense: false,
     });
 
   case REQUEST_CURRENCIES_SUCCESS:

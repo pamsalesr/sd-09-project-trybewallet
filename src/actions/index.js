@@ -35,9 +35,9 @@ export const deletExpense = (id) => ({
   id,
 });
 
-export const editExpense = (newExpense) => ({
+export const editExpense = (expense) => ({
   type: EDIT_EXPENSE,
-  newExpense,
+  expense,
 });
 
 export const endEdit = (expense) => ({
