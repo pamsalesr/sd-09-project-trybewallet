@@ -40,13 +40,12 @@ class WalletForm extends Component {
 
   componentDidUpdate() {
     const { editExpense, wallet } = this.props;
-    const { edit } = wallet;
-    const noEdit = -1;
-    const yesEdit = -2;
+    const { editor, idToEdit } = wallet;
+    const yesEdit = -1;
 
-    if (edit > noEdit) {
-      editExpense(yesEdit);
-      this.loadExpense(edit);
+    if (editor && idToEdit >= 0) {
+      this.loadExpense(idToEdit);
+      editExpense(yesEdit, true);
     }
   }
 
@@ -83,13 +82,12 @@ class WalletForm extends Component {
 
   buttonAdd() {
     const { wallet } = this.props;
-    const { edit } = wallet;
-    const yesEdit = -2;
+    const { editor } = wallet;
 
-    if (edit !== yesEdit) {
-      this.addRegister();
-    } else {
+    if (editor) {
       this.editRegister();
+    } else {
+      this.addRegister();
     }
   }
 
@@ -129,15 +127,14 @@ class WalletForm extends Component {
         return totalValue;
       }, 0);
       addTotals(total, currencyTotal);
-      const noEdit = -1;
-      editExpense(noEdit);
+      editExpense(0, false);
       this.clearState();
     }
   }
 
   handleChange({ target }) {
-    const { wallet } = this.props;
-    const { currencies } = wallet;
+    const { currenciesApi } = this.props;
+    const { currencies } = currenciesApi;
     const { name, value } = target;
 
     if (value !== 0 || value !== '') {
@@ -151,11 +148,10 @@ class WalletForm extends Component {
   render() {
     const { value, description, currency, method, tag } = this.state;
     const { wallet } = this.props;
-    const { edit } = wallet;
-    const yesEdit = -2;
+    const { editor, idToEdit } = wallet;
     let buttonLabel = 'Adicionar despesa';
 
-    if (edit === yesEdit) {
+    if (editor || idToEdit < 0) {
       buttonLabel = 'Editar despesa';
     }
 
@@ -205,18 +201,22 @@ WalletForm.propTypes = {
     currency: PropTypes.string,
   }).isRequired,
   wallet: PropTypes.shape({
-    currencies: PropTypes.objectOf(PropTypes.objectOf),
     expenses: PropTypes.arrayOf(PropTypes.object),
     lastId: PropTypes.number,
-    edit: PropTypes.number,
+    idToEdit: PropTypes.number,
+    editor: PropTypes.bool,
   }).isRequired,
+  currenciesApi: PropTypes.shape({
+    currencies: PropTypes.objectOf(PropTypes.objectOf),
+  }).isRequired,
+  // currencies: PropTypes.objectOf(PropTypes.objectOf).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   addCurrency: () => dispatch(fetchCurrency()),
   addExpense: (expense) => dispatch(Actions.addExpense(expense)),
   addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
-  editExpense: (id) => dispatch(Actions.editExpense(id)),
+  editExpense: (idToEdit, editor) => dispatch(Actions.editExpense(idToEdit, editor)),
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
 });
 

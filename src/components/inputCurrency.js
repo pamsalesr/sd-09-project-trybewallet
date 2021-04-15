@@ -5,9 +5,9 @@ import './inputCurrency.css';
 
 class InputCurrency extends Component {
   render() {
-    const { fieldFunction, fieldValue, fieldDefault, wallet } = this.props;
-    const { currencies } = wallet;
-    console.log(currencies);
+    const { fieldFunction, fieldValue, fieldDefault, currenciesApi } = this.props;
+    const { currencies } = currenciesApi;
+
     return (
       <div className="class-currency">
         <label htmlFor="form-currency">
@@ -42,7 +42,7 @@ InputCurrency.propTypes = {
   fieldValue: PropTypes.string.isRequired,
   fieldFunction: PropTypes.func.isRequired,
   fieldDefault: PropTypes.string.isRequired,
-  wallet: PropTypes.shape({
+  currenciesApi: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
   }).isRequired,
 };

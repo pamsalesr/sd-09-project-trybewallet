@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WalletItem from './walletItem';
-import WalletForm from './walletForm';
 import * as Actions from '../actions';
 import './listWallet.css';
 
@@ -15,9 +13,9 @@ class ListWallet extends Component {
     this.editExpense = this.editExpense.bind(this);
   }
 
-  editExpense(id) {
+  editExpense(idToEdit) {
     const { editExpense } = this.props;
-    editExpense(id);
+    editExpense(idToEdit, true);
   }
 
   deleteExpense(id) {
@@ -33,13 +31,17 @@ class ListWallet extends Component {
     upgradeExpenses(expensesTemp);
   }
 
+  // eslint-disable-next-line max-lines-per-function
   render() {
+ 
     const { wallet } = this.props;
-    const { edit, expenses } = wallet;
-    const yesEdit = -1;
-    // if (edit > yesEdit) return (<Redirect to="/carteira" />);
-    if (edit > yesEdit) return (<WalletForm />);
+    const { expenses } = wallet;
+// console.log('========================== WALLET ========================');
+// console.log(wallet);
+// console.log('========================== EXPENSES ========================');
+// console.log(expenses[0].exchangeRates);
 
+// console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
     return (
       <div>
         <p> </p>
@@ -59,7 +61,7 @@ class ListWallet extends Component {
           </thead>
           <tbody>
             <tr>
-              {
+              { expenses.length &&
                 expenses.map((expense) => (
                   <WalletItem
                     description={ expense.description }
@@ -67,7 +69,7 @@ class ListWallet extends Component {
                     method={ expense.method }
                     currency={ expense.currency }
                     value={ expense.value }
-                    currencyName={ expense.exchangeRates[expense.currency].name }
+                    // currencyName={ expense.exchangeRates[expense.currency].name }
                     exchange={ expense.exchangeRates[expense.currency].ask }
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
@@ -104,7 +106,7 @@ ListWallet.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   upgradeExpenses: (expenses) => dispatch(Actions.upgradeExpenses(expenses)),
   addTotals: (total, currency) => dispatch(Actions.addTotals(total, currency)),
-  editExpense: (id) => dispatch(Actions.editExpense(id)),
+  editExpense: (idToEdit, editor) => dispatch(Actions.editExpense(idToEdit, editor)),
 });
 
 const mapStateToProps = (state) => (state);

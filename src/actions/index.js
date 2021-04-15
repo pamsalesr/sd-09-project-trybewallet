@@ -40,10 +40,11 @@ export function addTotals(total, currency) {
   };
 }
 
-export function editExpense(id) {
+export function editExpense(idToEdit, editor) {
   return {
     type: Type.EDIT_EXPENSE,
-    id,
+    idToEdit,
+    editor,
   };
 }
 

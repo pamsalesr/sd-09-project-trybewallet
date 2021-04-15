@@ -1,38 +1,16 @@
 import * as Type from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
-  currencies: {},
+  currencies: [],
   expenses: [],
-  isFatching: false,
   error: '',
   lastId: -1,
-  edit: -1,
-
+  idToEdit: 0,
+  editor: false,
 };
 
 function walletReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case Type.REQUEST_CURRENCY:
-    return {
-      ...state,
-      isFatching: true,
-    };
-  case Type.RECEIVE_CURRENCY_SUCCESS:
-    return {
-      ...state,
-      currencies: action.currencies,
-      isFatching: false,
-    };
-  case Type.RECEIVE_CURRENCY_FAILURE:
-    return {
-      ...state,
-      error: action.error,
-      isFatching: false,
-    };
-  case Type.ADD_CURRENCY:
-    return {
-      currencies: action.currency,
-    };
   case Type.ADD_EXPENSE: {
     return {
       ...state,
@@ -46,7 +24,8 @@ function walletReducer(state = INITIAL_STATE, action) {
   case Type.EDIT_EXPENSE: {
     return {
       ...state,
-      edit: action.id,
+      idToEdit: action.idToEdit,
+      editor: action.editor,
     };
   }
   case Type.UPGRADE_EXPENSES: {
