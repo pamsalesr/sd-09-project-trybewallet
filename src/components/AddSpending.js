@@ -191,11 +191,13 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   fetching: state.wallet.fetching,
+  editing: state.wallet.editing,
 });
 
 Spending.propTypes = {
   dispatchSpending: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
+  editing: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Spending);

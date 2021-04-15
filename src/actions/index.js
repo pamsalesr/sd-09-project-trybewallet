@@ -33,3 +33,10 @@ export const removeSpending = (id) => ({
   type: REMOVE_SPENDING,
   id,
 });
+
+export const TRIGGER_EDITING = 'TRIGGER_EDITING';
+
+export const triggerEditing = (id) => ({
+  type: TRIGGER_EDITING,
+  id,
+});
