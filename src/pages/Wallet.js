@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { thunkCurrencies, thunkAddANewCurrency } from '../actions';
+import { thunkCurrencies, thunkAddANewCurrency, deleteExpense } from '../actions';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -13,8 +13,9 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
     };
-    this.addExpense = this.addExpense.bind(this);
+    this.handleNewExpense = this.handleNewExpense.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRemoveExpense = this.handleRemoveExpense.bind(this);
   }
 
   componentDidMount() {
@@ -26,15 +27,20 @@ class Wallet extends React.Component {
     this.setState({ [target.name]: target.value });
   }
 
-  addExpense(event) {
+  handleNewExpense(event) {
     const { saveExpensesInfo } = this.props;
     const { ...expense } = this.state;
     event.preventDefault();
     saveExpensesInfo(expense);
   }
 
+  handleRemoveExpense(id) {
+    const { removeExpense } = this.props;
+    removeExpense(id);
+  }
+
   render() {
-    const { value, ...expense } = this.state;
+    const { value, description, currency, method, tag } = this.state;
     const { email, currencies, expenses } = this.props;
     const totalValue = expenses.length ? Math.round(expenses
       .reduce((acc, cur) => acc + cur.value
@@ -46,14 +52,15 @@ class Wallet extends React.Component {
         <header>
           <span data-testid="email-field">
             Email:
-            { email }
+            { ` ${email}` }
           </span>
           <span data-testid="total-field">
-            { totalValue }
+            Despesa:
+            { ` ${totalValue} ` }
+            <span data-testid="header-currency-field">BRL</span>
           </span>
-          <span data-testid="header-currency-field">BRL</span>
         </header>
-        <form onSubmit={ this.addExpense }>
+        <form onSubmit={ this.handleNewExpense }>
           <label htmlFor="value">
             Valor:
             <input
@@ -73,7 +80,7 @@ class Wallet extends React.Component {
               name="description"
               id="description"
               data-testid="description-input"
-              value={ expense.description }
+              value={ description }
             />
           </label>
           <label htmlFor="currency">
@@ -82,7 +89,7 @@ class Wallet extends React.Component {
               name="currency"
               id="currency"
               data-testid="currency-input"
-              value={ expense.currency }
+              value={ currency }
               onChange={ this.handleChange }
             >
               {currencies.map((coin) => (
@@ -98,7 +105,7 @@ class Wallet extends React.Component {
               name="method"
               id="method"
               data-testid="method-input"
-              value={ expense.method }
+              value={ method }
               onChange={ this.handleChange }
             >
               <option value="Dinheiro">Dinheiro</option>
@@ -112,7 +119,7 @@ class Wallet extends React.Component {
               data-testid="tag-input"
               id="tag"
               name="tag"
-              value={ expense.tag }
+              value={ tag }
               onChange={ this.handleChange }
             >
               <option value="Alimentação">Alimentação</option>
@@ -127,37 +134,43 @@ class Wallet extends React.Component {
           >
             Adicionar despesa
           </button>
-          <table id="tbl" border="1">
-            <thead>
-              <tr>
-                {fields.map((title) => <td key={ title }>{ title }</td>)}
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((expen, index) => {
-                const exchangeValue = Number(expen.exchangeRates[expen.currency].ask);
-                const currencyName = expen.exchangeRates[expen.currency].name;
-                const convertedValue = exchangeValue * expen.value;
-                return (
-                  <tr key={ index }>
-                    <td>{ expen.description }</td>
-                    <td>{ expen.tag }</td>
-                    <td>{ expen.method }</td>
-                    <td>{ expen.value }</td>
-                    <td>{ exchangeValue.toFixed(2) }</td>
-                    <td>{ currencyName }</td>
-                    <td>{ convertedValue.toFixed(2) }</td>
-                    <td>Real</td>
-                    <td>
-                      <button type="button" data-testid="edit-btn">Editar</button>
-                      <button type="button" data-testid="delete-btn">Excluir</button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
         </form>
+        <table id="tbl" border="1">
+          <thead>
+            <tr>
+              {fields.map((title) => <td key={ title }>{ title }</td>)}
+            </tr>
+          </thead>
+          <tbody>
+            {expenses.map((expen) => {
+              const exchangeValue = Number(expen.exchangeRates[expen.currency].ask);
+              const currencyName = expen.exchangeRates[expen.currency].name;
+              const convertedValue = exchangeValue * expen.value;
+              return (
+                <tr key={ expen.id }>
+                  <td>{ expen.description }</td>
+                  <td>{ expen.tag }</td>
+                  <td>{ expen.method }</td>
+                  <td>{ expen.value }</td>
+                  <td>{ exchangeValue.toFixed(2) }</td>
+                  <td>{ currencyName }</td>
+                  <td>{ convertedValue.toFixed(2) }</td>
+                  <td>Real</td>
+                  <td>
+                    <button type="button" data-testid="edit-btn">Editar</button>
+                    <button
+                      type="button"
+                      data-testid="delete-btn"
+                      onClick={ () => this.handleRemoveExpense(expen.id) }
+                    >
+                      Excluir
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </main>
     );
   }
@@ -170,12 +183,16 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   currenciesFetchSucess: () => dispatch(thunkCurrencies()),
   saveExpensesInfo: (expense) => dispatch(thunkAddANewCurrency(expense)),
+  removeExpense: (id) => dispatch(deleteExpense(id)),
 });
+
 Wallet.propTypes = {
   email: PropTypes.string.isRequired,
   currencies: PropTypes.arrayOf(Object).isRequired,
   currenciesFetchSucess: PropTypes.func.isRequired,
   saveExpensesInfo: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(Object).isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

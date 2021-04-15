@@ -1,24 +1,27 @@
 // Coloque aqui suas actions
 // import { response } from '../tests/mockData';
 // window.fetch = async () => ({ json: () => Promise.resolve(response) });
-
 export const LOGIN = 'LOGIN';
 export const CURRENCIES_FECTH_SUCESS = 'CURRENCIES_FECTH_SUCESS';
 export const ADD_NEW_EXPENSE = 'ADD_NEW_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const login = (email) => ({
   type: LOGIN,
   email,
 });
-
 export const currenciesFetchSucess = (currencies) => ({
   type: CURRENCIES_FECTH_SUCESS,
   currencies,
 });
-
 export const addNewExpense = (expense) => ({
   type: ADD_NEW_EXPENSE,
   expense,
+});
+
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
 });
 
 export const thunkCurrencies = () => async (dispatch) => {
@@ -26,7 +29,6 @@ export const thunkCurrencies = () => async (dispatch) => {
   const currencies = await responseFromAPI.json();
   dispatch(currenciesFetchSucess(currencies));
 };
-
 export const thunkAddANewCurrency = (expense) => async (dispatch, getState) => {
   const { wallet: { expenses } } = getState();
   const INITIAL_ID = 0;
