@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { thunkCurrencies, thunkAddANewCurrency } from '../actions/index';
+import { thunkCurrencies, thunkAddANewCurrency } from '../actions';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -9,9 +9,9 @@ class Wallet extends React.Component {
     this.state = {
       value: '',
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
     };
     this.addExpense = this.addExpense.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,9 +27,10 @@ class Wallet extends React.Component {
   }
 
   addExpense(event) {
-    event.preventDefault();
     const { saveExpensesInfo } = this.props;
-    saveExpensesInfo(this.state);
+    const { ...expense } = this.state;
+    event.preventDefault();
+    saveExpensesInfo(expense);
   }
 
   render() {
@@ -38,6 +39,8 @@ class Wallet extends React.Component {
     const totalValue = expenses.length ? Math.round(expenses
       .reduce((acc, cur) => acc + cur.value
        * cur.exchangeRates[cur.currency].ask, 0) * 100) / 100 : 0;
+    const fields = ['Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda',
+      'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão', 'Editar/Excluir'];
     return (
       <main>
         <header>
@@ -50,7 +53,7 @@ class Wallet extends React.Component {
           </span>
           <span data-testid="header-currency-field">BRL</span>
         </header>
-        <form>
+        <form onSubmit={ this.addExpense }>
           <label htmlFor="value">
             Valor:
             <input
@@ -83,7 +86,7 @@ class Wallet extends React.Component {
               onChange={ this.handleChange }
             >
               {currencies.map((coin) => (
-                <option key={ coin } data-testid={ `${coin}` }>
+                <option key={ coin } data-testid={ `${coin}` } value={ coin }>
                   { coin }
                 </option>
               ))}
@@ -118,13 +121,42 @@ class Wallet extends React.Component {
               <option value="Transporte ">Transporte</option>
               <option value="Saúde">Saúde</option>
             </select>
-            <button
-              onClick={ this.addExpense }
-              type="submit"
-            >
-              Adicionar despesa
-            </button>
           </label>
+          <button
+            type="submit"
+          >
+            Adicionar despesa
+          </button>
+          <table id="tbl" border="1">
+            <thead>
+              <tr>
+                {fields.map((title) => <td key={ title }>{ title }</td>)}
+              </tr>
+            </thead>
+            <tbody>
+              {expenses.map((expen, index) => {
+                const exchangeValue = Number(expen.exchangeRates[expen.currency].ask);
+                const currencyName = expen.exchangeRates[expen.currency].name;
+                const convertedValue = exchangeValue * expen.value;
+                return (
+                  <tr key={ index }>
+                    <td>{ expen.description }</td>
+                    <td>{ expen.tag }</td>
+                    <td>{ expen.method }</td>
+                    <td>{ expen.value }</td>
+                    <td>{ exchangeValue.toFixed(2) }</td>
+                    <td>{ currencyName }</td>
+                    <td>{ convertedValue.toFixed(2) }</td>
+                    <td>Real</td>
+                    <td>
+                      <button type="button" data-testid="edit-btn">Editar</button>
+                      <button type="button" data-testid="delete-btn">Excluir</button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </form>
       </main>
     );

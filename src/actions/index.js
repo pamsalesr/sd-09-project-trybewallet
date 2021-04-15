@@ -1,10 +1,13 @@
 // Coloque aqui suas actions
+// import { response } from '../tests/mockData';
+// window.fetch = async () => ({ json: () => Promise.resolve(response) });
+
 export const LOGIN = 'LOGIN';
 export const CURRENCIES_FECTH_SUCESS = 'CURRENCIES_FECTH_SUCESS';
 export const ADD_NEW_EXPENSE = 'ADD_NEW_EXPENSE';
 
 export const login = (email) => ({
-  type: 'LOGIN',
+  type: LOGIN,
   email,
 });
 
@@ -30,6 +33,6 @@ export const thunkAddANewCurrency = (expense) => async (dispatch, getState) => {
   const nextID = expenses.length ? expenses[expenses.length - 1].id + 1 : INITIAL_ID;
   const responseFromAPI = await fetch('https://economia.awesomeapi.com.br/json/all');
   const exchangeRates = await responseFromAPI.json();
-  const newExpense = { id: nextID, ...expense, exchangeRates };
+  const newExpense = { ...expense, exchangeRates, id: nextID };
   dispatch(addNewExpense(newExpense));
 };
