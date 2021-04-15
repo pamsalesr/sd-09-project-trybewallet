@@ -41,7 +41,8 @@ class Wallet extends Component {
           <h2>Wallet Page</h2>
           <h3 data-testid="email-field">{email}</h3>
           <h3 data-testid="total-field">{expenses.value}</h3>
-          <h3 data-testid="header-currency-field">{currencies}</h3>
+          {/* <h3 data-testid="header-currency-field">{currencies}</h3> */}
+          <h3 data-testid="header-currency-field">BRL</h3>
         </header>
       </div>
     );
