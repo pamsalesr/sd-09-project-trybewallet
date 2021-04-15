@@ -85,6 +85,7 @@ class WalletForms extends React.Component {
   expenseCreator() {
     const { expenses } = this.props;
     const { value, description, currency, method, tag } = this.state;
+    console.log(expenses);
     const { length } = expenses;
     return {
       id: (length > 0) ? (expenses[length - 1].id + 1) : 0,
@@ -131,9 +132,7 @@ const mapStateToProps = (state) => ({
 
 WalletForms.propTypes = {
   addExpense: PropTypes.func.isRequired,
-  expenses: PropTypes.shape({
-    length: PropTypes.string.isRequired,
-  }).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForms);
