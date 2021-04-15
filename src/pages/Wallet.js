@@ -13,7 +13,7 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
     };
-    this.handleNewExpense = this.handleNewExpense.bind(this);
+    this.addExpense = this.addExpense.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRemoveExpense = this.handleRemoveExpense.bind(this);
   }
@@ -27,7 +27,7 @@ class Wallet extends React.Component {
     this.setState({ [target.name]: target.value });
   }
 
-  handleNewExpense(event) {
+  addExpense(event) {
     const { saveExpensesInfo } = this.props;
     const { ...expense } = this.state;
     event.preventDefault();
@@ -60,7 +60,7 @@ class Wallet extends React.Component {
             <span data-testid="header-currency-field">BRL</span>
           </span>
         </header>
-        <form onSubmit={ this.handleNewExpense }>
+        <form onSubmit={ this.addExpense }>
           <label htmlFor="value">
             Valor:
             <input
