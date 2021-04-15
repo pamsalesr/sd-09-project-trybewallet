@@ -14,8 +14,21 @@ export const passwordInsert = (password) => ({
 
 // Wallet
 
-export const DESPESA_TOTAL = 'DESPESA_TOTAL';
-export const despesaTotalInsert = (despesaTotal) => ({
-  type: DESPESA_TOTAL,
-  despesaTotal,
+export const EXPENSE_TOTAL = 'DESPESA_TOTAL';
+export const totalExpensesInsert = (totalExpenses) => ({
+  type: EXPENSE_TOTAL,
+  totalExpenses,
 });
+
+export const EXPENSE_SAVE = 'EXPENSE_SAVE';
+export const expenseInsert = (expenses) => ({
+  type: EXPENSE_SAVE,
+  expenses,
+});
+
+// export const EXPENSE_RATE_SAVE = 'EXPENSE_RATE_SAVE';
+// export const expenseRateInsert = (exchangeRates) => ({
+//   type: EXPENSE_SAVE,
+//   exchangeRates,
+// });
+

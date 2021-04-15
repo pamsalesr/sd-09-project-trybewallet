@@ -1,58 +1,143 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { expenseInsert } from '../actions';
 
 class Wallet extends React.Component {
-  // constructor(props){
-  //   super(props);
-  // }
+  constructor(props){
+    super(props);
+    this.state = {
+      value: 0,
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: {},
+      totalExpenses: 0,
+    }
+    this.createExchangeRatesList = this.createExchangeRatesList.bind(this);
+    this.takeInputs = this.takeInputs.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
+  }
+
+  componentDidMount(){
+    this.createExchangeRatesList()
+    // this.calcExpenses()
+  }
+
+  async fetchApiDoletas() {
+    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
+    return fetch(endpoint)
+      .then(coins => coins.json())
+      .catch(Error)
+  }
+
+  async createExchangeRatesList() {
+    // const { dispatchExpense } = this.props
+    const list = await this.fetchApiDoletas();
+    delete list.USDT;
+    delete list.DOGE;
+    // dispatchExpense(list)
+    this.setState({ 
+      exchangeRates: list,
+    })
+  }
+
+  handleChange(event){
+    let { name, value } = event.target
+    this.setState({
+      [name]: value,
+    })
+  }
+
+  createExpense(){
+    const { dispatchExpense, consultExpenses } = this.props
+    const { value, description, currency, method, tag, exchangeRates } = this.state
+    const expense = { id: consultExpenses.length, value, description, currency, method, tag, exchangeRates }
+    dispatchExpense(expense)
+    
+
+  }
+
+  calcExpenses(){
+    const { consultExpenses } = this.props
+    let calc = 0
+    // descobrir depois porque so vem string do state global
+    consultExpenses.forEach(element => {
+      const convertValue = parseFloat(element.value)
+      const convertAsk = parseFloat(element.ask)
+      calc = calc + (convertValue * convertAsk)
+      // console.log(calc)
+    });
+    this.setState({
+      totalExpenses: calc,
+    })
+    console.log(consultExpenses)
+
+  }
+
+  async takeInputs() {
+    // const { exchangeRates } = this.state
+    // console.log(exchangeRates)
+    await this.createExchangeRatesList()
+    this.createExpense()
+    this.calcExpenses()
+
+  
+  }
+
+//----------------------------------------------------------------------------- mount
 
   headerPage() {
     const { userEmail } = this.props;
+    const { totalExpenses } = this.state
     return (
       <header id="header">
-        <div>
+        <>
           email:
           <span data-testid="email-field" id="header-email">{ userEmail }</span>
-        </div>
-        <div>
+        </>
+        <>
           despesa total:
-          <span data-testid="total-field" id="header-total-expenditure">0</span>
+          <span data-testid="total-field" id="header-total-expenditure">{ totalExpenses }</span>
           <span data-testid="header-currency-field">BRL</span>
-        </div>
+        </>
       </header>
     );
   }
 
   renderExpenditureAdd() {
     return (
-      <div>
+      <>
         <label htmlFor="expenditured-add">
           valor da despesa
-          <input data-testid="value-input" id="expenditured-add" />
+          <input type="number" data-testid="value-input" id="expenditured-add" name="value" onChange={ this.handleChange }/>
         </label>
-      </div>
+      </>
     );
   }
 
   renderExpenditureDescription() {
     return (
-      <div>
+      <>
         <label htmlFor="expediture-description">
           descrição da despesa
-          <input data-testid="description-input" id="expediture-description" />
+          <input data-testid="description-input" id="expediture-description" name="description" onChange={ this.handleChange }/>
         </label>
-      </div>
+      </>
     );
   }
 
+
+
   renderRegisteredCurrency() {
     return (
-      <div>
+      <>
         <label htmlFor="registered-currency">
           moeda
           {/* coletar options da API */}
-          <select data-testid="currency-input" id="registered-currency">
+          <select data-testid="currency-input" id="registered-currency" name="currency" onChange={ this.handleChange }>
             <option data-testid="USD" value="USD">USD</option>
             <option data-testid="CAD" value="CAD">CAD</option>
             <option data-testid="EUR" value="EUR">EUR</option>
@@ -69,31 +154,31 @@ class Wallet extends React.Component {
             <option data-testid="XRP" value="XRP">XRP</option>
           </select>
         </label>
-      </div>
+      </>
     );
   }
 
   renderPaymentMethod() {
     return (
-      <div>
+      <>
         <label htmlFor="payment-method">
           método de pagamento
-          <select data-testid="method-input" id="payment-method">
+          <select data-testid="method-input" id="payment-method" name="method" onChange={ this.handleChange }>
             <option value="Dinheiro">Dinheiro</option>
             <option value="Cartão de crédito">Cartão de crédito</option>
             <option value="Cartão de débito">Cartão de débito</option>
           </select>
         </label>
-      </div>
+      </>
     );
   }
 
   renderExpenditureCategory() {
     return (
-      <div>
+      <>
         <label htmlFor="expenditure-category">
           categoria
-          <select data-testid="tag-input" id="expenditure-category">
+          <select data-testid="tag-input" id="expenditure-category" name="tag" onChange={ this.handleChange }>
             <option value="Alimentação">Alimentação</option>
             <option value="Lazer">Lazer</option>
             <option value="Trabalho">Trabalho</option>
@@ -101,20 +186,21 @@ class Wallet extends React.Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
-      </div>
+      </>
     );
   }
 
   renderButtonExpenditureAdd() {
     return (
-      <div>
+      <>
         <button
-          type="submit"
+          type="button"
           id="button-expenditure-add"
+          onClick={ this.takeInputs }
         >
           Adicionar despesa
         </button>
-      </div>
+      </>
     );
   }
 
@@ -141,11 +227,17 @@ class Wallet extends React.Component {
 
 const mapStateToprops = ({ user, wallet }) => ({
   userEmail: user.email,
-  consultDespesaTotal: wallet.despesaTotal,
+  consultExpenses: wallet.expenses,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchExpense: (email) => dispatch(expenseInsert(email)),
 });
 
 Wallet.propTypes = {
   userEmail: PropTypes.string.isRequired,
+  dispatchExpense: PropTypes.func.isRequired,
+  
 };
 
-export default connect(mapStateToprops)(Wallet);
+export default connect(mapStateToprops, mapDispatchToProps)(Wallet);
