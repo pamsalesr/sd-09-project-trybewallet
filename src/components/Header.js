@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { disableEdit } from '../actions';
 
 class Header extends React.Component {
   constructor(props) {
@@ -13,14 +14,22 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { expenses } = this.props;
-    if (prevProps.expenses !== expenses) {
+    const { expenses, edit, disableEditReducer } = this.props;
+    if ((prevProps.expenses !== expenses) || edit) {
       this.getTotalPrice();
+      disableEditReducer();
     }
   }
 
   getTotalPrice() {
     const { expenses } = this.props;
+    if (expenses.length === 0) {
+      this.setState({
+        totalPrice: 0,
+      });
+      return;
+    }
+
     const { exchangeRates } = expenses[0];
     let total = 0;
     expenses.forEach((expense) => {
@@ -49,10 +58,15 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
+  edit: state.wallet.edit,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  disableEditReducer: () => dispatch(disableEdit()),
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
 }.isRequired;
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

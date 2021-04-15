@@ -27,12 +27,8 @@ class Table extends React.Component {
   onClick({ target }) {
     const { expenses, dispatchToReducer } = this.props;
     const { id } = target;
-    const actualObj = expenses.find((exp) => exp.id === parseInt(id, 10));
-    const { exchangeRates, currency } = actualObj;
-    const ask = parseFloat(exchangeRates[currency].ask);
-    const totalPrice = parseFloat(actualObj.value);
     const expensesAfterDelete = expenses.filter((expen) => expen.id !== parseInt(id, 10));
-    dispatchToReducer(expensesAfterDelete, totalPrice, ask);
+    dispatchToReducer(expensesAfterDelete);
   }
 
   editClick({ target }) {
@@ -122,9 +118,11 @@ class Table extends React.Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  edit: state.wallet.edit,
+
 });
 const mapDispatchToProps = (dispatch) => ({
-  dispatchToReducer: (array, total, ask) => dispatch(deleteExpense(array, total, ask)),
+  dispatchToReducer: (array) => dispatch(deleteExpense(array)),
 });
 
 Table.propTypes = {

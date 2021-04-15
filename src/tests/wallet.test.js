@@ -176,6 +176,7 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
         expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
       });
       expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense);
+      console.log(store.getState().wallet.expenses);
   
       userEvent.type(valueInput, '20');
       userEvent.selectOptions(currencyInput, 'EUR');
@@ -275,7 +276,6 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
     test('Ao ser clicado, o botão deleta a linha da tabela, alterando o estado global.', () => {
       const { store } = renderWithRouterAndStore(<Wallet />, '/carteira', initial);
       const deleteBtn = screen.getAllByTestId('delete-btn')[0];
-      console.log(deleteBtn);
       fireEvent.click(deleteBtn);
   
       expect(screen.getByRole('cell', { name: 'Vinte euros' })).toBeInTheDocument();

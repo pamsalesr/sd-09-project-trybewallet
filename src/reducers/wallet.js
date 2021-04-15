@@ -2,8 +2,8 @@
 const INITIAL_WALLET_STATE = {
   currencies: [],
   expenses: [],
-  totalPrice: 0,
   isFetching: false,
+  edit: false,
 };
 
 const walletReducer = (state = INITIAL_WALLET_STATE, action) => {
@@ -18,27 +18,30 @@ const walletReducer = (state = INITIAL_WALLET_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.wallet],
-      totalPrice: state.totalPrice + (action.wallet.value * action.ask),
     };
 
   case 'DELETE_EXPENSE':
     return {
       ...state,
       expenses: action.expenses,
-      totalPrice: state.totalPrice - (action.price * action.ask),
+    };
+  case 'DISABLE_EDIT':
+    return {
+      ...state,
+      edit: false,
     };
   case 'EDIT_EXPENSE':
     console.log(action);
     return {
       ...state,
       expenses: action.expenses,
-      totalPrice: action.price,
+      edit: action.edit,
     };
 
   case 'RECEIVE_CURRENCIES_SUCCESS':
     return {
       ...state,
-      currencies: action.currencies,
+      currencies: Object.keys(action.currencies),
       isFetching: false,
     };
   case 'RECEIVE_CURRENCIES_FAILURE':

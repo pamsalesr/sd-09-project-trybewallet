@@ -28,9 +28,9 @@ class Wallet extends React.Component {
     });
   }
 
-  returnState() {
+  returnState(id) {
     const state = {
-      id: 0,
+      id,
       value: '',
       description: '',
       currency: 'USD',

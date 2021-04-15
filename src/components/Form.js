@@ -34,7 +34,6 @@ class Form extends React.Component {
   async getCurrencies() {
     const { getCurrentExchangeRates } = this.props;
     const obj = await getCurrentExchangeRates();
-    delete obj.currencies.USDT;
     this.setState({
       exchangeRates: obj.currencies,
     });
@@ -61,20 +60,18 @@ class Form extends React.Component {
   }
 
   handleClick() {
-    const { id, currency, exchangeRates } = this.state;
+    const { id } = this.state;
     const { dispatchToReducer } = this.props;
     this.getCurrencies();
     const index = id;
-    const { ask } = exchangeRates[currency];
-    dispatchToReducer(this.state, ask);
-    this.resetState();
     this.setState({ id: index + 1 });
+    dispatchToReducer(this.state);
+    this.resetState();
   }
 
   handleEditClick() {
     const { expenses, dispatchEditExpenses, returnState } = this.props;
-    const { id, value, description, method, tag, currency, exchangeRates } = this.state;
-    let totalPrice = 0;
+    const { id, value, description, method, tag, currency } = this.state;
     expenses.forEach((expense) => {
       if (expense.id === parseInt(id, 10)) {
         expense.value = value;
@@ -84,19 +81,14 @@ class Form extends React.Component {
         expense.currency = currency;
       }
     });
-    expenses.forEach((exp) => {
-      const ask = parseFloat(exchangeRates[exp.currency].ask);
-      totalPrice += (exp.value * ask);
-    });
-
-    dispatchEditExpenses(expenses, totalPrice);
-    returnState();
+    dispatchEditExpenses(expenses, true);
+    const idState = expenses.length;
+    returnState(idState);
   }
 
   renderForm() {
     const { currency, method, tag, value, description } = this.state;
-    const { exchangeRates } = this.state;
-    const currenciesNames = Object.keys(exchangeRates);
+    const { currencies: currenciesNames } = this.props;
     const { type } = this.props;
     return (
       <form className="Form">
@@ -150,8 +142,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrentExchangeRates: () => dispatch(fetchCurrencies()),
-  dispatchToReducer: (product, ask) => dispatch(addToWallet(product, ask)),
-  dispatchEditExpenses: (array, price) => dispatch(editExpenses(array, price)),
+  dispatchToReducer: (product) => dispatch(addToWallet(product)),
+  dispatchEditExpenses: (array, edit) => dispatch(editExpenses(array, edit)),
 });
 
 Form.propTypes = {

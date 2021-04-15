@@ -1,19 +1,18 @@
 import getCurrencies from '../api/currencyAPI';
 
 export const login = (user) => ({ type: 'LOGIN', user });
-export const addToWallet = (wallet, ask) => ({ type: 'ADD_TO_WALLET', wallet, ask });
-export const deleteExpense = (expenses, price, ask) => (
+export const addToWallet = (wallet) => ({ type: 'ADD_TO_WALLET', wallet });
+export const disableEdit = () => ({ type: 'DISABLE_EDIT' });
+export const deleteExpense = (expenses) => (
   {
     type: 'DELETE_EXPENSE',
     expenses,
-    price,
-    ask,
   });
-export const editExpenses = (expenses, price) => (
+export const editExpenses = (expenses, edit) => (
   {
     type: 'EDIT_EXPENSE',
     expenses,
-    price,
+    edit,
   });
 
 const requestCurrencies = () => ({

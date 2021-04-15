@@ -33,7 +33,7 @@ describe('7 - Crie um botão para editar uma despesa da tabela contendo as segui
       userEvent.selectOptions(methodInput, 'Dinheiro');
       userEvent.selectOptions(tagInput, 'Trabalho');
       userEvent.type(descriptionInput, 'Cem dólares canadenses');
-  
+      console.log(currencyInput);
       fireEvent.click(editButton);
   
       await waitFor(() => {
