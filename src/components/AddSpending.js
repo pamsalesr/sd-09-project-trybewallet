@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { addSpending } from '../actions';
+import { addSpending, editSpending, saveCurrencies } from '../actions';
 
 const thisInitialState = {
   currency: 'USD',
@@ -15,25 +15,23 @@ const thisInitialState = {
 class Spending extends React.Component {
   constructor(props) {
     super(props);
+    const { initialState } = this.props;
     this.state = {
-      currencyAPI: null,
-      loading: true,
+      input: {
+        ...initialState,
+      },
     };
   }
 
   componentDidMount() {
-    const { initialState } = this.props;
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          currencyAPI: data,
-          loading: false,
-          input: {
-            ...initialState,
-          },
+    const { saveCurrenciesDispatch, currenciesFetched } = this.props;
+    if (!currenciesFetched) {
+      fetch('https://economia.awesomeapi.com.br/json/all')
+        .then((response) => response.json())
+        .then((data) => {
+          saveCurrenciesDispatch(Object.keys(data));
         });
-      });
+    }
   }
 
   onSelect(event) {
@@ -60,11 +58,10 @@ class Spending extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const { dispatchSpending } = this.props;
+    const { dispatchSpending, dispatchEditing, editing } = this.props;
     const { input } = this.state;
-    dispatchSpending({
-      input,
-    });
+    if (editing < 0) dispatchSpending(input);
+    if (editing >= 0) dispatchEditing(input, editing);
     this.setState({
       input: {
         currency: 'USD',
@@ -85,7 +82,8 @@ class Spending extends React.Component {
   }
 
   currencyOptions() {
-    const { currencyAPI, input: { currency } } = this.state;
+    const { input: { currency } } = this.state;
+    const { currencies } = this.props;
     return (
       <select
         name="currency"
@@ -95,7 +93,7 @@ class Spending extends React.Component {
         value={ currency }
       >
         {
-          this.arrayToOpts(Object.keys(currencyAPI).filter((key) => (key !== 'USDT')))
+          this.arrayToOpts(currencies.filter((key) => (key !== 'USDT')))
         }
       </select>
     );
@@ -157,7 +155,7 @@ class Spending extends React.Component {
             />
           </label>
           <label htmlFor="description">
-            Descrição
+            Descr ição
             <input
               name="description"
               data-testid="description-input"
@@ -169,7 +167,7 @@ class Spending extends React.Component {
           </label>
           { this.currencyOptions.bind(this).call() }
           <label htmlFor="method">
-            Método de pagamento
+            Méto do de pagamento
             { this.paymentOptions.bind(this).call() }
           </label>
           <label htmlFor="tag">
@@ -196,13 +194,22 @@ Spending.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchSpending: (input) => dispatch(addSpending(dispatch, input)),
+  dispatchSpending: (input) => {
+    dispatch(addSpending(dispatch, input));
+  },
+  dispatchEditing: (input, editing) => {
+    console.log('Editing', input);
+    dispatch(editSpending(input, editing));
+  },
+  saveCurrenciesDispatch: (currencies) => dispatch(saveCurrencies(currencies)),
 });
 
 const mapStateToProps = (state) => ({
   fetching: state.wallet.fetching,
+  currenciesFetched: state.wallet.currenciesFetched,
   editing: state.wallet.editing,
   key: state.wallet.editing,
+  currencies: state.wallet.currencies,
   initialState: (state.wallet.editing >= 0)
     ? state.wallet.expenses.find((expense) => expense.id === state.wallet.editing)
     : thisInitialState,
@@ -210,7 +217,9 @@ const mapStateToProps = (state) => ({
 
 Spending.propTypes = {
   dispatchSpending: PropTypes.func.isRequired,
+  dispatchEditing: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
+  currenciesFetched: PropTypes.bool.isRequired,
   editing: PropTypes.number.isRequired,
   initialState: PropTypes.shape({
     currency: PropTypes.string.isRequired,
@@ -219,6 +228,8 @@ Spending.propTypes = {
     tag: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
   }).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  saveCurrenciesDispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Spending);
