@@ -9,7 +9,7 @@ class Wallet extends Component {
     super();
     this.handleApi = this.handleApi.bind(this);
     this.state = {
-      currencies: [],
+      // currencies: [],
       expenses: {
         id: 0,
         value: 0,
@@ -25,16 +25,9 @@ class Wallet extends Component {
     this.handleApi();
   }
 
-  async handleApi() {
-    const result = await get();
-    // const cKeys = Object.keys(result);
-    // const curr = cKeys.filter((item) => item === 'USDT');
-    this.setState({ currencies: result.USD.codein });
-  }
-
   render() {
     const { email } = this.props;
-    const { expenses, currencies } = this.state;
+    const { expenses } = this.state;
     return (
       <div>
         <header>
