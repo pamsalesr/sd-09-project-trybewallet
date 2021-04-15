@@ -7,7 +7,7 @@ class InputCurrency extends Component {
   render() {
     const { fieldFunction, fieldValue, fieldDefault, wallet } = this.props;
     const { currencies } = wallet;
-
+    console.log(currencies);
     return (
       <div className="class-currency">
         <label htmlFor="form-currency">
