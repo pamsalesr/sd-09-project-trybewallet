@@ -1,4 +1,5 @@
-// Esse reducer será responsável por tratar as informações da pessoa usuária
+import { LOGIN } from '../actions/actionTypes';
+
 const INITIAL_STATE = {
   email: '',
   password: '',
@@ -6,7 +7,7 @@ const INITIAL_STATE = {
 
 function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case 'LOGIN':
+  case LOGIN:
     return {
       email: action.credentials.email,
       password: action.credentials.password };
