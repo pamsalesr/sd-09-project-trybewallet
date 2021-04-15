@@ -18,7 +18,6 @@ code {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
 }
 
 .login-fields {
@@ -27,14 +26,28 @@ code {
   gap: 8px;
 }
 
-/* .login-fields button {
-  cursor: pointer;
-  margin: 0 auto;
+.login-fields input {
   padding: 8px 16px;
-  border-radius: 4px;
+}
+
+.login-fields button {
   background-color: green;
   border: none;
-  text-decoration: none;
+  border-radius: 4px;
   color: whitesmoke;
+  cursor: pointer;
+  display: block;
+  font-size: 1rem;
   font-weight: 700;
-} */
+  margin: 0 auto;
+  padding: 8px 16px;
+  text-decoration: underline green;
+}
+
+.login-header {
+  background-color: rgba(60, 99, 130,1.0);
+  border: 0;
+  color: whitesmoke;
+  padding: 16px;
+  text-align: center;
+}

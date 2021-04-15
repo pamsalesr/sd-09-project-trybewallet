@@ -59,7 +59,7 @@ class LoginForm extends Component {
             data-testid="password-input"
             name="passwordInput"
             value={ passwordInput }
-            placeholder="Crie sua senha"
+            placeholder="Digite sua senha"
             onChange={ this.handleChange }
             required
           />
