@@ -5,6 +5,7 @@ export const RECEIVE_CURRENCY = 'RECEIVE_CURRENCY';
 export const RECEIVE_CURRENCY_ERROR = 'RECEIVE_CURRENCY_ERROR';
 export const RECEIVE_EXPENSES = 'RECEIVE_EXPENSES';
 export const TOTAL_EXPENSES = 'TOTAL_EXPENSES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const saveEmail = (email) => ({
   type: USER_LOGIN,
@@ -40,4 +41,9 @@ export const receiveExpenses = (expenses) => ({
 export const totalExpenses = (total) => ({
   type: TOTAL_EXPENSES,
   total,
+});
+
+export const deleteExpense = (expense) => ({
+  type: DELETE_EXPENSE,
+  expense,
 });

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrencyApi, receiveExpenses, totalExpenses } from '../actions';
 import currencyApi from '../services/currencyApi';
+import Tables from '../components/Tables';
 
 const initialState = {
   valueExpense: '',
@@ -35,10 +36,6 @@ class Wallet extends React.Component {
     const { requestCurrency } = this.props;
     requestCurrency();
   }
-
-  // editExpenses() {
-
-  // }
 
   async addExpenses() {
     const { valueExpense,
@@ -242,8 +239,8 @@ class Wallet extends React.Component {
             { this.renderRecreation(categoryRecreation) }
             <button type="button" id="button-expense" onClick={ this.addExpenses }>Adicionar despesa</button>
           </form>
+          <Tables />
         </section>
-        <button type="button" data-testid="delete-btn">Excluir</button>
       </div>
     );
   }

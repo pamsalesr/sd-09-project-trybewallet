@@ -1,7 +1,7 @@
 import {
   RECEIVE_CURRENCY,
   RECEIVE_CURRENCY_ERROR,
-  RECEIVE_EXPENSES, TOTAL_EXPENSES } from '../actions';
+  RECEIVE_EXPENSES, TOTAL_EXPENSES, DELETE_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   expenses: [],
@@ -36,6 +36,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       totalExpenses: action.total,
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      expenses: state.expenses
+        .filter((expense) => (expense !== action.expense ? expense : null)),
     };
   default:
     return state;
