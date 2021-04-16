@@ -6,11 +6,6 @@ const INITIAL_STATE = {
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
-  const expenseWithCurrencies = {
-    ...action.expense,
-    exchangeRates: action.data,
-  };
-
   const indexOfTheExpenseId = state.expenses
     .indexOf(state.expenses
       .find((expense) => expense.id === action.expenseId));
@@ -20,7 +15,10 @@ const wallet = (state = INITIAL_STATE, action) => {
 
     return {
       ...state,
-      expenses: [...state.expenses, expenseWithCurrencies],
+      expenses: [
+        ...state.expenses,
+        { ...action.expense, exchangeRates: action.data },
+      ],
     };
 
   case 'RECEIVE_CURRENCIES':
