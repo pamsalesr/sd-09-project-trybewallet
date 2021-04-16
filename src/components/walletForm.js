@@ -146,7 +146,7 @@ class WalletForm extends Component {
   }
 
   render() {
-    const { value, description, currency, method, tag } = this.state;
+    const { value, description, currency, method, tag, exchangeRates } = this.state;
     const { wallet } = this.props;
     const { editor, idToEdit } = wallet;
     let buttonLabel = 'Adicionar despesa';
@@ -167,6 +167,7 @@ class WalletForm extends Component {
             fieldValue={ currency }
             fieldFunction={ this.handleChange }
             fieldDefault={ currency }
+            fieldExchanges={ exchangeRates }
           />
           <InputMethod
             fieldValue={ method }

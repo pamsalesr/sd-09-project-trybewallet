@@ -5,8 +5,17 @@ import './inputCurrency.css';
 
 class InputCurrency extends Component {
   render() {
-    const { fieldFunction, fieldValue, fieldDefault, currenciesApi } = this.props;
+    const { fieldFunction, fieldValue, fieldDefault, fieldExchanges,
+      currenciesApi, wallet } = this.props;
     const { currencies } = currenciesApi;
+    const { editor } = wallet;
+    let arrayTemp;
+
+    if (editor) {
+      arrayTemp = fieldExchanges;
+    } else {
+      arrayTemp = currencies;
+    }
 
     return (
       <div className="class-currency">
@@ -21,7 +30,7 @@ class InputCurrency extends Component {
             onChange={ fieldFunction }
             defaultValue={ fieldDefault }
           >
-            { Object.keys(currencies).map((currency) => (
+            { Object.keys(arrayTemp).map((currency) => (
               <option
                 data-testid={ currency }
                 value={ currency }
@@ -42,8 +51,12 @@ InputCurrency.propTypes = {
   fieldValue: PropTypes.string.isRequired,
   fieldFunction: PropTypes.func.isRequired,
   fieldDefault: PropTypes.string.isRequired,
+  fieldExchanges: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   currenciesApi: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
+  }).isRequired,
+  wallet: PropTypes.shape({
+    editor: PropTypes.bool,
   }).isRequired,
 };
 

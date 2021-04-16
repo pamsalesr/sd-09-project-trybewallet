@@ -11,6 +11,32 @@ class ListWallet extends Component {
 
     this.deleteExpense = this.deleteExpense.bind(this);
     this.editExpense = this.editExpense.bind(this);
+    this.saveExpenses = this.saveExpenses.bind(this);
+  }
+
+  saveExpenses(expenses) {
+    const returnArray = [];
+    expenses.forEach((expense) => {
+      console.log(expense.id);
+      console.log(expense.description);
+      console.log(expense.tag);
+      console.log(expense.method);
+      console.log(expense.value);
+      console.log(expense.exchangeRates[expense.currency].name);
+      console.log(expense.exchangeRates[expense.currency].ask);
+      console.log(expense.exchangeRates[expense.currency].ask * expense.value);
+      returnArray.push({
+        id: expense.id,
+        description: expense.description,
+        tag: expense.tag,
+        method: expense.method,
+        value: expense.value,
+        currencyName: expense.exchangeRates[expense.currency].name,
+        exchange: expense.exchangeRates[expense.currency].ask,
+        convertValue: expense.exchangeRates[expense.currency].ask * expense.value,
+      });
+    });
+    return returnArray;
   }
 
   editExpense(idToEdit) {
@@ -31,10 +57,10 @@ class ListWallet extends Component {
     upgradeExpenses(expensesTemp);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
+    const expensesTable = this.saveExpenses(expenses);
     return (
       <div>
         <p> </p>
@@ -55,17 +81,16 @@ class ListWallet extends Component {
           <tbody>
             <tr>
               {
-                expenses.map((expense) => (
+                expensesTable.map((expense) => (
                   <WalletItem
                     description={ expense.description }
                     tag={ expense.tag }
                     method={ expense.method }
                     currency={ expense.currency }
                     value={ expense.value }
-                    currencyName={ expense.exchangeRates[expense.currency].name }
-                    exchange={ expense.exchangeRates[expense.currency].ask }
-                    convertValue={ expense.exchangeRates[expense.currency].ask
-                      * expense.value }
+                    currencyName={ expense.currencyName }
+                    exchange={ expense.exchange }
+                    convertValue={ expense.convertValue }
                     deleteFunction={ () => this.deleteExpense(expense.id) }
                     editFunction={ () => this.editExpense(expense.id) }
                     key={ expense.id }
@@ -110,5 +135,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(ListWallet);
 // console.log(wallet);
 // console.log('========================== EXPENSES ========================');
 // console.log(expenses[0].exchangeRates);
-
 // console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
+
+//   description={ expense.description }
+//   tag={ expense.tag }
+//   method={ expense.method }
+//   currency={ expense.currency }
+//   value={ expense.value }
+//   currencyName={ expense.exchangeRates[expense.currency].name }
+//   exchange={ expense.exchangeRates[expense.currency].ask }
+//   convertValue={ expense.exchangeRates[expense.currency].ask
+//     * expense.value }
+//   deleteFunction={ () => this.deleteExpense(expense.id) }
+//   editFunction={ () => this.editExpense(expense.id) }
+//   key={ expense.id }
+// />
