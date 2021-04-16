@@ -1,15 +1,30 @@
-// Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
+import { REQUEST_EXCHANGE_RATES,
+  SET_EXPENSE_SUCCESS,
+  REQUEST_EXCHANGE_RATES_ERROR }
+  from '../actions/actionTypes';
+
 const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-  },
+  currencies: [],
+  expenses: [],
+  isFetching: false,
 };
 
-function walletReducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case 'NEW_ACTION':
-    return { state: action.state };
+function walletReducer(state = INITIAL_STATE, { type, payload }) {
+  switch (type) {
+  case REQUEST_EXCHANGE_RATES:
+    return { ...state,
+      isFetching: payload.isFetching,
+    };
+  case SET_EXPENSE_SUCCESS:
+    return { ...state,
+      currencies: payload.currencies,
+      isFetching: payload.isFetching,
+      expenses: [...state.expenses, payload.expense],
+    };
+  case REQUEST_EXCHANGE_RATES_ERROR:
+    return {
+      currencies: payload.error,
+    };
   default:
     return state;
   }
