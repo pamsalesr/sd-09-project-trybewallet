@@ -1,4 +1,9 @@
-import { UPDATE_EXCHANGE_RATES, ADD_EXPENSE, DEL_EXPENSE } from '../actions';
+import {
+  UPDATE_EXCHANGE_RATES,
+  ADD_EXPENSE,
+  DEL_EXPENSE,
+  EDIT_EXPENSE,
+} from '../actions';
 
 const INITIAL_STATE = {
   expenses: [],
@@ -20,7 +25,13 @@ const wallet = (state = INITIAL_STATE, action) => {
   case DEL_EXPENSE:
     return ({
       ...state,
-      expenses: action.expense,
+      expenses: [...state.expenses.filter((obj) => obj.id !== action.id)],
+    });
+  case EDIT_EXPENSE:
+    return ({
+      ...state,
+      expenses: [...state.expenses
+        .map((obj) => (action.dataState.id === obj.id ? action.dataState : obj))],
     });
   default:
     return state;

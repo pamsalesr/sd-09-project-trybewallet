@@ -6,8 +6,27 @@ import { handleDelExpense } from '../actions';
 class TableExpenses extends React.Component {
   constructor(props) {
     super(props);
+    this.generateHeaderExpense = this.generateHeaderExpense.bind(this);
     this.generateExpenseResume = this.generateExpenseResume.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
+  }
+
+  generateHeaderExpense() {
+    return (
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
+        </tr>
+      </thead>
+    );
   }
 
   generateExpenseResume() {
@@ -26,6 +45,14 @@ class TableExpenses extends React.Component {
           <td>{ Math.round(value * 100 * (exchangeRates[currency].ask)) / 100 }</td>
           <td>Real</td>
           <td>
+            <button
+              type="button"
+              data-testid="edit-btn"
+              id={ index }
+              onClick={ ({ target }) => this.editExpense(target) }
+            >
+              Editar despesa
+            </button>
             <button
               type="button"
               data-testid="delete-btn"
@@ -50,19 +77,6 @@ class TableExpenses extends React.Component {
   render() {
     return (
       <session>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-        </thead>
         { this.generateExpenseResume() }
       </session>
     );
