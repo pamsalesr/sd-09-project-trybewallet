@@ -2,25 +2,19 @@ import '../styles/Wallet.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import { func, string } from 'prop-types';
-import { addExpenses, receiveCurrencies, remExpenses } from '../actions';
+import { addExpenses, editExpenses, receiveCurrencies, remExpenses } from '../actions';
 import getAPI from '../services/currencyAPI';
 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      id: 0,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      id: 0, value: 0, description: '', currency: 'USD', tag: 'Alimentação',
     };
-
     this.fetchAPI = this.fetchAPI.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
     this.inCurrency = this.inCurrency.bind(this);
     this.inMethod = this.inMethod.bind(this);
     this.insertExpenses = this.insertExpenses.bind(this);
@@ -31,9 +25,7 @@ class Wallet extends React.Component {
     this.totalExpenses = this.totalExpenses.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchAPI();
-  }
+  componentDidMount() { this.fetchAPI(); }
 
   async fetchAPI() {
     const { getCurrencyDispatch } = this.props;
@@ -59,8 +51,8 @@ class Wallet extends React.Component {
 
   insertExpenses() {
     const { expenses, remExpenseDispatcher } = this.props;
+    const { handleEdit } = this;
     return expenses.map((element) => {
-      console.log(element);
       const info = element.exchangeRates[element.currency];
       return (
         <tr id={ element.id } key={ element.id }>
@@ -73,7 +65,11 @@ class Wallet extends React.Component {
           <td>{ (element.value * info.ask).toFixed(2) }</td>
           <td>Real</td>
           <td>
-            <button data-testid="edit-btn" type="button" onClick="">
+            <button
+              data-testid="edit-btn"
+              type="button"
+              onClick={ () => handleEdit(element.id) }
+            >
               Editar
             </button>
             <button
@@ -90,14 +86,39 @@ class Wallet extends React.Component {
     });
   }
 
-  async handleClick() {
-    const { addExpensesDispatcher } = this.props;
+  async handleClick(action = 'add') {
+    const btnAdd = document.getElementById('btn-add');
+    const btnEdit = document.getElementById('btn-edit');
+    const { addExpensesDispatcher, editExpensesDispatcher } = this.props;
+    if (action === 'edit') {
+      await editExpensesDispatcher({ ...this.state, exchangeRates: await getAPI() });
+      btnEdit.style.display = 'none';
+      btnAdd.style.display = 'inherit';
+      return;
+    }
     addExpensesDispatcher({ ...this.state, exchangeRates: await getAPI() });
     this.setState((prev) => ({ value: 0, id: prev.id + 1 }));
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
+  }
+
+  handleEdit(id) {
+    const btnAdd = document.getElementById('btn-add');
+    const btnEdit = document.getElementById('btn-edit');
+    const { expenses } = this.props;
+    const expense = expenses.filter((line) => line.id === id);
+    this.setState({
+      id: expense[0].id,
+      value: expense[0].value,
+      description: expense[0].description,
+      currency: expense[0].currency,
+      method: expense[0].method,
+      tag: expense[0].tag,
+    });
+    btnAdd.style.display = 'none';
+    btnEdit.style.display = 'inherit';
   }
 
   newInput(name, value, data, ...params) {
@@ -121,11 +142,7 @@ class Wallet extends React.Component {
   inCurrency() {
     const { currencies } = this.props;
     return currencies.map((element, index) => (
-      <option
-        data-testid={ element }
-        value={ element }
-        key={ index }
-      >
+      <option data-testid={ element } value={ element } key={ index }>
         { element }
       </option>
     ));
@@ -173,12 +190,8 @@ class Wallet extends React.Component {
       <div className="body">
         <header className="header">
           <h1 className="title">TRYBE</h1>
-          <p data-testid="email-field">
-            { `Email: ${email}` }
-          </p>
-          <p data-testid="total-field">
-            { `Despesa Total: R$ ${totalExpenses()}` }
-          </p>
+          <p data-testid="email-field">{ `Email: ${email}` }</p>
+          <p data-testid="total-field">{ `Despesa Total: R$ ${totalExpenses()}` }</p>
           <p data-testid="header-currency-field">BRL</p>
         </header>
         <form className="form">
@@ -190,17 +203,23 @@ class Wallet extends React.Component {
           { newInput('description', description,
             'description-input', 'Descrição: ', 'text') }
           <button
-            className="btn"
+            id="btn-add"
             type="button"
             onClick={ () => handleClick() }
           >
             Adicionar despesa
           </button>
+          <button
+            id="btn-edit"
+            type="button"
+            style={ { display: 'none' } }
+            onClick={ () => handleClick('edit') }
+          >
+            Editar despesa
+          </button>
         </form>
         <table id="table" className="table">
-          <tr className="th">
-            { inTh() }
-          </tr>
+          <tr className="th">{ inTh() }</tr>
           { insertExpenses() }
         </table>
       </div>
@@ -209,13 +228,12 @@ class Wallet extends React.Component {
 }
 
 const mapStateToProps = ({ user: { email }, wallet: { currencies, expenses } }) => ({
-  currencies,
-  email,
-  expenses,
+  currencies, email, expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addExpensesDispatcher: (data) => dispatch(addExpenses(data)),
+  editExpensesDispatcher: (data) => dispatch(editExpenses(data)),
   getCurrencyDispatch: (data) => dispatch(receiveCurrencies(data)),
   remExpenseDispatcher: (id) => dispatch(remExpenses(id)),
 });
@@ -223,6 +241,7 @@ const mapDispatchToProps = (dispatch) => ({
 Wallet.propTypes = {
   email: string,
   addExpensesDispatcher: func,
+  editExpensesDispatcher: func,
   getCurrencyDispatch: func,
   remExpenseDispatcher: func,
 }.isRequired;
