@@ -9,7 +9,12 @@ class Wallet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0, value: 0, description: '', currency: 'USD', tag: 'Alimentação',
+      id: 0,
+      currency: 'USD',
+      description: '',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      value: 0,
     };
     this.fetchAPI = this.fetchAPI.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -51,7 +56,6 @@ class Wallet extends React.Component {
 
   insertExpenses() {
     const { expenses, remExpenseDispatcher } = this.props;
-    const { handleEdit } = this;
     return expenses.map((element) => {
       const info = element.exchangeRates[element.currency];
       return (
@@ -68,7 +72,7 @@ class Wallet extends React.Component {
             <button
               data-testid="edit-btn"
               type="button"
-              onClick={ () => handleEdit(element.id) }
+              onClick={ () => this.handleEdit(element.id) }
             >
               Editar
             </button>
@@ -183,8 +187,7 @@ class Wallet extends React.Component {
 
   render() {
     const { description, value, currency, method, tag } = this.state;
-    const { newInput, newSelect, inCurrency, inMethod,
-      insertExpenses, inTag, handleClick, inTh, totalExpenses } = this;
+    const { newSelect, inCurrency, inTag, handleClick, inTh, totalExpenses } = this;
     const { email } = this.props;
     return (
       <div className="body">
@@ -195,18 +198,14 @@ class Wallet extends React.Component {
           <p data-testid="header-currency-field">BRL</p>
         </header>
         <form className="form">
-          { newInput('value', value, 'value-input', 'Valor: ', 'number') }
+          { this.newInput('value', value, 'value-input', 'Valor: ', 'number') }
           { newSelect('currency-input', 'Moeda: ', 'currency', currency, inCurrency()) }
           { newSelect('method-input', 'Método de pagamento: ',
-            'method', method, inMethod())}
+            'method', method, this.inMethod())}
           { newSelect('tag-input', 'Tag: ', 'tag', tag, inTag())}
-          { newInput('description', description,
+          { this.newInput('description', description,
             'description-input', 'Descrição: ', 'text') }
-          <button
-            id="btn-add"
-            type="button"
-            onClick={ () => handleClick() }
-          >
+          <button id="btn-add" type="button" onClick={ () => handleClick() }>
             Adicionar despesa
           </button>
           <button
@@ -220,7 +219,7 @@ class Wallet extends React.Component {
         </form>
         <table id="table" className="table">
           <tr className="th">{ inTh() }</tr>
-          { insertExpenses() }
+          { this.insertExpenses() }
         </table>
       </div>
     );
