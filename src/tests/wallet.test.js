@@ -210,7 +210,6 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
       await waitFor(() => {
         expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
       });
-      console.log(store.getState().wallet.expenses)
       expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense2);
   
       const totalField = screen.getByTestId('total-field');
@@ -218,7 +217,7 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
     });
   });
   
-  describe.skip('5 - Desenvolva uma tabela com os gastos contendo as seguintes características:', () => {
+  describe('5 - Desenvolva uma tabela com os gastos contendo as seguintes características:', () => {
     const initial = initialStateWithExpenses;
   
     test('A tabela deve possuir um cabeçalho com os campos Descrição, Tag, Método de pagamento, Valor, Moeda, Câmbio utilizado, Valor convertido e Moeda de conversão', () => {
