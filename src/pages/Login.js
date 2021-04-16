@@ -1,102 +1,110 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setEmail } from '../actions';
+import PropTypes from 'prop-types';
+import userLogin from '../actions';
+
+const PASSWORD_MINIMUM_LENGTH = 6;
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      email: '',
-      password: '',
+      emailInput: '',
+      passwordInput: '',
+      formErrors: {
+        emailInput: '',
+        passwordInput: '',
+      },
+      typed: false,
     };
+
     this.handleChange = this.handleChange.bind(this);
-    this.validate = this.validate.bind(this);
-    this.clickHandler = this.clickHandler.bind(this);
+    this.validateField = this.validateField.bind(this);
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
-    this.setState({
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState((state) => ({
+      ...state,
       [name]: value,
-    });
+      formErrors: {
+        ...state.formErrors,
+        [name]: this.validateField(name, value),
+      },
+      typed: true,
+    }));
   }
 
-  checkMail(email) {
-    const emailRegex = /^([\w.-]+)@([\w-]+)((.(\w){2,3})+)$/;
-    return emailRegex.test(email);
-  }
-
-  checkPassword(password) {
-    const min = 6;
-    if (password.length >= min) {
-      return true;
+  /* Validation found at: https://github.com/tryber/sd-09-live-lectures/tree/lecture/12.2 */
+  validateField(fieldName, value) {
+    const isValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    switch (fieldName) {
+    case 'emailInput':
+      return isValid ? '' : 'Email is invalid';
+    case 'passwordInput':
+      return value.length >= PASSWORD_MINIMUM_LENGTH ? '' : 'Password is too short';
+    default:
+      break;
     }
-  }
-
-  validate() {
-    const { password, email } = this.state;
-    return this.checkPassword(password) && this.checkMail(email);
-  }
-
-  clickHandler() {
-    const { history, getEmail } = this.props;
-    const { email } = this.state;
-    const timer = 2100;
-    getEmail(email);
-    if (this.validate()) setTimeout(() => history.push('/carteira'), timer);
+    return '';
   }
 
   render() {
-    const { email, password } = this.state;
+    const {
+      emailInput,
+      passwordInput,
+      formErrors: { emailInput: emailError, passwordInput: passwordError },
+      typed,
+    } = this.state;
+    const { logIn } = this.props;
     return (
-      <div className="backgroundLogin">
-        <div className="login">
-          <div className="loginBox teste">
-            <div className="inputContainer teste">
-              <input
-                className="email"
-                placeholder="Insert your E-mail"
-                name="email"
-                type="email"
-                value={ email }
-                data-testid="email-input"
-                onChange={ this.handleChange }
-              />
-              <input
-                className="password"
-                placeholder="Insert Password"
-                name="password"
-                type="password"
-                value={ password }
-                data-testid="password-input"
-                onChange={ this.handleChange }
-              />
-              <button
-                className="btn"
-                type="button"
-                onClick={ this.clickHandler }
-                disabled={ !this.validate() }
-              >
-                Entrar
-              </button>
-            </div>
-          </div>
-        </div>
+      <div>
+        <label htmlFor="email-input">
+          Email:
+          <input
+            data-testid="email-input"
+            type="text"
+            id="email-input"
+            name="emailInput"
+            value={ emailInput }
+            onChange={ this.handleChange }
+            autoComplete="off"
+          />
+        </label>
+        <label htmlFor="password-input">
+          Senha:
+          <input
+            data-testid="password-input"
+            type="password"
+            id="password-input"
+            name="passwordInput"
+            value={ passwordInput }
+            onChange={ this.handleChange }
+            autoComplete="off"
+          />
+        </label>
+        <Link to="/carteira">
+          <button
+            type="button"
+            disabled={ !typed || emailError || passwordError }
+            onClick={ () => logIn(emailInput) }
+          >
+            Entrar
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-Login.propTypes = {
-  getEmail: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
 const mapDispatchToProps = (dispatch) => ({
-  getEmail: (email) => dispatch(setEmail(email)),
+  logIn: (email) => dispatch(userLogin(email)),
 });
+
+Login.propTypes = {
+  logIn: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);

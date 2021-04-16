@@ -1,4 +1,5 @@
 import fetchCurrency from '../services/currencyApi';
+import userLogin from './userAction';
 
 export const SET_EMAIL = 'GET_EMAIL';
 export const setEmail = (email) => (
@@ -31,3 +32,5 @@ export const thunk = () => (
     return dispatch(result);
   }
 );
+
+export default userLogin;
