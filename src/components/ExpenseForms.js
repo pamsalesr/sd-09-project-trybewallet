@@ -10,12 +10,12 @@ class ExpenseForms extends Component {
     super(props);
     this.state = {
       value: 0,
-      description: 'Hot Dog',
+      description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
     };
-    this.fetchFilteredCurrencies = this.fetchFilteredCurrencies.bind(this);
+    this.currenciesFetchSucess = this.currenciesFetchSucess.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.inputNumber = this.inputNumber.bind(this);
@@ -26,10 +26,10 @@ class ExpenseForms extends Component {
   }
 
   componentDidMount() {
-    this.fetchFilteredCurrencies();
+    this.currenciesFetchSucess();
   }
 
-  fetchFilteredCurrencies() {
+  currenciesFetchSucess() {
     const { getCurrencies } = this.props;
     fetchCurrency()
       .then((currencies) => getCurrencies(Object.keys(currencies)));
@@ -42,7 +42,7 @@ class ExpenseForms extends Component {
     await getExpenses(expense);
     this.setState({
       value: 0,
-      description: 'Hot Dog',
+      description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
@@ -64,7 +64,7 @@ class ExpenseForms extends Component {
     expensesList(changed);
     editExpense(false);
     this.setState({ value: 0,
-      description: 'Hot Dog',
+      description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Lazer',
