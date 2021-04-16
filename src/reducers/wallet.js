@@ -1,37 +1,24 @@
-import { CURRENCIES_FECTH_SUCESS, ADD_NEW_EXPENSE,
-  DELETE_EXPENSE, EDIT_EXPENSE } from '../actions/index';
+import { SET_CURRENCIES, ADD_EXPENSES, SET_EXPENSES, EDIT_EXPENSES } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  total: 0,
 };
 
-export default function (state = INITIAL_STATE, action) {
+const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case CURRENCIES_FECTH_SUCESS:
-    return {
-      ...state,
-      currencies: Object.keys(action.currencies)
-        .filter((currency) => currency !== 'USDT'),
-    };
-  case ADD_NEW_EXPENSE:
-    return {
-      ...state,
-      expenses: [...state.expenses, action.expense],
-    };
-  case DELETE_EXPENSE:
-    return {
-      ...state,
-      expenses: state.expenses.filter((expense) => expense.id !== action.id),
-    };
-  case EDIT_EXPENSE:
-    return {
-      ...state,
-      expenses: state.expenses.map((expense) => (
-        expense.id === action.expense.id ? { ...expense, ...action.expense } : expense
-      )),
-    };
+  case SET_CURRENCIES:
+    return { ...state, currencies: action.currencies };
+  case ADD_EXPENSES:
+    return { ...state, expenses: [...state.expenses, action.expense] };
+  case SET_EXPENSES:
+    return { ...state, expenses: action.expenses };
+  case EDIT_EXPENSES:
+    return { ...state, eventEdit: action.eventEdit, expense: action.expense };
   default:
     return state;
   }
-}
+};
+
+export default wallet;
