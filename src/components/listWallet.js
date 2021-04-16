@@ -35,12 +35,6 @@ class ListWallet extends Component {
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
-    // console.log('========================== WALLET ========================');
-    // console.log(wallet);
-    // console.log('========================== EXPENSES ========================');
-    // console.log(expenses[0].exchangeRates);
-
-    // console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
     return (
       <div>
         <p> </p>
@@ -111,3 +105,10 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => (state);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListWallet);
+
+// console.log('========================== WALLET ========================');
+// console.log(wallet);
+// console.log('========================== EXPENSES ========================');
+// console.log(expenses[0].exchangeRates);
+
+// console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
