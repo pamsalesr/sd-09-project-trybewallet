@@ -74,7 +74,7 @@ class Form extends Component {
       <label htmlFor="expenditured-add">
         valor da despesa
         <input
-          type="text"
+          type="number"
           value={ value }
           data-testid="value-input"
           id="expenditured-add"
@@ -193,12 +193,12 @@ class Form extends Component {
   }
 }
 
-const mapStateToprops = ({ wallet }) => ({
+const mapStateToProps = ({ wallet }) => ({
   consultExpenses: wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchExpense: (email) => dispatch(expenseInsert(email)),
+  dispatchExpense: (expense) => dispatch(expenseInsert(expense)),
 });
 
 Form.propTypes = {
@@ -206,4 +206,4 @@ Form.propTypes = {
   dispatchExpense: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToprops, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

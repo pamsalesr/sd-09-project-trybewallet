@@ -7,8 +7,8 @@ class Header extends Component {
     const { consultExpenses } = this.props;
     let calc = 0;
     consultExpenses.forEach((element) => {
-      const convertValue = parseFloat(element.value);
-      const convertAsk = parseFloat(element.exchangeRates[element.currency].ask);
+      const convertValue = element.value;
+      const convertAsk = element.exchangeRates[element.currency].ask;
       calc += (convertValue * convertAsk);
     });
     return calc.toFixed(2);
@@ -38,7 +38,7 @@ class Header extends Component {
   }
 }
 
-const mapStateToprops = ({ user, wallet }) => ({
+const mapStateToProps = ({ user, wallet }) => ({
   userEmail: user.email,
   consultExpenses: wallet.expenses,
 });
@@ -48,4 +48,4 @@ Header.propTypes = {
   consultExpenses: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToprops)(Header);
+export default connect(mapStateToProps)(Header);

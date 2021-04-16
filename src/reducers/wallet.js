@@ -1,4 +1,4 @@
-import { EXPENSE_SAVE } from '../actions';
+import { EXPENSE_SAVE, EXPENSES_UPDATE } from '../actions';
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
   expenses: [],
@@ -13,11 +13,11 @@ export default function wallet(state = INITIAL_STATE, action) {
   //     ...state,
   //     totalExpenses: action.totalExpenses,
   //   };
-  // case EXPENSE_RATE_SAVE:
-  // return {
-  //   ...state,
-  //   exchangeRates: action.exchangeRates,
-  // };
+  case EXPENSES_UPDATE:
+    return {
+      ...state,
+      expenses: action.expenses,
+    };
   case EXPENSE_SAVE:
     return {
       ...state,

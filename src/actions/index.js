@@ -26,8 +26,8 @@ export const expenseInsert = (expenses) => ({
   expenses,
 });
 
-// export const EXPENSE_RATE_SAVE = 'EXPENSE_RATE_SAVE';
-// export const expenseRateInsert = (exchangeRates) => ({
-//   type: EXPENSE_SAVE,
-//   exchangeRates,
-// });
+export const EXPENSES_UPDATE = 'EXPENSES_UPDATE';
+export const expensesUpdate = (expenses) => ({
+  type: EXPENSES_UPDATE,
+  expenses,
+});
