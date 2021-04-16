@@ -61,7 +61,7 @@ class ListWallet extends Component {
           </thead>
           <tbody>
             <tr>
-              { expenses.length &&
+              {
                 expenses.map((expense) => (
                   <WalletItem
                     description={ expense.description }
@@ -69,7 +69,7 @@ class ListWallet extends Component {
                     method={ expense.method }
                     currency={ expense.currency }
                     value={ expense.value }
-                    // currencyName={ expense.exchangeRates[expense.currency].name }
+                    currencyName={ expense.exchangeRates[expense.currency].name }
                     exchange={ expense.exchangeRates[expense.currency].ask }
                     convertValue={ expense.exchangeRates[expense.currency].ask
                       * expense.value }
