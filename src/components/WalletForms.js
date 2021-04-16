@@ -2,20 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { actionExpense } from '../actions';
+import { addExpenseWithCurrentQuotes, setDropdownCurrencies } from '../actions';
+
+const INITIAL_STATE = {
+  value: 0,
+  currency: 'ILS',
+  description: '',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+  currencies: [],
+  paymentMethod: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
+  expenses: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
+};
 
 class WalletForms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
-      currency: 'ILS',
-      description: '',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      currencies: [],
-      paymentMethod: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
-      expenses: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
+      ...INITIAL_STATE,
     };
 
     this.optionsCreator = this.optionsCreator.bind(this);
@@ -23,13 +27,13 @@ class WalletForms extends React.Component {
   }
 
   async componentDidMount() {
-    this.currenciesDataToInitials(await this.fetchCurrencyQuotes());
+    const { setUpCurrencies } = this.props;
+    setUpCurrencies();
   }
 
   async fetchCurrencyQuotes() {
     const fetchCurrency = await fetch('https://economia.awesomeapi.com.br/json/all');
     const response = await fetchCurrency.json();
-    console.log(response);
     return response;
   }
 
@@ -85,28 +89,27 @@ class WalletForms extends React.Component {
   expenseCreator() {
     const { expenses } = this.props;
     const { value, description, currency, method, tag } = this.state;
-    console.log(expenses);
     const { length } = expenses;
-    return {
+    const newExpense = {
       id: (length > 0) ? (expenses[length - 1].id + 1) : 0,
       value,
       description,
       currency,
       method,
       tag,
-      exchangeRates: this.fetchCurrencyQuotes(),
     };
+    this.setState({ ...INITIAL_STATE });
+    return newExpense;
   }
 
   render() {
     const {
-      currencies,
       paymentMethod,
       expenses,
       value,
       description,
       currency } = this.state;
-    const { addExpense } = this.props;
+    const { addExpense, currencies } = this.props;
     return (
       <forms>
         {this.inputTextCreator('value', 'Valor da despesa', value)}
@@ -123,16 +126,20 @@ class WalletForms extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addExpense: (expense) => dispatch(actionExpense(expense)),
+  addExpense: (expense) => dispatch(addExpenseWithCurrentQuotes(expense)),
+  setUpCurrencies: () => dispatch(setDropdownCurrencies()),
 });
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  currencies: state.wallet.currencies,
 });
 
 WalletForms.propTypes = {
   addExpense: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.number).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
+  setUpCurrencies: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForms);
