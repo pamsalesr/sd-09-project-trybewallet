@@ -16,6 +16,7 @@ class ListWallet extends Component {
 
   saveExpenses(expenses) {
     const returnArray = [];
+    console.log('=================== INICIO SAVEEXPENSES =======================');
     expenses.forEach((expense) => {
       console.log(expense.id);
       console.log(expense.description);
@@ -36,6 +37,7 @@ class ListWallet extends Component {
         convertValue: expense.exchangeRates[expense.currency].ask * expense.value,
       });
     });
+    console.log('=================== FINAL SAVEEXPENSES =======================');
     return returnArray;
   }
 
@@ -60,6 +62,10 @@ class ListWallet extends Component {
   render() {
     const { wallet } = this.props;
     const { expenses } = wallet;
+    expenses.forEach((expense) => console.log(
+      expense.exchangeRates[expense.currency].name,
+    ));
+    console.log('=================== FINAL EXPENSE SEM MOFIFICACAO =================');
     const expensesTable = this.saveExpenses(expenses);
     return (
       <div>
