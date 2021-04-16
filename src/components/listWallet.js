@@ -33,15 +33,14 @@ class ListWallet extends Component {
 
   // eslint-disable-next-line max-lines-per-function
   render() {
- 
     const { wallet } = this.props;
     const { expenses } = wallet;
-// console.log('========================== WALLET ========================');
-// console.log(wallet);
-// console.log('========================== EXPENSES ========================');
-// console.log(expenses[0].exchangeRates);
+    // console.log('========================== WALLET ========================');
+    // console.log(wallet);
+    // console.log('========================== EXPENSES ========================');
+    // console.log(expenses[0].exchangeRates);
 
-// console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
+    // console.log(expenses.length && expenses.map((expense) => expense.exchangeRates[expense.currency].name));
     return (
       <div>
         <p> </p>

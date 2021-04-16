@@ -122,7 +122,7 @@ class WalletForm extends Component {
         }
       });
       upgradeExpenses(newExpenses);
-      const total = expenses.reduce((totalValue, expense) => {
+      const total = newExpenses.reduce((totalValue, expense) => {
         totalValue += expense.exchangeRates[expense.currency].ask * expense.value;
         return totalValue;
       }, 0);
