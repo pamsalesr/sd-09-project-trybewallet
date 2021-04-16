@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { expenseExchangeRates } from '../actions';
+import { statusToFalse, editComplete, deleteExpense, expenseAction } from '../actions';
+import getCurrencies from '../fetch/getCurrencies';
 
 class WalletForm extends React.Component {
   constructor(props) {
@@ -10,59 +11,77 @@ class WalletForm extends React.Component {
     this.payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     this.tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
-    this.state = {
+    this.defaultState = {
       value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
     };
+    this.state = this.defaultState;
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleExpense = this.handleExpense.bind(this);
+    // this.handleExpense = this.handleExpense.bind(this);
+    this.loadEditItem = this.loadEditItem.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { status } = this.props;
+    if (status) {
+      this.loadEditItem();
+    }
+  }
+
+  loadEditItem() {
+    const { item } = this.props;
+    const { editingDispatch } = this.props;
+    this.setState(() => (
+      {
+        value: item.value,
+        currency: item.currency,
+        method: item.method,
+        tag: item.tag,
+        description: item.description,
+      }
+    ), () => {
+      editingDispatch();
+    });
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
   }
 
-  handleExpense() {
+  async handleClick() {
+    const { addExpense } = this.props;
     const { expenses } = this.props;
-    expenses(this.state);
-    this.setState({ value: '' });
+    const { value, currency, method, tag, description } = this.state;
+    const nextId = expenses.length;
+    // const exchangeRates = await getCurrencies();
+    const expense = { id: nextId,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: { ...await getCurrencies() } };
+    addExpense(expense);
+    this.setState(() => (this.defaultState));
   }
 
-  renderExpenseInput(value) {
-    return (
-      <label htmlFor="input-despesa">
-        Adicione despesa:
-        <input
-          type="number"
-          name="value"
-          placeholder="Quanto você gastou?"
-          data-testid="value-input"
-          id="select-currency"
-          value={ value }
-          onChange={ this.handleChange }
-        />
-      </label>
-    );
-  }
-
-  renderDescriptionInput(description) {
-    return (
-      <label htmlFor="descricao-despesa">
-        Descreva sua despesa:
-        <textarea
-          placeholder="Você gastou com o quê?"
-          name="description"
-          data-testid="description-input"
-          id="descricao-despesa"
-          value={ description }
-          onChange={ this.handleChange }
-        />
-      </label>
-    );
+  handleEditClick(item) {
+    const { value, currency, method, tag, description } = this.state;
+    const { editCompleted, expenses, deleteExpenseAction } = this.props;
+    const findItem = expenses.find(({ id }) => id === item.id);
+    findItem.value = value;
+    findItem.currency = currency;
+    findItem.method = method;
+    findItem.tag = tag;
+    findItem.description = description;
+    deleteExpenseAction(expenses);
+    editCompleted();
+    this.setState(() => (this.defaultState));
   }
 
   renderCurrencyInput(currency) {
@@ -73,6 +92,7 @@ class WalletForm extends React.Component {
         <select
           value={ currency }
           name="currency"
+          id="currency"
           data-testid="currency-input"
           onChange={ this.handleChange }
         >
@@ -127,32 +147,99 @@ class WalletForm extends React.Component {
     );
   }
 
+  renderDescriptionInput(description) {
+    return (
+      <label htmlFor="descricao-despesa">
+        Descreva sua despesa:
+        <textarea
+          placeholder="Você gastou com o quê?"
+          name="description"
+          data-testid="description-input"
+          id="descricao-despesa"
+          value={ description }
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
+  renderExpenseInput(value) {
+    return (
+      <label htmlFor="input-despesa">
+        Adicione despesa:
+        <input
+          type="number"
+          name="value"
+          placeholder="Quanto você gastou?"
+          data-testid="value-input"
+          id="select-currency"
+          value={ value }
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
+  renderAddBtn() {
+    return (
+      <button
+        type="button"
+        onClick={ this.handleClick }
+      >
+        Adicionar despesa
+      </button>
+    );
+  }
+
+  renderEditBtn(item) {
+    return (
+      <button
+        type="button"
+        onClick={ () => this.handleEditClick(item) }
+      >
+        Editar despesa
+      </button>
+    );
+  }
+
   render() {
-    const { value, description, currency, method, tag } = this.state;
+    // const { value, description, currency, method, tag } = this.state;
+    const { btnStatus, item } = this.props;
     return (
       <form>
-        {this.renderExpenseInput(value)}
-        {this.renderDescriptionInput(description)}
-        {this.renderCurrencyInput(currency)}
-        {this.renderMethodInput(method)}
-        {this.renderTagInput(tag)}
-        <button type="button" onClick={ this.handleExpense }>Adicionar despesa</button>
+        {this.renderExpenseInput()}
+        {this.renderDescriptionInput()}
+        {this.renderCurrencyInput()}
+        {this.renderMethodInput()}
+        {this.renderTagInput()}
+        { btnStatus ? this.renderEditBtn(item) : this.renderAddBtn() }
       </form>
     );
   }
 }
 
 WalletForm.propTypes = {
-  expenses: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  editingDispatch: PropTypes.func.isRequired,
+  editCompleted: PropTypes.func.isRequired,
+  deleteExpenseAction: PropTypes.func.isRequired,
+  addExpense: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  expenses: (value) => dispatch(expenseExchangeRates(value)),
+  // expenses: (value) => dispatch(expenseExchangeRates(value)),
+  addExpense: (param) => dispatch(expenseAction(param)),
+  editingDispatch: () => dispatch(statusToFalse()),
+  deleteExpenseAction: (obj) => dispatch(deleteExpense(obj)),
+  editCompleted: () => dispatch(editComplete()),
 });
 
 const mapStateToProps = ({ wallet }) => ({
   currencies: wallet.currencies,
+  expenses: wallet.expenses,
+  btnStatus: wallet.btnStatus,
+  item: wallet.item,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

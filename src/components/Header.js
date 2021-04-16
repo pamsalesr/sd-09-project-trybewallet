@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { walletThunk } from '../actions';
 
 class Header extends React.Component {
+  componentDidMount() {
+    const { apiCurrencies } = this.props;
+    apiCurrencies();
+  }
+
   getTotal() {
     const { expenses } = this.props;
     return expenses.map(({ currency, value, exchangeRates }) => {
@@ -12,6 +18,17 @@ class Header extends React.Component {
     })
       .reduce((acc, expense) => acc + expense, 0);
   }
+
+  /* getTotal() {
+    const { expenses } = this.props;
+    let sum = expenses.reduce((acc, curr) => {
+      const convertedPrice = curr.value * curr.exchangeRates[curr.currency].ask;
+      acc += convertedPrice;
+      return acc;
+    }, 0);
+    sum = Math.floor(sum * 100) / 100;
+    return sum;
+  } */
 
   render() {
     const { email } = this.props;
@@ -42,9 +59,14 @@ const mapStateToProps = ({ user, wallet }) => ({
   expenses: wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  apiCurrencies: () => dispatch(walletThunk()),
+});
+
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  apiCurrencies: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

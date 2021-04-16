@@ -1,6 +1,9 @@
 // Coloque aqui suas actions
 import getCurrencies from '../fetch/getCurrencies';
-import { ADD_EXPENSE, DELETE, LOGIN, USER_CURRENCIES } from '../store/constantes';
+import
+{ ADD_EXPENSE, DELETE, EDITING, EDIT_COMPLETE, EDIT, LOGIN, USER_CURRENCIES }
+  from
+  '../store/constantes';
 
 export const loginAction = (email) => ({
   type: LOGIN,
@@ -23,6 +26,24 @@ export const expenseExchangeRates = (expense) => async (dispatch) => {
   dispatch(expenseAction(expenseRated));
 };
 
+export const deleteExpense = (obj) => ({
+  type: DELETE,
+  payload: obj,
+});
+
+export const editExpense = (item) => ({
+  type: EDIT,
+  payload: item,
+});
+
+export const statusToFalse = () => ({
+  type: EDITING,
+});
+
+export const editComplete = () => ({
+  type: EDIT_COMPLETE,
+});
+
 export const walletThunk = () => async (dispatch) => {
   const currencies = await getCurrencies();
   const currenciesCodes = Object.values(currencies)
@@ -30,8 +51,3 @@ export const walletThunk = () => async (dispatch) => {
     .map(({ code }) => code);
   dispatch(currenciesAction(currenciesCodes));
 };
-
-export const deleteExpense = (obj) => ({
-  type: DELETE,
-  payload: obj,
-});
