@@ -1,19 +1,19 @@
 .container-wallet {
-	background: #eeeef5;
-	height: 90vh;
-	width: 90vw;
+  background: #eeeef5;
+  height: 90vh;
+  width: 90vw;
 }
 
 /* FORMULÁRIO */
 .container-wallet form {
-	background: #a4afc3;
-	display: flex;
-	justify-content: space-between;
-	padding: 0.5rem;
+  background: #a4afc3;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
 }
 
 .container-wallet form span {
-	display: block;
-	font-size: 0.75rem;
-	text-transform: uppercase;
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
