@@ -2,6 +2,7 @@
 export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export function actionUser(email) {
   return {
@@ -21,6 +22,13 @@ export function actionCurrencies(currencies) {
   return {
     type: ADD_CURRENCIES,
     payload: currencies,
+  };
+}
+
+export function actionDeleteExpense(id) {
+  return {
+    type: DELETE_EXPENSE,
+    payload: id,
   };
 }
 
