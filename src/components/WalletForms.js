@@ -42,12 +42,6 @@ class WalletForms extends React.Component {
     this.setState({ [name]: value });
   }
 
-  currenciesDataToInitials(currenciesData) {
-    delete currenciesData.USDT;
-    const initials = Object.keys(currenciesData);
-    this.setState({ currencies: initials });
-  }
-
   optionsCreator(item) {
     return (
       <option data-testid={ item } key={ item }>{item}</option>
@@ -111,7 +105,7 @@ class WalletForms extends React.Component {
       currency } = this.state;
     const { addExpense, currencies } = this.props;
     return (
-      <forms>
+      <form>
         {this.inputTextCreator('value', 'Valor da despesa', value)}
         {this.inputTextCreator('description', 'Descrição da despesa', description)}
         {this.dropDownCreator('currency', currencies, currency)}
@@ -120,7 +114,7 @@ class WalletForms extends React.Component {
         <button type="button" onClick={ () => addExpense(this.expenseCreator()) }>
           Adicionar despesa
         </button>
-      </forms>
+      </form>
     );
   }
 }
