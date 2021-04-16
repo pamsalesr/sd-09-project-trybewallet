@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ExpensesForm from '../components/ExpensesForm';
 import ExpensesTable from '../components/ExpensesTable';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   render() {
@@ -10,7 +11,7 @@ class Wallet extends React.Component {
     const totalPrice = !totalPriceState ? 0 : totalPriceState;
 
     return (
-      <>
+      <div className="container-wallet">
         <header>
           <ul>
             <li data-testid="email-field">{`Email: ${emailState}`}</li>
@@ -25,7 +26,7 @@ class Wallet extends React.Component {
           <ExpensesForm />
           <ExpensesTable />
         </main>
-      </>
+      </div>
     );
   }
 }

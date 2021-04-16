@@ -1,3 +1,5 @@
+import { CurrencyApi } from '../services';
+
 // Coloque aqui suas actions
 export const ADD_EMAIL_STATE = 'ADD_EMAIL_STATE';
 
@@ -39,12 +41,10 @@ export const fetchCurrencies = () => (
   async (dispatch) => {
     dispatch(requestCurrencies());
     try {
-      const endpoint = 'https://economia.awesomeapi.com.br/json/all';
-      const response = await fetch(endpoint);
-      const data = await response.json();
+      const data = await CurrencyApi();
 
       delete data.USDT;
-      return dispatch(receiveCurrencies(data));
+      return dispatch(receiveCurrencies(Object.keys(data)));
     } catch (error) {
       return dispatch(failedRequest());
     }

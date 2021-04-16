@@ -17,10 +17,6 @@ class ExpensesTable extends React.Component {
     this.handleButton = this.handleButton.bind(this);
   }
 
-  componentDidUpdate(prevState) {
-    console.log('componentDidUpdate', prevState);
-  }
-
   deleteData(position) {
     const {
       expensesState,
@@ -59,24 +55,30 @@ class ExpensesTable extends React.Component {
     );
   }
 
+  tableHeader() {
+    return (
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
+        </tr>
+      </thead>
+    );
+  }
+
   render() {
     const { expensesState } = this.props;
 
     return (
       <table>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-        </thead>
+        {this.tableHeader()}
         <tbody>
           {expensesState.map((expense) => {
             const { [expense.currency]: { ask, name } } = expense.exchangeRates;
@@ -87,8 +89,8 @@ class ExpensesTable extends React.Component {
                 <td>{ expense.method }</td>
                 <td>{ expense.value }</td>
                 <td>{ name }</td>
-                <td>{ aroundPriceChange(ask) }</td>
-                <td>{ convertedToExchange(expense.value, ask) }</td>
+                <td>{ (aroundPriceChange(ask)).toFixed(2) }</td>
+                <td>{ (convertedToExchange(expense.value, ask)).toFixed(2) }</td>
                 <td>Real</td>
                 <td>
                   {this.handleButton(

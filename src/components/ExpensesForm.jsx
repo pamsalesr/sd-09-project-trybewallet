@@ -9,6 +9,7 @@ import {
   updateExpenseState,
 } from '../actions';
 import {
+  CurrencyApi,
   convertedToExchange,
   validateFieldsForm,
   updateTotalPrice,
@@ -72,12 +73,11 @@ class ExpensesForm extends React.Component {
   }
 
   async insertExpense() {
-    await this.fetchCurrencies();
+    const currencies = await CurrencyApi();
 
     const {
       addExpensesDispatcher,
       addTotalPriceDispatcher,
-      currenciesState,
       expensesState,
     } = this.props;
 
@@ -86,11 +86,11 @@ class ExpensesForm extends React.Component {
     await addExpensesDispatcher({
       ...data,
       id: expensesState.length,
-      exchangeRates: currenciesState,
+      exchangeRates: currencies,
     });
 
     addTotalPriceDispatcher(
-      convertedToExchange(data.value, currenciesState[data.currency].ask),
+      convertedToExchange(data.value, currencies[data.currency].ask),
     );
 
     this.setState({ ...INITIAL_STATE });
@@ -118,6 +118,7 @@ class ExpensesForm extends React.Component {
     } = this.props;
 
     console.log('currency selected:', data.currency);
+    console.log('expenses:', data);
 
     const editedExpenses = expensesState.map((expense) => {
       if (expense.id === idToEdit) {
@@ -186,12 +187,12 @@ class ExpensesForm extends React.Component {
       'Transporte',
       'Saúde',
     ];
-    const currencies = Object.keys(currenciesState);
+    // const currencies = Object.keys(currenciesState);
 
     return (
       <form>
         {this.renderInputField('value', 'Valor', value)}
-        {this.renderSelectField('currency', 'Moeda', currency, currencies)}
+        {this.renderSelectField('currency', 'Moeda', currency, currenciesState)}
         {this.renderSelectField(
           'method',
           'Método de Pagamento',

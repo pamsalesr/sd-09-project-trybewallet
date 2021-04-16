@@ -43,7 +43,7 @@ class Login extends React.Component {
     const { addEmailStateDispatcher } = this.props;
 
     return (
-      <div>
+      <div className="container-login">
         <h1>TrybeWallet</h1>
         <form>
           <label htmlFor="email-input">
