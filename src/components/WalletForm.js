@@ -221,6 +221,9 @@ class WalletForm extends React.Component {
 WalletForm.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  status: PropTypes.objectOf(PropTypes.bool).isRequired,
+  item: PropTypes.objectOf(PropTypes.any).isRequired,
+  btnStatus: PropTypes.objectOf(PropTypes.bool).isRequired,
   editingDispatch: PropTypes.func.isRequired,
   editCompleted: PropTypes.func.isRequired,
   deleteExpenseAction: PropTypes.func.isRequired,
