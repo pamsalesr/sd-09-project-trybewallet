@@ -24,8 +24,8 @@ class Wallet extends React.Component {
         Método de pagamento:
         <select data-testid="method-input">
           <option>Dinheiro</option>
-          <option>Cartão de Crédito</option>
-          <option>Cartão de Débito</option>
+          <option>Cartão de crédito</option>
+          <option>Cartão de débito</option>
         </select>
         Tag:
         <select data-testid="tag-input">

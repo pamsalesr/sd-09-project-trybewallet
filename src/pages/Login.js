@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import userLogin, { sendMoneyInfo } from '../actions/index';
 
@@ -57,17 +57,18 @@ class Login extends React.Component {
           />
         </form>
         <br />
-        <button
-          type="button"
-          disabled={ eValid || pwValid }
-          onClick={ () => {
-            goToWallet(email);
-            getMoneyInfo();
-            window.location = '/carteira';
-          } }
-        >
-          Entrar
-        </button>
+        <Link to="/carteira">
+          <button
+            type="button"
+            disabled={ eValid || pwValid }
+            onClick={ () => {
+              goToWallet(email);
+              getMoneyInfo();
+            } }
+          >
+            Entrar
+          </button>
+        </Link>
       </div>
     );
   }
