@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { expensesUpdate } from '../actions';
 
 class Table extends Component {
@@ -57,40 +57,40 @@ class Table extends Component {
 
   renderLine() {
     const { expenses } = this.props;
-    return (expenses.map((item) => (
-      <tbody>
-        <tr>
-          <td>{ item.description }</td>
-          <td>{ item.tag }</td>
-          <td>{ item.method }</td>
-          <td>{ item.value }</td>
-          <td>{ item.exchangeRates[item.currency].name }</td>
-          <td>{ parseFloat(item.exchangeRates[item.currency].ask).toFixed(2) }</td>
-          <td>
-            {(item.value * item.exchangeRates[item.currency].ask).toFixed(2) }
-          </td>
-          <td>Real</td>
-          <td>
-            <button type="button">Editar</button>
-            <button
-              type="button"
-              data-testid="delete-btn"
-              id={ `drop-button-${item.id}` }
-              onClick={ () => this.dropExpense(item.id) }
-            >
-              Excluir
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    )));
+    return expenses.map((element) => (
+      <tr key={ element.id }>
+        <td>{ element.description }</td>
+        <td>{ element.tag }</td>
+        <td>{ element.method }</td>
+        <td>{ element.value }</td>
+        <td>{ element.exchangeRates[element.currency].name }</td>
+        <td>{ parseFloat(element.exchangeRates[element.currency].ask).toFixed(2) }</td>
+        <td>
+          {(element.value * element.exchangeRates[element.currency].ask).toFixed(2) }
+        </td>
+        <td>Real</td>
+        <td>
+          <button type="button">Editar</button>
+          <button
+            type="button"
+            data-testid="delete-btn"
+            id={ `drop-button-${element.id}` }
+            onClick={ () => this.dropExpense(element.id) }
+          >
+            Excluir
+          </button>
+        </td>
+      </tr>
+    ));
   }
 
   render() {
     return (
       <table>
         { this.renderHeader() }
-        { this.renderLine() }
+        <tbody>
+          { this.renderLine() }
+        </tbody>
       </table>
     );
   }
@@ -105,9 +105,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Table.propTypes = {
-  expenses: PropTypes.func.isRequired,
   // expenses: PropTypes.func.isRequired,
-  dispatchExpensesUpdate: PropTypes.func.isRequired,
-};
+  expenses: PropTypes.func,
+  // expenses: PropTypes.func.isRequired,
+  dispatchExpensesUpdate: PropTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

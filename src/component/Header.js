@@ -44,8 +44,8 @@ const mapStateToProps = ({ user, wallet }) => ({
 });
 
 Header.propTypes = {
-  userEmail: PropTypes.func.isRequired,
-  consultExpenses: PropTypes.func.isRequired,
-};
+  userEmail: PropTypes.func,
+  consultExpenses: PropTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps)(Header);

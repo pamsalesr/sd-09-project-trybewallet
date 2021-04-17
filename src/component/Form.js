@@ -202,8 +202,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Form.propTypes = {
-  consultExpenses: PropTypes.func.isRequired,
-  dispatchExpense: PropTypes.func.isRequired,
-};
+  consultExpenses: PropTypes.func,
+  dispatchExpense: PropTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
