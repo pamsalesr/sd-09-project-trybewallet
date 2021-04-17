@@ -21,8 +21,8 @@ const initialState = {
   methodPayment: 'Dinheiro',
   categoryRecreation: 'Alimentação',
   isDisable: true,
-  editor: false,
   idToEdit: 0,
+  editor: false,
 };
 
 class Wallet extends React.Component {
@@ -56,7 +56,7 @@ class Wallet extends React.Component {
       methodPayment,
       categoryRecreation } = this.state;
     const { walletCurrecy, totalExpensesState,
-      receiveExpensesDispatch, totalExpenses } = this.props;
+      receiveExpensesDispatch, totalExpensesDispatch } = this.props;
     const id = walletCurrecy.length;
     const currencyApis = await currencyApi();
     // o objeto abaixo está sendo atualizado de acordo com o que pede no mockData
@@ -74,7 +74,7 @@ class Wallet extends React.Component {
     const round = Math.round(total * 100) / 100;
     // selectCurrency está entre [] por ser dinâmico, caso não fosse, seria . + o nome da moeda
     await receiveExpensesDispatch(expenses);
-    totalExpenses(round);
+    totalExpensesDispatch(round);
     // setState está limpando os campos que foram digitados após as ações feitas
     this.setState(initialState);
   }
@@ -104,7 +104,7 @@ class Wallet extends React.Component {
   upDateWallet() {
     const { idToEdit, editor, walletCurrecy } = this.props;
     const inputs = walletCurrecy.filter((expense) => expense.id === idToEdit)[0];
-    this.setState({ idToEdit,
+    this.setState({
       editor,
       valueExpense: inputs.value,
       descriptionExpense: inputs.description,
@@ -120,7 +120,10 @@ class Wallet extends React.Component {
       selectCurrency,
       methodPayment,
       categoryRecreation } = this.state;
-    const { idToEdit, walletCurrecy, receiveExpensesDispatch, totalExpenses } = this.props;
+    const { idToEdit,
+      walletCurrecy,
+      receiveExpensesDispatch,
+      totalExpensesDispatch } = this.props;
     const expensesUpdate = walletCurrecy.map((expense) => {
       if (idToEdit === expense.id) {
         return { ...expense,
@@ -140,7 +143,7 @@ class Wallet extends React.Component {
         const round = Math.round((moeda * value) * 100) / 100;
         return round + total;
       }, 0);
-    totalExpenses(reduceTotal);
+    totalExpensesDispatch(reduceTotal);
   }
 
   render() {
@@ -204,7 +207,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   requestCurrency: () => dispatch(fetchCurrencyApi()),
   receiveExpensesDispatch: (expenses) => dispatch(receiveExpenses(expenses)),
-  totalExpenses: (total) => dispatch(totalExpenses(total)),
+  totalExpensesDispatch: (total) => dispatch(totalExpenses(total)),
 });
 
 Wallet.propTypes = {
@@ -215,6 +218,9 @@ Wallet.propTypes = {
   currencies: PropTypes.arrayOf.isRequired,
   editor: PropTypes.bool.isRequired,
   idToEdit: PropTypes.number.isRequired,
+  totalExpensesDispatch: PropTypes.number.isRequired,
+  receiveExpensesDispatch: PropTypes.arrayOf.isRequired,
+  requestCurrency: PropTypes.func.isRequired,
 };
 // mapStateToProps: ela pega as informações do estado e atualiza onde está sendo solicitado
 // mapdispatchtoprops: vai disparar uma ação e alterar uma informação no state
