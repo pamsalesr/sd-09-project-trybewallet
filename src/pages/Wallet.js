@@ -5,6 +5,14 @@ import PropTypes from 'prop-types';
 import { fetchCurrencyApi, receiveExpenses, totalExpenses } from '../actions';
 import currencyApi from '../services/currencyApi';
 import Tables from '../components/Tables';
+import {
+  renderEmailUser,
+  renderTotalExpenditure,
+  renderExpenseAmount,
+  renderExpenseDescription,
+  renderSelectCurrency,
+  renderMethodPayment,
+  renderRecreation } from '../services/createInputsWallet';
 
 const initialState = {
   valueExpense: '',
@@ -12,29 +20,33 @@ const initialState = {
   selectCurrency: 'USD',
   methodPayment: 'Dinheiro',
   categoryRecreation: 'Alimentação',
+  isDisable: true,
+  editor: false,
+  idToEdit: 0,
 };
 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.renderEmailUser = this.renderEmailUser.bind(this);
-    this.renderTotalExpenditure = this.renderTotalExpenditure.bind(this);
-    this.renderExpenseAmount = this.renderExpenseAmount.bind(this);
-    this.renderExpenseDescription = this.renderExpenseDescription.bind(this);
-    this.renderSelectCurrency = this.renderSelectCurrency.bind(this);
-    this.renderMethodPayment = this.renderMethodPayment.bind(this);
-    this.renderRecreation = this.renderRecreation.bind(this);
     this.addExpenses = this.addExpenses.bind(this);
     this.handlerTargetChange = this.handlerTargetChange.bind(this);
+    this.upDateWallet = this.upDateWallet.bind(this);
+    this.upDateExpense = this.upDateExpense.bind(this);
 
     this.state = initialState;
   }
 
   componentDidMount() {
-    // this.expensesFunction();
     const { requestCurrency } = this.props;
     requestCurrency();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { editor } = this.props;
+    if (prevProps.editor !== editor) {
+      this.upDateWallet();
+    }
   }
 
   async addExpenses() {
@@ -43,7 +55,8 @@ class Wallet extends React.Component {
       selectCurrency,
       methodPayment,
       categoryRecreation } = this.state;
-    const { walletCurrecy, totalExpensesState, receiveExpenses, totalExpenses } = this.props;
+    const { walletCurrecy, totalExpensesState,
+      receiveExpensesDispatch, totalExpenses } = this.props;
     const id = walletCurrecy.length;
     const currencyApis = await currencyApi();
     // o objeto abaixo está sendo atualizado de acordo com o que pede no mockData
@@ -60,7 +73,7 @@ class Wallet extends React.Component {
       .ask) + totalExpensesState);
     const round = Math.round(total * 100) / 100;
     // selectCurrency está entre [] por ser dinâmico, caso não fosse, seria . + o nome da moeda
-    await receiveExpenses(expenses);
+    await receiveExpensesDispatch(expenses);
     totalExpenses(round);
     // setState está limpando os campos que foram digitados após as ações feitas
     this.setState(initialState);
@@ -71,173 +84,106 @@ class Wallet extends React.Component {
     const { name, value } = target;
     this.setState({
       [name]: value,
+    }, () => {
+      const { valueExpense, descriptionExpense,
+        selectCurrency,
+        methodPayment,
+        categoryRecreation } = this.state;
+      if (valueExpense
+        && descriptionExpense
+        && selectCurrency
+        && methodPayment
+        && categoryRecreation) {
+        this.setState({ isDisable: false });
+      } else {
+        this.setState({ isDisable: true });
+      }
     });
   }
 
-  renderEmailUser(value) {
-    const { userLogin } = this.props;
-    return (
-      <div>
-        <span>Email: </span>
-        <p data-testid="email-field">
-          { userLogin }
-        </p>
-        <field
-          value={ value }
-        />
-      </div>
-    );
+  upDateWallet() {
+    const { idToEdit, editor, walletCurrecy } = this.props;
+    const inputs = walletCurrecy.filter((expense) => expense.id === idToEdit)[0];
+    this.setState({ idToEdit,
+      editor,
+      valueExpense: inputs.value,
+      descriptionExpense: inputs.description,
+      selectCurrency: inputs.currency,
+      methodPayment: inputs.method,
+      categoryRecreation: inputs.tag,
+      isDisable: false,
+    });
   }
 
-  renderTotalExpenditure() {
-    const { currencyToExchange, totalExpensesState } = this.props;
-    const validate = !totalExpensesState ? 0 : totalExpensesState;
-    return (
-      <p>
-        {' '}
-        Despesa Total: R$
-        {}
-        <span data-testid="total-field">
-          { validate }
-        </span>
-        <span data-testid="header-currency-field">
-          { currencyToExchange }
-        </span>
-      </p>
-    );
-  }
-
-  renderExpenseAmount(valueExpense) {
-    return (
-      <div>
-        <label htmlFor="valor-input">
-          Valor das despesas:
-          <input
-            id="valor-input"
-            type="text"
-            data-testid="value-input"
-            name="valueExpense"
-            value={ valueExpense }
-            onChange={ this.handlerTargetChange }
-            placeholder="0"
-          />
-        </label>
-      </div>
-    );
-  }
-
-  renderExpenseDescription(descriptionExpense) {
-    return (
-      <div>
-        <label htmlFor="description-input">
-          Descrição das Despesas:
-          <textarea
-            data-testid="description-input"
-            name="descriptionExpense"
-            id="description-input"
-            cols="30"
-            rows="5"
-            value={ descriptionExpense }
-            onChange={ this.handlerTargetChange }
-          />
-        </label>
-      </div>
-    );
-  }
-
-  renderSelectCurrency(selectCurrency) {
-    const { currencies } = this.props;
-    // console.log(selectCurrency)
-    return (
-      <div>
-        <label htmlFor="currencyInput">
-          Selecionar Moeda:
-          <select
-            id="currencyInput"
-            data-testid="currency-input"
-            name="selectCurrency"
-            value={ selectCurrency }
-            onChange={ this.handlerTargetChange }
-          >
-            { currencies && currencies.map((curr) => (
-              <option key={ curr } data-testid={ curr } value={ curr }>
-                { curr }
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  renderMethodPayment(methodPayment) {
-    return (
-      <div>
-        <label htmlFor="method-payment">
-          Método De Pagamento:
-          <select
-            name="methodPayment"
-            id="method-payment"
-            data-testid="method-input"
-            value={ methodPayment }
-            onChange={ this.handlerTargetChange }
-          >
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="Cartão de crédito">Cartão de crédito</option>
-            <option value="Cartão de débito">Cartão de débito</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  renderRecreation(categoryRecreation) {
-    return (
-      <div>
-        <label htmlFor="tag-input">
-          Categoria:
-          <select
-            name="categoryRecreation"
-            id="tag-input"
-            data-testid="tag-input"
-            value={ categoryRecreation }
-            onChange={ this.handlerTargetChange }
-          >
-            <option value="Alimentação">Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Saúde">Saúde</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  render() {
-    const { userLogin, totalExpenses } = this.props;
-    const { valueExpense,
-      descriptionExpense,
+  upDateExpense() {
+    const { valueExpense, descriptionExpense,
       selectCurrency,
       methodPayment,
       categoryRecreation } = this.state;
-    // console.log(this.state)
+    const { idToEdit, walletCurrecy, receiveExpensesDispatch, totalExpenses } = this.props;
+    const expensesUpdate = walletCurrecy.map((expense) => {
+      if (idToEdit === expense.id) {
+        return { ...expense,
+          value: valueExpense,
+          description: descriptionExpense,
+          currency: selectCurrency,
+          method: methodPayment,
+          tag: categoryRecreation,
+        };
+      }
+      return expense;
+    });
+    receiveExpensesDispatch(expensesUpdate);
+    const reduceTotal = expensesUpdate
+      .reduce((total, { value, currency, exchangeRates }) => {
+        const moeda = exchangeRates[currency].ask;
+        const round = Math.round((moeda * value) * 100) / 100;
+        return round + total;
+      }, 0);
+    totalExpenses(reduceTotal);
+  }
+
+  render() {
+    const { userLogin, currencyToExchange,
+      totalExpensesState, currencies } = this.props;
+    const { valueExpense, descriptionExpense,
+      selectCurrency,
+      methodPayment,
+      categoryRecreation, isDisable, editor } = this.state;
     return (
       <div>
         <header>
           <Link to="/carteira">Carteira</Link>
-          { this.renderEmailUser(userLogin) }
-          { this.renderTotalExpenditure(totalExpenses) }
+          { renderEmailUser(userLogin) }
+          { renderTotalExpenditure(currencyToExchange, totalExpensesState) }
         </header>
         <br />
         <section>
           <form>
-            { this.renderExpenseAmount(valueExpense) }
-            { this.renderExpenseDescription(descriptionExpense) }
-            { this.renderSelectCurrency(selectCurrency) }
-            { this.renderMethodPayment(methodPayment) }
-            { this.renderRecreation(categoryRecreation) }
-            <button type="button" id="button-expense" onClick={ this.addExpenses }>Adicionar despesa</button>
+            { renderExpenseAmount(valueExpense, this.handlerTargetChange) }
+            { renderExpenseDescription(descriptionExpense, this.handlerTargetChange) }
+            { renderSelectCurrency(selectCurrency, currencies, this.handlerTargetChange) }
+            { renderMethodPayment(methodPayment, this.handlerTargetChange) }
+            { renderRecreation(categoryRecreation, this.handlerTargetChange) }
+            { !editor ? (
+              <button
+                type="button"
+                id="button-expense"
+                onClick={ this.addExpenses }
+                disabled={ isDisable }
+              >
+                Adicionar despesa
+              </button>
+            ) : (
+              <button
+                type="button"
+                id="button-update-expense"
+                onClick={ this.upDateExpense }
+                disabled={ isDisable }
+              >
+                Editar despesa
+              </button>
+            )}
           </form>
           <Tables />
         </section>
@@ -251,16 +197,24 @@ const mapStateToProps = (state) => ({
   currencyToExchange: state.wallet.currencyToExchange,
   totalExpensesState: state.wallet.totalExpenses,
   currencies: state.wallet.currencies,
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   requestCurrency: () => dispatch(fetchCurrencyApi()),
-  receiveExpenses: (expenses) => dispatch(receiveExpenses(expenses)),
+  receiveExpensesDispatch: (expenses) => dispatch(receiveExpenses(expenses)),
   totalExpenses: (total) => dispatch(totalExpenses(total)),
 });
 
 Wallet.propTypes = {
-  userLogin: PropTypes.func.isRequired,
+  userLogin: PropTypes.string.isRequired,
+  walletCurrecy: PropTypes.arrayOf.isRequired,
+  currencyToExchange: PropTypes.string.isRequired,
+  totalExpensesState: PropTypes.number.isRequired,
+  currencies: PropTypes.arrayOf.isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 // mapStateToProps: ela pega as informações do estado e atualiza onde está sendo solicitado
 // mapdispatchtoprops: vai disparar uma ação e alterar uma informação no state

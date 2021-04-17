@@ -1,14 +1,14 @@
 import {
   RECEIVE_CURRENCY,
   RECEIVE_CURRENCY_ERROR,
-  RECEIVE_EXPENSES, TOTAL_EXPENSES, DELETE_EXPENSE } from '../actions';
+  RECEIVE_EXPENSES, TOTAL_EXPENSES, EDIT_EXPENSES } from '../actions';
 
 const INITIAL_STATE = {
   expenses: [],
   error: '',
   isFetching: false,
-  // editor: false,
-  // idToEdit: 0,
+  editor: false,
+  idToEdit: 0,
   // eles são para permitir a edição e pegar o id daquele que será alterado(despesa)
   currencyToExchange: 'BRL',
   currencies: [],
@@ -31,17 +31,19 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: action.expenses,
+      editor: false,
+      idToEdit: 0,
     };
   case TOTAL_EXPENSES:
     return {
       ...state,
       totalExpenses: action.total,
     };
-  case DELETE_EXPENSE:
+  case EDIT_EXPENSES:
     return {
       ...state,
-      expenses: state.expenses
-        .filter((expense) => (expense !== action.expense ? expense : null)),
+      editor: true,
+      idToEdit: action.idToEdit,
     };
   default:
     return state;
