@@ -3,9 +3,10 @@
 export const USER = 'USER';
 export const WALLET = 'WALLET';
 
-export const loginUser = (state) => ({
+export const loginUser = (email) => ({
   type: USER,
-  state });
+  email,
+});
 
 export const walletCreate = (state) => ({
   type: WALLET,
