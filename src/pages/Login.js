@@ -40,8 +40,8 @@ class Login extends React.Component {
     const { email, password } = this.state;
     // https://github.com/tryber/sd-09-project-trivia-react-redux/pull/138
     const emailValidated = /^[\S.]+@[a-z]+\.\w{2,3}$/g.test(email);
-    // https://pt.stackoverflow.com/questions/373574/regex-para-senha-forte
-    const passwordValidated = /^(?=.*\d)[0-9a-zA-Z$*&@#]{6,}$/.test(password);
+    // https://pt.stackoverflow.com/questions/93883/montar-regex-para-validar-senha
+    const passwordValidated = /^[^\W_]{6}$/.test(password);
     console.log(passwordValidated);
     if (emailValidated && passwordValidated) {
       this.setState({
