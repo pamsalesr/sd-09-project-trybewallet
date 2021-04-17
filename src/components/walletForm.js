@@ -31,6 +31,7 @@ class WalletForm extends Component {
     this.loadExpense = this.loadExpense.bind(this);
     this.addRegister = this.addRegister.bind(this);
     this.editRegister = this.editRegister.bind(this);
+    this.preLoad = this.preLoad.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +39,7 @@ class WalletForm extends Component {
     addCurrency();
   }
 
-  componentDidUpdate() {
+  preLoad() {
     const { editExpense, wallet } = this.props;
     const { editor, idToEdit } = wallet;
     const yesEdit = -1;
@@ -107,7 +108,7 @@ class WalletForm extends Component {
   }
 
   editRegister() {
-    const { id, value, description } = this.state;
+    const { id, value, description, tag, method, currency } = this.state;
     const { wallet, addTotals, totals, upgradeExpenses, editExpense } = this.props;
     const { expenses } = wallet;
     const { currency: currencyTotal } = totals;
@@ -116,7 +117,15 @@ class WalletForm extends Component {
       const newExpenses = [];
       expenses.forEach((expense) => {
         if (expense.id === id) {
-          newExpenses.push(this.state);
+          newExpenses.push({
+            id,
+            value,
+            description,
+            currency,
+            method,
+            tag,
+            exchangeRates: expense.exchangeRates,
+          });
         } else {
           newExpenses.push(expense);
         }
@@ -126,6 +135,7 @@ class WalletForm extends Component {
         totalValue += expense.exchangeRates[expense.currency].ask * expense.value;
         return totalValue;
       }, 0);
+
       addTotals(total, currencyTotal);
       editExpense(0, false);
       this.clearState();
@@ -133,19 +143,28 @@ class WalletForm extends Component {
   }
 
   handleChange({ target }) {
-    const { currenciesApi } = this.props;
+    const { currenciesApi, wallet } = this.props;
     const { currencies } = currenciesApi;
+    const { expenses } = wallet;
+    const { editor } = expenses;
     const { name, value } = target;
 
     if (value !== 0 || value !== '') {
-      this.setState({
-        [name]: value,
-        exchangeRates: currencies,
-      });
+      if (editor) {
+        this.setState({
+          [name]: value,
+        });
+      } else {
+        this.setState({
+          [name]: value,
+          exchangeRates: currencies,
+        });
+      }
     }
   }
 
   render() {
+    this.preLoad();
     const { value, description, currency, method, tag, exchangeRates } = this.state;
     const { wallet } = this.props;
     const { editor, idToEdit } = wallet;
@@ -154,7 +173,6 @@ class WalletForm extends Component {
     if (editor || idToEdit < 0) {
       buttonLabel = 'Editar despesa';
     }
-
     return (
       <div>
         <div className="wallet-form">
@@ -210,7 +228,6 @@ WalletForm.propTypes = {
   currenciesApi: PropTypes.shape({
     currencies: PropTypes.objectOf(PropTypes.objectOf),
   }).isRequired,
-  // currencies: PropTypes.objectOf(PropTypes.objectOf).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
