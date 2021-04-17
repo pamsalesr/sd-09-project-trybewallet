@@ -1,5 +1,5 @@
-function moneyData() {
-  fetch('https://economia.awesomeapi.com.br/json/all')
+async function moneyData() {
+  const money = await fetch('https://economia.awesomeapi.com.br/json/all')
     .then((response) => response.json())
     .then((response) => {
       const keys = Object.keys(response);
@@ -7,11 +7,7 @@ function moneyData() {
       const allMoney = allKeys.map((key) => response[key]);
       return allMoney;
     });
-}
-
-export function moneyCodes() {
-  fetch('https://economia.awesomeapi.com.br/json/all')
-    .then((response) => response.json());
+  return money;
 }
 
 export default moneyData;

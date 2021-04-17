@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import userLogin from '../actions/index';
+import userLogin, { sendMoneyInfo } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -38,7 +38,7 @@ class Login extends React.Component {
 
   render() {
     const { email, pwd, eValid, pwValid } = this.state;
-    const { goToWallet } = this.props;
+    const { goToWallet, getMoneyInfo } = this.props;
     return (
       <div id="login-div">
         <h2>Faça login</h2>
@@ -57,15 +57,17 @@ class Login extends React.Component {
           />
         </form>
         <br />
-        <Link to="/carteira">
-          <button
-            type="button"
-            disabled={ eValid || pwValid }
-            onClick={ () => goToWallet(email) }
-          >
-            Entrar
-          </button>
-        </Link>
+        <button
+          type="button"
+          disabled={ eValid || pwValid }
+          onClick={ () => {
+            goToWallet(email);
+            getMoneyInfo();
+            window.location = '/carteira';
+          } }
+        >
+          Entrar
+        </button>
       </div>
     );
   }
@@ -73,10 +75,23 @@ class Login extends React.Component {
 
 Login.propTypes = {
   goToWallet: PropTypes.func.isRequired,
+  getMoneyInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  getMoneyInfo: () => {
+    fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((result) => {
+        const keys = Object.keys(result);
+        const allKeys = keys.filter((coin) => coin !== 'USDT');
+        const allMoney = allKeys.map((key) => result[key]);
+        console.log(allMoney);
+        dispatch(sendMoneyInfo(allMoney));
+      });
+  },
   goToWallet: (email) => {
+    console.log(email);
     dispatch(userLogin(email));
   },
 });

@@ -1,31 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import moneyData, { moneyCodes } from '../services/api';
-// import { moneyCodes } from '../services/api';
 
 class Wallet extends React.Component {
   constructor() {
     super();
-    this.state = {
-      money: null,
-    };
     this.expenseForm = this.expenseForm.bind(this);
   }
 
-  componentDidMount() {
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((response) => {
-        const keys = Object.keys(response);
-        const allKeys = keys.filter((coin) => coin !== 'USDT');
-        const allMoney = allKeys.map((key) => response[key]);
-        return allMoney;
-      })
-      .then((allMoney) => this.setState({ money: allMoney }));
-  }
-
-  expenseForm(money) {
+  expenseForm() {
+    const { money } = this.props;
     return (
       <form>
         Valor:
@@ -40,7 +24,7 @@ class Wallet extends React.Component {
         Método de pagamento:
         <select data-testid="method-input">
           <option>Dinheiro</option>
-          <option>Cartão de Cŕedito</option>
+          <option>Cartão de Crédito</option>
           <option>Cartão de Débito</option>
         </select>
         Tag:
@@ -59,59 +43,55 @@ class Wallet extends React.Component {
 
   render() {
     const { email, totalExpenses, totalCurrency } = this.props;
-    const { money } = this.state;
-    console.log(this.props);
     return (
       <div>
-        { money ? (
-          <div>
-            <header>
-              <p data-testid="email-field">
-                Email:
-                {' '}
-                { email }
-              </p>
-              <p data-testid="total-field">
-                Despesas totais:
-                {' '}
-                R$
-                {' '}
-                { totalExpenses }
-              </p>
-              <p data-testid="header-currency-field">
-                {' '}
-                { totalCurrency }
-              </p>
-            </header>
-            { this.expenseForm(money) }
-            <table>
-              <tr>
-                <th>Descrição</th>
-                <th>Tag</th>
-                <th>Método de Pagamento</th>
-                <th>Valor</th>
-                <th>Moeda</th>
-                <th>Câmbio Utilizado</th>
-                <th>Valor Convertido</th>
-                <th>Moeda de Conversão</th>
-                <th>Editar/Excluir</th>
-              </tr>
-              <tbody />
-            </table>
-          </div>)
-          : <h1>Loading...</h1>}
+        <header>
+          <p data-testid="email-field">
+            Email:
+            {' '}
+            { email }
+          </p>
+          <p data-testid="total-field">
+            Despesas totais:
+            {' '}
+            R$
+            {' '}
+            { totalExpenses }
+          </p>
+          <p data-testid="header-currency-field">
+            {' '}
+            { totalCurrency }
+          </p>
+        </header>
+        { this.expenseForm() }
+        <table>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de Pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio Utilizado</th>
+            <th>Valor Convertido</th>
+            <th>Moeda de Conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+          <tbody />
+        </table>
       </div>
     );
   }
 }
 
 Wallet.propTypes = {
+  money: PropTypes.arrayOf(PropTypes.object).isRequired,
   email: PropTypes.string.isRequired,
   totalExpenses: PropTypes.number.isRequired,
   totalCurrency: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  money: state.moneyInfo.money,
   email: state.user.email,
   totalExpenses: 0,
   totalCurrency: 'BRL',
