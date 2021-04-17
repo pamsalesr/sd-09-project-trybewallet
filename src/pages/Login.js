@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
+import { loginUser } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -6,11 +10,13 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      validated: true,
       password: '',
+      validated: true,
+      redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.validateInfo = this.validateInfo.bind(this);
   }
 
@@ -21,12 +27,22 @@ class Login extends React.Component {
     }, () => this.validateInfo());
   }
 
+  handleClick() {
+    const { email } = this.state;
+    const { addLogin } = this.props;
+    addLogin(email);
+    this.setState({
+      redirect: true,
+    });
+  }
+
   validateInfo() {
     const { email, password } = this.state;
     // https://github.com/tryber/sd-09-project-trivia-react-redux/pull/138
     const emailValidated = /^[\S.]+@[a-z]+\.\w{2,3}$/g.test(email);
     // https://pt.stackoverflow.com/questions/373574/regex-para-senha-forte
     const passwordValidated = /^(?=.*\d)[0-9a-zA-Z$*&@#]{6,}$/.test(password);
+    console.log(passwordValidated);
     if (emailValidated && passwordValidated) {
       this.setState({
         validated: false,
@@ -39,7 +55,10 @@ class Login extends React.Component {
   }
 
   render() {
-    const { validated } = this.state;
+    const { validated, redirect } = this.state;
+    if (redirect) {
+      return <Redirect to="/carteira" />;
+    }
     return (
       <main>
         <h3>Login</h3>
@@ -58,8 +77,9 @@ class Login extends React.Component {
           type="password"
         />
         <button
-          type="submit"
           disabled={ validated }
+          onClick={ this.handleClick }
+          type="submit"
         >
           Entrar
         </button>
@@ -68,4 +88,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  addLogin: (email) => dispatch(loginUser(email)),
+});
+
+Login.propTypes = {
+  addLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
