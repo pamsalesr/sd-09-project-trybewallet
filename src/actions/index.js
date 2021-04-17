@@ -6,3 +6,7 @@ export const WALLET = 'WALLET';
 export const loginUser = (state) => ({
   type: USER,
   state });
+
+export const walletCreate = (state) => ({
+  type: WALLET,
+  state });
