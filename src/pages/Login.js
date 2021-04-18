@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import setUserEmail from '../actions';
+import { setUserEmail } from '../actions';
 import './Login.css';
 
-import emailIcon from '../images/email_black_24dp.svg';
-import lockIcon from '../images/lock_black_24dp.svg';
+import emailIcon from '../images/email_white_24dp.svg';
+import lockIcon from '../images/lock_white_24dp.svg';
 
 class Login extends React.Component {
   constructor(props) {

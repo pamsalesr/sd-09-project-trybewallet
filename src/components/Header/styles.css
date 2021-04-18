@@ -1,0 +1,17 @@
+.header-component {
+  display: flex;
+  color: whitesmoke;
+  justify-content: space-between;
+  margin: auto;
+  width: 90vw;
+  padding: 10px 50px;
+}
+
+.header-info {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-currency {
+  margin-left: 50px;
+}

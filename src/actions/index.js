@@ -1,5 +1,4 @@
-import SET_EMAIL from './actionTypes';
+import { SET_EMAIL, ADD_EXPENSE } from './actionTypes';
 
-const setUserEmail = (user) => ({ type: SET_EMAIL, user });
-
-export default setUserEmail;
+export const setUserEmail = (user) => ({ type: SET_EMAIL, user });
+export const addExpense = (expenses) => ({ type: ADD_EXPENSE, payload: [expenses] });

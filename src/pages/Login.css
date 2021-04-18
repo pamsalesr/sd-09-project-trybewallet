@@ -1,5 +1,6 @@
 .login-section {
   align-items: center;
+  color: whitesmoke;
   display: flex;
   flex-direction: column;
   height: 70vh;
@@ -19,9 +20,9 @@
 }
 
 .login-form input {
-  background: #1d1b71;
-  border: 2px solid #1d1b71;
-  color: whitesmoke;
+  background: whitesmoke;
+  border: 2px solid whitesmoke;
+  color: #232528;
   margin-left: -1px;
   outline: none;
   padding: 10px;
@@ -29,7 +30,7 @@
 }
 
 .login-form input:focus {
-  border: 2px solid #1d1b71;
+  border: 2px solid whitesmoke;
 }
 
 .data-input {
@@ -38,7 +39,7 @@
 }
 
 .input-image {
-  border: 2px solid #1d1b71;
+  border: 2px solid whitesmoke;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
   color: white;
@@ -53,5 +54,5 @@
 }
 
 ::placeholder {
-  color: white;
+  color: #232528;
 }
