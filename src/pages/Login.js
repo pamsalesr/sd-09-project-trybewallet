@@ -1,31 +1,57 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import newUser from '../actions/index';
 
+const VALID_LENGTH_PASSWORD = 6;
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
       email: '',
       password: '',
-      isValidEmail: false,
-      isValidPassword: false,
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleInputEmailChange({ target: value }) {
-    this.setState({ email: value });
+  handleInputChange({ target: { value, name } }) {
+    this.setState({ [name]: value });
+  }
+
+  loginUser() {
+    const { newUser: addUserDispatch, history } = this.props;
+    const { email } = this.state;
+    addUserDispatch({ email });
+    history.push('/carteira');
   }
 
   render() {
-    const { isValidEmail, isValidPassword } = this.state;
+    const { email, password } = this.state;
+    const REGEX_EMAIL = /\S+@\S+\.\S+/gi;
+    const isValidEmail = email ? REGEX_EMAIL.test(email) : false;
+    const isValidPassword = password.length >= VALID_LENGTH_PASSWORD;
+
     return (
       <>
-        <input type="email" data-testid="email-input" placeholder="E-mail" />
         <input
+          type="email"
+          name="email"
+          onChange={ this.handleInputChange }
+          data-testid="email-input"
+          placeholder="E-mail"
+        />
+        <input
+          name="password"
+          onChange={ this.handleInputChange }
           type="password"
           data-testid="password-input"
           placeholder="Senha"
         />
-        <button type="button" disabled={ !(isValidEmail && isValidPassword) }>
+        <button
+          type="button"
+          disabled={ !(isValidEmail && isValidPassword) }
+          onClick={ () => this.loginUser() }
+        >
           Entrar
         </button>
       </>
@@ -33,4 +59,15 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  newUser,
+};
+
+Login.propTypes = {
+  newUser: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
