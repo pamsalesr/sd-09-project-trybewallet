@@ -4,6 +4,9 @@ export const TOTAL_PRICE = 'TOTAL_PRICE';
 export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const HANDLE_DELETE = 'HANDLE_DELETE';
 export const HANDLE_NEW_TOTAL = 'HANDLE_NEW_TOTAL';
+export const EDIT_EXPENSE_ON = 'EDIT_EXPENSE_ON';
+export const EDIT_EXPENSE_OFF = 'EDIT_EXPENSE_OFF';
+export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
 
 export function saveLoginInformation(email) {
   return {
@@ -49,4 +52,18 @@ export const handleDelete = (expense) => ({
 export const handleNewTotal = (newTotal) => ({
   type: HANDLE_NEW_TOTAL,
   newTotal,
+});
+
+export const editExpenseOn = (editObject) => ({
+  type: EDIT_EXPENSE_ON,
+  editObject,
+});
+
+export const editExpenseOff = () => ({
+  type: EDIT_EXPENSE_OFF,
+});
+
+export const updateExpenses = (updatedExpenses) => ({
+  type: UPDATE_EXPENSES,
+  updatedExpenses,
 });

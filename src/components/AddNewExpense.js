@@ -1,12 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCurrency, addExpenses, handleTotalPrice } from '../actions';
+import {
+  getCurrency,
+  addExpenses,
+  handleTotalPrice,
+  editExpenseOff,
+  updateExpenses,
+} from '../actions';
 
 class AddNewExpense extends React.Component {
   constructor() {
     super();
     this.handleClick = this.handleClick.bind(this);
+    this.functionEditableExpense = this.functionEditableExpense.bind(this);
     this.state = {
       value: '',
       description: '',
@@ -19,7 +26,11 @@ class AddNewExpense extends React.Component {
   componentDidMount() {
     const { dispatchCurrencyToProps } = this.props;
     dispatchCurrencyToProps();
-    // this.requestCurrency();
+  }
+
+  functionEditableExpense() {
+    const { editableExpenseState } = this.props;
+    this.setState({ ...editableExpenseState });
   }
 
   async requestCurrency() {
@@ -32,8 +43,23 @@ class AddNewExpense extends React.Component {
 
   async handleClick() {
     const rates = await this.requestCurrency();
-    const { value, description, currency, method, tag } = this.state;
-    const { expenses, dispatchExpenses, dispatchTotalPrice } = this.props;
+    const { value, description, currency, method, tag, id } = this.state;
+    const {
+      expenses,
+      dispatchExpenses,
+      dispatchTotalPrice,
+      editButtonOn,
+      dispatchEdit,
+    } = this.props;
+    if (editButtonOn) {
+      const updatedObject = expenses.map((expense) => {
+        if (expense.id === id) {
+          return this.state;
+        }
+        return expense;
+      });
+      return dispatchEdit(updatedObject);
+    }
     const expensesObj = {
       id: expenses.length,
       value,
@@ -63,8 +89,6 @@ class AddNewExpense extends React.Component {
   currencyInput() {
     const { currencies } = this.props;
     const { currency } = this.state;
-    // console.log(currencies);
-    // if(currencies.length === 0) return <p>Loading</p>
     return (
       <label htmlFor="currency-input">
         Moeda:
@@ -146,6 +170,12 @@ class AddNewExpense extends React.Component {
 
   render() {
     const { value, description, method, tag } = this.state;
+    const { isEditable, setEditExpenseOff, editButtonOn } = this.props;
+    if (isEditable) {
+      this.functionEditableExpense();
+      setEditExpenseOff();
+    }
+
     return (
       <div>
         { this.valueInput(value) }
@@ -162,7 +192,9 @@ class AddNewExpense extends React.Component {
         </label>
         { this.paymentInput(method) }
         { this.tagInput(tag) }
-        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
+        <button type="button" onClick={ this.handleClick }>
+          { !editButtonOn ? 'Adicionar despesa' : 'Editar despesa' }
+        </button>
       </div>
     );
   }
@@ -172,12 +204,17 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  isEditable: state.wallet.isEditable,
+  editButtonOn: state.wallet.editButtonOn,
+  editableExpenseState: state.wallet.editableExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchCurrencyToProps: () => dispatch(getCurrency()),
   dispatchExpenses: (expensesObj) => dispatch(addExpenses(expensesObj)),
   dispatchTotalPrice: (value) => dispatch(handleTotalPrice(value)),
+  dispatchEdit: (editObject) => dispatch(updateExpenses(editObject)),
+  setEditExpenseOff: () => dispatch(editExpenseOff()),
 });
 
 AddNewExpense.propTypes = {
@@ -186,6 +223,11 @@ AddNewExpense.propTypes = {
   dispatchCurrencyToProps: PropTypes.func.isRequired,
   dispatchExpenses: PropTypes.func.isRequired,
   dispatchTotalPrice: PropTypes.func.isRequired,
+  editableExpenseState: PropTypes.objectOf(PropTypes.string).isRequired,
+  editButtonOn: PropTypes.bool.isRequired,
+  dispatchEdit: PropTypes.func.isRequired,
+  isEditable: PropTypes.bool.isRequired,
+  setEditExpenseOff: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewExpense);

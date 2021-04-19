@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { handleDelete, handleNewTotal } from '../actions';
+import { handleDelete, handleNewTotal, editExpenseOn } from '../actions';
 
 class ExpenseTable extends React.Component {
   tableBody(expenses) {
@@ -11,7 +11,7 @@ class ExpenseTable extends React.Component {
         <td>{expense.tag}</td>
         <td>{expense.method}</td>
         <td>{expense.value}</td>
-        <td>{expense.exchangeRates[expense.currency].name}</td>
+        <td>{expense.exchangeRates[expense.currency].name.split('/')[0]}</td>
         <td>{parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
         <td>
           {(parseFloat(expense.exchangeRates[expense.currency].ask) * expense.value)
@@ -26,6 +26,13 @@ class ExpenseTable extends React.Component {
           >
             Excluir
           </button>
+          <button
+            type="button"
+            data-testid="edit-btn"
+            onClick={ () => this.editExpense(expense) }
+          >
+            Editar
+          </button>
         </td>
       </tr>));
   }
@@ -38,6 +45,11 @@ class ExpenseTable extends React.Component {
       .reduce((total, expense) => total + (
         expense.value * parseFloat(expense.exchangeRates[expense.currency].ask)), 0);
     dispatchNewTotal(newTotal);
+  }
+
+  editExpense(expense) {
+    const { dispatchEdit } = this.props;
+    dispatchEdit(expense);
   }
 
   render() {
@@ -69,6 +81,7 @@ ExpenseTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchNewExpense: PropTypes.func.isRequired,
   dispatchNewTotal: PropTypes.func.isRequired,
+  dispatchEdit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -78,6 +91,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchNewExpense: (expenses) => dispatch(handleDelete(expenses)),
   dispatchNewTotal: (total) => dispatch(handleNewTotal(total)),
+  dispatchEdit: (editObject) => dispatch(editExpenseOn(editObject)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

@@ -4,12 +4,18 @@ import {
   ADD_EXPENSES,
   HANDLE_DELETE,
   HANDLE_NEW_TOTAL,
+  EDIT_EXPENSE_ON,
+  EDIT_EXPENSE_OFF,
+  UPDATE_EXPENSES,
 } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   totalPrice: 0,
   expenses: [],
+  isEditable: false,
+  editButtonOn: false,
+  editableExpense: {},
 };
 
 function wallet(state = INITIAL_STATE, action) {
@@ -38,6 +44,25 @@ function wallet(state = INITIAL_STATE, action) {
     return {
       ...state,
       totalPrice: action.newTotal,
+    };
+  case EDIT_EXPENSE_ON:
+    return {
+      ...state,
+      isEditable: true,
+      editButtonOn: true,
+      editableExpense: action.editObject,
+    };
+  case EDIT_EXPENSE_OFF:
+    return {
+      ...state,
+      isEditable: false,
+    };
+  case UPDATE_EXPENSES:
+    return {
+      ...state,
+      expenses: action.updatedExpenses,
+      isEditable: false,
+      editButtonOn: false,
     };
   default:
     return state;
