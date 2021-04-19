@@ -1,11 +1,10 @@
-const APIURL = 'https://economia.awesomeapi.com.br/json/';
+const APIURL = 'https://economia.awesomeapi.com.br/json/all';
 
-const awesomeAPI = (currency) => (
-  fetch(`${APIURL}${currency.split().join()}`)
-    .then((response) => (
-      response
-        .json()
-        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+const awesomeAPI = () => (
+  fetch(APIURL)
+    .then((response) => (response
+      .json()
+      .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     ))
 );
 

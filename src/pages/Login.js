@@ -20,8 +20,8 @@ class Login extends React.Component {
     this.enableButton = this.enableButton.bind(this);
   }
 
-  changeHandler(event) {
-    const { name, value } = event.target;
+  changeHandler({ target }) {
+    const { name, value } = target;
     this.setState({ [name]: value }, () => { this.validateBtnLogin(); });
   }
 
