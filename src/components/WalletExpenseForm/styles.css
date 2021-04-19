@@ -13,8 +13,7 @@ body {
   margin-left: 10px;
 }
 
-.input-form ,
-select {
+.input-form , select {
   outline: none;
 }
 

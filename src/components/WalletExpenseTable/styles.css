@@ -14,8 +14,7 @@ table thead tr {
   text-align: left;
 }
 
-table th ,
-table td {
+table th , table td {
   padding: 12px 15px;
 }
 
