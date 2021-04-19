@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Header from '../component/Header';
 import Form from '../component/Form';
 import Table from '../component/Table';
 
 class Wallet extends React.Component {
   render() {
-    // const { consultEditButton } = this.props;
+    const { editButton } = this.props;
     return (
       <>
         <div>
           <Header />
         </div>
         <div>
-          <Form />
+          <form>
+            <Form key={ editButton } />
+          </form>
         </div>
         <div>
           <Table />
@@ -25,11 +27,11 @@ class Wallet extends React.Component {
 }
 
 const mapStateToProps = ({ wallet }) => ({
-  consultEditButton: wallet.editButton,
+  editButton: wallet.editButton,
 });
 
-// Wallet.propsTypes = {
-//   consultEditButton: PropTypes.any,
-// }.isRequired;
+Wallet.propsTypes = {
+  editButton: PropTypes.bool,
+}.isRequired;
 
 export default connect(mapStateToProps)(Wallet);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { activeEditButton, expenseInsert } from '../actions';
+import { expensesUpdate, activeEditButton, expenseInsert } from '../actions';
 
 class Form extends Component {
   constructor(props) {
@@ -63,23 +63,27 @@ class Form extends Component {
 
   createExpense() {
     const {
-      dispatchExpense, consultExpenses, consultEditButton, consultExpenseId,
+      dispatchExpensesUpdate, dispatchExpense, consultExpenses, consultEditButton,
+      consultExpenseId,
     } = this.props;
     const { value, description, currency, method, tag, exchangeRates } = this.state;
-    let idValue = consultExpenses.length;
-    if (consultEditButton) {
-      idValue = consultExpenseId;
-    }
+    const idValue = consultExpenses.length;
     const expense = {
-      id: idValue,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates,
+      id: idValue, value, description, currency, method, tag, exchangeRates,
     };
-    dispatchExpense(expense);
+
+    if (consultEditButton) {
+      expense.id = consultExpenseId;
+      let reNew = consultExpenses.filter((item) => (item.id < consultExpenseId));
+      const reNewPos = consultExpenses.filter((item) => (item.id > consultExpenseId));
+      reNew = [...reNew, expense];
+      if (consultExpenses.length > consultExpenseId) {
+        reNew = [...reNew, ...reNewPos];
+      }
+      dispatchExpensesUpdate(reNew);
+    } else {
+      dispatchExpense(expense);
+    }
     this.setState({
       value: 0,
     });
@@ -198,17 +202,11 @@ class Form extends Component {
   renderButtonExpenditureAdd() {
     const { consultEditButton } = this.props;
     let textButton = '';
-    if (consultEditButton) {
-      textButton = 'Editar despesa';
-    } else {
+    if (consultEditButton) { textButton = 'Editar despesa'; } else {
       textButton = 'Adicionar despesa';
     }
     return (
-      <button
-        type="button"
-        id="button-expenditure-add"
-        onClick={ this.takeInputs }
-      >
+      <button type="button" id="button-exp-add" onClick={ this.takeInputs }>
         { textButton }
       </button>
     );
@@ -217,14 +215,14 @@ class Form extends Component {
   render() {
     const { value, description, currency, method, tag } = this.state;
     return (
-      <form>
+      <>
         { this.renderExpenditureAdd(value) }
         { this.renderExpenditureDescription(description) }
         { this.renderRegisteredCurrency(currency) }
         { this.renderPaymentMethod(method) }
         { this.renderExpenditureCategory(tag) }
         { this.renderButtonExpenditureAdd() }
-      </form>
+      </>
     );
   }
 }
@@ -238,6 +236,7 @@ const mapStateToProps = ({ wallet }) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expense) => dispatch(expenseInsert(expense)),
   dispatchEditButton: (editButton) => dispatch(activeEditButton(editButton)),
+  dispatchExpensesUpdate: (expenses) => dispatch(expensesUpdate(expenses)),
 });
 
 Form.propTypes = {

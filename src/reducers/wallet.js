@@ -4,21 +4,6 @@ const INITIAL_STATE = {
   expenses: [],
   editButton: false,
   expenseId: 0,
-  // exchangeRates: [],
-  // totalExpenses: 0,
-};
-
-const dropExpense = () => {
-  // const reNew = expenses.filter((expense) => (item !== expense.id));
-  // dispatchExpensesUpdate(reNew);
-  console.log(INITIAL_STATE.expenseId);
-  // transforma a possição em null
-  // if(item >= 3){
-  delete INITIAL_STATE.expenses[INITIAL_STATE.expenseId];
-  // }
-  // let testes = expenses
-  // }
-  console.log('afdfasdfasdfasdfasdfasdfasdfasdfasdfa');
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -28,12 +13,6 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       editButton: action.editButton,
       expenseId: action.expenseId,
-      // expenses : state.expenses.map((expense) => {
-      //   if (expense.id === action.expense.id) {
-      //     return action.expense;
-      //   }
-      //   return expense;
-      // }),
     };
   case EXPENSES_UPDATE:
     return {
@@ -41,14 +20,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: action.expenses,
     };
   case EXPENSE_SAVE:
-    // dropExpense();
-    if (INITIAL_STATE.editButton === true) {
-      dropExpense();
-      return {
-        ...state,
-        expenses: [...state.expenses, action.expenses],
-      };
-    } return {
+    return {
       ...state,
       expenses: [...state.expenses, action.expenses],
     };

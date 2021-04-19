@@ -9,36 +9,16 @@ class Table extends Component {
     this.dropExpense = this.dropExpense.bind(this);
     this.updateExpense = this.updateExpense.bind(this);
   }
-  // teste so gosta da verção com .map
-  // calcConvertion(value, ask){
-  //   // const { consultExpenses } = this.props;
-  //   // consultExpenses.forEach((element) => {
-  //   const convertValue = value;
-  //   const convertAsk = ask;
-  //   const calc = convertValue * convertAsk;
-  //   // });
-  //   return calc.toFixed(2);
-  // }
 
   dropExpense(item) {
     const { expenses, dispatchExpensesUpdate } = this.props;
     const reNew = expenses.filter((expense) => (item !== expense.id));
     dispatchExpensesUpdate(reNew);
-    // console.log( expenses )
-    // transforma a possição em null
-    // if(item >= 3){
-    // delete expenses[item];
-    // }
-    // let testes = expenses
-    // }
-    // console.log( testes )
-    // dispatchExpensesUpdate(expenses);
   }
 
   updateExpense(item) {
     const { dispatchEditButton } = this.props;
     dispatchEditButton(true, item);
-    // setar estado global pro botao trocar texto
   }
 
   renderHeader() {
@@ -118,9 +98,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Table.propTypes = {
-  // expenses: PropTypes.func.isRequired,
   expenses: PropTypes.func,
-  // expenses: PropTypes.func.isRequired,
   dispatchExpensesUpdate: PropTypes.func,
 }.isRequired;
 
