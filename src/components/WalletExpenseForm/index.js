@@ -180,10 +180,6 @@ class WalletExpenseForm extends Component {
     );
   }
 
-  /* async submitExpense() {
-    const getCurrenciesCotation = await this.fetchCurrencies
-  } */
-
   render() {
     const { value, description, currency, method, tag } = this.state;
     return (
@@ -216,5 +212,3 @@ WalletExpenseForm.propTypes = {
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletExpenseForm);
-
-// export default WalletExpenseForm;

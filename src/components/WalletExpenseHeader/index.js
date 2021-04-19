@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-class Header extends Component {
+class WalletExpenseHeader extends Component {
   render() {
     const { email, total = 0 } = this.props;
     return (
@@ -33,9 +33,9 @@ const mapStateToProps = (state) => ({
   total: state.wallet.total,
 });
 
-Header.propTypes = {
+WalletExpenseHeader.propTypes = {
   email: PropTypes.string,
   expenses: PropTypes.arrayOf({}),
 }.isRequired;
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(WalletExpenseHeader);

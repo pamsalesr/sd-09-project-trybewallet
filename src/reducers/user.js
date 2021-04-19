@@ -1,5 +1,3 @@
-// import { SET_EMAIL } from '../actions/actionTypes';
-
 const INITIAL_STATE = {
   email: '',
 };
