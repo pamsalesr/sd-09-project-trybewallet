@@ -25,9 +25,9 @@ export default class ExpensesForm extends Component {
     try {
       const response = await fetch(endpoint);
       const result = await response.json();
-      console.log(`result: ${result.json()}`);
+      const entries = Object.entries(result);
 
-      this.setState({ currency: result });
+      this.setState({ currency: entries });
     } catch (error) {
       console.log(error);
     }
@@ -62,15 +62,26 @@ export default class ExpensesForm extends Component {
   currencyinput() {
     const { currency } = this.state;
     return (
-      // currency.map((value, key) => (
-      //   <p key={ key }>{ value }</p>
-      // ))
-      console.log(`render: ${currency}`)
-      // <label htmlFor="currency-input">
-      //   Moeda
-      //   <select data-testid="currency-input" id="currency-input">
-      //   </select>
-      // </label>
+      <label htmlFor="currency-input">
+        Moeda
+        <select data-testid="currency-input" id="currency-input">
+          {
+            currency.map((value) => (
+              value[0] === 'USDT'
+                ? ''
+                : (
+                  <option
+                    key={ value[0] }
+                    value={ value[0] }
+                    data-testid={ value[0] }
+                  >
+                    { value[0] }
+                  </option>
+                )
+            ))
+          }
+        </select>
+      </label>
     );
   }
 
@@ -110,7 +121,7 @@ export default class ExpensesForm extends Component {
         { this.descriptionInput() }
         { this.currencyinput() }
         { this.methodInput() }
-        {}
+        { this.tagInput() }
         <button type="submit" onClick="#">
           Adicionar despesa
         </button>
