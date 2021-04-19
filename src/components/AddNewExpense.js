@@ -60,7 +60,7 @@ class AddNewExpense extends React.Component {
       });
       return dispatchEdit(updatedObject);
     }
-    const expensesObj = {
+    const obj = {
       id: expenses.length,
       value,
       description,
@@ -69,8 +69,12 @@ class AddNewExpense extends React.Component {
       tag,
       exchangeRates: rates,
     };
-    dispatchExpenses(expensesObj);
-    dispatchTotalPrice(parseFloat(value) * parseFloat(rates[currency].ask));
+    dispatchExpenses(obj);
+    const newTotal = (expenses
+      .reduce((total, expense) => (
+        expense.value * parseFloat(expense.exchangeRates[expense.currency].ask) + total),
+      0)) + obj.value * parseFloat(obj.exchangeRates[obj.currency].ask);
+    dispatchTotalPrice(newTotal);
     this.setState({
       value: '',
       description: '',
@@ -211,7 +215,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchCurrencyToProps: () => dispatch(getCurrency()),
-  dispatchExpenses: (expensesObj) => dispatch(addExpenses(expensesObj)),
+  dispatchExpenses: (obj) => dispatch(addExpenses(obj)),
   dispatchTotalPrice: (value) => dispatch(handleTotalPrice(value)),
   dispatchEdit: (editObject) => dispatch(updateExpenses(editObject)),
   setEditExpenseOff: () => dispatch(editExpenseOff()),

@@ -43,7 +43,7 @@ class ExpenseTable extends React.Component {
     dispatchNewExpense(newExpenses);
     const newTotal = newExpenses
       .reduce((total, expense) => (
-        expense.value * parseFloat(expense.exchangeRates[expense.currency].ask) - total),
+        expense.value * parseFloat(expense.exchangeRates[expense.currency].ask) + total),
       0);
     dispatchNewTotal(newTotal);
   }
