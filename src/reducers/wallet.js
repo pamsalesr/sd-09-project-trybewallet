@@ -3,7 +3,6 @@ import {
   TOTAL_PRICE,
   ADD_EXPENSES,
   HANDLE_DELETE,
-  HANDLE_NEW_TOTAL,
   EDIT_EXPENSE_ON,
   EDIT_EXPENSE_OFF,
   UPDATE_EXPENSES,
@@ -33,17 +32,12 @@ function wallet(state = INITIAL_STATE, action) {
   case TOTAL_PRICE:
     return {
       ...state,
-      totalPrice: state.totalPrice + action.value,
+      totalPrice: action.value,
     };
   case HANDLE_DELETE:
     return {
       ...state,
       expenses: action.expense,
-    };
-  case HANDLE_NEW_TOTAL:
-    return {
-      ...state,
-      totalPrice: action.newTotal,
     };
   case EDIT_EXPENSE_ON:
     return {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { handleDelete, handleNewTotal, editExpenseOn } from '../actions';
+import { handleDelete, handleTotalPrice, editExpenseOn } from '../actions';
 
 class ExpenseTable extends React.Component {
   tableBody(expenses) {
@@ -42,8 +42,9 @@ class ExpenseTable extends React.Component {
     const newExpenses = expenses.filter((expense) => expense.id !== id);
     dispatchNewExpense(newExpenses);
     const newTotal = newExpenses
-      .reduce((total, expense) => total + (
-        expense.value * parseFloat(expense.exchangeRates[expense.currency].ask)), 0);
+      .reduce((total, expense) => (
+        expense.value * parseFloat(expense.exchangeRates[expense.currency].ask) - total),
+      0);
     dispatchNewTotal(newTotal);
   }
 
@@ -90,7 +91,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNewExpense: (expenses) => dispatch(handleDelete(expenses)),
-  dispatchNewTotal: (total) => dispatch(handleNewTotal(total)),
+  dispatchNewTotal: (total) => dispatch(handleTotalPrice(total)),
   dispatchEdit: (editObject) => dispatch(editExpenseOn(editObject)),
 });
 
