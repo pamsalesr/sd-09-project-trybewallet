@@ -13,12 +13,15 @@ const INITIAL_STATE = {
 };
 
 function newExpense({ expenses, total }, { expense: inputExpense, response }) {
-  const FIXED_FLOAT = 3;
   const id = expenses.length;
   const newTotal = total
-    + parseFloat(inputExpense.value) * response[inputExpense.currency].ask;
+      + (
+        Math.round(
+          inputExpense.value * response[inputExpense.currency].ask * 100,
+        ) / 100
+      ).toFixed(2);
   return {
-    total: parseFloat(newTotal.toFixed(FIXED_FLOAT)),
+    total: newTotal,
     expenses: [
       ...expenses,
       {
