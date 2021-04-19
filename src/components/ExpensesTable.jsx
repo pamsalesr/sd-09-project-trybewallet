@@ -1,23 +1,58 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import TableButtons from './TableButtons';
+import Thead from './Thead';
 
 class Table extends React.Component {
   render() {
+    const { expenses } = this.props;
+    const coin = 'Real Brasileiro';
     return (
       <table>
-        <tr>
-          <th>Descrição</th>
-          <th>Tag</th>
-          <th>Método de pagamento</th>
-          <th>Valor</th>
-          <th>Moeda</th>
-          <th>Câmbio utilizado</th>
-          <th>Valor convertido</th>
-          <th>Moeda de conversão</th>
-          <th>Editar/Excluir</th>
-        </tr>
+        <Thead />
+        <tbody>
+          {expenses.map((expense) => (
+            <tr key={ expense.id }>
+              <td>
+                {expense.description}
+              </td>
+              <td>
+                {expense.tag}
+              </td>
+              <td>
+                {expense.method}
+              </td>
+              <td>
+                {expense.value}
+              </td>
+              <td>
+                {expense.exchangeRates[expense.currency].name}
+              </td>
+              <td>
+                {parseFloat(expense.exchangeRates[expense.currency].ask).toFixed(2)}
+              </td>
+              <td>
+                {
+                  parseFloat(expense.value * expense.exchangeRates[expense.currency].ask)
+                    .toFixed(2)
+                }
+              </td>
+              <td>
+                {coin}
+              </td>
+              <td>
+                <TableButtons expense={ expense.id } />
+              </td>
+            </tr>))}
+        </tbody>
       </table>
     );
   }
 }
 
-export default Table;
+const mapStateToProps = (state) => ({
+  // pegando informação do estado
+  expenses: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps)(Table);

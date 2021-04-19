@@ -175,20 +175,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
-
-/*
-Dúvidas:
-
-1 - Como controlar o estado de um campo que está sendo criado por uma função?
-2 - Como enviar as info do estado local do form para o redux?
-
-Próximos passos:
-
-Adicionar a despesa numa tabela:
-Como?
-
-No conponente Wallet controlar o botão "Adicionar despesa", ele vai adicionar a
-despesa, nesse momento será criada uma tr com as informações do formulário
-preenchido;
-
-*/
