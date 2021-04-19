@@ -1,19 +1,27 @@
-// Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import ADD_EXPENSE from '../actions/actionTypes';
-
 const INITIAL_STATE = {
-  currencies: [],
+  /* value: '',
+  description: '',
+  currency: '',
+  method: '',
+  tag: '', */
   expenses: [],
-  total: 0,
 };
 
-function wallet(state = INITIAL_STATE, action) {
+const addExpense = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case ADD_EXPENSE:
-    return { email: action.wallet };
+  case 'ADD_EXPENSE':
+    return { ...state, expenses: [...state.expenses, ...action.payload] };
+    /* value: action.wallet,
+      description: action.wallet,
+      currency: action.currency,
+      method: action.method,
+      tag: action.tag, */
+    // };
+  case 'SUM_EXPENSES':
+    return { ...state, total: parseFloat((state.total + action.payload).toFixed(2)) };
   default:
     return state;
   }
-}
+};
 
-export default wallet;
+export default addExpense;

@@ -1,13 +1,12 @@
-import { SET_EMAIL } from '../actions/actionTypes';
+// import { SET_EMAIL } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   email: '',
-  // userName: 'Usuário',
 };
 
 function user(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case SET_EMAIL:
+  case 'SET_EMAIL':
     return { email: action.user };
   default:
     return state;

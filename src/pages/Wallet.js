@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from '../components/Header/index';
-import TransactionForm from '../components/TransactionForm/index';
+import WalletExpenseForm from '../components/WalletExpenseForm/index';
 
 class Wallet extends React.Component {
   render() {
     return (
       <>
         <Header />
-        <TransactionForm />
+        <WalletExpenseForm />
       </>
     );
   }

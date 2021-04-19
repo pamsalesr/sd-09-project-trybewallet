@@ -48,7 +48,7 @@ class Login extends React.Component {
               className="data-input"
               data-testid="email-input"
               placeholder="E-mail"
-              onChange={ (event) => this.handleChange(event) }
+              onChange={ this.handleChange }
               pattern={ patternEmail }
               required
             />
@@ -61,7 +61,7 @@ class Login extends React.Component {
               className="data-input"
               data-testid="password-input"
               placeholder="Senha"
-              onChange={ (event) => this.handleChange(event) }
+              onChange={ this.handleChange }
               pattern={ patternPassword }
               required
             />
