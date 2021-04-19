@@ -1,16 +1,16 @@
 import React from 'react';
 import { string } from 'prop-types';
-import HeaderComponent from '../components/HeaderComponent';
-import TableComponent from '../components/TableComponent';
-// import NewExpenseComponent from '../components/NewExpenseComponent';
+import Header from '../components/Header';
+import ExpensesTable from '../components/ExpensesTable';
+import NewExpense from '../components/NewExpense';
 
 class Wallet extends React.Component {
   render() {
     return (
       <div>
-        <HeaderComponent />
-        {/* <NewExpenseComponent /> */}
-        <TableComponent />
+        <Header />
+        <NewExpense />
+        <ExpensesTable />
       </div>);
   }
 }

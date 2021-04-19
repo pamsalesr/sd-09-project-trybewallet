@@ -1,7 +1,7 @@
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_EXPENSE = 'SET_EXPENSE';
-export const SET_TOTAL_PRICE = 'SET_TOTAL_PRICE';
+export const SET_TOTAL_EXPENSE = 'SET_TOTAL_EXPENSE';
 export const UPDATE_EXPENSES = 'UPDATE_EXPENSES';
 export const SET_EDIT_MODE = 'SET_EDIT_MODE';
 
@@ -20,9 +20,9 @@ export const setExpense = (expense) => ({
   expense,
 });
 
-export const setTotalPrice = (totalPrice) => ({
-  type: SET_TOTAL_PRICE,
-  totalPrice,
+export const setTotalExpense = (totalExpense) => ({
+  type: SET_TOTAL_EXPENSE,
+  totalExpense,
 });
 
 export const updateExpenses = (expenses) => ({
