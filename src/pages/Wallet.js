@@ -64,7 +64,7 @@ class Wallet extends React.Component {
           <td>{ element.tag }</td>
           <td>{ element.method }</td>
           <td>{ element.value }</td>
-          <td>{ info.name }</td>
+          <td>{ info.name.split('/', 2)[0] }</td>
           <td>{ parseFloat(info.ask).toFixed(2) }</td>
           <td>{ (element.value * info.ask).toFixed(2) }</td>
           <td>Real</td>
@@ -93,9 +93,10 @@ class Wallet extends React.Component {
   async handleClick(action = 'add') {
     const btnAdd = document.getElementById('btn-add');
     const btnEdit = document.getElementById('btn-edit');
-    const { addExpensesDispatcher, editExpensesDispatcher } = this.props;
+    const { addExpensesDispatcher, editExpensesDispatcher, expenses } = this.props;
     if (action === 'edit') {
-      await editExpensesDispatcher({ ...this.state, exchangeRates: await getAPI() });
+      await editExpensesDispatcher({ ...this.state,
+        exchangeRates: expenses[0].exchangeRates });
       btnEdit.style.display = 'none';
       btnAdd.style.display = 'inherit';
       return;
