@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchExpense, fetchCurrencies } from '../../actions';
+import { fetchExpense, fetchCurrencies, editExpense, getHelper } from '../../actions';
 import InputExpense from './InputExpense';
 
 const INITIAL_STATE = {
   value: 0,
-  currency: 'USD',
+  currency: 'CAD',
   description: '',
   method: 'money',
   tag: 'food',
@@ -17,13 +17,57 @@ const TAG_OPTIONS = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde
 class ExpenseForm extends React.Component {
   constructor() {
     super();
-    this.state = INITIAL_STATE;
+    this.state = {
+      ...INITIAL_STATE,
+      editMode: false,
+      editMethod: this.editExpense,
+    };
     this.handleInput = this.handleInput.bind(this);
+    this.editExpense = this.editExpense.bind(this);
+    this.setEditedExpense = this.setEditedExpense.bind(this);
+    this.handleHelper = this.handleHelper.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleHelper();
+  }
+
+  setEditedExpense() {
+    const { editExpense: editExpenseAction } = this.props;
+    editExpenseAction(this.state);
+    this.setState({
+      editMode: false,
+      ...INITIAL_STATE,
+    });
+  }
+
+  handleHelper() {
+    const { sendHelper } = this.props;
+    sendHelper(this.editExpense);
+    this.setState({
+      editMethod: this.editExpense,
+    });
+  }
+
+  editExpense({ thisExpense }) {
+    const { id, value, currency, description, method, tag } = thisExpense;
+    this.setState({
+      id,
+      editMode: true,
+      value,
+      currency,
+      description,
+      method,
+      tag,
+    });
   }
 
   addThisExpense() {
     const { fetchExpense: dispatchExpense } = this.props;
-    dispatchExpense(this.state);
+    const { value, currency, description, method, tag } = this.state;
+    dispatchExpense({
+      expense: { value, currency, description, method, tag },
+    });
     this.setState(INITIAL_STATE);
   }
 
@@ -66,7 +110,6 @@ class ExpenseForm extends React.Component {
   }
 
   renderSelectCurrencies() {
-    const { isFetching } = this.props;
     const { currency } = this.state;
     return (
       <select
@@ -76,7 +119,7 @@ class ExpenseForm extends React.Component {
         name="currency"
         id="currency"
       >
-        {isFetching ? null : this.renderCurrencyOptions()}
+        {this.renderCurrencyOptions()}
       </select>
     );
   }
@@ -96,15 +139,27 @@ class ExpenseForm extends React.Component {
     );
   }
 
+  renderEditExpenseButton() {
+    return (
+      <button onClick={ () => this.setEditedExpense() } type="button">
+        Editar despesa
+      </button>
+    );
+  }
+
   render() {
+    const { editMode } = this.state;
+    const { isFetching } = this.props;
     return (
       <div>
         {this.renderInput('value')}
         {this.renderInput('description')}
-        {this.renderSelectCurrencies()}
+        {!isFetching && this.renderSelectCurrencies()}
         {this.renderOptions('method', METHOD_OPTIONS)}
         {this.renderOptions('tag', TAG_OPTIONS)}
-        {this.renderButtonAddExpense()}
+        {editMode
+          ? this.renderEditExpenseButton()
+          : this.renderButtonAddExpense()}
         <span>
           <br />
           Despesas:&nbsp;
@@ -117,11 +172,14 @@ class ExpenseForm extends React.Component {
 const mapStateToProps = (state) => ({
   isFetching: state.wallet.isFetching,
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = {
   fetchExpense,
   fetchCurrencies,
+  editExpense,
+  sendHelper: getHelper,
 };
 
 ExpenseForm.propTypes = {
@@ -130,6 +188,8 @@ ExpenseForm.propTypes = {
     PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   ).isRequired,
   fetchExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
+  sendHelper: PropTypes.func.isRequired,
 };
 
 ExpenseForm.defaultProps = {

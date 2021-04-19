@@ -4,7 +4,9 @@ import {
   DELETE_EXPENSE,
   ERROR_CURRENCY,
   GET_CURRENCY,
+  GET_HELPER,
   REQUEST_CURRENCY,
+  UPDATE_EXPENSE,
 } from './types';
 import getCurrencies from '../services/api';
 
@@ -18,11 +20,21 @@ export const addExpense = (expense) => ({
   payload: expense,
 });
 
+export const editExpense = (expense) => ({
+  type: UPDATE_EXPENSE,
+  payload: expense,
+});
+
 const requestCurrencies = () => ({
   type: REQUEST_CURRENCY,
   payload: {
     isFetching: true,
   },
+});
+
+export const getHelper = (editMethod) => ({
+  type: GET_HELPER,
+  payload: editMethod,
 });
 
 const responseCurrencies = (response) => ({

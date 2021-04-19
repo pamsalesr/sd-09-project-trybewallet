@@ -3,35 +3,16 @@ import {
   DELETE_EXPENSE,
   ERROR_CURRENCY,
   GET_CURRENCY,
+  GET_HELPER,
   REQUEST_CURRENCY,
+  UPDATE_EXPENSE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
   isFetching: false,
   currencies: [],
   expenses: [],
-  total: 0,
 };
-
-function deleteExpense({ expenses }, { id }) {
-  if (expenses.length > 0) {
-    const removedExpense = expenses.reduce((removedObj, expense, index) => {
-      if (expense.id === id) {
-        removedObj.index = index;
-      }
-      return removedObj;
-    }, {});
-    return {
-      expenses: [
-        ...expenses.slice(0, removedExpense.index),
-        ...expenses.slice(removedExpense.index + 1),
-      ],
-    };
-  }
-  return {
-    expenses: [],
-  };
-}
 
 function newExpense({ expenses }, { expense: inputExpense, response }) {
   let id = 0;
@@ -39,14 +20,47 @@ function newExpense({ expenses }, { expense: inputExpense, response }) {
     id = expenses[expenses.length - 1].id + 1;
   }
   return {
+    editMethod: inputExpense.editMethod,
     expenses: [
       ...expenses,
       {
         id,
-        ...inputExpense,
+        ...inputExpense.expense,
         exchangeRates: { ...response },
       },
     ],
+  };
+}
+
+function editExpense({ expenses }, editedExpense) {
+  const newExpenses = expenses.map((expense) => {
+    if (editedExpense.id === expense.id) {
+      const { value, currency, description, method, tag } = editedExpense;
+      return {
+        ...expense,
+        value,
+        currency,
+        description,
+        method,
+        tag,
+      };
+    }
+    return expense;
+  });
+  return {
+    expenses: newExpenses,
+  };
+}
+
+function deleteExpense({ expenses }, { id }) {
+  if (expenses.length > 0) {
+    const removedExpense = expenses.filter((expense) => expense.id !== id);
+    return {
+      expenses: removedExpense,
+    };
+  }
+  return {
+    expenses: [],
   };
 }
 
@@ -55,6 +69,7 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
   case ADD_EXPENSE:
     return {
       ...state,
+      ...payload.editMethod,
       ...newExpense(state, payload),
     };
   case DELETE_EXPENSE:
@@ -62,10 +77,20 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
       ...state,
       ...deleteExpense(state, payload),
     };
+  case UPDATE_EXPENSE:
+    return {
+      ...state,
+      ...editExpense(state, payload),
+    };
   case REQUEST_CURRENCY:
     return {
       ...state,
       isFetching: true,
+    };
+  case GET_HELPER:
+    return {
+      ...state,
+      editMethod: payload,
     };
   case GET_CURRENCY:
     return {

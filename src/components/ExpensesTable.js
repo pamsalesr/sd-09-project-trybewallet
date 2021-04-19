@@ -4,34 +4,92 @@ import { connect } from 'react-redux';
 import { deleteExpense } from '../actions/index';
 
 class ExpensesTable extends React.Component {
+  renderChangeTax(exchangeRates, currency) {
+    return (
+      <td>
+        {(Math.round(exchangeRates[currency].ask * 100) / 100).toFixed(2)}
+      </td>
+    );
+  }
+
+  renderCurrencyConverted(exchangeRates, currency, value) {
+    return (
+      <td>
+        {(Math.round(value * exchangeRates[currency].ask * 100) / 100).toFixed(
+          2,
+        )}
+      </td>
+    );
+  }
+
+  renderCalculatedFields({
+    id,
+    description,
+    tag,
+    method,
+    value,
+    currency,
+    exchangeRates,
+  }) {
+    const { deleteExpense: deleteThisExpense, startEditExpense } = this.props;
+
+    return (
+      <>
+        <td>{exchangeRates[currency].name}</td>
+        {this.renderChangeTax(exchangeRates, currency)}
+        {this.renderCurrencyConverted(exchangeRates, currency, value)}
+        <td>Real</td>
+        <td>
+          <button
+            onClick={ (e) => startEditExpense({
+              e,
+              thisExpense: {
+                id,
+                description,
+                tag,
+                method,
+                value,
+                currency,
+                exchangeRates,
+              },
+            }) }
+            type="button"
+            data-testid="edit-btn"
+          >
+            Alterar
+          </button>
+          <button
+            onClick={ (e) => deleteThisExpense({ e, id }) }
+            type="button"
+            data-testid="delete-btn"
+          >
+            Excluir
+          </button>
+        </td>
+      </>
+    );
+  }
+
   renderExpensesInfo(expenses) {
-    const { deleteExpense: deleteThisExpense } = this.props;
     const renderedExpenses = expenses.map(
-      ({ id, description, tag, method, value, currency, exchangeRates }, index) => (
+      (
+        { id, description, tag, method, value, currency, exchangeRates },
+        index,
+      ) => (
         <tr key={ index }>
           <td>{description}</td>
           <td>{tag}</td>
           <td>{method}</td>
           <td>{value}</td>
-          <td>{exchangeRates[currency].name}</td>
-          <td>
-            {(Math.round(exchangeRates[currency].ask * 100) / 100).toFixed(2)}
-          </td>
-          <td>
-            {(
-              Math.round(value * exchangeRates[currency].ask * 100) / 100
-            ).toFixed(2)}
-          </td>
-          <td>Real</td>
-          <td>
-            <button
-              onClick={ (e) => deleteThisExpense({ e, id }) }
-              type="button"
-              data-testid="delete-btn"
-            >
-              Excluir
-            </button>
-          </td>
+          {this.renderCalculatedFields({
+            id,
+            description,
+            tag,
+            method,
+            value,
+            currency,
+            exchangeRates,
+          })}
         </tr>
       ),
     );
@@ -63,6 +121,7 @@ class ExpensesTable extends React.Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  startEditExpense: state.wallet.editMethod,
 });
 
 const mapDispatchToProps = {
@@ -72,10 +131,12 @@ const mapDispatchToProps = {
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
   deleteExpense: PropTypes.func.isRequired,
+  startEditExpense: PropTypes.func,
 };
 
 ExpensesTable.defaultProps = {
   expenses: [],
+  startEditExpense: () => console.log('default'),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
