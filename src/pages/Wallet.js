@@ -10,9 +10,9 @@ class Wallet extends React.Component {
       id: 0,
       value: '',
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
     };
     this.expenseForm = this.expenseForm.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
@@ -47,6 +47,9 @@ class Wallet extends React.Component {
     };
     console.log(newExpense);
     saveExpense(newExpense);
+    this.setState((state) => ({
+      id: state.id + 1,
+    }));
   }
 
   input(id, type, testid, maxLength) {
@@ -168,7 +171,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  seveExpense: (expense) => dispatch(walletUpdate(expense)),
+  saveExpense: (expense) => dispatch(walletUpdate(expense)),
   moneyInfo: () => dispatch(getMoneyInfo()),
 });
 
