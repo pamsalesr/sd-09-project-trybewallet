@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import newUser from '../actions/index';
+import { newUser } from '../actions';
 
 const VALID_LENGTH_PASSWORD = 6;
 class Login extends React.Component {
@@ -19,7 +19,10 @@ class Login extends React.Component {
   }
 
   loginUser() {
-    const { newUser: addUserDispatch, history } = this.props;
+    const {
+      newUser: addUserDispatch,
+      history,
+    } = this.props;
     const { email } = this.state;
     addUserDispatch({ email });
     history.push('/carteira');
@@ -59,9 +62,9 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps = ({
   newUser,
-};
+});
 
 Login.propTypes = {
   newUser: PropTypes.func.isRequired,
