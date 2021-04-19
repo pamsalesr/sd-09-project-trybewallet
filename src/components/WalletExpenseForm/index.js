@@ -48,7 +48,6 @@ class WalletExpenseForm extends Component {
 
   async submitExpense(event) {
     event.preventDefault();
-    // this.fetchCurrencies();
     const { dispatchExpense, totalExpensesValue } = this.props;
     const { id, value, description, currency, method, tag } = this.state;
     const exchangeRates = await getCurrencies();
@@ -64,6 +63,7 @@ class WalletExpenseForm extends Component {
     const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
     const currencyQuote = Object.values(exchangeRates)[currencyIndex].ask;
     const valueForQuote = parseFloat(value) * parseFloat(currencyQuote);
+    console.log(valueForQuote);
     dispatchExpense(
       expenseKeys,
     );

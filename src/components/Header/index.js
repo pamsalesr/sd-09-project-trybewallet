@@ -5,7 +5,7 @@ import './styles.css';
 
 class Header extends Component {
   render() {
-    const { email } = this.props;
+    const { email, total } = this.props;
     return (
       <header className="header-component">
         TrybeWallet
@@ -16,7 +16,7 @@ class Header extends Component {
           </div>
           <div className="header-currency">
             Despesa total: R$
-            <span data-testid="total-field"> 0</span>
+            <span data-testid="total-field">{ total }</span>
             <span data-testid="header-currency-field"> BRL</span>
           </div>
         </div>
@@ -28,6 +28,7 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
+  total: state.wallet.total,
 });
 
 Header.propTypes = {
