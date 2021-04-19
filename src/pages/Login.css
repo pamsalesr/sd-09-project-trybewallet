@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+input:disabled {
+  cursor: not-allowed;
+}
+
 .login-form input:focus {
   border: 2px solid whitesmoke;
 }
@@ -55,8 +59,4 @@
 
 ::placeholder {
   color: #232528;
-}
-
-input:disabled {
-  cursor: not-allowed;
 }
