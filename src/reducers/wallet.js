@@ -14,7 +14,7 @@ function wallet(state = initialState, action) {
   case WALLET_INFO:
     return {
       ...state,
-      expenses: expense,
+      expenses: [...expenses, expense],
     };
   case MONEY_INFO:
     return { ...state, currencies: money, isFetching };

@@ -1,12 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getMoneyInfo } from '../actions/index';
+import { getMoneyInfo, walletUpdate } from '../actions/index';
 
 class Wallet extends React.Component {
   constructor() {
     super();
+    this.state = {
+      id: 0,
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+    };
     this.expenseForm = this.expenseForm.bind(this);
+    this.handleExpense = this.handleExpense.bind(this);
+    this.handleDropdown = this.handleDropdown.bind(this);
   }
 
   componentDidMount() {
@@ -14,30 +24,73 @@ class Wallet extends React.Component {
     moneyInfo();
   }
 
-  expenseForm() {
-    const { money } = this.props;
-    const keys = Object.keys(money);
-    const allKeys = keys.filter((coin) => coin !== 'USDT');
-    const allMoney = allKeys.map((key) => money[key]);
+  handleDropdown({ target }) {
+    const { value, id } = target;
+    this.setState({
+      [id]: value,
+    });
+  }
+
+  handleExpense() {
+    const { moneyInfo } = this.props;
+    moneyInfo();
+    const { id, value, description, currency, method, tag } = this.state;
+    const { money, saveExpense } = this.props;
+    const newExpense = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: { ...money },
+    };
+    console.log(newExpense);
+    saveExpense(newExpense);
+  }
+
+  input(id, type, testid, maxLength) {
+    return (<input
+      id={ id }
+      type={ type }
+      data-testid={ testid }
+      maxLength={ maxLength }
+      onChange={ this.handleDropdown }
+    />);
+  }
+
+  expenseForm(money) {
     return (
       <form>
         Valor:
-        <input type="number" data-testid="value-input" />
+        { this.input('value', 'number', 'value-input', '999999999999') }
         Moeda:
-        <select data-testid="currency-input">
-          {allMoney.map((each) => (
+        <select
+          id="currency"
+          onChange={ this.handleDropdown }
+          data-testid="currency-input"
+        >
+          {money.map((each) => (
             <option key={ each.code } data-testid={ each.code }>
               { each.code }
             </option>))}
         </select>
         Método de pagamento:
-        <select data-testid="method-input">
+        <select
+          id="method"
+          onChange={ this.handleDropdown }
+          data-testid="method-input"
+        >
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
         </select>
         Tag:
-        <select data-testid="tag-input">
+        <select
+          id="tag"
+          onChange={ this.handleDropdown }
+          data-testid="tag-input"
+        >
           <option>Alimentação</option>
           <option>Lazer</option>
           <option>Trabalho</option>
@@ -45,12 +98,16 @@ class Wallet extends React.Component {
           <option>Saúde</option>
         </select>
         Descrição:
-        <input type="text" maxLength="50" data-testid="description-input" />
-        <button type="button">Adicionar Despesa</button>
+        { this.input('description', 'text', 'description-input', '50') }
+        <button onClick={ this.handleExpense } type="button">Adicionar Despesa</button>
       </form>);
   }
 
   render() {
+    const { money } = this.props;
+    const keys = Object.keys(money);
+    const allKeys = keys.filter((coin) => coin !== 'USDT');
+    const allMoney = allKeys.map((key) => money[key]);
     const { email, totalExpenses, totalCurrency, isFetching } = this.props;
     return (
       <div>
@@ -72,7 +129,7 @@ class Wallet extends React.Component {
             { totalCurrency }
           </p>
         </header>
-        { isFetching ? <strong>Loading...</strong> : this.expenseForm() }
+        { isFetching ? <strong>Loading...</strong> : this.expenseForm(allMoney) }
         <table>
           <tr>
             <th>Descrição</th>
@@ -93,6 +150,7 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
+  saveExpense: PropTypes.func.isRequired,
   moneyInfo: PropTypes.func.isRequired,
   money: PropTypes.objectOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -110,6 +168,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  seveExpense: (expense) => dispatch(walletUpdate(expense)),
   moneyInfo: () => dispatch(getMoneyInfo()),
 });
 

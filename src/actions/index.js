@@ -7,9 +7,8 @@ const userLogin = (email) => ({
   email,
 });
 
-export const walletUpdate = ({ currencies, expenses }) => ({
+export const walletUpdate = (expenses) => ({
   type: WALLET_INFO,
-  currencies,
   expenses,
 });
 
