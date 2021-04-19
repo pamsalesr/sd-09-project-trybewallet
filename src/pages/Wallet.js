@@ -42,7 +42,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { email, totalExpenses, totalCurrency } = this.props;
+    const { email, totalExpenses, totalCurrency, isFetching } = this.props;
     return (
       <div>
         <header>
@@ -63,17 +63,17 @@ class Wallet extends React.Component {
             { totalCurrency }
           </p>
         </header>
-        { this.expenseForm() }
+        { isFetching ? <strong>Loading...</strong> : this.expenseForm() }
         <table>
           <tr>
             <th>Descrição</th>
             <th>Tag</th>
-            <th>Método de Pagamento</th>
+            <th>Método de pagamento</th>
             <th>Valor</th>
             <th>Moeda</th>
-            <th>Câmbio Utilizado</th>
-            <th>Valor Convertido</th>
-            <th>Moeda de Conversão</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
             <th>Editar/Excluir</th>
           </tr>
           <tbody />
@@ -85,6 +85,7 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
   money: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetching: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
   totalExpenses: PropTypes.number.isRequired,
   totalCurrency: PropTypes.string.isRequired,
@@ -92,6 +93,7 @@ Wallet.propTypes = {
 
 const mapStateToProps = (state) => ({
   money: state.moneyInfo.money,
+  isFetching: state.moneyInfo.isFetching,
   email: state.user.email,
   totalExpenses: 0,
   totalCurrency: 'BRL',

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import userLogin, { sendMoneyInfo } from '../actions/index';
+import userLogin, { getMoneyInfo } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -15,6 +15,11 @@ class Login extends React.Component {
     };
 
     this.validate = this.validate.bind(this);
+  }
+
+  componentDidMount() {
+    const { moneyInfo } = this.props;
+    moneyInfo();
   }
 
   validate(e) {
@@ -38,7 +43,7 @@ class Login extends React.Component {
 
   render() {
     const { email, pwd, eValid, pwValid } = this.state;
-    const { goToWallet, getMoneyInfo } = this.props;
+    const { goToWallet } = this.props;
     return (
       <div id="login-div">
         <h2>Faça login</h2>
@@ -63,7 +68,6 @@ class Login extends React.Component {
             disabled={ eValid || pwValid }
             onClick={ () => {
               goToWallet(email);
-              getMoneyInfo();
             } }
           >
             Entrar
@@ -76,25 +80,12 @@ class Login extends React.Component {
 
 Login.propTypes = {
   goToWallet: PropTypes.func.isRequired,
-  getMoneyInfo: PropTypes.func.isRequired,
+  moneyInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getMoneyInfo: () => {
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((result) => {
-        const keys = Object.keys(result);
-        const allKeys = keys.filter((coin) => coin !== 'USDT');
-        const allMoney = allKeys.map((key) => result[key]);
-        console.log(allMoney);
-        dispatch(sendMoneyInfo(allMoney));
-      });
-  },
-  goToWallet: (email) => {
-    console.log(email);
-    dispatch(userLogin(email));
-  },
+  moneyInfo: () => dispatch(getMoneyInfo()),
+  goToWallet: (email) => dispatch(userLogin(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

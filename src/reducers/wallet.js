@@ -1,3 +1,4 @@
+export const REQUEST_MONEY = 'REQUEST_MONEY';
 export const WALLET_INFO = 'WALLET_INFO';
 export const MONEY_INFO = 'MONEY_INFO';
 
@@ -21,12 +22,15 @@ function wallet(state = initialState, action) {
 
 const firstState = {
   money: [],
+  isFetching: false,
 };
 
 export const moneyInfo = (state = firstState, action) => {
   switch (action.type) {
   case MONEY_INFO:
-    return { ...state, money: action.money };
+    return { ...state, money: action.money, isFetching: false };
+  case REQUEST_MONEY:
+    return { ...state, isFetching: true };
   default:
     return state;
   }
