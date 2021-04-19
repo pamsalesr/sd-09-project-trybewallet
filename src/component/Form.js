@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { expenseInsert } from '../actions';
+import { activeEditButton, expenseInsert } from '../actions';
 
 class Form extends Component {
   constructor(props) {
@@ -17,10 +17,12 @@ class Form extends Component {
     this.createExchangeRatesList = this.createExchangeRatesList.bind(this);
     this.takeInputs = this.takeInputs.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.pushEditValues = this.pushEditValues.bind(this);
   }
 
   componentDidMount() {
     this.createExchangeRatesList();
+    this.pushEditValues();
   }
 
   async fetchApiDoletas() {
@@ -39,6 +41,19 @@ class Form extends Component {
     });
   }
 
+  pushEditValues() {
+    const { consultExpenses, consultExpenseId } = this.props;
+    if (consultExpenses[consultExpenseId] !== undefined) {
+      this.setState({
+        value: consultExpenses[consultExpenseId].value,
+        description: consultExpenses[consultExpenseId].description,
+        currency: consultExpenses[consultExpenseId].currency,
+        method: consultExpenses[consultExpenseId].method,
+        tag: consultExpenses[consultExpenseId].tag,
+      });
+    }
+  }
+
   handleChange(event) {
     const { name, value } = event.target;
     this.setState({
@@ -47,10 +62,16 @@ class Form extends Component {
   }
 
   createExpense() {
-    const { dispatchExpense, consultExpenses } = this.props;
+    const {
+      dispatchExpense, consultExpenses, consultEditButton, consultExpenseId,
+    } = this.props;
     const { value, description, currency, method, tag, exchangeRates } = this.state;
+    let idValue = consultExpenses.length;
+    if (consultEditButton) {
+      idValue = consultExpenseId;
+    }
     const expense = {
-      id: consultExpenses.length,
+      id: idValue,
       value,
       description,
       currency,
@@ -65,8 +86,12 @@ class Form extends Component {
   }
 
   async takeInputs() {
+    const { dispatchEditButton, consultEditButton } = this.props;
     await this.createExchangeRatesList();
     this.createExpense();
+    if (consultEditButton) {
+      dispatchEditButton(false);
+    }
   }
 
   renderExpenditureAdd(value) {
@@ -85,11 +110,12 @@ class Form extends Component {
     );
   }
 
-  renderExpenditureDescription() {
+  renderExpenditureDescription(description) {
     return (
       <label htmlFor="expediture-description">
         descrição da despesa
         <input
+          value={ description }
           data-testid="description-input"
           id="expediture-description"
           name="description"
@@ -99,11 +125,12 @@ class Form extends Component {
     );
   }
 
-  renderRegisteredCurrency() {
+  renderRegisteredCurrency(currency) {
     return (
       <label htmlFor="registered-currency">
         moeda
         <select
+          value={ currency }
           data-testid="currency-input"
           id="registered-currency"
           name="currency"
@@ -128,11 +155,12 @@ class Form extends Component {
     );
   }
 
-  renderPaymentMethod() {
+  renderPaymentMethod(method) {
     return (
       <label htmlFor="payment-method">
         método de pagamento
         <select
+          value={ method }
           data-testid="method-input"
           id="payment-method"
           name="method"
@@ -146,12 +174,13 @@ class Form extends Component {
     );
   }
 
-  renderExpenditureCategory() {
+  renderExpenditureCategory(tag) {
     return (
       <label htmlFor="expenditure-category">
         categoria
         <select
           data-testid="tag-input"
+          value={ tag }
           id="expenditure-category"
           name="tag"
           onChange={ this.handleChange }
@@ -167,26 +196,33 @@ class Form extends Component {
   }
 
   renderButtonExpenditureAdd() {
+    const { consultEditButton } = this.props;
+    let textButton = '';
+    if (consultEditButton) {
+      textButton = 'Editar despesa';
+    } else {
+      textButton = 'Adicionar despesa';
+    }
     return (
       <button
         type="button"
         id="button-expenditure-add"
         onClick={ this.takeInputs }
       >
-        Adicionar despesa
+        { textButton }
       </button>
     );
   }
 
   render() {
-    const { value } = this.state;
+    const { value, description, currency, method, tag } = this.state;
     return (
       <form>
         { this.renderExpenditureAdd(value) }
-        { this.renderExpenditureDescription() }
-        { this.renderRegisteredCurrency() }
-        { this.renderPaymentMethod() }
-        { this.renderExpenditureCategory() }
+        { this.renderExpenditureDescription(description) }
+        { this.renderRegisteredCurrency(currency) }
+        { this.renderPaymentMethod(method) }
+        { this.renderExpenditureCategory(tag) }
         { this.renderButtonExpenditureAdd() }
       </form>
     );
@@ -195,10 +231,13 @@ class Form extends Component {
 
 const mapStateToProps = ({ wallet }) => ({
   consultExpenses: wallet.expenses,
+  consultEditButton: wallet.editButton,
+  consultExpenseId: wallet.expenseId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expense) => dispatch(expenseInsert(expense)),
+  dispatchEditButton: (editButton) => dispatch(activeEditButton(editButton)),
 });
 
 Form.propTypes = {

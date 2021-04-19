@@ -14,11 +14,12 @@ export const passwordInsert = (password) => ({
 
 // Wallet
 
-// export const EXPENSE_TOTAL = 'DESPESA_TOTAL';
-// export const totalExpensesInsert = (totalExpenses) => ({
-//   type: EXPENSE_TOTAL,
-//   totalExpenses,
-// });
+export const EDIT_BUTTON = 'EDIT_BUTTON';
+export const activeEditButton = (editButton, expenseId) => ({
+  type: EDIT_BUTTON,
+  editButton,
+  expenseId,
+});
 
 export const EXPENSE_SAVE = 'EXPENSE_SAVE';
 export const expenseInsert = (expenses) => ({

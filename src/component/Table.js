@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { expensesUpdate } from '../actions';
+import { expensesUpdate, activeEditButton } from '../actions';
 
 class Table extends Component {
   constructor(props) {
     super(props);
     this.dropExpense = this.dropExpense.bind(this);
+    this.updateExpense = this.updateExpense.bind(this);
   }
-
   // teste so gosta da verção com .map
   // calcConvertion(value, ask){
   //   // const { consultExpenses } = this.props;
@@ -27,15 +27,19 @@ class Table extends Component {
     // console.log( expenses )
     // transforma a possição em null
     // if(item >= 3){
-    // delete expenses[item]
+    // delete expenses[item];
     // }
     // let testes = expenses
     // }
     // console.log( testes )
+    // dispatchExpensesUpdate(expenses);
   }
 
-  // updateExpense(id){
-  // }
+  updateExpense(item) {
+    const { dispatchEditButton } = this.props;
+    dispatchEditButton(true, item);
+    // setar estado global pro botao trocar texto
+  }
 
   renderHeader() {
     return (
@@ -70,7 +74,14 @@ class Table extends Component {
         </td>
         <td>Real</td>
         <td>
-          <button type="button">Editar</button>
+          <button
+            type="button"
+            data-testid="edit-btn"
+            id={ `update-button-${element.id}` }
+            onClick={ () => this.updateExpense(element.id) }
+          >
+            Editar
+          </button>
           <button
             type="button"
             data-testid="delete-btn"
@@ -102,6 +113,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpensesUpdate: (expenses) => dispatch(expensesUpdate(expenses)),
+  dispatchEditButton:
+  (editButton, expenseId) => dispatch(activeEditButton(editButton, expenseId)),
 });
 
 Table.propTypes = {
