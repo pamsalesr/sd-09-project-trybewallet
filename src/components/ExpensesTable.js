@@ -1,21 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { deleteExpense } from '../actions/index';
 
 class ExpensesTable extends React.Component {
   renderExpensesInfo(expenses) {
+    const { deleteExpense: deleteThisExpense } = this.props;
     const renderedExpenses = expenses.map(
-      (
-        {
-          description,
-          tag,
-          method,
-          value,
-          currency,
-          exchangeRates,
-        },
-        index,
-      ) => (
+      ({ id, description, tag, method, value, currency, exchangeRates }, index) => (
         <tr key={ index }>
           <td>{description}</td>
           <td>{tag}</td>
@@ -26,9 +18,20 @@ class ExpensesTable extends React.Component {
             {(Math.round(exchangeRates[currency].ask * 100) / 100).toFixed(2)}
           </td>
           <td>
-            {(Math.round(value * exchangeRates[currency].ask * 100) / 100).toFixed(2)}
+            {(
+              Math.round(value * exchangeRates[currency].ask * 100) / 100
+            ).toFixed(2)}
           </td>
           <td>Real</td>
+          <td>
+            <button
+              onClick={ (e) => deleteThisExpense({ e, id }) }
+              type="button"
+              data-testid="delete-btn"
+            >
+              Excluir
+            </button>
+          </td>
         </tr>
       ),
     );
@@ -62,8 +65,17 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-ExpensesTable.propTypes = ({
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-});
+const mapDispatchToProps = {
+  deleteExpense,
+};
 
-export default connect(mapStateToProps, null)(ExpensesTable);
+ExpensesTable.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.object),
+  deleteExpense: PropTypes.func.isRequired,
+};
+
+ExpensesTable.defaultProps = {
+  expenses: [],
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

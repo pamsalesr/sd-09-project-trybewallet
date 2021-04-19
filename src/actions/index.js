@@ -1,6 +1,7 @@
 import {
   ADD_EXPENSE,
   ADD_USER,
+  DELETE_EXPENSE,
   ERROR_CURRENCY,
   GET_CURRENCY,
   REQUEST_CURRENCY,
@@ -34,6 +35,11 @@ const errorCurrencies = (error) => ({
   payload: {
     error,
   },
+});
+
+export const deleteExpense = (expense) => ({
+  type: DELETE_EXPENSE,
+  payload: expense,
 });
 
 export const fetchExpense = (expense) => (dispatch) => getCurrencies().then(

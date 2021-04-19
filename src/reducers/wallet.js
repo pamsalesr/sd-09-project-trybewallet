@@ -1,5 +1,6 @@
 import {
   ADD_EXPENSE,
+  DELETE_EXPENSE,
   ERROR_CURRENCY,
   GET_CURRENCY,
   REQUEST_CURRENCY,
@@ -12,16 +13,32 @@ const INITIAL_STATE = {
   total: 0,
 };
 
-function newExpense({ expenses, total }, { expense: inputExpense, response }) {
-  const id = expenses.length;
-  const newTotal = total
-      + (
-        Math.round(
-          inputExpense.value * response[inputExpense.currency].ask * 100,
-        ) / 100
-      ).toFixed(2);
+function deleteExpense({ expenses }, { id }) {
+  if (expenses.length > 0) {
+    const removedExpense = expenses.reduce((removedObj, expense, index) => {
+      if (expense.id === id) {
+        removedObj.index = index;
+      }
+      return removedObj;
+    }, {});
+    return {
+      expenses: [
+        ...expenses.slice(0, removedExpense.index),
+        ...expenses.slice(removedExpense.index + 1),
+      ],
+    };
+  }
   return {
-    total: newTotal,
+    expenses: [],
+  };
+}
+
+function newExpense({ expenses }, { expense: inputExpense, response }) {
+  let id = 0;
+  if (expenses.length > 0) {
+    id = expenses[expenses.length - 1].id + 1;
+  }
+  return {
     expenses: [
       ...expenses,
       {
@@ -39,6 +56,11 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
     return {
       ...state,
       ...newExpense(state, payload),
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      ...deleteExpense(state, payload),
     };
   case REQUEST_CURRENCY:
     return {

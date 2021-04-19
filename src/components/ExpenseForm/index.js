@@ -84,11 +84,7 @@ class ExpenseForm extends React.Component {
   renderInput(name) {
     const { [name]: nameState } = this.state;
     return (
-      <InputExpense
-        name={ name }
-        value={ nameState }
-        onChange={ this.handleInput }
-      />
+      <InputExpense name={ name } value={ nameState } onChange={ this.handleInput } />
     );
   }
 
@@ -129,9 +125,15 @@ const mapDispatchToProps = {
 };
 
 ExpenseForm.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  currencies: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isFetching: PropTypes.bool,
+  currencies: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  ).isRequired,
   fetchExpense: PropTypes.func.isRequired,
+};
+
+ExpenseForm.defaultProps = {
+  isFetching: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
