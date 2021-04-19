@@ -46,11 +46,12 @@ class WalletExpenseForm extends Component {
     });
   }
 
-  submitExpense(event) {
+  async submitExpense(event) {
     event.preventDefault();
-    this.fetchCurrencies();
+    // this.fetchCurrencies();
     const { dispatchExpense } = this.props;
     const { id, value, description, currency, method, tag } = this.state;
+    const exchangeRates = await getCurrencies();
     const expenseKeys = {
       id,
       value,
@@ -58,6 +59,7 @@ class WalletExpenseForm extends Component {
       currency,
       method,
       tag,
+      exchangeRates,
     };
     dispatchExpense(
       /* [
