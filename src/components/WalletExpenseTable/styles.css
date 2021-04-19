@@ -10,21 +10,21 @@ table {
 
 table thead tr {
   background-color: #009879;
-  color: #ffffff;
+  color: whitesmoke;
   text-align: left;
 }
 
-table th,
+table th , 
 table td {
   padding: 12px 15px;
 }
 
 table tbody td {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
 }
 
-table tbody tr:nth-of-type(even) {
-  background-color: #333333;
+table tbody tr:nth-of-type( even ) {
+  background-color: #333;
 }
 
 table tbody tr:last-of-type {
@@ -32,10 +32,10 @@ table tbody tr:last-of-type {
 }
 
 table button {
-  margin: 0 4px;
   border: 0;
   border-radius: 5px;
   color: whitesmoke;
+  margin: 0 4px;
   padding: 4px 6px;
 }
 

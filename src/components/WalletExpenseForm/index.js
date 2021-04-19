@@ -186,7 +186,7 @@ class WalletExpenseForm extends Component {
   render() {
     const { value, description, currency, method, tag } = this.state;
     return (
-      <form id="expense-form">
+      <form id="expense-form" className="expense-form-class">
         { this.valueInput(value) }
         { this.descriptionInput(description) }
         { this.currencyInput(currency) }
