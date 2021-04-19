@@ -51,15 +51,24 @@ class WalletExpenseForm extends Component {
     this.fetchCurrencies();
     const { dispatchExpense } = this.props;
     const { id, value, description, currency, method, tag } = this.state;
+    const expenseKeys = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    };
     dispatchExpense(
-      [
+      /* [
         id,
         value,
         description,
         currency,
         method,
         tag,
-      ],
+      ], */
+      expenseKeys,
     );
     this.setState({
       id: id + 1,
