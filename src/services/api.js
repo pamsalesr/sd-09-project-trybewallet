@@ -1,13 +1,16 @@
-async function moneyData() {
-  const money = await fetch('https://economia.awesomeapi.com.br/json/all')
-    .then((response) => response.json())
-    .then((response) => {
-      const keys = Object.keys(response);
-      const allKeys = keys.filter((coin) => coin !== 'USDT');
-      const allMoney = allKeys.map((key) => response[key]);
-      return allMoney;
-    });
-  return money;
-}
+// async function moneyData() {
+//   const money = await fetch('https://economia.awesomeapi.com.br/json/all');
+//   const data = await money.json();
+//   return data;
+// }
+
+const fetchApi = 'https://economia.awesomeapi.com.br/json/all';
+
+const moneyData = async () => {
+  const request = await fetch(fetchApi);
+  console.log(request);
+  const object = await request.json();
+  return object;
+};
 
 export default moneyData;

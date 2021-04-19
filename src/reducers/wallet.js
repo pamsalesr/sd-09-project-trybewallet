@@ -5,35 +5,24 @@ export const MONEY_INFO = 'MONEY_INFO';
 const initialState = {
   currencies: [],
   expenses: [],
+  isFetching: false,
 };
 
 function wallet(state = initialState, action) {
-  switch (action.type) {
+  const { type, isFetching, money, expense } = action;
+  switch (type) {
   case WALLET_INFO:
     return {
       ...state,
-      currencies: action.currency,
-      expenses: action.expense,
+      expenses: expense,
     };
+  case MONEY_INFO:
+    return { ...state, currencies: money, isFetching };
+  case REQUEST_MONEY:
+    return { ...state, isFetching };
   default:
     return state;
   }
 }
-
-const firstState = {
-  money: [],
-  isFetching: false,
-};
-
-export const moneyInfo = (state = firstState, action) => {
-  switch (action.type) {
-  case MONEY_INFO:
-    return { ...state, money: action.money, isFetching: false };
-  case REQUEST_MONEY:
-    return { ...state, isFetching: true };
-  default:
-    return state;
-  }
-};
 
 export default wallet;

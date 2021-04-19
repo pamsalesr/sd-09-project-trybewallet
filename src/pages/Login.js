@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import userLogin, { getMoneyInfo } from '../actions/index';
+import userLogin from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -15,11 +15,6 @@ class Login extends React.Component {
     };
 
     this.validate = this.validate.bind(this);
-  }
-
-  componentDidMount() {
-    const { moneyInfo } = this.props;
-    moneyInfo();
   }
 
   validate(e) {
@@ -62,7 +57,12 @@ class Login extends React.Component {
           />
         </form>
         <br />
-        <Link to="/carteira">
+        <Link
+          onClick={ () => {
+            goToWallet(email);
+          } }
+          to="/carteira"
+        >
           <button
             type="button"
             disabled={ eValid || pwValid }
@@ -80,11 +80,9 @@ class Login extends React.Component {
 
 Login.propTypes = {
   goToWallet: PropTypes.func.isRequired,
-  moneyInfo: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  moneyInfo: () => dispatch(getMoneyInfo()),
   goToWallet: (email) => dispatch(userLogin(email)),
 });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { getMoneyInfo } from '../actions/index';
 
 class Wallet extends React.Component {
   constructor() {
@@ -8,15 +9,23 @@ class Wallet extends React.Component {
     this.expenseForm = this.expenseForm.bind(this);
   }
 
+  componentDidMount() {
+    const { moneyInfo } = this.props;
+    moneyInfo();
+  }
+
   expenseForm() {
     const { money } = this.props;
+    const keys = Object.keys(money);
+    const allKeys = keys.filter((coin) => coin !== 'USDT');
+    const allMoney = allKeys.map((key) => money[key]);
     return (
       <form>
         Valor:
         <input type="number" data-testid="value-input" />
         Moeda:
         <select data-testid="currency-input">
-          {money.map((each) => (
+          {allMoney.map((each) => (
             <option key={ each.code } data-testid={ each.code }>
               { each.code }
             </option>))}
@@ -84,7 +93,8 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
-  money: PropTypes.arrayOf(PropTypes.object).isRequired,
+  moneyInfo: PropTypes.func.isRequired,
+  money: PropTypes.objectOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
   totalExpenses: PropTypes.number.isRequired,
@@ -92,11 +102,15 @@ Wallet.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  money: state.moneyInfo.money,
-  isFetching: state.moneyInfo.isFetching,
+  money: state.wallet.currencies,
+  isFetching: state.wallet.isFetching,
   email: state.user.email,
   totalExpenses: 0,
   totalCurrency: 'BRL',
 });
 
-export default connect(mapStateToProps)(Wallet);
+const mapDispatchToProps = (dispatch) => ({
+  moneyInfo: () => dispatch(getMoneyInfo()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
