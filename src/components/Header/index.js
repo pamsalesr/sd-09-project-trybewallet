@@ -5,7 +5,7 @@ import './styles.css';
 
 class Header extends Component {
   render() {
-    const { email, total } = this.props;
+    const { email, total = 0 } = this.props;
     return (
       <header className="header-component">
         TrybeWallet
@@ -16,7 +16,9 @@ class Header extends Component {
           </div>
           <div className="header-currency">
             Despesa total: R$
-            <span data-testid="total-field">{ total }</span>
+            <span data-testid="total-field">
+              { total }
+            </span>
             <span data-testid="header-currency-field"> BRL</span>
           </div>
         </div>

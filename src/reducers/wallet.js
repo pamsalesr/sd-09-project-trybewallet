@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   method: '',
   tag: '', */
   expenses: [],
-  total: 0.00,
+  total: 0,
 };
 
 const addExpense = (state = INITIAL_STATE, action) => {
