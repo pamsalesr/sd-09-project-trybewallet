@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { actionDeleteExpense } from '../actions';
+import { actionDeleteExpense, actionEnableEditExpense } from '../actions';
 
 const tableHeaderFields = ['Descrição', 'Tag', 'Método de pagamento',
   'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
@@ -11,6 +11,7 @@ class ExpenseTable extends React.Component {
   constructor(props) {
     super(props);
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
   }
 
   createTableHeader() {
@@ -26,6 +27,11 @@ class ExpenseTable extends React.Component {
   deleteExpense({ target }) {
     const { removeExpense } = this.props;
     removeExpense(parseInt(target.id, 10));
+  }
+
+  editExpense({ target }) {
+    const { enableEditExpense } = this.props;
+    enableEditExpense(parseInt(target.id, 10));
   }
 
   createExpenseRows() {
@@ -52,7 +58,14 @@ class ExpenseTable extends React.Component {
             <td>{expense.value * exchangeRates[currency].ask}</td>
             <td>Real</td>
             <td>
-              <button type="button">Editar</button>
+              <button
+                id={ expense.id }
+                type="button"
+                data-testid="edit-btn"
+                onClick={ this.editExpense }
+              >
+                Editar
+              </button>
               <button
                 id={ expense.id }
                 onClick={ this.deleteExpense }
@@ -84,9 +97,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   removeExpense: (id) => dispatch(actionDeleteExpense(id)),
+  enableEditExpense: (id) => dispatch(actionEnableEditExpense(id)),
 });
 
 ExpenseTable.propTypes = {
+  enableEditExpense: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf().isRequired,
   removeExpense: PropTypes.func.isRequired,
 };

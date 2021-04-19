@@ -3,6 +3,8 @@ export const ADD_EMAIL = 'ADD_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const ENABLE_EDIT_MODE = 'ENABLE_EDIT_MODE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export function actionUser(email) {
   return {
@@ -28,6 +30,20 @@ export function actionCurrencies(currencies) {
 export function actionDeleteExpense(id) {
   return {
     type: DELETE_EXPENSE,
+    payload: id,
+  };
+}
+
+export function actionEnableEditExpense(id) {
+  return {
+    type: ENABLE_EDIT_MODE,
+    payload: id,
+  };
+}
+
+export function actionEditExpense(id) {
+  return {
+    type: EDIT_EXPENSE,
     payload: id,
   };
 }

@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { addExpenseWithCurrentQuotes, setDropdownCurrencies } from '../actions';
+import {
+  addExpenseWithCurrentQuotes,
+  setDropdownCurrencies,
+  actionEditExpense,
+} from '../actions';
 
 const INITIAL_STATE = {
   value: 0,
@@ -13,6 +17,8 @@ const INITIAL_STATE = {
   currencies: [],
   paymentMethod: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
   expenses: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
+  isEditing: false,
+  editingId: null,
 };
 
 class WalletForms extends React.Component {
@@ -31,11 +37,46 @@ class WalletForms extends React.Component {
     setUpCurrencies();
   }
 
-  async fetchCurrencyQuotes() {
-    const fetchCurrency = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const response = await fetchCurrency.json();
-    return response;
+  componentDidUpdate() {
+    const { isEditing } = this.state;
+    const { editingExpense: { isEditableMode, id } } = this.props;
+    if (isEditableMode && !isEditing) {
+      const { expenses } = this.props;
+      const expense = expenses.find((element) => element.id === id);
+      console.log(expense);
+      this.getExpenseData(expense);
+    }
   }
+
+  getExpenseData(expense) {
+    console.log(expense);
+    this.setState({
+      ...expense,
+      isEditing: true,
+    });
+  }
+
+  editExpense = () => {
+    const { editExpense } = this.props;
+    const { value, description, currency, method, tag, id } = this.state;
+    console.log('Editou');
+    const expenseEdited = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    };
+    editExpense(expenseEdited);
+    this.setState({ ...INITIAL_STATE });
+  }
+
+  editExpenseButton = () => (
+    <button type="button" onClick={ this.editExpense }>
+      Editar despesa
+    </button>
+  )
 
   handleChange(event) {
     const { name, value } = event.target;
@@ -96,14 +137,30 @@ class WalletForms extends React.Component {
     return newExpense;
   }
 
+  addExpenseButton() {
+    const { addExpense } = this.props;
+    return (
+      <button type="button" onClick={ () => addExpense(this.expenseCreator()) }>
+        Adicionar despesa
+      </button>);
+  }
+
+  async fetchCurrencyQuotes() {
+    const fetchCurrency = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const response = await fetchCurrency.json();
+    return response;
+  }
+
   render() {
     const {
       paymentMethod,
       expenses,
       value,
       description,
-      currency } = this.state;
-    const { addExpense, currencies } = this.props;
+      currency,
+      isEditing,
+    } = this.state;
+    const { currencies } = this.props;
     return (
       <form>
         {this.inputTextCreator('value', 'Valor da despesa', value)}
@@ -111,9 +168,7 @@ class WalletForms extends React.Component {
         {this.dropDownCreator('currency', currencies, currency)}
         {this.dropDownCreator('method', paymentMethod)}
         {this.dropDownCreator('tag', expenses)}
-        <button type="button" onClick={ () => addExpense(this.expenseCreator()) }>
-          Adicionar despesa
-        </button>
+        {isEditing ? this.editExpenseButton() : this.addExpenseButton() }
       </form>
     );
   }
@@ -122,15 +177,22 @@ class WalletForms extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   addExpense: (expense) => dispatch(addExpenseWithCurrentQuotes(expense)),
   setUpCurrencies: () => dispatch(setDropdownCurrencies()),
+  editExpense: (id) => dispatch(actionEditExpense(id)),
 });
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
   currencies: state.wallet.currencies,
+  editingExpense: state.wallet.editingExpense,
 });
 
 WalletForms.propTypes = {
   addExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
+  editingExpense: PropTypes.shape({
+    isEditableMode: PropTypes.bool,
+    id: PropTypes.number,
+  }).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
   setUpCurrencies: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
