@@ -19,6 +19,8 @@ const INITIAL_STATE = {
 
   currencies: [],
   expenses: [],
+  editor: false,
+  idToEdit: 0,
   editingExpense: {
     isEditableMode: false,
     id: 0,
@@ -44,8 +46,9 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ENABLE_EDIT_MODE:
     return {
       ...state,
+      editor: true,
       editingExpense: {
-        isEditableMode: true,
+        isEditing: true,
         id: action.payload,
       },
     };
@@ -53,6 +56,7 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: getExpensesEdited(state, action),
+      editor: false,
       editingExpense: {
         isEditableMode: false,
       },

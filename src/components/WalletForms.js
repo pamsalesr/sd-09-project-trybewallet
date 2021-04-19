@@ -39,10 +39,11 @@ class WalletForms extends React.Component {
 
   componentDidUpdate() {
     const { isEditing } = this.state;
-    const { editingExpense: { isEditableMode, id } } = this.props;
-    if (isEditableMode && !isEditing) {
+    const { editor, idToEdit } = this.props;
+    console.log(editor);
+    if (editor && !isEditing) {
       const { expenses } = this.props;
-      const expense = expenses.find((element) => element.id === id);
+      const expense = expenses.find((element) => element.id === idToEdit);
       console.log(expense);
       this.getExpenseData(expense);
     }
@@ -184,6 +185,8 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
   currencies: state.wallet.currencies,
   editingExpense: state.wallet.editingExpense,
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit,
 });
 
 WalletForms.propTypes = {
