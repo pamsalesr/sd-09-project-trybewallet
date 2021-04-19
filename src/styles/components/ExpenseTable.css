@@ -1,0 +1,45 @@
+.expense-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.expense-table-header > tr {
+  align-items: center;
+  background-color: rgb(36, 39, 46);
+  color: white;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 80px;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.expense-table-body > tr {
+  align-items: center;
+  display: flex;
+  font-size: 1rem;
+  height: 80px;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.expense-table-body > tr > td , .expense-table-header > tr > th {
+  text-align: center;
+  width: 150px;
+}
+
+.edit-expense-btn {
+  background-color: orange;
+  border-radius: 2px;
+  color: white;
+  font-weight: 700;
+}
+
+.delete-expense-btn {
+  background-color: red;
+  border-radius: 2px;
+  color: white;
+  font-weight: 700;
+}

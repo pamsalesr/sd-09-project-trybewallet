@@ -1,0 +1,39 @@
+.expense-form-container {
+  background-color: rgb(25, 29, 36);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 100px;
+}
+
+.expense-form {
+  align-items: center;
+  display: flex;
+  height: inherit;
+  justify-content: space-around;
+}
+
+.expense-form > div > label {
+  font-weight: 700;
+}
+
+.expense-form > div > label > input {
+  height: 25px;
+  margin-left: 10px;
+}
+
+.expense-form > div > select {
+  height: 30px;
+  margin-left: 10px;
+}
+
+.expense-form > div > button {
+  background-color: green;
+  border-radius: 5px;
+  color: white;
+  height: 40px;
+}
+
+.expense-form > div > button:hover {
+  cursor: pointer;
+}
