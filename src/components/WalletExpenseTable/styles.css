@@ -5,4 +5,48 @@ table {
   font-size: 0.9em;
   margin: 25px 0;
   min-width: 400px;
+  width: 100vw;
+}
+
+table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+}
+
+table tbody td {
+  border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #333333;
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+table button {
+  margin: 0 4px;
+  border: 0;
+  border-radius: 5px;
+  color: whitesmoke;
+  padding: 4px 6px;
+}
+
+table button:hover {
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: salmon;
+}
+
+.edit-button {
+  background-color: sandybrown;
 }

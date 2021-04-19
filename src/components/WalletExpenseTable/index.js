@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteExpense, subExpense } from '../../actions';
 import './styles.css';
+
+import editIcon from '../../images/edit_white_24dp.svg';
+import deleteIcon from '../../images/delete_white_24dp.svg';
 
 class WalletExpenseTable extends Component {
   renderExpenses(expenses) {
+    const { deleteThisExpense, substractThisExpense } = this.props;
     const expenseInfo = expenses.map(
-      ({ description, tag, method, value, currency, exchangeRates }, index) => (
+      ({ id, description, tag, method, value, currency, exchangeRates }, index) => (
         <tr key={ index }>
           <td>{ description }</td>
           <td>{ tag }</td>
@@ -19,8 +24,27 @@ class WalletExpenseTable extends Component {
           </td>
           <td>Real</td>
           <td>
-            <button type="button">Editar</button>
-            <button type="button">Excluir</button>
+            <button
+              className="edit-button"
+              type="button"
+            >
+              <img src={ editIcon } alt="Edit button" />
+            </button>
+            <button
+              className="delete-button"
+              type="button"
+              data-testid="delete-btn"
+              onClick={ () => {
+                substractThisExpense(
+                  (Math.round(
+                    value * exchangeRates[currency].ask * 100,
+                  ) / 100).toFixed(2),
+                );
+                deleteThisExpense(id);
+              } }
+            >
+              <img src={ deleteIcon } alt="Delete button" />
+            </button>
           </td>
         </tr>
       ),
@@ -47,22 +71,6 @@ class WalletExpenseTable extends Component {
         </thead>
         <tbody>
           { this.renderExpenses(expenses) }
-          {/* {expenses.map((expense) => (
-            <tr key={ expense.id }>
-              <td>{expense.description}</td>
-              <td>{expense.tag}</td>
-              <td>{expense.method}</td>
-              <td>{expense.value}</td>
-              <td>Dólar Comercial</td>
-              <td>{expense.exchangeRates.USD.ask}</td>
-              <td>Xablau</td>
-              <td>Real</td>
-              <td>
-                <button type="button">Editar</button>
-                <button type="button">Excluir</button>
-              </td>
-            </tr>
-          ))} */}
         </tbody>
       </table>
     );
@@ -73,8 +81,14 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  deleteThisExpense: (id) => dispatch(deleteExpense(id)),
+  substractThisExpense: (value) => dispatch(subExpense(value)),
+});
+
 WalletExpenseTable.propTypes = {
   expense: PropTypes.objectOf({}),
+  deleteThisExpense: PropTypes.func,
 }.isRequired;
 
-export default connect(mapStateToProps)(WalletExpenseTable);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletExpenseTable);

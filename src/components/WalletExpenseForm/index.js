@@ -85,6 +85,7 @@ class WalletExpenseForm extends Component {
       <label htmlFor="value-input">
         Valor:
         <input
+          className="input-form"
           type="text"
           name="value"
           data-testid="value-input"
@@ -99,6 +100,7 @@ class WalletExpenseForm extends Component {
       <label htmlFor="description-input">
         Descrição:
         <input
+          className="input-form"
           type="text"
           name="description"
           data-testid="description-input"
@@ -173,6 +175,7 @@ class WalletExpenseForm extends Component {
   submitInput() {
     return (
       <input
+        className="submit-button"
         type="submit"
         value="Adicionar despesa"
         onClick={ this.submitExpense }
