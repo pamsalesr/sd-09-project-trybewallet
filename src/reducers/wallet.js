@@ -57,9 +57,6 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: getExpensesEdited(state, action),
       editor: false,
-      editingExpense: {
-        isEditableMode: false,
-      },
     };
   default:
     return state;

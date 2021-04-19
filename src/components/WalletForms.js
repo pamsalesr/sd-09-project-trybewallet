@@ -199,6 +199,8 @@ WalletForms.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
   setUpCurrencies: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForms);
