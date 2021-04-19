@@ -53,14 +53,30 @@ code {
 }
 
 /* EXPENSES FORM */
+header {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+}
 
+.expenses-title {
+  display: flex;
+  justify-content: center;
+  margin: 16px 32px;
+}
 .expenses-form {
   display: flex;
-  width: 40%;
   justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  flex-direction: column;
+}
+.expenses-fields {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 0 16px;
+  flex-direction: row;
+  background-color: rgb(248, 233, 166);
+  margin-right: 0; 
 }
 
 .expenses-form label {
@@ -73,15 +89,15 @@ code {
 .expenses-form input, .expenses-form select {
   padding: 4px 8px;
   margin-top: 4px;
+  border: none;
 }
 
 .expenses-form button {
   background-color: rgb(238, 203, 46);
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 8px;
+  margin: 0;
   padding: 8px 16px;
   text-transform: uppercase;
 }

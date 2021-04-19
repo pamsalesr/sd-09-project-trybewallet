@@ -115,17 +115,21 @@ export default class ExpensesForm extends Component {
 
   render() {
     return (
-      <form className="expenses-form">
-        <h2>Despesas</h2>
-        { this.expenseValueInput() }
-        { this.descriptionInput() }
-        { this.currencyinput() }
-        { this.methodInput() }
-        { this.tagInput() }
-        <button type="submit" onClick="#">
-          Adicionar despesa
-        </button>
-      </form>
+      <header>
+        <h2 className="expenses-title">Despesas</h2>
+        <form className="expenses-form">
+          <div className="expenses-fields">
+            { this.expenseValueInput() }
+            { this.descriptionInput() }
+            { this.currencyinput() }
+            { this.methodInput() }
+            { this.tagInput() }
+          </div>
+          <button type="submit" onClick="#">
+            Adicionar despesa
+          </button>
+        </form>
+      </header>
     );
   }
 }
