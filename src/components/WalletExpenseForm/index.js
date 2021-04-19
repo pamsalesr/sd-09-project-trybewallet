@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getCurrencies from '../../services/api';
-import { addExpense } from '../../actions';
+import { addExpense, sumExpenses } from '../../actions';
 import './styles.css';
 
 class WalletExpenseForm extends Component {
@@ -49,7 +49,7 @@ class WalletExpenseForm extends Component {
   async submitExpense(event) {
     event.preventDefault();
     // this.fetchCurrencies();
-    const { dispatchExpense } = this.props;
+    const { dispatchExpense, totalExpensesValue } = this.props;
     const { id, value, description, currency, method, tag } = this.state;
     const exchangeRates = await getCurrencies();
     const expenseKeys = {
@@ -61,17 +61,13 @@ class WalletExpenseForm extends Component {
       tag,
       exchangeRates,
     };
+    const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
+    const currencyQuote = Object.values(exchangeRates)[currencyIndex].ask;
+    const valueForQuote = parseFloat(value) * parseFloat(currencyQuote);
     dispatchExpense(
-      /* [
-        id,
-        value,
-        description,
-        currency,
-        method,
-        tag,
-      ], */
       expenseKeys,
     );
+    totalExpensesValue(valueForQuote);
     this.setState({
       id: id + 1,
       value: 0,
@@ -204,22 +200,19 @@ class WalletExpenseForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  /* value: state.wallet.value,
-  description: state.wallet.description,
-  currency: state.wallet.currency,
-  method: state.wallet.method,
-  tag: state.wallet.tag, */
   expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expenses) => dispatch(addExpense(expenses)),
+  totalExpensesValue: (value) => dispatch(sumExpenses(value)),
 });
 
 WalletExpenseForm.propTypes = {
   // expense: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchExpense: PropTypes.func,
   value: PropTypes.string,
+  totalExpensesValue: PropTypes.func,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletExpenseForm);
