@@ -84,5 +84,4 @@ Login.defaultProps = {
 
 export default connect(null, mapDispatchToProps)(Login);
 
-// Consultei o respositório : https://github.com/tryber/sd-09-project-trybewallet/pull/58/commits/d22379aa7533fa7ba72804ad1f9958ad4b93dd11
-// Pra cgefar no resultado desses requisitos iniciais
+// Consultei repositório : https://github.com/tryber/sd-09-project-trybewallet/pull/58/commits/d22379aa7533fa7ba72804ad1f9958ad4b93dd11
