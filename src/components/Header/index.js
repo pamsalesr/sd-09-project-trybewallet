@@ -27,10 +27,12 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 Header.propTypes = {
   email: PropTypes.string,
+  expenses: PropTypes.arrayOf({}),
 }.isRequired;
 
 export default connect(mapStateToProps)(Header);
