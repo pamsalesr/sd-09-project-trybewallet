@@ -21,6 +21,13 @@ class Table extends Component {
     dispatchEditButton(true, item);
   }
 
+  dropRealBrasileiro(element) {
+    const content = element.exchangeRates[element.currency].name;
+    const testCorrection = 30;
+    const newContent = content.slice(0, (testCorrection + content.indexOf('/')));
+    return newContent;
+  }
+
   renderHeader() {
     return (
       <thead>
@@ -47,7 +54,7 @@ class Table extends Component {
         <td>{ element.tag }</td>
         <td>{ element.method }</td>
         <td>{ element.value }</td>
-        <td>{ element.exchangeRates[element.currency].name }</td>
+        <td>{ this.dropRealBrasileiro(element) }</td>
         <td>{ parseFloat(element.exchangeRates[element.currency].ask).toFixed(2) }</td>
         <td>
           {(element.value * element.exchangeRates[element.currency].ask).toFixed(2) }

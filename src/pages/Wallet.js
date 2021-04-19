@@ -30,7 +30,7 @@ const mapStateToProps = ({ wallet }) => ({
   editButton: wallet.editButton,
 });
 
-Wallet.propsTypes = {
+Wallet.propTypes = {
   editButton: PropTypes.bool,
 }.isRequired;
 

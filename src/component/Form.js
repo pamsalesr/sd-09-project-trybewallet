@@ -61,7 +61,7 @@ class Form extends Component {
     });
   }
 
-  createExpense() {
+  async createExpense() {
     const {
       dispatchExpensesUpdate, dispatchExpense, consultExpenses, consultEditButton,
       consultExpenseId,
@@ -69,11 +69,12 @@ class Form extends Component {
     const { value, description, currency, method, tag, exchangeRates } = this.state;
     const idValue = consultExpenses.length;
     const expense = {
-      id: idValue, value, description, currency, method, tag, exchangeRates,
-    };
-
+      id: idValue, value, description, currency, method, tag, exchangeRates };
     if (consultEditButton) {
       expense.id = consultExpenseId;
+      expense.exchangeRates = consultExpenses.filter(
+        (item) => (item.id === consultExpenseId),
+      )[0].exchangeRates;
       let reNew = consultExpenses.filter((item) => (item.id < consultExpenseId));
       const reNewPos = consultExpenses.filter((item) => (item.id > consultExpenseId));
       reNew = [...reNew, expense];
@@ -121,7 +122,7 @@ class Form extends Component {
         <input
           value={ description }
           data-testid="description-input"
-          id="expediture-description"
+          // id="expediture-description"
           name="description"
           onChange={ this.handleChange }
         />
