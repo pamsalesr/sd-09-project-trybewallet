@@ -16,7 +16,7 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      switch: false,
+      total: 0,
     };
     this.reset = { ...this.state };
     this.expenseForm = this.expenseForm.bind(this);
@@ -40,19 +40,21 @@ class Wallet extends React.Component {
   handleExpense() {
     const { moneyInfo } = this.props;
     moneyInfo();
-    const { id, value, description, currency, method, tag } = this.state;
     const { money, saveExpense } = this.props;
     const newExpense = {
-      id,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: { ...money },
+      ...this.state,
+      exchangeRates: money,
     };
-    console.log(newExpense);
     saveExpense(newExpense);
+    // const { expenses } = this.props;
+    // const totalMoney = expenses.forEach((ex) => {
+    //   console.log(ex);
+    //   const { exchangeRates, currency, value } = ex;
+    //   const { ask } = exchangeRates.find((e) => e.code === currency);
+    //   return (Math.floor(ask * value * 100) / 100);
+    // });
+    // console.log(totalMoney);
+    // const total = totalMoney.reduce((a, b) => a + b);
     this.setState((state) => ({
       ...this.reset,
       id: state.id + 1,
@@ -150,8 +152,8 @@ class Wallet extends React.Component {
     const keys = Object.keys(money);
     const allKeys = keys.filter((coin) => coin !== 'USDT');
     const allMoney = allKeys.map((key) => money[key]);
-    const { email, totalExpenses, isFetching } = this.props;
-
+    const { email, isFetching } = this.props;
+    const { total } = this.state;
     return (
       <div>
         <header>
@@ -159,7 +161,7 @@ class Wallet extends React.Component {
             {`Email: ${email}`}
           </p>
           <p data-testid="total-field">
-            {`Despesas totais: R$ ${totalExpenses} `}
+            {`Despesas totais: R$ ${total} `}
           </p>
           <p data-testid="header-currency-field">
             BRL
@@ -188,15 +190,19 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
-  saveExpense: PropTypes.func.isRequired,
-  moneyInfo: PropTypes.func.isRequired,
-  money: PropTypes.objectOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  email: PropTypes.string.isRequired,
-  totalExpenses: PropTypes.number.isRequired,
-  item: PropTypes.shape({ id: PropTypes.number }).isRequired,
-  isEditing: PropTypes.bool.isRequired,
-  editExpense: PropTypes.func.isRequired,
+  saveExpense: PropTypes.func,
+  moneyInfo: PropTypes.func,
+  money: PropTypes.objectOf(PropTypes.object),
+  isFetching: PropTypes.bool,
+  email: PropTypes.string,
+  item: PropTypes.shape({ id: PropTypes.number }),
+  isEditing: PropTypes.bool,
+  editExpense: PropTypes.func,
+  // expenses: PropTypes.arrayOf(PropTypes.object),
+}.isRequired;
+
+Wallet.defaultProps = {
+  item: { id: 0 },
 };
 
 const mapStateToProps = (state) => ({
@@ -205,7 +211,7 @@ const mapStateToProps = (state) => ({
   isEditing: state.wallet.isEditing,
   item: state.wallet.item,
   email: state.user.email,
-  totalExpenses: 0,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({

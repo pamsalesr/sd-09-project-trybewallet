@@ -79,8 +79,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  goToWallet: PropTypes.func.isRequired,
-};
+  goToWallet: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   goToWallet: (email) => dispatch(userLogin(email)),

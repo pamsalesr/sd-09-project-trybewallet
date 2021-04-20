@@ -69,12 +69,12 @@ class ExpenseList extends React.Component {
 }
 
 ExpenseList.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  money: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteLine: PropTypes.func.isRequired,
-  editForm: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
-};
+  expenses: PropTypes.arrayOf(PropTypes.object),
+  money: PropTypes.arrayOf(PropTypes.object),
+  deleteLine: PropTypes.func,
+  editForm: PropTypes.func,
+  edit: PropTypes.func,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,

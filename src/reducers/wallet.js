@@ -40,7 +40,7 @@ function wallet(state = initialState, action) {
       return false;
     });
     state.expenses[expense.index] = expenses;
-    return { ...state, isEditing: false, item };
+    return { ...state, isEditing: false };
   }
   default:
     return state;
