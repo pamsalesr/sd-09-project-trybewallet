@@ -17,7 +17,7 @@ class WalletExpenseHeader extends Component {
           <div className="header-currency">
             Despesa total: R$
             <span data-testid="total-field">
-              { total }
+              { parseFloat(total) }
             </span>
             <span data-testid="header-currency-field"> BRL</span>
           </div>

@@ -63,7 +63,6 @@ class WalletExpenseForm extends Component {
     const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
     const currencyQuote = Object.values(exchangeRates)[currencyIndex].ask;
     const valueForQuote = parseFloat(value) * parseFloat(currencyQuote);
-    console.log(currencyQuote);
     dispatchExpense(
       expenseKeys,
     );
@@ -86,7 +85,7 @@ class WalletExpenseForm extends Component {
         Valor:
         <input
           className="input-form"
-          type="text"
+          type="number"
           name="value"
           data-testid="value-input"
           onChange={ this.handleChange }
@@ -208,7 +207,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 WalletExpenseForm.propTypes = {
-  // expense: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchExpense: PropTypes.func,
   value: PropTypes.string,
   totalExpensesValue: PropTypes.func,

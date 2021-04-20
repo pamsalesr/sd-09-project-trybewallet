@@ -29,10 +29,6 @@
   width: 100%;
 }
 
-input:disabled {
-  cursor: not-allowed;
-}
-
 .login-form input:focus {
   border: 2px solid whitesmoke;
 }
@@ -55,6 +51,14 @@ input:disabled {
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.login-button:hover {
+  cursor: pointer;
+}
+
+.login-button:disabled {
+  cursor: not-allowed;
 }
 
 ::placeholder {
