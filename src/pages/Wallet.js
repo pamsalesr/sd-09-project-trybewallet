@@ -67,7 +67,7 @@ class Wallet extends React.Component {
   }
 
   expenseForm(money) {
-    const { currency, tag, method } = this.state;
+    const { currency: currencyState, tag: tagState, method: methodState } = this.state;
     return (
       <form>
         Valor:
@@ -77,7 +77,7 @@ class Wallet extends React.Component {
           id="currency"
           onChange={ this.handleDropdown }
           data-testid="currency-input"
-          value={ currency }
+          value={ currencyState }
         >
           {money.map((each) => (
             <option key={ each.code } data-testid={ each.code }>
@@ -86,7 +86,7 @@ class Wallet extends React.Component {
         </select>
         Método de pagamento:
         <select
-          value={ method }
+          value={ methodState }
           id="method"
           onChange={ this.handleDropdown }
           data-testid="method-input"
@@ -97,7 +97,7 @@ class Wallet extends React.Component {
         </select>
         Tag:
         <select
-          value={ tag }
+          value={ tagState }
           id="tag"
           onChange={ this.handleDropdown }
           data-testid="tag-input"
