@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { deleteExpense } from '../actions/index';
 import './Wallet.css';
 
 class ExpenseList extends React.Component {
   render() {
-    const { expenses, money } = this.props;
+    const { expenses, money, deleteLine } = this.props;
     const map = expenses.map((item) => {
       const moneyInfo = money.find((each) => item.currency === each.code);
       const moneyName = moneyInfo.name.split('/');
@@ -41,7 +42,11 @@ class ExpenseList extends React.Component {
             <button type="button">
               Editar
             </button>
-            <button type="button">
+            <button
+              onClick={ () => deleteLine(item) }
+              type="button"
+              data-testid="delete-btn"
+            >
               Excluir
             </button>
           </td>
@@ -55,10 +60,15 @@ class ExpenseList extends React.Component {
 ExpenseList.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   money: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteLine: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(ExpenseList);
+const mapDispatchToProps = (dispatch) => ({
+  deleteLine: (expense) => dispatch(deleteExpense(expense)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);

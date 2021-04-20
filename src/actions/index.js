@@ -1,10 +1,16 @@
 import { USER_DATA } from '../reducers/user';
-import { WALLET_INFO, MONEY_INFO, REQUEST_MONEY } from '../reducers/wallet';
+import { WALLET_INFO,
+  MONEY_INFO, REQUEST_MONEY, DELETE_EXPENSE } from '../reducers/wallet';
 import moneyData from '../services/api';
 
 const userLogin = (email) => ({
   type: USER_DATA,
   email,
+});
+
+export const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  expenses,
 });
 
 export const walletUpdate = (expenses) => ({
