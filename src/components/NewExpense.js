@@ -5,7 +5,6 @@ import {
   fetchCurrencies,
   setTotalExpense,
   setExpense,
-  setEditExpense,
   updateExpenses,
 } from '../actions';
 
@@ -92,7 +91,7 @@ class NewExpense extends React.Component {
     });
     await dispatchUpdateExpenses(editedExpenses);
     this.mySetState({}, { editable: false, id: 0 });
-    this.updateExpenses();
+    this.updateTotalExpense();
   }
 
   isEditOn() {
@@ -225,7 +224,6 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchFetchCurrencies: () => dispatch(fetchCurrencies()),
   dispatchSetExpense: (expense) => dispatch(setExpense(expense)),
   dispatchTotalExpense: (totalExpense) => dispatch(setTotalExpense(totalExpense)),
-  dispatchSetEditExpense: (edit) => dispatch(setEditExpense(edit)),
   dispatchUpdateExpenses: (expenses) => dispatch(updateExpenses(expenses)),
 });
 

@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf, object } from 'prop-types';
-import { updateExpenses, setTotalExpense, setEditExpense } from '../actions';
+import { updateExpenses, setTotalExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
   constructor(props) {
     super(props);
     this.deleteExpense = this.deleteExpense.bind(this);
-    this.editExpense = this.editExpense.bind(this);
     this.renderTable = this.renderTable.bind(this);
   }
 
@@ -22,11 +21,6 @@ class ExpensesTable extends React.Component {
       return total + (rate * expense.value);
     }, 0);
     dispatchSetTotalExpense(totalExpense.toFixed(2));
-  }
-
-  editExpense(id) {
-    const { dispatchSetEditExpense } = this.props;
-    dispatchSetEditExpense({ editable: true, id });
   }
 
   renderTable() {
@@ -44,13 +38,6 @@ class ExpensesTable extends React.Component {
           <td>{(rate.ask * item.value).toFixed(2)}</td>
           <td>Real</td>
           <td>
-            <button
-              data-testid="edit-btn"
-              type="button"
-              onClick={ () => this.editExpense(item.id) }
-            >
-              Editar
-            </button>
             <button
               data-testid="delete-btn"
               type="button"
@@ -95,7 +82,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchUpdateExpenses: (expenses) => dispatch(updateExpenses(expenses)),
   dispatchSetTotalExpense: (totalExpense) => dispatch(setTotalExpense(totalExpense)),
-  dispatchSetEditExpense: (edit) => dispatch(setEditExpense(edit)),
 });
 
 ExpensesTable.propTypes = {

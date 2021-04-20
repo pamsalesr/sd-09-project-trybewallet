@@ -19,7 +19,7 @@ class Header extends React.Component {
 
 const mapStatetoProps = (state) => ({
   email: state.user.email,
-  // totalPrice: state.wallet.totalExpense,
+  totalExpense: state.wallet.totalExpense,
 });
 
 Header.propTypes = {
