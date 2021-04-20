@@ -1,6 +1,9 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addExpenses } from '../actions';
 
-export default class ExpensesForm extends Component {
+class ExpensesForm extends Component {
   constructor() {
     super();
 
@@ -151,9 +154,10 @@ export default class ExpensesForm extends Component {
   }
 
   addExpense() {
-    // const { expenses } = this.state;
+    const { expenses } = this.state;
+    const { expensesDispatcher } = this.props;
     // const { id, value, description, currency, method, tag, exchangeRates } = expenses;
-
+    expensesDispatcher(expenses);
   }
 
   render() {
@@ -168,7 +172,7 @@ export default class ExpensesForm extends Component {
             { this.methodInput() }
             { this.tagInput() }
           </div>
-          <button type="submit" onClick={ this.addExpense }>
+          <button type="submit" onClick={ () => this.addExpense() }>
             Adicionar despesa
           </button>
         </form>
@@ -176,3 +180,13 @@ export default class ExpensesForm extends Component {
     );
   }
 }
+
+ExpensesForm.propTypes = {
+  expensesDispatcher: PropTypes.func,
+}.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  expensesDispatcher: (expense) => dispatch(addExpenses(expense)),
+});
+
+export default connect(null, mapDispatchToProps)(ExpensesForm);
