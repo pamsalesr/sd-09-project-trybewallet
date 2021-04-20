@@ -3,7 +3,7 @@
 import { GET_USER_EMAIL } from '../actions/index';
 
 const INITIAL_USER_EMAIL_STATE = {
-  email: '',
+  email: 'Usuário não identificado',
 };
 
 const user = (state = INITIAL_USER_EMAIL_STATE, { type, userEmail }) => {

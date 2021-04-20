@@ -6,6 +6,15 @@ export default class ExpensesForm extends Component {
 
     this.state = {
       currency: [],
+      expenses: {
+        id: 0,
+        value: '',
+        description: '',
+        currency: '',
+        method: '',
+        tag: '',
+        exchangeRates: {},
+      },
     };
 
     this.getCurrency = this.getCurrency.bind(this);
@@ -14,6 +23,8 @@ export default class ExpensesForm extends Component {
     this.expenseValueInput = this.expenseValueInput.bind(this);
     this.methodInput = this.methodInput.bind(this);
     this.tagInput = this.tagInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.addExpense = this.addExpense.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +44,13 @@ export default class ExpensesForm extends Component {
     }
   }
 
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState((prevState) => (
+      { expenses: { ...prevState.expenses, [name]: value } }
+    ));
+  }
+
   expenseValueInput() {
     return (
       <label htmlFor="value-input">
@@ -41,6 +59,8 @@ export default class ExpensesForm extends Component {
           type="number"
           data-testid="value-input"
           id="value-input"
+          name="value"
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -54,6 +74,8 @@ export default class ExpensesForm extends Component {
           type="text"
           data-testid="description-input"
           id="description-input"
+          name="description"
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -64,7 +86,12 @@ export default class ExpensesForm extends Component {
     return (
       <label htmlFor="currency-input">
         Moeda
-        <select data-testid="currency-input" id="currency-input">
+        <select
+          data-testid="currency-input"
+          id="currency-input"
+          name="currency"
+          onChange={ this.handleChange }
+        >
           {
             currency.map((value) => (
               value[0] === 'USDT'
@@ -89,10 +116,15 @@ export default class ExpensesForm extends Component {
     return (
       <label htmlFor="method-input">
         Método de pagamento
-        <select data-testid="method-input" id="method-input">
-          <option value="cash" data-testid="">Dinheiro</option>
-          <option value="credit" data-testid="">Cartão de crédito</option>
-          <option value="debit" data-testid="">Cartão de débito</option>
+        <select
+          data-testid="method-input"
+          id="method-input"
+          name="method"
+          onChange={ this.handleChange }
+        >
+          <option value="Dinheiro" data-testid="">Dinheiro</option>
+          <option value="Cartão de crédito" data-testid="">Cartão de crédito</option>
+          <option value="Cartão de débito" data-testid="">Cartão de débito</option>
         </select>
       </label>
     );
@@ -102,15 +134,26 @@ export default class ExpensesForm extends Component {
     return (
       <label htmlFor="tag-input">
         Tipo da despesa
-        <select data-testid="tag-input" id="tag-input">
-          <option value="">Alimentação</option>
-          <option value="">Lazer</option>
-          <option value="">Trabalho</option>
-          <option value="">Transporte</option>
-          <option value="">Saúde</option>
+        <select
+          data-testid="tag-input"
+          id="tag-input"
+          name="tag"
+          onChange={ this.handleChange }
+        >
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
       </label>
     );
+  }
+
+  addExpense() {
+    // const { expenses } = this.state;
+    // const { id, value, description, currency, method, tag, exchangeRates } = expenses;
+
   }
 
   render() {
@@ -125,7 +168,7 @@ export default class ExpensesForm extends Component {
             { this.methodInput() }
             { this.tagInput() }
           </div>
-          <button type="submit" onClick="#">
+          <button type="submit" onClick={ this.addExpense }>
             Adicionar despesa
           </button>
         </form>
