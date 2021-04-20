@@ -9,12 +9,12 @@ const initialState = {
 };
 
 function wallet(state = initialState, action) {
-  const { type, isFetching, money, expense } = action;
+  const { type, isFetching, money, expenses } = action;
   switch (type) {
   case WALLET_INFO:
     return {
       ...state,
-      expenses: [...state.expenses, expense],
+      expenses: [...state.expenses, expenses],
     };
   case MONEY_INFO:
     return { ...state, currencies: money, isFetching };

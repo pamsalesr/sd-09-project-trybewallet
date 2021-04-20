@@ -1,0 +1,40 @@
+body {
+  text-align: center;
+}
+
+td , th , tr {
+  border: 1px ridge teal;
+  padding: 5px;
+}
+
+th {
+  background-color: lightseagreen;
+}
+
+table {
+  border-collapse: collapse;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+header {
+  background-color: lightgreen;
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 1px 50px;
+  text-align: center;
+}
+
+form {
+  background-color: teal;
+  padding: 20px 1px;
+}
+
+input , select {
+  background-color: seashell;
+  border: 1px solid seagreen;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 3px 5px;
+}

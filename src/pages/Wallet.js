@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// import ExpenseList from './WalletRegistry';
 import { getMoneyInfo, walletUpdate } from '../actions/index';
+import WalletRegistry from './WalletRegistry';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   constructor() {
@@ -124,37 +127,32 @@ class Wallet extends React.Component {
       <div>
         <header>
           <p data-testid="email-field">
-            Email:
-            {' '}
-            { email }
+            {`Email: ${email}`}
           </p>
           <p data-testid="total-field">
-            Despesas totais:
-            {' '}
-            R$
-            {' '}
-            { totalExpenses }
+            {`Despesas totais: R$ ${totalExpenses} `}
           </p>
           <p data-testid="header-currency-field">
-            {' '}
             { totalCurrency }
           </p>
         </header>
         { isFetching ? <strong>Loading...</strong> : this.expenseForm(allMoney) }
-        <table>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-          <tbody />
-        </table>
+        <main>
+          <table>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+            <WalletRegistry money={ allMoney } />
+          </table>
+        </main>
       </div>
     );
   }
