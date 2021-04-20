@@ -20,7 +20,6 @@ function newExpense({ expenses }, { expense: inputExpense, response }) {
     id = expenses[expenses.length - 1].id + 1;
   }
   return {
-    editMethod: inputExpense.editMethod,
     expenses: [
       ...expenses,
       {
@@ -69,7 +68,6 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
   case ADD_EXPENSE:
     return {
       ...state,
-      ...payload.editMethod,
       ...newExpense(state, payload),
     };
   case DELETE_EXPENSE:
