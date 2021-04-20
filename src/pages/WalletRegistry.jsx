@@ -1,10 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteExpense } from '../actions/index';
+import { deleteExpense, editingExpense } from '../actions/index';
 import './Wallet.css';
 
 class ExpenseList extends React.Component {
+  constructor() {
+    super();
+    this.assignEdit = this.assignEdit.bind(this);
+  }
+
+  assignEdit(item) {
+    const { edit, editForm } = this.props;
+    editForm(item);
+    edit(item);
+  }
+
   render() {
     const { expenses, money, deleteLine } = this.props;
     const map = expenses.map((item) => {
@@ -39,7 +50,7 @@ class ExpenseList extends React.Component {
             Real Brasileiro
           </td>
           <td>
-            <button type="button">
+            <button onClick={ () => this.assignEdit(item) } type="button">
               Editar
             </button>
             <button
@@ -61,6 +72,8 @@ ExpenseList.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   money: PropTypes.arrayOf(PropTypes.object).isRequired,
   deleteLine: PropTypes.func.isRequired,
+  editForm: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -68,6 +81,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  editForm: (item) => dispatch(editingExpense(item)),
   deleteLine: (expense) => dispatch(deleteExpense(expense)),
 });
 

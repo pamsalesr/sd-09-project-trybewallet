@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import ExpenseList from './WalletRegistry';
-import { getMoneyInfo, walletUpdate } from '../actions/index';
+import { editedExpense, getMoneyInfo, walletUpdate } from '../actions/index';
 import WalletRegistry from './WalletRegistry';
 import './Wallet.css';
 
@@ -16,11 +16,13 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      switch: false,
     };
     this.reset = { ...this.state };
     this.expenseForm = this.expenseForm.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
     this.handleDropdown = this.handleDropdown.bind(this);
+    this.editForm = this.editForm.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +71,28 @@ class Wallet extends React.Component {
     />);
   }
 
+  sendButton() {
+    const { isEditing } = this.props;
+    if (isEditing) {
+      const { id, value, description, currency, method, tag } = this.state;
+      const { item, editExpense } = this.props;
+      const newItem = { ...item, id, value, description, currency, method, tag };
+      return (
+        <button
+          onClick={ () => {
+            editExpense(newItem);
+            this.setState(() => ({
+              ...this.reset,
+            }));
+          } }
+          type="reset"
+        >
+          Editar despesa
+        </button>);
+    }
+    return <button onClick={ this.handleExpense } type="reset">Adicionar Despesa</button>;
+  }
+
   expenseForm(money) {
     const { currency: currencyState, tag: tagState, method: methodState } = this.state;
     return (
@@ -113,8 +137,12 @@ class Wallet extends React.Component {
         </select>
         Descrição:
         { this.input('description', 'text', 'description-input', '50') }
-        <button onClick={ this.handleExpense } type="reset">Adicionar Despesa</button>
+        { this.sendButton() }
       </form>);
+  }
+
+  editForm({ id, value, tag, method, currency, description }) {
+    this.setState({ id, value, tag, method, currency, description });
   }
 
   render() {
@@ -122,7 +150,8 @@ class Wallet extends React.Component {
     const keys = Object.keys(money);
     const allKeys = keys.filter((coin) => coin !== 'USDT');
     const allMoney = allKeys.map((key) => money[key]);
-    const { email, totalExpenses, totalCurrency, isFetching } = this.props;
+    const { email, totalExpenses, isFetching } = this.props;
+
     return (
       <div>
         <header>
@@ -133,10 +162,10 @@ class Wallet extends React.Component {
             {`Despesas totais: R$ ${totalExpenses} `}
           </p>
           <p data-testid="header-currency-field">
-            { totalCurrency }
+            BRL
           </p>
         </header>
-        { isFetching ? <strong>Loading...</strong> : this.expenseForm(allMoney) }
+        { isFetching ? <p>Loading...</p> : this.expenseForm(allMoney)}
         <main>
           <table>
             <tr>
@@ -150,7 +179,7 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
-            <WalletRegistry money={ allMoney } />
+            <WalletRegistry money={ allMoney } edit={ this.editForm } />
           </table>
         </main>
       </div>
@@ -165,18 +194,22 @@ Wallet.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
   totalExpenses: PropTypes.number.isRequired,
-  totalCurrency: PropTypes.string.isRequired,
+  item: PropTypes.shape({ id: PropTypes.number }).isRequired,
+  isEditing: PropTypes.bool.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   money: state.wallet.currencies,
   isFetching: state.wallet.isFetching,
+  isEditing: state.wallet.isEditing,
+  item: state.wallet.item,
   email: state.user.email,
   totalExpenses: 0,
-  totalCurrency: 'BRL',
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  editExpense: (item) => dispatch(editedExpense(item)),
   saveExpense: (expense) => dispatch(walletUpdate(expense)),
   moneyInfo: () => dispatch(getMoneyInfo()),
 });
