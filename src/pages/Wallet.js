@@ -14,6 +14,7 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
     };
+    this.reset = { ...this.state };
     this.expenseForm = this.expenseForm.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
     this.handleDropdown = this.handleDropdown.bind(this);
@@ -48,6 +49,7 @@ class Wallet extends React.Component {
     console.log(newExpense);
     saveExpense(newExpense);
     this.setState((state) => ({
+      ...this.reset,
       id: state.id + 1,
     }));
   }
@@ -102,7 +104,7 @@ class Wallet extends React.Component {
         </select>
         Descrição:
         { this.input('description', 'text', 'description-input', '50') }
-        <button onClick={ this.handleExpense } type="button">Adicionar Despesa</button>
+        <button onClick={ this.handleExpense } type="reset">Adicionar Despesa</button>
       </form>);
   }
 
